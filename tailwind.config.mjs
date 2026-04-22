@@ -47,7 +47,7 @@ export default {
         'micro': '0.16em',
       },
       transitionTimingFunction: {
-        'ease-out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       animation: {
         'fade-up': 'fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both',
