@@ -5,7 +5,7 @@ export const site = {
   baseline: "Faire fructifier ce qui compte — avec méthode, clarté et engagement.",
   calendly:
     import.meta.env.PUBLIC_CALENDLY_URL ??
-    'https://calendly.com/camil-czajkowski/rendez-vous-decouverte',
+    'https://calendly.com/camil-cz-lechenepatrimonial/30min',
   email: 'contact@lechenepatrimonial.com',
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
   city: 'Paris · Montpellier · Marseille',
