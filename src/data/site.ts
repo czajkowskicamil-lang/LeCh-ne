@@ -8,7 +8,8 @@ export const site = {
     'https://calendly.com/camil-czajkowski/rendez-vous-decouverte',
   email: 'contact@lechenepatrimonial.com',
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
-  city: 'Paris & Île-de-France',
+  city: 'Paris · Montpellier · Marseille',
+  coverage: 'France entière · en présentiel ou à distance',
 };
 
 export const nav = [
