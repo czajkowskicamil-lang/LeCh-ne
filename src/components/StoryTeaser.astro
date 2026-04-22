@@ -39,11 +39,28 @@
     </div>
 
     <div class="lg:col-span-6 reveal" style="animation-delay:120ms">
-      <div class="relative aspect-[4/5] max-w-md ml-auto">
-        <!-- Editorial "photo-like" placeholder with gradient + SVG -->
-        <div class="absolute inset-0 bg-gradient-to-br from-chene-dark via-chene to-chene-light"></div>
-        <div class="absolute inset-0 opacity-20 mix-blend-overlay" style="background-image: radial-gradient(circle at 30% 20%, rgba(184,153,104,0.6), transparent 50%), radial-gradient(circle at 70% 80%, rgba(15,27,20,0.8), transparent 60%);"></div>
-        <!-- Overlaid stats -->
+      <div class="relative aspect-[3/5] max-w-md ml-auto overflow-hidden">
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/camil-800.webp 800w, /camil-1200.webp 1200w, /camil-1600.webp 1600w"
+            sizes="(min-width: 1024px) 28rem, 90vw"
+          />
+          <img
+            src="/camil-1200.jpg"
+            srcset="/camil-800.jpg 800w, /camil-1200.jpg 1200w, /camil-1600.jpg 1600w"
+            sizes="(min-width: 1024px) 28rem, 90vw"
+            alt="Camil Czajkowski, fondateur du Chêne Patrimonial"
+            width="735"
+            height="1595"
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </picture>
+        <!-- Subtle gradient to anchor the overlay quote -->
+        <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
+        <!-- Overlaid quote -->
         <div class="absolute bottom-6 left-6 right-6 bg-ink/85 backdrop-blur-sm text-cream p-6 border border-or/20">
           <p class="font-serif italic text-or-light mb-2 text-sm">« Le patrimoine, ça se construit comme un champion : »</p>
           <p class="font-serif text-xl leading-snug">
