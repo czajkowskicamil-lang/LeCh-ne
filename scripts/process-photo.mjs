@@ -6,7 +6,7 @@
 import sharp from 'sharp';
 
 const sources = [
-  { src: 'assets/camil-vineyard-source.jpeg', slug: 'camil' },
+  { src: 'assets/camil-hero-source.png', slug: 'camil' },
   { src: 'assets/camil-running-source.jpeg', slug: 'camil-running' },
 ];
 
