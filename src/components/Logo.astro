@@ -1,39 +1,27 @@
 ---
 interface Props {
   variant?: 'ink' | 'cream';
-  withText?: boolean;
+  compact?: boolean; // compact = smaller, for mobile
   class?: string;
-  compact?: boolean;
 }
-const { variant = 'ink', withText = true, class: className = '', compact = false } = Astro.props;
-const color = variant === 'cream' ? '#F5F1E8' : '#0A1F4F';
-const accent = '#D4A82D';
+const { variant = 'ink', compact = false, class: className = '' } = Astro.props;
+const sizeClasses = compact ? 'h-10' : 'h-12 md:h-14';
+// Cream variant: invert-ish filter for display on navy background.
+// The source logo is gold on transparent — that works on ANY background natively,
+// so we don't actually need filters. Variant is kept for API compatibility.
 ---
 
-<a href="/" class={`inline-flex items-center gap-3 group ${className}`} aria-label="Le Chêne Patrimonial — accueil" transition:name="site-logo">
-  <!-- Oak mark: uses real logo if /logo.png exists, otherwise SVG fallback -->
-  <span class="relative inline-block w-10 h-10 transition-transform duration-500 ease-out group-hover:rotate-6">
-    <!-- Real logo image (set in public/logo.png) -->
-    <img
-      src="/logo.png"
-      alt="Le Chêne Patrimonial"
-      class="absolute inset-0 w-full h-full object-contain"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-      loading="eager"
-      decoding="async"
-    />
-    <!-- SVG fallback: stylised oak -->
-    <svg style="display:none" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 w-full h-full">
-      <path d="M24 42 L24 30" stroke={color} stroke-width="2" stroke-linecap="round"/>
-      <path d="M24 30 C 14 30, 10 22, 14 18 C 8 14, 14 6, 22 10 C 22 4, 30 4, 30 10 C 36 8, 40 16, 34 18 C 38 22, 34 30, 24 30 Z"
-            fill={color} stroke={color} stroke-width="1"/>
-      <circle cx="24" cy="19" r="1.6" fill={accent}/>
-    </svg>
-  </span>
-  {withText && !compact && (
-    <span class="flex flex-col leading-none">
-      <span class="font-serif text-lg tracking-tight" style={`color:${color}`}>Le Chêne</span>
-      <span class="text-[0.62rem] uppercase tracking-micro mt-1" style={`color:${variant === 'cream' ? '#E6C259' : '#A7801F'}`}>Patrimonial</span>
-    </span>
-  )}
+<a
+  href="/"
+  class={`inline-flex items-center group ${className}`}
+  aria-label="Le Chêne Patrimonial — accueil"
+  transition:name="site-logo"
+>
+  <img
+    src="/logo.png"
+    alt="Le Chêne Patrimonial"
+    class={`${sizeClasses} w-auto transition-transform duration-500 ease-out group-hover:scale-[1.03]`}
+    loading="eager"
+    decoding="async"
+  />
 </a>
