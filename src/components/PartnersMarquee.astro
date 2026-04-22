@@ -1,48 +1,42 @@
 ---
 const partners = [
-  { name: 'Oddo BHF',       src: '/partners/oddo-bhf.svg' },
-  { name: 'Nexity',         src: '/partners/nexity.svg' },
+  { name: 'Oddo BHF',        src: '/partners/oddo-bhf.svg' },
+  { name: 'Nexity',          src: '/partners/nexity.svg' },
   { name: "Corum L'Épargne", src: '/partners/corum.svg' },
-  { name: 'MMA',            src: '/partners/mma.jpg' },
-  { name: 'Nortia',         src: '/partners/nortia.svg' },
-  { name: 'Cogedim',        src: '/partners/cogedim.svg' },
-  { name: 'Icade',          src: '/partners/icade.svg' },
-  { name: 'April',          src: '/partners/april.svg' },
+  { name: 'MMA',             src: '/partners/mma.jpg' },
+  { name: 'Nortia',          src: '/partners/nortia.svg' },
+  { name: 'Cogedim',         src: '/partners/cogedim.svg' },
+  { name: 'Icade',           src: '/partners/icade.svg' },
+  { name: 'April',           src: '/partners/april.svg' },
 ];
 
-// Duplicate the track for a seamless CSS loop
+// Duplicate for a seamless CSS loop — no flex gap (causes drift with %-based translate)
 const track = [...partners, ...partners];
 ---
 
-<section class="py-20 md:py-24 border-t border-ink/10 bg-cream-soft overflow-hidden">
-  <div class="shell">
-    <div class="text-center mb-12 reveal">
-      <p class="eyebrow mb-4 flex items-center justify-center gap-3">
-        <span class="inline-block h-px w-8 bg-chene"></span>
-        Ils nous accompagnent au quotidien
-        <span class="inline-block h-px w-8 bg-chene"></span>
-      </p>
-      <h2 class="font-serif text-2xl md:text-3xl text-ink max-w-2xl mx-auto">
-        Un écosystème de partenaires <span class="italic text-chene">triés sur le volet.</span>
-      </h2>
-    </div>
+<section class="partners-section border-y border-ink/10 bg-cream-soft overflow-hidden">
+  <div class="shell py-6">
+    <p class="eyebrow text-center text-ink/50 mb-5 flex items-center justify-center gap-3">
+      <span class="inline-block h-px w-8 bg-chene/60"></span>
+      Ils nous accompagnent au quotidien
+      <span class="inline-block h-px w-8 bg-chene/60"></span>
+    </p>
   </div>
 
-  <!-- Full-bleed marquee -->
-  <div class="partners-marquee relative" aria-label="Logos des partenaires">
-    <div class="partners-track flex items-center gap-16 md:gap-24">
+  <div class="partners-marquee relative pb-8">
+    <div class="partners-track flex items-center">
       {track.map((p, i) => (
-        <img
-          src={p.src}
-          alt={p.name}
-          aria-hidden={i >= partners.length ? 'true' : undefined}
-          class="partners-logo h-10 md:h-12 w-auto shrink-0"
-          loading="lazy"
-          decoding="async"
-        />
+        <div class="partners-cell shrink-0 px-8 md:px-12 flex items-center justify-center" aria-hidden={i >= partners.length ? 'true' : undefined}>
+          <img
+            src={p.src}
+            alt={i >= partners.length ? '' : p.name}
+            class="partners-logo h-8 md:h-10 w-auto max-w-[140px] md:max-w-[160px] object-contain"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
       ))}
     </div>
-    <!-- Soft edge fade -->
     <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-cream-soft to-transparent"></div>
     <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-cream-soft to-transparent"></div>
   </div>
@@ -55,21 +49,24 @@ const track = [...partners, ...partners];
   }
   .partners-track {
     width: max-content;
-    animation: partners-scroll 50s linear infinite;
+    animation: partners-scroll 45s linear infinite;
+    will-change: transform;
   }
   .partners-marquee:hover .partners-track {
     animation-play-state: paused;
   }
   .partners-logo {
-    filter: grayscale(100%) opacity(0.65);
+    filter: grayscale(100%) opacity(0.55);
     transition: filter 240ms ease;
   }
-  .partners-logo:hover {
+  .partners-cell:hover .partners-logo {
     filter: grayscale(0%) opacity(1);
   }
+  /* Translate exactly one full copy. The track contains 2 identical copies of N items,
+     each item wrapped in a padded cell — so 50% is exact, with no gap drift. */
   @keyframes partners-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
   }
   @media (prefers-reduced-motion: reduce) {
     .partners-track { animation: none; }
