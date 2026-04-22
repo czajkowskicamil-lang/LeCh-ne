@@ -1,10 +1,11 @@
 ---
 import { site } from '../data/site';
+import Magnetic from './Magnetic.astro';
 ---
 
 <section class="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
-  <!-- Decorative: floating oak silhouette -->
-  <div aria-hidden="true" class="pointer-events-none absolute -right-40 -top-20 w-[600px] h-[600px] opacity-[0.04]">
+  <!-- Decorative: floating oak silhouette with subtle parallax -->
+  <div aria-hidden="true" data-parallax="0.15" class="pointer-events-none absolute -right-40 -top-20 w-[600px] h-[600px] opacity-[0.04]">
     <svg viewBox="0 0 48 48" fill="#0F1B14" class="w-full h-full">
       <path d="M24 42 L24 30 M24 30 C14 30 10 22 14 18 C8 14 14 6 22 10 C22 4 30 4 30 10 C36 8 40 16 34 18 C38 22 34 30 24 30 Z"/>
     </svg>
@@ -17,22 +18,24 @@ import { site } from '../data/site';
         Conseil en gestion de patrimoine · Indépendant
       </p>
 
-      <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
-        Faire fructifier<br/>
-        <span class="italic text-chene">ce qui compte.</span>
+      <h1 class="font-serif text-display-xl text-ink mb-8">
+        <span class="reveal-mask"><span>Faire fructifier</span></span><br/>
+        <span class="reveal-mask" style="transition-delay:120ms"><span class="italic text-chene">ce qui compte.</span></span>
       </h1>
 
-      <p class="max-w-xl text-lg md:text-xl text-ink/75 leading-relaxed mb-10 reveal" style="animation-delay:160ms">
+      <p class="max-w-xl text-lg md:text-xl text-ink/75 leading-relaxed mb-10 reveal" style="transition-delay:260ms">
         Accompagnement patrimonial sur mesure pour entrepreneurs, cadres, dirigeants
         et sportifs de haut niveau. Stratégie, méthode, transparence — sans jargon,
         sans produit maison, sans compromis.
       </p>
 
-      <div class="flex flex-wrap gap-4 reveal" style="animation-delay:240ms">
-        <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary">
-          Planifier un rendez-vous découverte
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
+      <div class="flex flex-wrap gap-4 reveal" style="transition-delay:340ms">
+        <Magnetic>
+          <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary">
+            Planifier un rendez-vous découverte
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </Magnetic>
         <a href="/parcours" class="btn-ghost">Découvrir mon parcours</a>
       </div>
     </div>

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CTA from '../../components/CTA.astro';
+import CountUp from '../../components/CountUp.astro';
 import { expertises, site } from '../../data/site';
 import { expertiseContent } from '../../data/expertise-content';
 
@@ -77,9 +78,11 @@ const next = expertises[(idx + 1) % expertises.length];
         <div class="shell">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
             {content.chiffresCles.map((c, i) => (
-              <div class="md:p-6 md:bg-cream reveal" style={`animation-delay:${i * 60}ms`}>
+              <div class="md:p-6 md:bg-cream reveal" style={`transition-delay:${i * 80}ms`}>
                 <p class="text-xs uppercase tracking-micro text-stone mb-2">{c.label}</p>
-                <p class="font-serif text-2xl md:text-3xl text-ink">{c.value}</p>
+                <p class="font-serif text-2xl md:text-3xl text-ink">
+                  <CountUp value={c.value} />
+                </p>
               </div>
             ))}
           </div>

@@ -4,25 +4,35 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Primary dark — deep navy, matches the logo
         ink: {
-          DEFAULT: '#0F1B14',
-          soft: '#1C2922',
+          DEFAULT: '#0A1F4F',
+          soft: '#132858',
+        },
+        navy: {
+          DEFAULT: '#0A1F4F',
+          deep: '#061238',
+          darker: '#03091C',
+          light: '#1B3470',
         },
         cream: {
           DEFAULT: '#F5F1E8',
           deep: '#EDE6D3',
           soft: '#FAF7EF',
         },
+        // Gold — matches the luminous logo gold
+        or: {
+          DEFAULT: '#D4A82D',
+          light: '#E6C259',
+          dark: '#A7801F',
+          deep: '#6E5414',
+        },
+        // Forest green kept as secondary accent (sporting/patrimonial feel)
         chene: {
           DEFAULT: '#2D4A33',
           dark: '#1F3A2E',
           deep: '#142419',
           light: '#3E6247',
-        },
-        or: {
-          DEFAULT: '#B89968',
-          light: '#D4B98A',
-          dark: '#8F7648',
         },
         stone: {
           DEFAULT: '#7A7566',

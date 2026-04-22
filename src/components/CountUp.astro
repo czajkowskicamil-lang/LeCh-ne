@@ -1,0 +1,76 @@
+---
+// Animated number counter — activates when scrolled into view
+interface Props {
+  value: string; // raw display value, can include digits mixed with text (e.g. "152 500 €", "10%", "8 ans")
+  class?: string;
+  duration?: number; // ms
+}
+const { value, class: className = '', duration = 1400 } = Astro.props;
+---
+
+<span
+  class:list={['countup inline-block', className]}
+  data-target={value}
+  data-duration={duration}
+>{value}</span>
+
+<script>
+  const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  function extractNumber(s: string): { number: number; before: string; after: string } | null {
+    const match = s.match(/^(\D*?)([\d][\d\s.,]*)(.*)$/);
+    if (!match) return null;
+    const before = match[1];
+    const numRaw = match[2].replace(/\s/g, '').replace(',', '.');
+    const after = match[3];
+    const number = parseFloat(numRaw);
+    if (Number.isNaN(number)) return null;
+    return { number, before, after };
+  }
+
+  function formatNumber(n: number, original: string): string {
+    const hasDecimal = /[.,]/.test(original) && !/^\d[\d\s]*[.,]\d{3}/.test(original);
+    const decimals = hasDecimal ? (original.split(/[.,]/)[1]?.length ?? 0) : 0;
+    const rounded = decimals > 0 ? n.toFixed(decimals) : Math.round(n).toString();
+    // Preserve space-as-thousand formatting if the original had spaces
+    if (/\s/.test(original)) {
+      const parts = rounded.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      return parts.join(',');
+    }
+    return rounded.replace('.', ',');
+  }
+
+  function animate(el: HTMLElement) {
+    const target = el.getAttribute('data-target') || '';
+    const duration = Number(el.getAttribute('data-duration')) || 1400;
+    const parsed = extractNumber(target);
+    if (!parsed) return; // leave as-is (e.g. "Libre", "Sur devis")
+
+    const { number, before, after } = parsed;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const v = number * ease(p);
+      el.textContent = `${before}${formatNumber(v, target)}${after}`;
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(tick);
+  }
+
+  function setup() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          animate(e.target as HTMLElement);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll<HTMLElement>('.countup').forEach((el) => io.observe(el));
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>

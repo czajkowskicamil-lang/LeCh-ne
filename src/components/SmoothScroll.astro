@@ -1,0 +1,50 @@
+---
+// Lenis smooth scroll — Apple-like inertial scrolling
+// Loaded globally, respects prefers-reduced-motion
+---
+
+<script>
+  import Lenis from 'lenis';
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function init() {
+    if (reduced) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Smooth anchor links
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          lenis.scrollTo(target as HTMLElement, { offset: -80 });
+        }
+      });
+    });
+
+    // Re-init on Astro view transitions
+    document.addEventListener('astro:before-swap', () => {
+      lenis.destroy();
+    });
+  }
+
+  // Init on first load + after each navigation
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

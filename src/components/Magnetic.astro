@@ -1,0 +1,39 @@
+---
+// Subtle magnetic hover effect on CTAs — follows cursor within a radius
+interface Props { class?: string; }
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['magnetic-wrap inline-block', className]}>
+  <slot />
+</div>
+
+<script>
+  function bind() {
+    document.querySelectorAll<HTMLElement>('.magnetic-wrap').forEach((wrap) => {
+      if ((wrap as any).__magBound) return;
+      (wrap as any).__magBound = true;
+      const target = wrap.querySelector<HTMLElement>(':scope > *');
+      if (!target) return;
+      const strength = 0.22;
+      wrap.addEventListener('pointermove', (e) => {
+        const r = wrap.getBoundingClientRect();
+        const x = e.clientX - (r.left + r.width / 2);
+        const y = e.clientY - (r.top + r.height / 2);
+        target.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+      });
+      wrap.addEventListener('pointerleave', () => {
+        target.style.transform = '';
+      });
+    });
+  }
+  bind();
+  document.addEventListener('astro:page-load', bind);
+</script>
+
+<style>
+  .magnetic-wrap > * {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+</style>

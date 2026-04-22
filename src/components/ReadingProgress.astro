@@ -1,0 +1,25 @@
+---
+// Thin progress bar at top of page — signature Apple/Tesla detail for long-form content
+---
+
+<div id="reading-progress" class="fixed top-0 left-0 right-0 h-[2px] z-50 pointer-events-none">
+  <div id="reading-progress-bar" class="h-full bg-or origin-left scale-x-0 transition-transform duration-150 ease-out"></div>
+</div>
+
+<script>
+  function setupProgress() {
+    const bar = document.getElementById('reading-progress-bar');
+    if (!bar) return;
+    const update = () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? Math.min(1, scrolled / total) : 0;
+      bar.style.transform = `scaleX(${pct})`;
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+  }
+  setupProgress();
+  document.addEventListener('astro:page-load', setupProgress);
+</script>
