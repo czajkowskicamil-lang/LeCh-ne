@@ -104,7 +104,7 @@ import { site } from '../data/site';
 
   <!-- Coordonnées + couverture -->
   <section class="py-16 border-t border-ink/10">
-    <div class="shell grid md:grid-cols-3 gap-10">
+    <div class="shell grid md:grid-cols-2 lg:grid-cols-4 gap-10">
       <div>
         <p class="eyebrow mb-3">Le cabinet</p>
         <p class="text-ink mb-1">{site.name}</p>
@@ -112,8 +112,12 @@ import { site } from '../data/site';
         <p class="text-ink/60 text-sm mt-1">{site.coverage}</p>
       </div>
       <div>
+        <p class="eyebrow mb-3">Téléphone</p>
+        <a href={`tel:${site.phone.tel}`} class="link-underline text-ink">{site.phone.display}</a>
+      </div>
+      <div>
         <p class="eyebrow mb-3">Email</p>
-        <a href={`mailto:${site.email}`} class="link-underline text-ink">{site.email}</a>
+        <a href={`mailto:${site.email}`} class="link-underline text-ink break-all">{site.email}</a>
       </div>
       <div>
         <p class="eyebrow mb-3">LinkedIn</p>

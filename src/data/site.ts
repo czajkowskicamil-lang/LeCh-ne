@@ -6,7 +6,8 @@ export const site = {
   calendly:
     import.meta.env.PUBLIC_CALENDLY_URL ??
     'https://calendly.com/camil-cz-lechenepatrimonial/30min',
-  email: 'contact@lechenepatrimonial.com',
+  email: 'camil.cz@lechenepatrimonial.com',
+  phone: { display: '06 12 82 91 90', tel: '+33612829190' },
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
   city: 'Paris · Montpellier · Marseille',
   coverage: 'France entière · en présentiel ou à distance',

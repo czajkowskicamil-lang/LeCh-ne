@@ -41,6 +41,7 @@ const year = new Date().getFullYear();
       <ul class="space-y-3 text-sm">
         <li>{site.city}</li>
         <li class="text-cream/50 text-xs">{site.coverage}</li>
+        <li><a href={`tel:${site.phone.tel}`} class="hover:text-or-light transition">{site.phone.display}</a></li>
         <li><a href={`mailto:${site.email}`} class="hover:text-or-light transition">{site.email}</a></li>
         <li><a href={site.linkedin} target="_blank" rel="noopener" class="hover:text-or-light transition">LinkedIn</a></li>
       </ul>
