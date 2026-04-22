@@ -420,7 +420,7 @@ export const expertiseContent: ExpertiseContent[] = [
     pourQui: [
       'Dirigeants assimilés salariés (président SAS, gérant minoritaire SARL)',
       'TNS (gérant majoritaire, EI, profession libérale)',
-      'Cadres dirigeants en entreprise',
+      'Particuliers salariés ou dirigeants en entreprise',
       'Salariés avec abondement employeur',
     ],
     sections: [
