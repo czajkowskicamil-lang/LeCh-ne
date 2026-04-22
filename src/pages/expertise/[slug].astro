@@ -1,0 +1,175 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { expertises, site } from '../../data/site';
+import { expertiseContent } from '../../data/expertise-content';
+
+export function getStaticPaths() {
+  return expertises.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const item = expertises.find((e) => e.slug === slug)!;
+const content = expertiseContent.find((c) => c.slug === slug);
+
+const idx = expertises.findIndex((e) => e.slug === slug);
+const prev = expertises[(idx - 1 + expertises.length) % expertises.length];
+const next = expertises[(idx + 1) % expertises.length];
+---
+
+<Base
+  title={`${item.title} — ${site.name}`}
+  description={item.summary}
+>
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/expertise" class="hover:text-chene">Expertise</a>
+        <span>/</span>
+        <span class="text-ink">{item.title}</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Pilier {(idx + 1).toString().padStart(2, '0')} · {item.short}
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            {item.title}
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            {item.tagline}
+          </p>
+          {content && (
+            <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+              {content.heroIntro}
+            </p>
+          )}
+        </div>
+
+        {content && (
+          <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+            <div class="bg-ink text-cream p-8">
+              <p class="eyebrow-cream mb-5">Pour qui ?</p>
+              <ul class="space-y-3 text-sm">
+                {content.pourQui.map((p) => (
+                  <li class="flex gap-3">
+                    <span class="text-or mt-1">—</span>
+                    <span class="text-cream/85">{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {content && (
+    <>
+      <!-- Key numbers -->
+      <section class="border-y border-ink/10 bg-cream-soft py-12">
+        <div class="shell">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+            {content.chiffresCles.map((c, i) => (
+              <div class="md:p-6 md:bg-cream reveal" style={`animation-delay:${i * 60}ms`}>
+                <p class="text-xs uppercase tracking-micro text-stone mb-2">{c.label}</p>
+                <p class="font-serif text-2xl md:text-3xl text-ink">{c.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Body sections -->
+      <section class="py-20 md:py-28">
+        <div class="shell grid lg:grid-cols-12 gap-12">
+          <!-- Floating TOC -->
+          <aside class="hidden lg:block lg:col-span-3">
+            <div class="sticky top-28">
+              <p class="eyebrow mb-4">Sommaire</p>
+              <ul class="space-y-3 text-sm">
+                {content.sections.map((s, i) => (
+                  <li><a href={`#section-${i}`} class="text-ink/70 hover:text-chene transition">{s.title}</a></li>
+                ))}
+                <li><a href="#pieges" class="text-ink/70 hover:text-chene transition">Pièges classiques</a></li>
+                <li><a href="#faq" class="text-ink/70 hover:text-chene transition">Questions fréquentes</a></li>
+              </ul>
+            </div>
+          </aside>
+
+          <div class="lg:col-span-9">
+            <div class="prose-editorial">
+              {content.sections.map((s, i) => (
+                <article id={`section-${i}`} class="reveal mb-14">
+                  <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">§ {String(i + 1).padStart(2, '0')}</p>
+                  <h2 class="font-serif text-3xl md:text-[2.25rem] text-ink mb-5 leading-tight">{s.title}</h2>
+                  <p>{s.body}</p>
+                  {s.list && (
+                    <ul>
+                      {s.list.map((item) => <li>{item}</li>)}
+                    </ul>
+                  )}
+                </article>
+              ))}
+
+              <!-- Pitfalls -->
+              <aside id="pieges" class="my-16 p-8 md:p-10 bg-ink text-cream reveal">
+                <p class="eyebrow-cream mb-5">Pièges classiques à éviter</p>
+                <h3 class="font-serif text-2xl md:text-3xl text-cream mb-6">Ce que je vois — et qui coûte cher.</h3>
+                <ul class="space-y-4 text-cream/85">
+                  {content.piegesClassiques.map((p) => (
+                    <li class="flex gap-4">
+                      <span class="text-or-light mt-0.5">✕</span>
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+
+              <!-- FAQ -->
+              <section id="faq" class="mt-16 reveal">
+                <p class="eyebrow mb-4">Questions fréquentes</p>
+                <h3 class="font-serif text-3xl md:text-4xl text-ink mb-10">Ce qu'on me demande le plus.</h3>
+                <div class="divide-y divide-ink/10 border-t border-ink/10">
+                  {content.faq.map((f) => (
+                    <details class="group py-6">
+                      <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                        <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+                        <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </span>
+                      </summary>
+                      <p class="mt-4 text-ink/75 leading-relaxed max-w-3xl">{f.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )}
+
+  <!-- Prev/next navigation -->
+  <section class="border-t border-ink/10 py-10">
+    <div class="shell grid md:grid-cols-2 gap-8">
+      <a href={`/expertise/${prev.slug}`} class="group block">
+        <p class="text-xs uppercase tracking-micro text-stone mb-2">← Pilier précédent</p>
+        <p class="font-serif text-2xl text-ink group-hover:text-chene transition">{prev.title}</p>
+      </a>
+      <a href={`/expertise/${next.slug}`} class="group block md:text-right">
+        <p class="text-xs uppercase tracking-micro text-stone mb-2">Pilier suivant →</p>
+        <p class="font-serif text-2xl text-ink group-hover:text-chene transition">{next.title}</p>
+      </a>
+    </div>
+  </section>
+
+  <CTA title={`Une question concrète sur ${item.short} ?`} body="Parlons-en directement. Premier échange offert, sans engagement." />
+</Base>

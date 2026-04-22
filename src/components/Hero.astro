@@ -1,0 +1,79 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
+  <!-- Decorative: floating oak silhouette -->
+  <div aria-hidden="true" class="pointer-events-none absolute -right-40 -top-20 w-[600px] h-[600px] opacity-[0.04]">
+    <svg viewBox="0 0 48 48" fill="#0F1B14" class="w-full h-full">
+      <path d="M24 42 L24 30 M24 30 C14 30 10 22 14 18 C8 14 14 6 22 10 C22 4 30 4 30 10 C36 8 40 16 34 18 C38 22 34 30 24 30 Z"/>
+    </svg>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 items-end">
+    <div class="lg:col-span-8">
+      <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Conseil en gestion de patrimoine · Indépendant
+      </p>
+
+      <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+        Faire fructifier<br/>
+        <span class="italic text-chene">ce qui compte.</span>
+      </h1>
+
+      <p class="max-w-xl text-lg md:text-xl text-ink/75 leading-relaxed mb-10 reveal" style="animation-delay:160ms">
+        Accompagnement patrimonial sur mesure pour entrepreneurs, cadres, dirigeants
+        et sportifs de haut niveau. Stratégie, méthode, transparence — sans jargon,
+        sans produit maison, sans compromis.
+      </p>
+
+      <div class="flex flex-wrap gap-4 reveal" style="animation-delay:240ms">
+        <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary">
+          Planifier un rendez-vous découverte
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="/parcours" class="btn-ghost">Découvrir mon parcours</a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-4 reveal" style="animation-delay:320ms">
+      <div class="bg-ink text-cream p-8 md:p-10 relative">
+        <div class="absolute -top-3 left-8 bg-or text-ink text-[0.65rem] uppercase tracking-micro px-3 py-1">
+          En un coup d'œil
+        </div>
+        <dl class="space-y-6 mt-4">
+          <div>
+            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Indépendance</dt>
+            <dd class="font-serif text-xl">100% sans produit maison</dd>
+          </div>
+          <div class="h-px bg-cream/10"></div>
+          <div>
+            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Approche</dt>
+            <dd class="font-serif text-xl">Stratégique & long terme</dd>
+          </div>
+          <div class="h-px bg-cream/10"></div>
+          <div>
+            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Premier rendez-vous</dt>
+            <dd class="font-serif text-xl">Offert & sans engagement</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marquee-style micro proof strip -->
+  <div class="mt-20 md:mt-24 border-y border-ink/10 bg-cream-soft">
+    <div class="shell py-5 flex flex-wrap items-center justify-between gap-6 text-xs uppercase tracking-micro text-ink/50">
+      <span>Membre CNCGP</span>
+      <span class="hidden md:inline">·</span>
+      <span>ORIAS enregistré</span>
+      <span class="hidden md:inline">·</span>
+      <span>Certification AMF</span>
+      <span class="hidden md:inline">·</span>
+      <span>RCP assurée</span>
+      <span class="hidden md:inline">·</span>
+      <span>Transparence tarifaire</span>
+    </div>
+  </div>
+</section>

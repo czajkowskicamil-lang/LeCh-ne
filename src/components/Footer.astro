@@ -1,0 +1,58 @@
+---
+import Logo from './Logo.astro';
+import { site, nav, expertises } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="relative bg-ink text-cream/80 mt-32">
+  <div class="shell py-20 grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4 flex flex-col gap-6">
+      <Logo variant="cream" />
+      <p class="text-sm leading-relaxed max-w-sm text-cream/70">
+        Conseil en gestion de patrimoine indépendant. Stratégies financières construites sur la durée, avec méthode et transparence.
+      </p>
+      <a href={site.calendly} target="_blank" rel="noopener" class="btn-or self-start">
+        Échanger 30 minutes
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h4 class="eyebrow-cream mb-5">Le Cabinet</h4>
+      <ul class="space-y-3 text-sm">
+        {nav.map((item) => (
+          <li><a href={item.href} class="hover:text-or-light transition">{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h4 class="eyebrow-cream mb-5">Expertise</h4>
+      <ul class="space-y-3 text-sm">
+        {expertises.slice(0, 6).map((e) => (
+          <li><a href={`/expertise/${e.slug}`} class="hover:text-or-light transition">{e.title}</a></li>
+        ))}
+        <li><a href="/expertise" class="text-or-light hover:text-or">Voir tout →</a></li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h4 class="eyebrow-cream mb-5">Contact</h4>
+      <ul class="space-y-3 text-sm">
+        <li>{site.city}</li>
+        <li><a href={`mailto:${site.email}`} class="hover:text-or-light transition">{site.email}</a></li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener" class="hover:text-or-light transition">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-cream/10">
+    <div class="shell py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/50">
+      <p>© {year} {site.name}. Tous droits réservés.</p>
+      <div class="flex gap-6">
+        <a href="/mentions-legales" class="hover:text-or-light transition">Mentions légales</a>
+        <a href="/confidentialite" class="hover:text-or-light transition">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>

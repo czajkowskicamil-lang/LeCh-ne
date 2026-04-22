@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cas');
+  return cases.map((c) => ({ params: { slug: c.slug }, props: { entry: c } }));
+}
+
+interface Props { entry: CollectionEntry<'cas'> }
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const all = await getCollection('cas');
+const other = all.filter((c) => c.slug !== entry.slug).slice(0, 2);
+---
+
+<Base title={`${entry.data.title} — Cas pratique | Le Chêne Patrimonial`} description={entry.data.problematique}>
+  <article>
+    <header class="pt-16 pb-12 md:pt-24 md:pb-16">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+          <a href="/" class="hover:text-chene">Accueil</a>
+          <span>/</span>
+          <a href="/cas-pratiques" class="hover:text-chene">Cas pratiques</a>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Cas pratique
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-8 leading-tight">{entry.data.title}</h1>
+
+        <div class="grid md:grid-cols-2 gap-6 border-y border-ink/10 py-6">
+          <div>
+            <p class="text-xs uppercase tracking-micro text-stone mb-2">Profil</p>
+            <p class="text-ink">{entry.data.profil}</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-micro text-stone mb-2">Problématique</p>
+            <p class="text-ink">{entry.data.problematique}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell max-w-4xl pb-20 md:pb-32">
+      <div class="prose-editorial">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  {other.length > 0 && (
+    <section class="py-20 bg-cream-soft border-t border-ink/10">
+      <div class="shell">
+        <p class="eyebrow mb-6">Autres dossiers</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12">Des situations différentes — même méthode.</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {other.map((c) => (
+            <a href={`/cas-pratiques/${c.slug}`} class="group card-editorial">
+              <p class="text-xs uppercase tracking-micro text-chene mb-3">{c.data.profil}</p>
+              <h3 class="font-serif text-2xl mb-3 text-ink group-hover:text-chene transition">{c.data.title}</h3>
+              <p class="text-ink/70 leading-relaxed">{c.data.problematique}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CTA />
+</Base>

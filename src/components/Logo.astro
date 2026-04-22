@@ -1,0 +1,26 @@
+---
+interface Props {
+  variant?: 'ink' | 'cream';
+  withText?: boolean;
+  class?: string;
+}
+const { variant = 'ink', withText = true, class: className = '' } = Astro.props;
+const color = variant === 'cream' ? '#F5F1E8' : '#0F1B14';
+const accent = '#B89968';
+---
+
+<a href="/" class={`inline-flex items-center gap-3 group ${className}`} aria-label="Le Chêne Patrimonial — accueil">
+  <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-500 ease-out group-hover:rotate-6">
+    <!-- Stylised oak mark: trunk + three canopy layers -->
+    <path d="M24 42 L24 30" stroke={color} stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 30 C 14 30, 10 22, 14 18 C 8 14, 14 6, 22 10 C 22 4, 30 4, 30 10 C 36 8, 40 16, 34 18 C 38 22, 34 30, 24 30 Z"
+          fill={color} stroke={color} stroke-width="1"/>
+    <circle cx="24" cy="19" r="1.6" fill={accent}/>
+  </svg>
+  {withText && (
+    <span class="flex flex-col leading-none">
+      <span class="font-serif text-lg tracking-tight" style={`color:${color}`}>Le Chêne</span>
+      <span class="text-[0.62rem] uppercase tracking-micro mt-1" style={`color:${variant === 'cream' ? '#D4B98A' : '#B89968'}`}>Patrimonial</span>
+    </span>
+  )}
+</a>

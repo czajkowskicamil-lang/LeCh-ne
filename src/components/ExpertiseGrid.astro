@@ -1,0 +1,54 @@
+---
+import { expertises } from '../data/site';
+
+interface Props {
+  limit?: number;
+  title?: string;
+  eyebrow?: string;
+}
+const { limit = 10, title = "Expertise patrimoniale", eyebrow = "Dix piliers, une méthode" } = Astro.props;
+const items = expertises.slice(0, limit);
+---
+
+<section class="py-24 md:py-32">
+  <div class="shell">
+    <div class="grid lg:grid-cols-12 gap-8 md:gap-16 mb-16 items-end">
+      <div class="lg:col-span-7 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          {eyebrow}
+        </p>
+        <h2 class="font-serif text-display text-ink">
+          {title.split(' ').slice(0, -1).join(' ')}{' '}
+          <span class="italic text-chene">{title.split(' ').slice(-1)}</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-5 reveal">
+        <p class="text-ink/70 leading-relaxed">
+          Chaque thématique est traitée avec la même rigueur : comprendre votre
+          situation, modéliser les scénarios, choisir les enveloppes, piloter dans
+          le temps. Cliquez sur un pilier pour en explorer la logique.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10">
+      {items.map((e, i) => (
+        <a href={`/expertise/${e.slug}`} class="group bg-cream-soft p-8 md:p-10 flex flex-col justify-between min-h-[320px] transition-all duration-500 ease-out-expo hover:bg-chene hover:text-cream reveal" style={`animation-delay:${i * 40}ms`}>
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[0.65rem] uppercase tracking-micro text-chene group-hover:text-or-light transition">{e.short}</span>
+              <span class="font-serif italic text-stone/60 group-hover:text-or-light transition">0{i + 1}</span>
+            </div>
+            <h3 class="font-serif text-2xl md:text-[1.7rem] leading-tight mb-3">{e.title}</h3>
+            <p class="text-sm text-ink/60 group-hover:text-cream/70 transition mb-6">{e.tagline}</p>
+          </div>
+          <div class="flex items-center gap-2 text-sm font-medium">
+            <span>Explorer</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="transition-transform duration-500 ease-out-expo group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

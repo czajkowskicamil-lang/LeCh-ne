@@ -1,0 +1,46 @@
+---
+const items = [
+  {
+    quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
+    author: 'Thomas R.',
+    role: 'Dirigeant SaaS · Paris',
+  },
+  {
+    quote: "Ancien sportif moi-même, je cherchais quelqu'un qui comprenne la gestion d'une carrière courte et intense. Il a tout de suite saisi les enjeux — carrière, reconversion, fiscalité.",
+    author: 'Léa M.',
+    role: 'Athlète en reconversion',
+  },
+  {
+    quote: "Honnêteté désarmante : il m'a conseillé de ne PAS souscrire à un produit que j'avais déjà demandé ailleurs. La confiance s'est construite là.",
+    author: 'Alexandre D.',
+    role: 'Cadre dirigeant · Industrie',
+  },
+];
+---
+
+<section class="py-24 md:py-32 bg-cream-deep relative overflow-hidden">
+  <div class="shell">
+    <div class="max-w-2xl mb-16 reveal">
+      <p class="eyebrow mb-5 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Ils m'ont fait confiance
+      </p>
+      <h2 class="font-serif text-display text-ink">
+        Paroles de <span class="italic text-chene">clients.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {items.map((t, i) => (
+        <figure class="bg-cream p-8 md:p-10 border border-ink/5 flex flex-col h-full reveal" style={`animation-delay:${i * 100}ms`}>
+          <svg class="text-or mb-6" width="28" height="20" viewBox="0 0 28 20" fill="currentColor" aria-hidden="true"><path d="M0 20V12C0 5.4 3.8 0.8 10 0L11 3C7.4 4 5.4 6.2 5 9H9V20H0ZM17 20V12C17 5.4 20.8 0.8 27 0L28 3C24.4 4 22.4 6.2 22 9H26V20H17Z"/></svg>
+          <blockquote class="font-serif text-lg md:text-xl leading-snug text-ink flex-1">{t.quote}</blockquote>
+          <figcaption class="mt-8 pt-6 border-t border-ink/10">
+            <p class="font-medium text-ink">{t.author}</p>
+            <p class="text-sm text-stone mt-1">{t.role}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

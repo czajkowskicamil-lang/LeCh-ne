@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Politique de confidentialité — Le Chêne Patrimonial" description="Traitement des données personnelles sur lechenepatrimonial.com.">
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell max-w-3xl">
+      <p class="eyebrow mb-6">Confidentialité</p>
+      <h1 class="font-serif text-display text-ink mb-10">Politique de confidentialité</h1>
+
+      <div class="prose-editorial">
+        <h2>Responsable du traitement</h2>
+        <p>
+          Les données personnelles collectées sur ce site sont traitées par Camil Czajkowski, éditeur du site {site.name}.
+          Contact : <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Données collectées</h2>
+        <ul>
+          <li><strong>Via le formulaire de contact</strong> : nom, email, profil, contenu du message.</li>
+          <li><strong>Via la prise de rendez-vous (Calendly)</strong> : nom, email, créneau choisi.</li>
+          <li><strong>Données de navigation</strong> : adresse IP anonymisée, pages visitées (si outil d'analyse activé).</li>
+        </ul>
+
+        <h2>Finalités</h2>
+        <p>
+          Les données sont utilisées exclusivement pour répondre à vos demandes de contact, organiser des rendez-vous, et améliorer la qualité du site. Aucune donnée n'est cédée à des tiers à des fins commerciales.
+        </p>
+
+        <h2>Base légale</h2>
+        <p>
+          Consentement (article 6.1.a RGPD) pour la prise de contact, et intérêt légitime (article 6.1.f) pour le suivi anonymisé du site.
+        </p>
+
+        <h2>Durée de conservation</h2>
+        <ul>
+          <li>Données de contact : 3 ans après le dernier échange.</li>
+          <li>Données de navigation : 13 mois maximum.</li>
+          <li>Données clients dans le cadre d'une relation contractuelle : selon obligations légales (10 ans pour les conseils en investissement).</li>
+        </ul>
+
+        <h2>Vos droits</h2>
+        <p>
+          Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition sur vos données. Pour l'exercer : <a href={`mailto:${site.email}`}>{site.email}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).
+        </p>
+
+        <h2>Cookies</h2>
+        <p>
+          Ce site n'utilise pas de cookies de traçage marketing. Seuls des cookies techniques strictement nécessaires au fonctionnement du site (dont ceux du widget Calendly lors de la prise de rendez-vous) peuvent être déposés.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

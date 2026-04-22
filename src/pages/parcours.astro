@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+
+const chapters = [
+  {
+    year: '—',
+    title: 'Le haut niveau, très jeune',
+    body: "Repéré adolescent, j'ai basculé dans une vie où l'entraînement, la compétition et l'exigence sont devenus le quotidien. Les week-ends, c'était stages et déplacements. Les vacances, préparation physique. J'y ai appris ce que signifie vraiment se confronter à la performance — et accepter que certains jours, on perde malgré tout le travail.",
+  },
+  {
+    year: '—',
+    title: 'Discipline, méthode, cadre',
+    body: "Le sport de haut niveau, c'est une école de structure. On planifie la saison en blocs. On mesure tout : charges, récupération, progression. On ajuste en continu. Cette grammaire — objectif, plan, exécution, feedback — est devenue ma manière d'aborder n'importe quel problème complexe.",
+  },
+  {
+    year: '—',
+    title: 'La reconversion, un sujet tabou',
+    body: "Comme beaucoup de sportifs, j'ai vu autour de moi des trajectoires brillantes mal atterrir. Les raisons ? Rarement la compétence. Presque toujours l'absence d'anticipation financière : pas de patrimoine structuré, pas de fiscalité optimisée pendant les années pleines, pas de filet pour l'après. J'ai décidé de m'attaquer à ce sujet.",
+  },
+  {
+    year: '—',
+    title: 'De l\'athlète au conseiller',
+    body: "J'ai suivi le cursus exigeant de conseiller en gestion de patrimoine (certifications CNCGP, AMF, ORIAS), en continuant de me former aux spécificités fiscales des revenus atypiques : dirigeants, professions libérales, sportifs, artistes. J'ai choisi l'indépendance — pas de produit maison, pas d'objectif imposé par un réseau.",
+  },
+  {
+    year: 'Aujourd\'hui',
+    title: 'Le Chêne Patrimonial',
+    body: "Le cabinet accompagne entrepreneurs, cadres, dirigeants et sportifs dans la construction, la protection et la transmission de leur patrimoine. La promesse est simple : une stratégie claire, des décisions expliquées, un suivi qui tient dans la durée. Comme une saison sportive qu'on prépare avec exigence — et qu'on ne laisse jamais au hasard.",
+  },
+];
+---
+
+<Base title="Parcours — Camil Czajkowski | Le Chêne Patrimonial" description="Du haut niveau au conseil patrimonial : le parcours de Camil Czajkowski, fondateur du Chêne Patrimonial.">
+  <!-- Hero -->
+  <section class="pt-16 pb-20 md:pt-24 md:pb-24">
+    <div class="shell grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Le parcours
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Athlète, puis<br/>
+          <span class="italic text-chene">conseiller.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Une trajectoire guidée par une conviction simple : la rigueur qui fait gagner en compétition
+          est exactement celle qui fait gagner en patrimoine.
+        </p>
+      </div>
+      <aside class="lg:col-span-5 reveal" style="animation-delay:240ms">
+        <div class="bg-ink text-cream p-8 md:p-10">
+          <p class="eyebrow-cream mb-6">Repères</p>
+          <dl class="space-y-5 text-sm">
+            <div class="flex justify-between gap-6"><dt class="text-cream/60">Fondateur</dt><dd>Camil Czajkowski</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-cream/60">Parcours</dt><dd>Sportif haut niveau → CGP</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-cream/60">Statut</dt><dd>CIF indépendant · CNCGP</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-cream/60">Certifications</dt><dd>AMF · ORIAS · IAS</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-cream/60">Clientèle</dt><dd>Entrepreneurs, dirigeants, sportifs</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="border-y border-ink/10 bg-cream-soft py-16 md:py-20">
+    <div class="shell max-w-4xl">
+      <blockquote class="font-serif text-2xl md:text-4xl leading-snug text-ink reveal">
+        « Dans le sport, la discipline la plus difficile n'est pas l'effort — c'est <span class="italic text-chene">la patience d'un plan tenu dans le temps.</span> Pour le patrimoine, c'est exactement pareil. »
+      </blockquote>
+      <p class="mt-8 text-sm uppercase tracking-micro text-stone reveal">Camil Czajkowski</p>
+    </div>
+  </section>
+
+  <!-- Chapters -->
+  <section class="py-24 md:py-32">
+    <div class="shell">
+      <div class="max-w-2xl mb-20 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          L'histoire, en cinq chapitres
+        </p>
+        <h2 class="font-serif text-display text-ink">
+          Chapitres <span class="italic text-chene">fondateurs.</span>
+        </h2>
+      </div>
+
+      <div class="relative max-w-4xl mx-auto">
+        <span aria-hidden="true" class="absolute left-4 md:left-5 top-2 bottom-2 w-px bg-ink/15"></span>
+        {chapters.map((c, i) => (
+          <article class="relative pl-14 md:pl-20 pb-16 md:pb-20 last:pb-0 reveal" style={`animation-delay:${i * 60}ms`}>
+            <span class="absolute left-0 top-1 flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full bg-cream border border-chene text-chene font-serif italic text-sm">0{i + 1}</span>
+            <p class="text-xs uppercase tracking-micro text-or mb-2">{c.year}</p>
+            <h3 class="font-serif text-2xl md:text-3xl text-ink mb-4">{c.title}</h3>
+            <p class="text-ink/80 leading-relaxed max-w-prose-wide text-[1.05rem]">{c.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values carry-over -->
+  <section class="py-24 md:py-32 bg-cream-deep">
+    <div class="shell grid lg:grid-cols-2 gap-16 items-start">
+      <div class="reveal">
+        <p class="eyebrow mb-5">Ce que le sport m'a appris</p>
+        <h2 class="font-serif text-display-sm text-ink mb-8">
+          Quatre leçons qui <span class="italic text-chene">structurent mon travail.</span>
+        </h2>
+      </div>
+      <div class="space-y-8 reveal" style="animation-delay:100ms">
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">La performance est un processus, pas un coup d'éclat.</h3>
+          <p class="text-ink/70 leading-relaxed">Les résultats patrimoniaux viennent de décisions répétées et cohérentes, pas d'un pari génial ponctuel.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">Les données ne mentent pas.</h3>
+          <p class="text-ink/70 leading-relaxed">On mesure, on projette, on compare. Toute recommandation s'appuie sur un chiffrage lisible par le client.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">Un bon coach dit aussi "non".</h3>
+          <p class="text-ink/70 leading-relaxed">Mon rôle, c'est parfois de vous retenir d'une opération à la mode ou d'un produit qui ne vous sert pas.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">Le vrai niveau, c'est la régularité.</h3>
+          <p class="text-ink/70 leading-relaxed">Je m'engage sur la durée. Un patrimoine se juge sur dix ans, pas sur un trimestre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Prêt à construire une saison patrimoniale sérieuse ?" />
+</Base>

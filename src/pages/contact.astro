@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Contact — Le Chêne Patrimonial"
+  description="Prendre rendez-vous ou envoyer un message. Premier échange de 30 minutes offert, sans engagement."
+>
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Contact
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Un premier<br/>
+          <span class="italic text-chene">échange.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          30 minutes, en visio ou au cabinet. Vous posez vos questions, je comprends votre situation. Aucune obligation, aucun engagement — juste une conversation claire.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: Calendly + contact form -->
+  <section class="py-12 md:py-16">
+    <div class="shell grid lg:grid-cols-12 gap-10 items-stretch">
+      <!-- Calendly embed (iframe) -->
+      <div class="lg:col-span-7 reveal">
+        <div class="bg-cream-soft border border-ink/10 p-6 md:p-8">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <p class="eyebrow mb-2">Option 1 · Rapide</p>
+              <h2 class="font-serif text-2xl md:text-3xl text-ink">Réserver un créneau</h2>
+            </div>
+            <span class="inline-flex items-center gap-2 text-xs uppercase tracking-micro bg-ink text-cream px-3 py-1">
+              <span class="w-2 h-2 rounded-full bg-or-light"></span>
+              30 min · offert
+            </span>
+          </div>
+          <!-- Inline Calendly -->
+          <div
+            class="calendly-inline-widget bg-cream"
+            data-url={`${site.calendly}?hide_gdpr_banner=1&primary_color=2d4a33`}
+            style="min-width:320px;height:680px;"
+          ></div>
+          <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+          <noscript>
+            <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary mt-6">Ouvrir Calendly</a>
+          </noscript>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="bg-ink text-cream p-8 md:p-10 h-full flex flex-col">
+          <p class="eyebrow-cream mb-2">Option 2 · Par message</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-cream mb-6">Écrivez-moi</h2>
+          <p class="text-sm text-cream/70 mb-8 leading-relaxed">
+            Un contexte particulier ? Un dossier complexe ? Quelques mots ici et je reviens vers vous sous 24h.
+          </p>
+
+          <!-- Formspree-compatible form. Remplacer l'action par votre endpoint. -->
+          <form
+            action="https://formspree.io/f/REPLACE_ME"
+            method="POST"
+            class="space-y-5 flex-1 flex flex-col"
+          >
+            <div>
+              <label for="name" class="block text-xs uppercase tracking-micro text-or-light mb-2">Nom complet</label>
+              <input type="text" id="name" name="name" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="Jean Dupont" />
+            </div>
+            <div>
+              <label for="email" class="block text-xs uppercase tracking-micro text-or-light mb-2">Email</label>
+              <input type="email" id="email" name="email" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="jean@dupont.fr" />
+            </div>
+            <div>
+              <label for="profile" class="block text-xs uppercase tracking-micro text-or-light mb-2">Votre profil</label>
+              <select id="profile" name="profile" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream focus:border-or focus:outline-none">
+                <option class="bg-ink">Salarié cadre</option>
+                <option class="bg-ink">Dirigeant / Entrepreneur</option>
+                <option class="bg-ink">Profession libérale / TNS</option>
+                <option class="bg-ink">Sportif professionnel</option>
+                <option class="bg-ink">Autre</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label for="message" class="block text-xs uppercase tracking-micro text-or-light mb-2">Votre message</label>
+              <textarea id="message" name="message" rows="5" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none resize-none" placeholder="Décrivez en quelques mots votre situation ou votre question…"></textarea>
+            </div>
+            <button type="submit" class="btn-or w-full justify-center mt-auto">
+              Envoyer le message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <p class="text-xs text-cream/50">Vos informations restent confidentielles. Aucune prospection.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coordonnées -->
+  <section class="py-16 border-t border-ink/10">
+    <div class="shell grid md:grid-cols-3 gap-10">
+      <div>
+        <p class="eyebrow mb-3">Le cabinet</p>
+        <p class="text-ink mb-1">{site.name}</p>
+        <p class="text-ink/70">{site.city}</p>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">Email</p>
+        <a href={`mailto:${site.email}`} class="link-underline text-ink">{site.email}</a>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">LinkedIn</p>
+        <a href={site.linkedin} target="_blank" rel="noopener" class="link-underline text-ink">Camil Czajkowski</a>
+      </div>
+    </div>
+  </section>
+</Base>

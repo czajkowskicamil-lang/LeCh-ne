@@ -1,0 +1,48 @@
+---
+const values = [
+  {
+    kicker: '01',
+    title: 'Engagement',
+    body: "Un accompagnement pluriannuel, pas une vente ponctuelle. Votre patrimoine est un marathon — j'en suis l'entraîneur.",
+  },
+  {
+    kicker: '02',
+    title: 'Méthode',
+    body: "Audit, stratégie, mise en œuvre, suivi. Chaque décision repose sur une analyse chiffrée, pas sur une intuition ou un effet de mode.",
+  },
+  {
+    kicker: '03',
+    title: 'Clarté',
+    body: "Aucun jargon gratuit. Vous comprenez ce que vous faites, pourquoi, et combien ça coûte. Toujours.",
+  },
+  {
+    kicker: '04',
+    title: 'Indépendance',
+    body: "Pas de produit maison, pas d'objectif commercial imposé. Les recommandations suivent votre intérêt, uniquement.",
+  },
+];
+---
+
+<section class="py-24 md:py-32 bg-ink text-cream relative overflow-hidden">
+  <div class="shell">
+    <div class="max-w-2xl mb-16 reveal">
+      <p class="eyebrow-cream mb-5 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-or"></span>
+        Les valeurs du cabinet
+      </p>
+      <h2 class="font-serif text-display text-cream">
+        Ce que vous pouvez <span class="italic text-or-light">exiger</span> de votre conseiller.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-cream/10">
+      {values.map((v, i) => (
+        <div class="bg-ink p-8 md:p-10 reveal" style={`animation-delay:${i * 80}ms`}>
+          <p class="font-serif italic text-or-light mb-4 text-2xl">{v.kicker}</p>
+          <h3 class="font-serif text-2xl mb-4 text-cream">{v.title}</h3>
+          <p class="text-sm leading-relaxed text-cream/70">{v.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

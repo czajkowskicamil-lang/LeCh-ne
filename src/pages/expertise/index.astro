@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import ExpertiseGrid from '../../components/ExpertiseGrid.astro';
+import CTA from '../../components/CTA.astro';
+---
+
+<Base
+  title="Expertise patrimoniale — Le Chêne Patrimonial"
+  description="Dix piliers de la gestion de patrimoine traités en profondeur : PER, assurance-vie, SCPI, défiscalisation, transmission, immobilier, PEA, retraite du dirigeant, private equity, crédit patrimonial."
+>
+  <section class="pt-16 pb-20 md:pt-24 md:pb-24 relative overflow-hidden">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Expertise patrimoniale
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Dix piliers.<br/>
+          <span class="italic text-chene">Une méthode.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Chaque thématique est traitée comme dans un livre de chevet : le pourquoi, le comment, les chiffres-clés, les pièges classiques et la FAQ. Objectif — que vous décidiez en connaissance de cause.
+        </p>
+      </div>
+      <div class="lg:col-span-4 reveal" style="animation-delay:240ms">
+        <div class="bg-cream-soft border border-ink/10 p-8">
+          <p class="eyebrow mb-3">Lecture conseillée</p>
+          <p class="text-sm text-ink/70 leading-relaxed">
+            Commencez par l'<a class="link-underline text-chene" href="/expertise/assurance-vie">assurance-vie</a> et le <a class="link-underline text-chene" href="/expertise/plan-epargne-retraite">PER</a> — ils forment le socle de 80% des stratégies patrimoniales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ExpertiseGrid title="Les dix piliers" eyebrow="Tous les sujets" />
+  <CTA />
+</Base>

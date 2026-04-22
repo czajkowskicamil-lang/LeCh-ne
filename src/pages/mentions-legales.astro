@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Mentions légales — Le Chêne Patrimonial" description="Mentions légales et informations réglementaires du cabinet Le Chêne Patrimonial." noIndex={false}>
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell max-w-3xl">
+      <p class="eyebrow mb-6">Mentions légales</p>
+      <h1 class="font-serif text-display text-ink mb-10">Informations légales</h1>
+
+      <div class="prose-editorial">
+        <h2>Éditeur du site</h2>
+        <p>
+          Le site <strong>{site.name}</strong> est édité par Camil Czajkowski, conseiller en gestion de patrimoine indépendant.
+        </p>
+        <p>
+          <strong>Adresse :</strong> {site.city}<br/>
+          <strong>Email :</strong> <a href={`mailto:${site.email}`}>{site.email}</a><br/>
+          <strong>Directeur de la publication :</strong> Camil Czajkowski
+        </p>
+
+        <h2>Statuts réglementaires</h2>
+        <ul>
+          <li><strong>Conseiller en Investissements Financiers (CIF)</strong> — enregistré auprès de l'ORIAS sous le n° [à compléter], adhérent à la CNCGP (Chambre Nationale des Conseils en Gestion de Patrimoine).</li>
+          <li><strong>Courtier en assurance</strong> — inscrit à l'ORIAS n° [à compléter], catégorie B.</li>
+          <li><strong>Intermédiaire en opérations de banque et en services de paiement (IOBSP)</strong> — n° [à compléter].</li>
+          <li><strong>Carte T</strong> (transactions sur immeubles et fonds de commerce) — n° [à compléter].</li>
+        </ul>
+
+        <h2>Responsabilité civile professionnelle</h2>
+        <p>
+          RCP souscrite auprès de [Compagnie — à compléter], police n° [à compléter], couvrant l'ensemble des activités réglementées.
+        </p>
+
+        <h2>Autorités de tutelle</h2>
+        <p>
+          Autorité des Marchés Financiers (AMF) — 17 place de la Bourse, 75082 Paris Cedex 02, <a href="https://www.amf-france.org" target="_blank" rel="noopener">www.amf-france.org</a>.
+        </p>
+        <p>
+          Autorité de Contrôle Prudentiel et de Résolution (ACPR) — 4 place de Budapest, 75436 Paris Cedex 09.
+        </p>
+
+        <h2>Hébergement</h2>
+        <p>
+          Site hébergé par <strong>Vercel Inc.</strong> — 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.
+        </p>
+
+        <h2>Propriété intellectuelle</h2>
+        <p>
+          L'ensemble des contenus présents sur ce site (textes, images, logos, design) est protégé par le droit d'auteur. Toute reproduction, même partielle, est soumise à autorisation écrite préalable.
+        </p>
+
+        <h2>Médiation</h2>
+        <p>
+          En cas de litige, et après saisine préalable du cabinet, le client peut recourir gratuitement au médiateur compétent :
+        </p>
+        <ul>
+          <li>Médiateur de l'AMF (pour les litiges relatifs aux produits financiers)</li>
+          <li>Médiateur de l'Assurance (pour les produits d'assurance)</li>
+          <li>Médiateur ANACOFI-CIF (pour les conseils en investissements financiers)</li>
+        </ul>
+
+        <p class="text-sm text-stone mt-10">
+          <em>Les mentions ci-dessus sont indiquées à titre indicatif pour la mise en place du site. Les numéros d'enregistrement ORIAS, RCP et les informations précises devront être complétés avant la mise en production.</em>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

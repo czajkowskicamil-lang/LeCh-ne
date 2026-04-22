@@ -1,0 +1,36 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  category: string;
+  description: string;
+  publishedAt: Date;
+  readingTime: number;
+  variant?: 'default' | 'feature';
+}
+const { href, title, category, description, publishedAt, readingTime, variant = 'default' } = Astro.props;
+
+const dateStr = new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }).format(publishedAt);
+---
+
+<a href={href} class:list={[
+  'group block border-t border-ink/10 pt-8 pb-8 transition-all duration-500 ease-out-expo hover:pl-4 relative',
+  variant === 'feature' && 'md:col-span-2',
+]}>
+  <div class="flex items-center gap-4 mb-4 text-xs uppercase tracking-micro text-stone">
+    <span class="text-chene font-medium">{category}</span>
+    <span>·</span>
+    <time datetime={publishedAt.toISOString()}>{dateStr}</time>
+    <span>·</span>
+    <span>{readingTime} min de lecture</span>
+  </div>
+  <h3 class:list={[
+    'font-serif text-ink mb-3 leading-tight transition-colors duration-300 group-hover:text-chene',
+    variant === 'feature' ? 'text-3xl md:text-4xl' : 'text-2xl',
+  ]}>{title}</h3>
+  <p class="text-ink/70 max-w-2xl leading-relaxed">{description}</p>
+  <span class="inline-flex items-center gap-2 mt-5 text-sm font-medium text-chene">
+    Lire l'article
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="transition-transform duration-500 ease-out-expo group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </span>
+</a>

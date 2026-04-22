@@ -1,0 +1,63 @@
+---
+const steps = [
+  {
+    n: '01',
+    title: 'Rendez-vous découverte',
+    duration: '30 min · offert',
+    body: "On fait connaissance. Vous posez vos questions, je comprends votre situation et vos objectifs. Aucune obligation derrière.",
+  },
+  {
+    n: '02',
+    title: 'Audit patrimonial',
+    duration: '2 à 3 semaines',
+    body: "Analyse chiffrée complète : revenus, fiscalité, actifs, passifs, projection retraite, capacité d'épargne, risques. C'est la photo de départ.",
+  },
+  {
+    n: '03',
+    title: 'Stratégie sur mesure',
+    duration: '1 restitution',
+    body: "Je vous remets une stratégie écrite, chiffrée et hiérarchisée. Vous comprenez chaque arbitrage — pas de boîte noire.",
+  },
+  {
+    n: '04',
+    title: 'Mise en œuvre',
+    duration: 'Rythme adapté',
+    body: "Sélection des enveloppes, négociation des frais, souscriptions, arbitrages. Je pilote pour vous, avec vous.",
+  },
+  {
+    n: '05',
+    title: 'Suivi pluriannuel',
+    duration: '2 à 4 points/an',
+    body: "Le patrimoine vit. On ajuste selon votre vie, la fiscalité, les marchés. La relation dure tant qu'elle vous apporte de la valeur.",
+  },
+];
+---
+
+<section class="py-24 md:py-32">
+  <div class="shell">
+    <div class="max-w-2xl mb-20 reveal">
+      <p class="eyebrow mb-5 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Méthode de travail
+      </p>
+      <h2 class="font-serif text-display text-ink">
+        Cinq étapes, <span class="italic text-chene">zéro flou.</span>
+      </h2>
+    </div>
+
+    <ol class="relative grid md:grid-cols-5 gap-10 md:gap-4">
+      <!-- connecting line (desktop) -->
+      <span aria-hidden="true" class="hidden md:block absolute top-5 left-[10%] right-[10%] h-px bg-ink/10"></span>
+      {steps.map((s, i) => (
+        <li class="relative reveal" style={`animation-delay:${i * 80}ms`}>
+          <div class="flex items-center gap-3 mb-5 md:mb-7">
+            <span class="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-cream border border-chene text-chene font-serif italic">{s.n}</span>
+          </div>
+          <h3 class="font-serif text-xl mb-1 text-ink">{s.title}</h3>
+          <p class="text-xs uppercase tracking-micro text-or mb-3">{s.duration}</p>
+          <p class="text-sm text-ink/70 leading-relaxed">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
