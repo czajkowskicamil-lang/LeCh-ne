@@ -1,0 +1,77 @@
+---
+const partners = [
+  { name: 'Oddo BHF',       src: '/partners/oddo-bhf.svg' },
+  { name: 'Nexity',         src: '/partners/nexity.svg' },
+  { name: "Corum L'Épargne", src: '/partners/corum.svg' },
+  { name: 'MMA',            src: '/partners/mma.jpg' },
+  { name: 'Nortia',         src: '/partners/nortia.svg' },
+  { name: 'Altarea Cogedim', src: '/partners/altarea.svg' },
+  { name: 'Icade',          src: '/partners/icade.svg' },
+  { name: 'April',          src: '/partners/april.svg' },
+];
+
+// Duplicate the track for a seamless CSS loop
+const track = [...partners, ...partners];
+---
+
+<section class="py-20 md:py-24 border-t border-ink/10 bg-cream-soft overflow-hidden">
+  <div class="shell">
+    <div class="text-center mb-12 reveal">
+      <p class="eyebrow mb-4 flex items-center justify-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Ils nous accompagnent au quotidien
+        <span class="inline-block h-px w-8 bg-chene"></span>
+      </p>
+      <h2 class="font-serif text-2xl md:text-3xl text-ink max-w-2xl mx-auto">
+        Un écosystème de partenaires <span class="italic text-chene">triés sur le volet.</span>
+      </h2>
+    </div>
+  </div>
+
+  <!-- Full-bleed marquee -->
+  <div class="partners-marquee relative" aria-label="Logos des partenaires">
+    <div class="partners-track flex items-center gap-16 md:gap-24">
+      {track.map((p, i) => (
+        <img
+          src={p.src}
+          alt={p.name}
+          aria-hidden={i >= partners.length ? 'true' : undefined}
+          class="partners-logo h-10 md:h-12 w-auto shrink-0"
+          loading="lazy"
+          decoding="async"
+        />
+      ))}
+    </div>
+    <!-- Soft edge fade -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-cream-soft to-transparent"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-cream-soft to-transparent"></div>
+  </div>
+</section>
+
+<style>
+  .partners-marquee {
+    width: 100%;
+    overflow: hidden;
+  }
+  .partners-track {
+    width: max-content;
+    animation: partners-scroll 50s linear infinite;
+  }
+  .partners-marquee:hover .partners-track {
+    animation-play-state: paused;
+  }
+  .partners-logo {
+    filter: grayscale(100%) opacity(0.65);
+    transition: filter 240ms ease;
+  }
+  .partners-logo:hover {
+    filter: grayscale(0%) opacity(1);
+  }
+  @keyframes partners-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .partners-track { animation: none; }
+  }
+</style>
