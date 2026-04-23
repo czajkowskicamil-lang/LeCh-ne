@@ -51,11 +51,32 @@ const path = Astro.url.pathname;
 </header>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const panel = document.getElementById('mobile-panel');
-  toggle?.addEventListener('click', () => {
-    const isOpen = !panel?.classList.contains('hidden');
-    panel?.classList.toggle('hidden');
-    toggle?.setAttribute('aria-expanded', String(!isOpen));
-  });
+  // Re-initialized on every page-load event so the handler is (re)bound to the
+  // fresh DOM after each Astro ViewTransition — otherwise the listener stays
+  // attached to the previous page's button and the menu breaks after navigation.
+  function initMobileMenu() {
+    const toggle = document.getElementById('menu-toggle');
+    const panel = document.getElementById('mobile-panel');
+    if (!toggle || !panel) return;
+
+    // Always start from a closed state after a navigation.
+    panel.classList.add('hidden');
+    toggle.setAttribute('aria-expanded', 'false');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = !panel.classList.contains('hidden');
+      panel.classList.toggle('hidden');
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Close the panel when a link inside it is clicked (before navigation).
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        panel.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initMobileMenu);
 </script>
