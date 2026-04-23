@@ -34,6 +34,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechene
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {!noIndex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />}
+
+    {/* Search Console verification — remplis la valeur PUBLIC_GSC_VERIFICATION dans .env quand tu auras ton code */}
+    {import.meta.env.PUBLIC_GSC_VERIFICATION && (
+      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_VERIFICATION} />
+    )}
+    {import.meta.env.PUBLIC_BING_VERIFICATION && (
+      <meta name="msvalidate.01" content={import.meta.env.PUBLIC_BING_VERIFICATION} />
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -52,18 +61,49 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechene
     <link rel="icon" type="image/svg+xml" href={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%230A1F4F' d='M24 42 L24 30 M24 30 C14 30 10 22 14 18 C8 14 14 6 22 10 C22 4 30 4 30 10 C36 8 40 16 34 18 C38 22 34 30 24 30 Z' stroke='%230A1F4F' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19' r='2' fill='%23D4A82D'/%3E%3C/svg%3E`} />
     <meta name="theme-color" content="#0A1F4F" />
 
-    <!-- Structured Data -->
+    {/* Structured Data — FinancialService + Person (founder) for richer Google rich results */}
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'FinancialService',
-      name: site.name,
-      url: canonical,
-      description: site.baseline,
-      areaServed: site.city,
-      email: site.email,
-      telephone: site.phone.tel,
-      priceRange: 'Sur devis',
-      founder: { '@type': 'Person', name: site.owner },
+      '@graph': [
+        {
+          '@type': 'FinancialService',
+          '@id': 'https://www.lechenepatrimonial.com/#organization',
+          name: site.name,
+          url: 'https://www.lechenepatrimonial.com',
+          description: site.baseline,
+          areaServed: ['Paris', 'Montpellier', 'Marseille', 'France'],
+          email: site.email,
+          telephone: site.phone.tel,
+          priceRange: 'Sur devis',
+          serviceType: [
+            'Conseil en gestion de patrimoine',
+            'Optimisation fiscale',
+            'Assurance-vie',
+            'Plan Épargne Retraite',
+            'SCPI',
+            'Transmission de patrimoine',
+          ],
+          founder: { '@id': 'https://www.lechenepatrimonial.com/#founder' },
+          sameAs: [site.linkedin],
+        },
+        {
+          '@type': 'Person',
+          '@id': 'https://www.lechenepatrimonial.com/#founder',
+          name: site.owner,
+          jobTitle: 'Conseiller en gestion de patrimoine',
+          worksFor: { '@id': 'https://www.lechenepatrimonial.com/#organization' },
+          sameAs: [site.linkedin],
+          identifier: 'ORIAS 25000016',
+        },
+        {
+          '@type': 'WebSite',
+          '@id': 'https://www.lechenepatrimonial.com/#website',
+          url: 'https://www.lechenepatrimonial.com',
+          name: site.name,
+          inLanguage: 'fr-FR',
+          publisher: { '@id': 'https://www.lechenepatrimonial.com/#organization' },
+        },
+      ],
     })} />
 
     <ViewTransitions />
