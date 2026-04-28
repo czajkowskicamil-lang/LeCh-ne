@@ -139,7 +139,7 @@ export const expertiseContent: ExpertiseContent[] = [
   {
     slug: 'scpi',
     heroIntro:
-      "Les SCPI (Sociétés Civiles de Placement Immobilier) permettent d'investir dans un parc immobilier professionnel sans en supporter la gestion. Mutualisation, accessibilité (ticket dès quelques milliers d'euros), rendement historique autour de 4 à 6% : une brique patrimoniale robuste, à condition de choisir avec méthode.",
+      "Les SCPI (Sociétés Civiles de Placement Immobilier) permettent d'investir dans un parc immobilier professionnel sans en supporter la gestion. Mutualisation, accessibilité (ticket dès quelques milliers d'euros), rendement historique autour de 4 à 6% : une brique patrimoniale solide, à condition de choisir avec méthode.",
     pourQui: [
       "Épargnants cherchant des revenus réguliers",
       "Investisseurs voulant diversifier hors résidentiel classique",
@@ -183,7 +183,7 @@ export const expertiseContent: ExpertiseContent[] = [
     faq: [
       {
         q: 'Quelle est la fiscalité des revenus SCPI ?',
-        a: "Les revenus sont imposés comme des revenus fonciers : TMI + 17,2% de prélèvements sociaux. C'est ce qui rend les SCPI européennes et les stratégies de démembrement particulièrement pertinentes.",
+        a: "Les revenus sont imposés comme des revenus fonciers : TMI + 17,2% de prélèvements sociaux. C'est ce qui rend les SCPI européennes et les stratégies de démembrement pertinentes.",
       },
       {
         q: 'Peut-on acheter des SCPI à crédit ?',
@@ -271,7 +271,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Le démembrement : offrir la nue-propriété',
-        body: "Donner la nue-propriété en gardant l'usufruit = transmettre un actif à valeur décotée selon l'âge, tout en conservant les revenus et la jouissance. Au décès, l'usufruit rejoint la nue-propriété sans droits supplémentaires. Particulièrement puissant sur l'immobilier et les titres de société.",
+        body: "Donner la nue-propriété en gardant l'usufruit = transmettre un actif à valeur décotée selon l'âge, tout en conservant les revenus et la jouissance. Au décès, l'usufruit rejoint la nue-propriété sans droits supplémentaires. puissant sur l'immobilier et les titres de société.",
       },
       {
         title: 'L\'assurance-vie : le contre-pouvoir successoral',
