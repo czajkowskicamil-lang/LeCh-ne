@@ -15,7 +15,7 @@ export const expertiseContent: ExpertiseContent[] = [
   {
     slug: 'plan-epargne-retraite',
     heroIntro:
-      "Le Plan Épargne Retraite (PER) est né de la loi PACTE (2019) pour simplifier un millefeuille devenu illisible (Madelin, PERP, art.83, PERCO…). Pour un contribuable imposé à partir de la TMI 30%, c'est aujourd'hui l'outil de défiscalisation le plus puissant — à condition d'en comprendre la mécanique.",
+      "Le Plan Épargne Retraite (PER) est né de la loi PACTE (2019) pour simplifier un millefeuille devenu illisible (Madelin, PERP, art.83, PERCO…). Pour un contribuable imposé à partir de la TMI 30%, c'est aujourd'hui l'outil de défiscalisation le plus puissant, à condition d'en comprendre la mécanique.",
     pourQui: [
       'Contribuables imposés à partir de la TMI 30%',
       'Dirigeants et TNS avec des revenus élevés et variables',
@@ -42,7 +42,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Sortie anticipée pour l\'achat de la résidence principale',
-        body: "Le PER autorise une sortie anticipée pour acheter sa résidence principale. C'est un levier sous-exploité : verser, déduire, capitaliser, puis sortir pour l'apport — tout en ayant réduit son impôt pendant la phase d'accumulation.",
+        body: "Le PER autorise une sortie anticipée pour acheter sa résidence principale. C'est un levier sous-exploité : verser, déduire, capitaliser, puis sortir pour l'apport, tout en ayant réduit son impôt pendant la phase d'accumulation.",
       },
       {
         title: 'PER individuel vs PER d\'entreprise',
@@ -56,8 +56,8 @@ export const expertiseContent: ExpertiseContent[] = [
       { label: 'Exception retrait anticipé', value: 'Résidence principale' },
     ],
     piegesClassiques: [
-      "Souscrire un PER à TMI 11% — la déduction ne rapporte quasi rien",
-      "Laisser un PER en gestion pilotée horizon défensif dès 45 ans — perte de performance",
+      "Souscrire un PER à TMI 11%, la déduction ne rapporte quasi rien",
+      "Laisser un PER en gestion pilotée horizon défensif dès 45 ans, perte de performance",
       "Ignorer les frais d'entrée (certains contrats ponctionnent 2 à 5%)",
       "Oublier la fiscalité de sortie en cas de décès avant la liquidation",
     ],
@@ -102,7 +102,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Architecture : fonds euros + UC',
-        body: "Le fonds en euros garantit le capital mais son rendement décroît. Les unités de compte (UC) apportent le moteur de performance mais exposent au risque de marché. L'arbitrage entre les deux doit être piloté selon l'horizon, la fiscalité et le profil de risque — pas laissé à la gestion par défaut du contrat.",
+        body: "Le fonds en euros garantit le capital mais son rendement décroît. Les unités de compte (UC) apportent le moteur de performance mais exposent au risque de marché. L'arbitrage entre les deux doit être piloté selon l'horizon, la fiscalité et le profil de risque, pas laissé à la gestion par défaut du contrat.",
       },
       {
         title: 'Transmission : le levier le plus sous-exploité',
@@ -209,16 +209,16 @@ export const expertiseContent: ExpertiseContent[] = [
         title: 'Les dispositifs qui fonctionnent réellement',
         body: "Par ordre de robustesse pour la plupart des profils à TMI élevée :",
         list: [
-          "PER — outil de déduction universel, flexible, sortie libre depuis 2019",
-          "Déficit foncier — très puissant pour les détenteurs d'immobilier ancien à rénover",
-          "Girardin industriel — réduction d'impôt one-shot, à manier avec une contrepartie solide",
-          "FCPI/FIP — 18 à 25% de réduction, mais performance historique décevante en moyenne",
-          "Malraux / Monuments Historiques — pour patrimoines importants, sur des biens d'exception",
+          "PER, outil de déduction universel, flexible, sortie libre depuis 2019",
+          "Déficit foncier, très puissant pour les détenteurs d'immobilier ancien à rénover",
+          "Girardin industriel, réduction d'impôt one-shot, à manier avec une contrepartie solide",
+          "FCPI/FIP, 18 à 25% de réduction, mais performance historique décevante en moyenne",
+          "Malraux / Monuments Historiques, pour patrimoines importants, sur des biens d'exception",
         ],
       },
       {
         title: 'Le plafond global des niches fiscales',
-        body: "10 000 € par an pour la plupart des dispositifs (18 000 € avec Girardin / Sofica / investissement outre-mer). Ce plafond se sature vite pour les foyers actifs — la priorisation devient stratégique.",
+        body: "10 000 € par an pour la plupart des dispositifs (18 000 € avec Girardin / Sofica / investissement outre-mer). Ce plafond se sature vite pour les foyers actifs, la priorisation devient stratégique.",
       },
       {
         title: 'Dispositifs hors plafond : les bons à connaître',
@@ -240,7 +240,7 @@ export const expertiseContent: ExpertiseContent[] = [
     faq: [
       {
         q: 'Quel est le dispositif le plus rentable ?',
-        a: "Il n'y en a pas un seul — ça dépend de votre TMI, votre horizon, votre patrimoine existant, votre tolérance au risque. Le PER est le plus universellement pertinent au-dessus de 30% de TMI.",
+        a: "Il n'y en a pas un seul, ça dépend de votre TMI, votre horizon, votre patrimoine existant, votre tolérance au risque. Le PER est le plus universellement pertinent au-dessus de 30% de TMI.",
       },
       {
         q: 'Faut-il défiscaliser chaque année ?',
@@ -251,7 +251,7 @@ export const expertiseContent: ExpertiseContent[] = [
   {
     slug: 'transmission',
     heroIntro:
-      "Organiser la transmission, ce n'est pas parier sur sa mort — c'est protéger sa famille du chaos administratif et fiscal qui suit le décès. Bien anticipée, elle permet de diviser par 2 à 4 les droits qui seront dus par vos proches.",
+      "Organiser la transmission, ce n'est pas parier sur sa mort, c'est protéger sa famille du chaos administratif et fiscal qui suit le décès. Bien anticipée, elle permet de diviser par 2 à 4 les droits qui seront dus par vos proches.",
     pourQui: [
       'Parents et grands-parents souhaitant aider leurs descendants',
       'Couples voulant protéger le survivant',
@@ -261,7 +261,7 @@ export const expertiseContent: ExpertiseContent[] = [
     sections: [
       {
         title: 'Les abattements : le premier levier gratuit',
-        body: "Tous les 15 ans, chaque parent peut donner à chaque enfant 100 000 € en franchise de droits. Pour un couple avec deux enfants, cela représente 400 000 € transmissibles sans impôt, renouvelables. Le 'compteur' démarre à la première donation — d'où l'intérêt de ne pas attendre.",
+        body: "Tous les 15 ans, chaque parent peut donner à chaque enfant 100 000 € en franchise de droits. Pour un couple avec deux enfants, cela représente 400 000 € transmissibles sans impôt, renouvelables. Le 'compteur' démarre à la première donation, d'où l'intérêt de ne pas attendre.",
         list: [
           "Parent → enfant : 100 000 €",
           "Grand-parent → petit-enfant : 31 865 €",
@@ -283,7 +283,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'La donation-partage : sécuriser l\'équité',
-        body: "Elle fige la valeur des biens au jour de la donation — ce qui évite que l'héritier ayant reçu un bien qui prend de la valeur soit 'déséquilibré' au moment du décès par rapport à ses frères et sœurs. Un outil d'équité familiale majeur.",
+        body: "Elle fige la valeur des biens au jour de la donation, ce qui évite que l'héritier ayant reçu un bien qui prend de la valeur soit 'déséquilibré' au moment du décès par rapport à ses frères et sœurs. Un outil d'équité familiale majeur.",
       },
     ],
     chiffresCles: [
@@ -293,7 +293,7 @@ export const expertiseContent: ExpertiseContent[] = [
       { label: 'Décote nue-propriété 60 ans', value: '-50%' },
     ],
     piegesClassiques: [
-      "Attendre 'plus tard' pour faire la première donation — horizon 15 ans perdu",
+      "Attendre 'plus tard' pour faire la première donation, horizon 15 ans perdu",
       "Oublier de mettre à jour ses clauses bénéficiaires après un changement de vie",
       "Confondre donation et prêt familial (requalification fiscale)",
       "Transmettre sans préparer les héritiers à la gestion du patrimoine reçu",
@@ -375,7 +375,7 @@ export const expertiseContent: ExpertiseContent[] = [
     sections: [
       {
         title: 'La règle simple : patience contre fiscalité',
-        body: "Avant 5 ans, tout retrait clôture le plan et déclenche le PFU (30%). Après 5 ans, les gains sont exonérés d'impôt sur le revenu — seuls les 17,2% de prélèvements sociaux restent dus. Le plan devient alors un instrument de retrait souple à fiscalité dégressive réelle.",
+        body: "Avant 5 ans, tout retrait clôture le plan et déclenche le PFU (30%). Après 5 ans, les gains sont exonérés d'impôt sur le revenu, seuls les 17,2% de prélèvements sociaux restent dus. Le plan devient alors un instrument de retrait souple à fiscalité dégressive réelle.",
       },
       {
         title: 'PEA classique + PEA-PME : le cumul gagnant',
@@ -391,7 +391,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Arbitrages et dividendes',
-        body: "Les arbitrages internes au PEA ne sont jamais imposables — c'est un avantage massif pour piloter l'allocation dans le temps. Les dividendes encaissés à l'intérieur du plan ne sont pas taxés tant qu'ils ne sortent pas.",
+        body: "Les arbitrages internes au PEA ne sont jamais imposables, c'est un avantage massif pour piloter l'allocation dans le temps. Les dividendes encaissés à l'intérieur du plan ne sont pas taxés tant qu'ils ne sortent pas.",
       },
     ],
     chiffresCles: [
@@ -416,7 +416,7 @@ export const expertiseContent: ExpertiseContent[] = [
   {
     slug: 'epargne-salariale-dirigeant',
     heroIntro:
-      "Les dirigeants et TNS disposent d'outils d'épargne retraite et salariale puissants, souvent mal utilisés. Bien structurés, ils permettent de se verser une rémunération différée, défiscalisée, avec abondement entreprise — le tout de manière totalement légale.",
+      "Les dirigeants et TNS disposent d'outils d'épargne retraite et salariale puissants, souvent mal utilisés. Bien structurés, ils permettent de se verser une rémunération différée, défiscalisée, avec abondement entreprise, le tout de manière totalement légale.",
     pourQui: [
       'Dirigeants assimilés salariés (président SAS, gérant minoritaire SARL)',
       'TNS (gérant majoritaire, EI, profession libérale)',
@@ -426,7 +426,7 @@ export const expertiseContent: ExpertiseContent[] = [
     sections: [
       {
         title: 'PEE, PER-COL : la puissance de l\'abondement',
-        body: "Quand l'entreprise abonde un PEE, chaque euro versé par le salarié/dirigeant peut être triplé (plafond 300% du versement, dans la limite de 8% du PASS). Cet abondement échappe à l'impôt sur le revenu et aux cotisations sociales patronales classiques — c'est l'un des outils à ROI fiscal le plus élevé.",
+        body: "Quand l'entreprise abonde un PEE, chaque euro versé par le salarié/dirigeant peut être triplé (plafond 300% du versement, dans la limite de 8% du PASS). Cet abondement échappe à l'impôt sur le revenu et aux cotisations sociales patronales classiques, c'est l'un des outils à ROI fiscal le plus élevé.",
       },
       {
         title: 'Intéressement & participation',
@@ -477,7 +477,7 @@ export const expertiseContent: ExpertiseContent[] = [
     sections: [
       {
         title: 'Les familles de véhicules',
-        body: "FCPR et FPCI (capital-investissement classique, professionnels éligibles), FCPI/FIP (fiscaux avec 18-25% de réduction d'impôt), fonds Evergreen (plus liquides), clubs deal direct. Chaque structure répond à un objectif différent — fiscal, rendement, ou accès.",
+        body: "FCPR et FPCI (capital-investissement classique, professionnels éligibles), FCPI/FIP (fiscaux avec 18-25% de réduction d'impôt), fonds Evergreen (plus liquides), clubs deal direct. Chaque structure répond à un objectif différent, fiscal, rendement, ou accès.",
       },
       {
         title: 'La dispersion : le risque principal',
@@ -485,7 +485,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'FCPI/FIP : la réduction d\'impôt à relativiser',
-        body: "18% de réduction immédiate, séduisant sur le papier. Mais la performance moyenne nette des FCPI est historiquement décevante — la réduction d'impôt compense souvent juste la sous-performance. À réserver à des gérants sélectionnés, pas acheter en catalogue bancaire.",
+        body: "18% de réduction immédiate, séduisant sur le papier. Mais la performance moyenne nette des FCPI est historiquement décevante, la réduction d'impôt compense souvent juste la sous-performance. À réserver à des gérants sélectionnés, pas acheter en catalogue bancaire.",
       },
       {
         title: 'FCPR et FPCI fiscalement transparents',
@@ -518,7 +518,7 @@ export const expertiseContent: ExpertiseContent[] = [
   {
     slug: 'credit-strategie-patrimoniale',
     heroIntro:
-      "Un crédit bien structuré n'est pas une charge — c'est un actif. Effet de levier immobilier, crédit lombard, prêt in fine : utilisé avec méthode, le crédit permet de construire un patrimoine bien supérieur à ce que l'épargne seule permettrait.",
+      "Un crédit bien structuré n'est pas une charge, c'est un actif. Effet de levier immobilier, crédit lombard, prêt in fine : utilisé avec méthode, le crédit permet de construire un patrimoine bien supérieur à ce que l'épargne seule permettrait.",
     pourQui: [
       'Investisseurs immobiliers recherchant l\'effet de levier',
       'Dirigeants avec une forte capacité d\'emprunt',
@@ -528,7 +528,7 @@ export const expertiseContent: ExpertiseContent[] = [
     sections: [
       {
         title: 'L\'effet de levier immobilier',
-        body: "Acheter 100 à 110% d'un bien avec 10-30% d'apport, c'est démultiplier le patrimoine terminal. Sur 20 ans, un immobilier acheté avec 20% d'apport et autofinancé par les loyers peut se traduire par un patrimoine libre d'hypothèque 4 à 5 fois supérieur à l'apport initial — en valeur nominale, avant fiscalité.",
+        body: "Acheter 100 à 110% d'un bien avec 10-30% d'apport, c'est démultiplier le patrimoine terminal. Sur 20 ans, un immobilier acheté avec 20% d'apport et autofinancé par les loyers peut se traduire par un patrimoine libre d'hypothèque 4 à 5 fois supérieur à l'apport initial, en valeur nominale, avant fiscalité.",
       },
       {
         title: 'Le crédit lombard : puissant et souvent mal compris',
@@ -536,7 +536,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Prêt in fine : le bon choix pour l\'immobilier locatif à fort levier',
-        body: "On ne rembourse que les intérêts pendant la durée, le capital étant remboursé à l'échéance (souvent via une assurance-vie adossée). Intérêts plus élevés qu'en amortissable, mais déductibles des revenus fonciers — le produit net peut être très favorable à TMI élevée.",
+        body: "On ne rembourse que les intérêts pendant la durée, le capital étant remboursé à l'échéance (souvent via une assurance-vie adossée). Intérêts plus élevés qu'en amortissable, mais déductibles des revenus fonciers, le produit net peut être très favorable à TMI élevée.",
       },
       {
         title: 'Taux fixe, variable, mixte : lire au-delà du TAEG',

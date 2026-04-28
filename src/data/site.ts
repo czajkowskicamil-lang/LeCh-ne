@@ -2,7 +2,7 @@ export const site = {
   name: 'Le Chêne Patrimonial',
   owner: 'Camil Czajkowski',
   tagline: 'Conseil en gestion de patrimoine indépendant',
-  baseline: "Faire fructifier ce qui compte — avec méthode, clarté et engagement.",
+  baseline: "Faire fructifier ce qui compte, avec méthode, clarté et engagement.",
   calendly:
     import.meta.env.PUBLIC_CALENDLY_URL ??
     'https://calendly.com/camil-cz-lechenepatrimonial/30min',
@@ -92,7 +92,7 @@ export const expertises = [
     short: 'Non coté',
     tagline: 'Accéder au non coté intelligemment',
     summary:
-      "FCPR, FPCI, FCPI, FIP : le non coté offre des rendements décorrélés et souvent une fiscalité favorable. Mais la sélection est cruciale — tous les véhicules ne se valent pas.",
+      "FCPR, FPCI, FCPI, FIP : le non coté offre des rendements décorrélés et souvent une fiscalité favorable. Mais la sélection est cruciale, tous les véhicules ne se valent pas.",
   },
   {
     slug: 'credit-strategie-patrimoniale',

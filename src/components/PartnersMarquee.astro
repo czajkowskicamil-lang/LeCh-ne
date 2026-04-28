@@ -10,7 +10,7 @@ const partners = [
   { name: 'April',           src: '/partners/april.svg' },
 ];
 
-// Duplicate for a seamless CSS loop — no flex gap (causes drift with %-based translate)
+// Duplicate for a seamless CSS loop, no flex gap (causes drift with %-based translate)
 const track = [...partners, ...partners];
 ---
 
@@ -63,7 +63,7 @@ const track = [...partners, ...partners];
     filter: grayscale(0%) opacity(1);
   }
   /* Translate exactly one full copy. The track contains 2 identical copies of N items,
-     each item wrapped in a padded cell — so 50% is exact, with no gap drift. */
+     each item wrapped in a padded cell, so 50% is exact, with no gap drift. */
   @keyframes partners-scroll {
     from { transform: translate3d(0, 0, 0); }
     to   { transform: translate3d(-50%, 0, 0); }

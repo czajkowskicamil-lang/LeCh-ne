@@ -52,7 +52,7 @@ const path = Astro.url.pathname;
 
 <script>
   // Re-initialized on every page-load event so the handler is (re)bound to the
-  // fresh DOM after each Astro ViewTransition — otherwise the listener stays
+  // fresh DOM after each Astro ViewTransition, otherwise the listener stays
   // attached to the previous page's button and the menu breaks after navigation.
   function initMobileMenu() {
     const toggle = document.getElementById('menu-toggle');

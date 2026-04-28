@@ -16,7 +16,7 @@ const all = await getCollection('cas');
 const other = all.filter((c) => c.slug !== entry.slug).slice(0, 2);
 ---
 
-<Base title={`${entry.data.title} — Cas pratique | Le Chêne Patrimonial`} description={entry.data.problematique}>
+<Base title={`${entry.data.title}, Cas pratique | Le Chêne Patrimonial`} description={entry.data.problematique}>
   <article>
     <header class="pt-16 pb-12 md:pt-24 md:pb-16">
       <div class="shell max-w-4xl">
@@ -57,7 +57,7 @@ const other = all.filter((c) => c.slug !== entry.slug).slice(0, 2);
     <section class="py-20 bg-cream-soft border-t border-ink/10">
       <div class="shell">
         <p class="eyebrow mb-6">Autres dossiers</p>
-        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12">Des situations différentes — même méthode.</h2>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12">Des situations différentes, même méthode.</h2>
         <div class="grid md:grid-cols-2 gap-8">
           {other.map((c) => (
             <a href={`/cas-pratiques/${c.slug}`} class="group card-editorial">

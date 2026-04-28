@@ -1,4 +1,4 @@
-# Le Chêne Patrimonial — site vitrine
+# Le Chêne Patrimonial, site vitrine
 
 Site du cabinet **Le Chêne Patrimonial** (Camil Czajkowski, CGP indépendant).
 Stack : **Astro 4** + **Tailwind CSS** + contenu en **MDX**, déployé sur **Vercel**.
@@ -32,13 +32,13 @@ src/
 
 ## Design tokens
 
-- **Typographies** : Fraunces (serif, titres) + Inter (sans, corps) — via `@fontsource-variable` (embedded, pas de Google Fonts en prod = meilleure perf & RGPD).
+- **Typographies** : Fraunces (serif, titres) + Inter (sans, corps), via `@fontsource-variable` (embedded, pas de Google Fonts en prod = meilleure perf & RGPD).
 - **Palette** :
-  - `ink` `#0F1B14` — texte et surfaces sombres
-  - `cream` `#F5F1E8` — fond principal
-  - `chene` `#2D4A33` — vert forêt, accent principal
-  - `or` `#B89968` — or brossé, accent doré
-  - `stone` — neutres chauds
+  - `ink` `#0F1B14`, texte et surfaces sombres
+  - `cream` `#F5F1E8`, fond principal
+  - `chene` `#2D4A33`, vert forêt, accent principal
+  - `or` `#B89968`, or brossé, accent doré
+  - `stone`, neutres chauds
 
 ## Démarrer en local
 
@@ -57,7 +57,7 @@ npm install
 npm run dev
 # → ouvre http://localhost:4321
 
-# 4. Build de production (généralement pas besoin — Vercel le fait)
+# 4. Build de production (généralement pas besoin, Vercel le fait)
 npm run build
 npm run preview
 ```
@@ -94,7 +94,7 @@ Même principe dans `src/content/cas/`.
 
 Les 10 piliers sont listés dans `src/data/site.ts` (métadonnées) et détaillés dans `src/data/expertise-content.ts` (corps complet). Les pages `/expertise/[slug]` sont générées automatiquement.
 
-## Déploiement — Vercel + domaine IONOS
+## Déploiement, Vercel + domaine IONOS
 
 ### Étape 1 : pousser le code sur GitHub
 
@@ -102,7 +102,7 @@ Les 10 piliers sont listés dans `src/data/site.ts` (métadonnées) et détaill�
 cd ~/lechene-patrimonial
 git init
 git add .
-git commit -m "Initial commit — Le Chêne Patrimonial"
+git commit -m "Initial commit, Le Chêne Patrimonial"
 git branch -M main
 # Créer un repo sur github.com, puis :
 git remote add origin git@github.com:TON-USERNAME/lechene-patrimonial.git
@@ -151,7 +151,7 @@ PUBLIC_SITE_URL=https://www.lechenepatrimonial.com
 - **Formulaire contact** : ouvrir un compte [Formspree](https://formspree.io) (gratuit jusqu'à 50 soumissions/mois) et remplacer `REPLACE_ME` dans `src/pages/contact.astro` par l'endpoint. Alternative : [Web3Forms](https://web3forms.com), [Getform.io](https://getform.io).
 - **Mentions légales** : compléter les numéros ORIAS, RCP, etc. dans `src/pages/mentions-legales.astro`.
 - **OG image** : générer une image `og-default.jpg` 1200×630 et la placer dans `public/`.
-- **Avis clients** : intégrer les vrais avis dans `src/components/Testimonials.astro` (placeholder actuel) — idéalement connecter Google Business Profile ou Trustpilot via un widget.
+- **Avis clients** : intégrer les vrais avis dans `src/components/Testimonials.astro` (placeholder actuel), idéalement connecter Google Business Profile ou Trustpilot via un widget.
 
 ## Checklist pré-mise en production
 
