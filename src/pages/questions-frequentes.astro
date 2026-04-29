@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+
+const faq = [
+  {
+    q: "Quelle différence avec une banque privée ?",
+    a: "Une banque privée recommande, en priorité, les produits de sa propre maison. Le Chêne Patrimonial est totalement indépendant : aucun réseau bancaire derrière, aucun objectif commercial imposé. Je peux donc construire votre allocation à partir de toute l'offre du marché, et la justifier par votre seule situation, pas par la mienne.",
+  },
+  {
+    q: "Comment êtes-vous rémunéré ?",
+    a: "Trois mécanismes possibles : honoraires de conseil facturés au client, commissions versées par les partenaires en cas de souscription, ou combinaison des deux. Avant chaque opération, vous savez précisément qui me rémunère, comment, et combien. C'est une condition non-négociable du cabinet.",
+  },
+  {
+    q: "Y a-t-il un patrimoine minimum pour vous consulter ?",
+    a: "Non. Le premier échange de 30 minutes est ouvert à tous, et beaucoup de mes clients ne sont pas des particuliers fortunés au sens classique. Ce qui compte : avoir des revenus à structurer, des projets à anticiper, ou une fiscalité à optimiser. Le ticket moyen et la complexité du dossier déterminent ensuite si l'accompagnement a du sens pour vous comme pour moi.",
+  },
+  {
+    q: "À distance ou en présentiel ?",
+    a: "Les deux fonctionnent aussi bien. Le cabinet est basé à Montpellier, où je reçois en présentiel. Je travaille avec des clients partout en France en visio, dans les mêmes conditions. La qualité d'un dossier patrimonial ne dépend pas du lieu de la conversation, mais de la rigueur du suivi.",
+  },
+  {
+    q: "Et si je ne suis pas satisfait du premier échange ?",
+    a: "Vous repartez sans rien me devoir. C'est l'engagement de fond du premier rendez-vous : 30 minutes offertes, sans engagement, sans relance commerciale derrière. Si vous ne sentez pas le fit, ou si vos enjeux dépassent ce que mon cabinet peut traiter, je vous le dis directement, et je vous oriente quand c'est pertinent.",
+  },
+  {
+    q: "Et après le premier rendez-vous ?",
+    a: "Si nous décidons de travailler ensemble, je vous remets une lettre de mission qui formalise le périmètre, le calendrier et la rémunération. Puis viennent : audit patrimonial complet, recommandations chiffrées, mise en place des stratégies retenues, et suivi continu (au minimum un point annuel, plus si la situation l'exige).",
+  },
+];
+---
+
+<Base
+  title="Questions fréquentes, Le Chêne Patrimonial"
+  description="Indépendance, rémunération, ticket minimum, présentiel ou à distance : les questions essentielles avant un premier échange avec un cabinet de gestion de patrimoine."
+>
+  <!-- Hero éditorial -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-9">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Questions fréquentes
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Six questions,<br/>
+          <span class="italic text-chene">six réponses claires.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Les questions que mes clients posent en premier rendez-vous. Les voici, traitées posément, avant même qu'on se rencontre.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ list -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mx-auto space-y-2">
+        {faq.map((item, i) => (
+          <details class="faq-item group border-t border-ink/10 last:border-b reveal" style={`animation-delay:${i * 60}ms`}>
+            <summary class="cursor-pointer list-none py-6 md:py-8 flex items-start justify-between gap-6 group-open:pb-3">
+              <span class="flex items-start gap-5 flex-1">
+                <span class="font-serif italic text-or text-2xl shrink-0 leading-tight">0{i + 1}</span>
+                <span class="font-serif text-xl md:text-2xl text-ink leading-tight">{item.q}</span>
+              </span>
+              <span class="faq-chevron shrink-0 mt-2 text-ink/40 group-open:rotate-45 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </summary>
+            <div class="pl-12 pr-4 pb-8 text-ink/80 leading-relaxed">
+              {item.a}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="max-w-prose-wide mx-auto mt-20 text-center reveal">
+        <p class="text-ink/60 text-sm mb-6">Une question qui ne figure pas ici ?</p>
+        <a href="/contact" class="btn-primary inline-flex">
+          Poser ma question
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<style>
+  details summary::-webkit-details-marker { display: none; }
+  details > summary { list-style: none; }
+  details[open] .faq-chevron { color: rgb(45 74 51); }
+</style>
