@@ -14,6 +14,7 @@ export const site = {
 };
 
 export const nav = [
+  { label: 'Manifeste', href: '/manifeste' },
   { label: 'Parcours', href: '/parcours' },
   { label: 'Expertise', href: '/expertise' },
   { label: 'Magazine', href: '/magazine' },

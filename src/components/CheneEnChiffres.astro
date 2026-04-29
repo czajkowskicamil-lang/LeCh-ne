@@ -1,0 +1,66 @@
+---
+import CountUp from './CountUp.astro';
+---
+
+<section class="py-24 md:py-32 bg-cream relative overflow-hidden">
+  <div class="shell">
+    <div class="grid lg:grid-cols-12 gap-8 mb-16 items-end">
+      <div class="lg:col-span-8 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Le Chêne en chiffres
+        </p>
+        <h2 class="font-serif text-display text-ink">
+          Quatre repères <span class="italic text-chene">qui parlent</span>.
+        </h2>
+      </div>
+      <div class="lg:col-span-4 reveal">
+        <p class="text-ink/70 leading-relaxed">
+          Pas un slogan. Des faits qui définissent la manière de travailler du cabinet.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8 lg:gap-x-12">
+      <div class="reveal">
+        <p class="font-serif text-display text-ink leading-none mb-3">
+          <CountUp value="6" />
+        </p>
+        <p class="text-ink/70 text-sm leading-relaxed border-t border-or/40 pt-3">
+          Clubs de basketball professionnels traversés avant la reconversion.
+        </p>
+      </div>
+
+      <div class="reveal" style="animation-delay:80ms">
+        <p class="font-serif text-display text-ink leading-none mb-3">
+          <CountUp value="100%" />
+        </p>
+        <p class="text-ink/70 text-sm leading-relaxed border-t border-or/40 pt-3">
+          Indépendance. Aucun réseau bancaire derrière les recommandations.
+        </p>
+      </div>
+
+      <div class="reveal" style="animation-delay:160ms">
+        <p class="font-serif text-display text-ink leading-none mb-3">
+          <CountUp value="30" /><span class="text-2xl text-ink/60 ml-1">min</span>
+        </p>
+        <p class="text-ink/70 text-sm leading-relaxed border-t border-or/40 pt-3">
+          Premier échange offert, en visio ou au cabinet, sans engagement.
+        </p>
+      </div>
+
+      <div class="reveal" style="animation-delay:240ms">
+        <p class="font-serif text-display text-ink leading-none mb-3">
+          <CountUp value="0" />
+        </p>
+        <p class="text-ink/70 text-sm leading-relaxed border-t border-or/40 pt-3">
+          Commission cachée. Mode de rémunération transparent avant chaque opération.
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-16 text-sm text-ink/50 italic max-w-2xl">
+      Cabinet immatriculé ORIAS n° 25 00 00 16, RCS Montpellier 929 887 594. Présent à Montpellier, accompagnement partout en France.
+    </p>
+  </div>
+</section>

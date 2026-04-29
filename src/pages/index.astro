@@ -9,6 +9,7 @@ import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
 import NewsletterTeaser from '../components/NewsletterTeaser.astro';
 import EditorialTicker from '../components/EditorialTicker.astro';
+import CheneEnChiffres from '../components/CheneEnChiffres.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -23,6 +24,7 @@ const articles = (await getCollection('articles'))
   <NewsletterTeaser />
   <ValuesStrip />
   <StoryTeaser />
+  <CheneEnChiffres />
   <ExpertiseGrid />
   <MethodTimeline />
 

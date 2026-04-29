@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+---
+
+<Base
+  title="Manifeste, Le Chêne Patrimonial"
+  description="Pourquoi Le Chêne. La philosophie d'un cabinet de gestion de patrimoine indépendant : patience, méthode, transparence, engagement."
+>
+  <!-- Hero éditorial -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Manifeste
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Pourquoi<br/>
+          <span class="italic text-chene">Le Chêne ?</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Pour un arbre qui pousse lentement et tient longtemps.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Texte ample en lecture posée -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <article class="max-w-prose-wide mx-auto space-y-8 text-ink/85 leading-relaxed text-lg">
+
+        <p class="reveal">
+          Le chêne ne fait pas la course. Il met des années à s'installer, des décennies à grandir, et tient des siècles. Il ne brille pas. Il ne se met pas en avant. Il dure. Et c'est précisément ce qui fait sa valeur.
+        </p>
+
+        <p class="reveal" style="animation-delay:80ms">
+          Un patrimoine se construit de la même façon.
+        </p>
+
+        <p class="reveal" style="animation-delay:160ms">
+          Pas en une saison, pas avec un placement à la mode, pas en cédant à l'urgence du moment. Un patrimoine se construit avec <strong class="text-ink">patience, méthode et constance</strong>. Avec des choix raisonnés, expliqués, suivis. Avec un cap qu'on tient quand le marché s'agite et qu'on ajuste quand la vie change.
+        </p>
+
+        <!-- Filet doré comme respiration éditoriale -->
+        <div class="py-6 reveal" style="animation-delay:200ms">
+          <span class="block w-12 h-px bg-or"></span>
+        </div>
+
+        <p class="reveal" style="animation-delay:240ms">
+          Le Chêne Patrimonial, c'est cette promesse. Pas la performance ostentatoire d'un trimestre. La solidité d'une décennie. Pas le slogan brillant d'un produit miracle. Le travail discret d'un cabinet qui prend le temps de comprendre, d'expliquer, et de tenir parole.
+        </p>
+      </article>
+
+      <!-- Quatre piliers -->
+      <div class="max-w-prose-wide mx-auto mt-20 grid sm:grid-cols-2 gap-y-10 gap-x-12">
+        <div class="reveal">
+          <p class="eyebrow mb-3">01. Indépendant</p>
+          <p class="text-ink/75 text-base leading-relaxed">
+            Aucune banque ne dicte les recommandations du cabinet. La seule grille de lecture est celle de votre situation.
+          </p>
+        </div>
+        <div class="reveal" style="animation-delay:80ms">
+          <p class="eyebrow mb-3">02. Transparent</p>
+          <p class="text-ink/75 text-base leading-relaxed">
+            Vous savez d'où vient la rémunération du cabinet avant chaque opération. Honoraires, commissions partenaires, ou combinaison des deux. Toujours expliqué.
+          </p>
+        </div>
+        <div class="reveal" style="animation-delay:160ms">
+          <p class="eyebrow mb-3">03. Patient</p>
+          <p class="text-ink/75 text-base leading-relaxed">
+            Les bonnes décisions patrimoniales se mesurent en années, pas en semaines. Pas de précipitation, pas d'effet de mode.
+          </p>
+        </div>
+        <div class="reveal" style="animation-delay:240ms">
+          <p class="eyebrow mb-3">04. Engagé</p>
+          <p class="text-ink/75 text-base leading-relaxed">
+            Ce qui compte, c'est ce qu'il restera après vous à vos proches, à leurs choix de vie, à ce que vous transmettez.
+          </p>
+        </div>
+      </div>
+
+      <!-- Signature de Camil -->
+      <div class="max-w-prose-wide mx-auto mt-24 reveal">
+        <div class="border-t border-ink/15 pt-10">
+          <p class="text-ink/85 leading-relaxed text-lg">
+            J'ai choisi le nom du chêne parce qu'il dit tout ce que je veux que ce cabinet soit.<br/>
+            Lentement. Profondément. Durablement.
+          </p>
+          <p class="font-serif italic text-3xl text-chene mt-8">— Camil</p>
+          <p class="text-sm text-ink/55 mt-2 tracking-micro uppercase">
+            Camil Czajkowski · Conseiller en gestion de patrimoine · Le Chêne Patrimonial
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
