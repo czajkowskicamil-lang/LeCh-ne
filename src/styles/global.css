@@ -265,14 +265,3 @@
   border-radius: 2px;
 }
 
-/* Curseur custom (desktop only) - cache curseur natif */
-@media (hover: hover) and (min-width: 1024px) {
-  body { cursor: none; }
-  a, button, [role='button'], input, label { cursor: none; }
-}
-
-/* Loader d'arrivée — logo état initial */
-.page-loader-logo {
-  transform: scale(0.92);
-}
-
