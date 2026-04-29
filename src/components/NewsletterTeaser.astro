@@ -1,0 +1,47 @@
+---
+// Section "La Lettre du Chêne" pour la home page
+// Affichage : fond navy, contraste fort avec les sections crème adjacentes
+---
+
+<section class="py-24 md:py-32 bg-ink text-cream relative overflow-hidden">
+  <!-- Filet doré en haut -->
+  <div class="absolute top-0 left-0 right-0 h-px bg-or/30"></div>
+
+  <div class="shell relative">
+    <div class="grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-7 reveal">
+        <p class="eyebrow-cream mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-or"></span>
+          La Lettre du Chêne
+        </p>
+        <h2 class="font-serif text-display text-cream mb-6">
+          Une newsletter<br/>
+          <span class="italic text-or-light">mensuelle.</span>
+        </h2>
+        <p class="text-cream/75 text-lg leading-relaxed max-w-2xl">
+          Une publication sobre et chiffrée. Cas concrets, opportunités, études et actualités fiscales décryptées. Un cas, un chiffre, une actualité, le jeudi à 10h.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="space-y-6">
+          <div class="border-l-2 border-or pl-5 py-1">
+            <p class="text-sm uppercase tracking-micro text-or-light mb-1">Au menu des prochaines éditions</p>
+            <p class="text-cream/80 text-sm leading-relaxed">
+              Stratégies patrimoniales, lecture des marchés, patrimoine du sportif professionnel.
+            </p>
+          </div>
+
+          <a href="/newsletter" class="btn-or inline-flex">
+            Découvrir et m'inscrire
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+
+          <p class="text-xs text-cream/50">
+            Désabonnement en un clic. Aucun spam.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
