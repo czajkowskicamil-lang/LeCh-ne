@@ -1,0 +1,146 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="La Lettre du Chêne, newsletter mensuelle"
+  description="Une publication mensuelle sobre et chiffrée. Cas concrets, opportunités, études et actualités fiscales décryptées."
+>
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          La Lettre du Chêne
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Une newsletter<br/>
+          <span class="italic text-chene">mensuelle.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Une publication sobre et chiffrée. L'objectif : rendre lisibles les arbitrages patrimoniaux que je vois passer en cabinet, avec la rigueur que mes clients attendent.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: programme + inscription -->
+  <section class="py-12 md:py-16">
+    <div class="shell grid lg:grid-cols-12 gap-10 items-stretch">
+      <!-- Programme -->
+      <div class="lg:col-span-7 reveal">
+        <div class="bg-cream-soft border border-ink/10 p-6 md:p-10">
+          <p class="eyebrow mb-2">Au programme</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-ink mb-8">Cas concrets, méthode posée, sources citées</h2>
+
+          <ul class="space-y-6">
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">01</span>
+              <div>
+                <p class="text-ink font-medium">Cas concrets anonymisés</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Des situations clients réelles, décortiquées avec chiffres à l'appui.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">02</span>
+              <div>
+                <p class="text-ink font-medium">Opportunités identifiées</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Stratégies patrimoniales, dispositifs fiscaux, fenêtres à ne pas rater.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">03</span>
+              <div>
+                <p class="text-ink font-medium">Études et actualités décryptées</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Lecture des marchés, réformes fiscales, mécaniques expliquées pas à pas.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">04</span>
+              <div>
+                <p class="text-ink font-medium">Patrimoine du sportif professionnel</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Carrière courte, primes de transfert, expatriation, reconversion. Un terrain que je connais de l'intérieur.</p>
+              </div>
+            </li>
+          </ul>
+
+          <p class="mt-10 pt-6 border-t border-ink/10 text-sm text-ink/60 italic">
+            Un cas. Un chiffre. Une actualité. Court. Concret. Utile.
+          </p>
+        </div>
+      </div>
+
+      <!-- Inscription par email -->
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="bg-ink text-cream p-8 md:p-10 h-full flex flex-col">
+          <p class="eyebrow-cream mb-2">Inscription</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-cream mb-6">Recevoir La Lettre</h2>
+          <p class="text-sm text-cream/70 mb-8 leading-relaxed">
+            Une édition par mois, le jeudi à 10h. Renseignez votre prénom et votre email, vous recevez la prochaine édition. Désabonnement en un clic.
+          </p>
+
+          <form id="nl-form" class="space-y-5 flex-1 flex flex-col">
+            <div>
+              <label for="nl-prenom" class="block text-xs uppercase tracking-micro text-or-light mb-2">Prénom <span class="text-cream/40 normal-case">(optionnel)</span></label>
+              <input type="text" id="nl-prenom" name="prenom" autocomplete="given-name" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="Jean" />
+            </div>
+
+            <div>
+              <label for="nl-email" class="block text-xs uppercase tracking-micro text-or-light mb-2">Votre email</label>
+              <input type="email" id="nl-email" name="email" required autocomplete="email" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="jean@dupont.fr" />
+            </div>
+
+            <p class="text-xs text-cream/60 leading-relaxed pt-2">
+              En cliquant ci-dessous, votre client mail s'ouvre avec un message pré-rempli vers Camil. Envoyez-le, et vous serez ajouté à la liste sous 24h.
+              <a href="/confidentialite" class="text-or-light underline underline-offset-2 hover:text-or">Politique de confidentialité</a>.
+            </p>
+
+            <div class="flex-1"></div>
+
+            <button type="submit" class="bg-or text-ink font-medium px-6 py-3 hover:bg-or-light transition-colors">
+              M'inscrire à La Lettre
+            </button>
+
+            <p class="text-xs text-cream/50 mt-2">
+              Ou écrivez directement à <a href={`mailto:${site.email}?subject=Inscription%20Lettre%20du%20Ch%C3%AAne`} class="text-or-light underline underline-offset-2">{site.email}</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('nl-form') as HTMLFormElement | null;
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const prenom = (document.getElementById('nl-prenom') as HTMLInputElement)?.value.trim() || '';
+        const email = (document.getElementById('nl-email') as HTMLInputElement)?.value.trim() || '';
+
+        if (!email) {
+          alert('Merci de saisir votre email.');
+          return;
+        }
+
+        // Construit un mailto pré-rempli vers Camil
+        const subject = 'Inscription Lettre du Chêne';
+        const body = [
+          'Bonjour Camil,',
+          '',
+          'Je souhaite m\'inscrire à La Lettre du Chêne.',
+          '',
+          `Prénom : ${prenom || '(non renseigné)'}`,
+          `Email : ${email}`,
+          '',
+          'Merci !',
+        ].join('\n');
+
+        const mailto = `mailto:camil.cz@lechenepatrimonial.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+      });
+    }
+  </script>
+</Base>
