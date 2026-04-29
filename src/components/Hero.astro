@@ -4,71 +4,159 @@ import Magnetic from './Magnetic.astro';
 import PartnersMarquee from './PartnersMarquee.astro';
 ---
 
-<section class="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
-  <!-- Decorative: monogramme Le Chêne en watermark sobre, style Apple/Tesla -->
+<!-- Hero CINÉMATIQUE plein écran, style Apple/Tesla -->
+<section class="hero-cine relative overflow-hidden flex flex-col">
+  <!-- Background dégradé subtil + grain -->
+  <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-cream via-cream-soft to-cream-deep/40"></div>
+  <div aria-hidden="true" class="absolute inset-0 hero-noise opacity-40 pointer-events-none"></div>
+
+  <!-- Watermark logo géant, parallax fort -->
   <img
     src="/logo-mark.png"
     alt=""
     aria-hidden="true"
-    data-parallax="0.15"
-    class="pointer-events-none select-none absolute -right-24 -top-10 w-[560px] h-[560px] object-contain opacity-[0.22]"
+    data-parallax="0.25"
+    class="hero-watermark pointer-events-none select-none absolute object-contain"
   />
 
-  <div class="shell relative grid lg:grid-cols-12 gap-12 items-end">
-    <div class="lg:col-span-8">
-      <p class="eyebrow mb-6 flex items-center gap-3 reveal">
-        <span class="inline-block h-px w-8 bg-chene"></span>
-        Conseil en gestion de patrimoine · Indépendant
-      </p>
+  <!-- Halo doré derrière le watermark, très subtil -->
+  <div
+    aria-hidden="true"
+    class="hero-halo pointer-events-none absolute"
+  ></div>
 
-      <h1 class="font-serif text-display-xl text-ink mb-8">
-        <span class="reveal-mask"><span>Faire fructifier</span></span><br/>
-        <span class="reveal-mask" style="transition-delay:120ms"><span class="italic text-chene">ce qui compte.</span></span>
-      </h1>
+  <!-- Contenu principal -->
+  <div class="shell relative flex-1 flex flex-col justify-center pt-24 md:pt-32 pb-16">
+    <p class="eyebrow mb-8 flex items-center gap-3 reveal">
+      <span class="inline-block h-px w-12 bg-chene"></span>
+      Conseil en gestion de patrimoine · Indépendant
+    </p>
 
-      <p class="max-w-xl text-lg md:text-xl text-ink/75 leading-relaxed mb-10 reveal" style="transition-delay:260ms">
-        Accompagnement patrimonial personnalisé pour entrepreneurs, particuliers, dirigeants
-        et sportifs de haut niveau. Stratégie, méthode, transparence, sans jargon,
-        sans banque derrière moi, sans compromis.
-      </p>
+    <h1 class="hero-title font-serif text-ink mb-10 max-w-5xl">
+      <span class="reveal-mask block"><span>Faire fructifier</span></span>
+      <span class="reveal-mask block" style="transition-delay:140ms"><span class="italic text-chene">ce qui compte.</span></span>
+    </h1>
 
-      <div class="flex flex-wrap gap-4 reveal" style="transition-delay:340ms">
-        <Magnetic>
-          <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary">
-            Planifier un rendez-vous découverte
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </Magnetic>
-        <a href="/parcours" class="btn-ghost">Découvrir mon parcours</a>
-      </div>
-    </div>
+    <p class="max-w-2xl text-xl md:text-2xl text-ink/70 leading-relaxed mb-12 reveal" style="transition-delay:300ms">
+      Stratégie, méthode et transparence pour construire, protéger et transmettre un patrimoine qui dure.
+      Sans banque derrière, sans jargon, sans compromis.
+    </p>
 
-    <div class="lg:col-span-4 reveal" style="animation-delay:320ms">
-      <div class="bg-ink text-cream p-8 md:p-10 relative">
-        <div class="absolute -top-3 left-8 bg-or text-ink text-[0.65rem] uppercase tracking-micro px-3 py-1">
-          En un coup d'œil
-        </div>
-        <dl class="space-y-6 mt-4">
-          <div>
-            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Indépendance</dt>
-            <dd class="font-serif text-xl">Aucune banque derrière moi</dd>
-          </div>
-          <div class="h-px bg-cream/10"></div>
-          <div>
-            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Approche</dt>
-            <dd class="font-serif text-xl">Stratégique & long terme</dd>
-          </div>
-          <div class="h-px bg-cream/10"></div>
-          <div>
-            <dt class="text-xs uppercase tracking-micro text-or-light mb-1">Premier rendez-vous</dt>
-            <dd class="font-serif text-xl">Offert & sans engagement</dd>
-          </div>
-        </dl>
-      </div>
+    <div class="flex flex-wrap gap-4 reveal" style="transition-delay:420ms">
+      <Magnetic>
+        <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary">
+          Planifier un rendez-vous découverte
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </Magnetic>
+      <a href="/manifeste" class="btn-ghost">Lire le manifeste</a>
     </div>
   </div>
 
-  <div class="mt-20 md:mt-24">
+  <!-- Scroll indicator -->
+  <div class="hero-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-ink/50 text-xs uppercase tracking-micro">
+    <span>Scroll</span>
+    <span class="block w-px h-12 bg-ink/30 hero-scroll-line"></span>
+  </div>
+
+  <!-- Partners marquee tout en bas -->
+  <div class="relative">
     <PartnersMarquee />
   </div>
 </section>
+
+<style>
+  .hero-cine {
+    min-height: 92vh;
+  }
+  @media (max-width: 768px) {
+    .hero-cine {
+      min-height: 100svh;
+    }
+  }
+
+  /* Title size très grand pour effet WOW, contrôle fluide */
+  .hero-title {
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+  }
+
+  /* Watermark logo géant en arrière-plan, position élégante */
+  .hero-watermark {
+    width: clamp(420px, 55vw, 820px);
+    height: auto;
+    aspect-ratio: 1.43;
+    right: -8vw;
+    top: 50%;
+    transform: translateY(-45%);
+    opacity: 0.08;
+    z-index: 0;
+  }
+  @media (min-width: 1024px) {
+    .hero-watermark {
+      opacity: 0.12;
+    }
+  }
+
+  /* Halo doré derrière le watermark, lueur diffuse */
+  .hero-halo {
+    width: 60vw;
+    height: 60vw;
+    max-width: 900px;
+    max-height: 900px;
+    right: -15vw;
+    top: 50%;
+    transform: translateY(-50%);
+    background: radial-gradient(circle, rgba(212, 168, 45, 0.10) 0%, transparent 65%);
+    z-index: 0;
+    animation: halo-pulse 8s ease-in-out infinite;
+  }
+  @keyframes halo-pulse {
+    0%, 100% { opacity: 0.85; transform: translateY(-50%) scale(1); }
+    50%      { opacity: 1;    transform: translateY(-50%) scale(1.05); }
+  }
+
+  /* Grain texture */
+  .hero-noise {
+    background-image:
+      radial-gradient(circle at 25% 35%, rgba(10, 31, 79, 0.02) 1px, transparent 2px),
+      radial-gradient(circle at 75% 65%, rgba(10, 31, 79, 0.015) 1px, transparent 2px);
+    background-size: 4px 4px, 6px 6px;
+  }
+
+  /* Scroll indicator avec ligne qui pulse */
+  .hero-scroll-line {
+    transform-origin: top;
+    animation: scroll-line 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  @keyframes scroll-line {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* Tous les contenus principaux au-dessus du décor */
+  .shell { z-index: 10; position: relative; }
+
+  /* Reveal mask : effet "rideau" élégant pour le titre */
+  :global(.reveal-mask) {
+    overflow: hidden;
+    display: block;
+  }
+  :global(.reveal-mask > span) {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :global(.reveal-mask.in > span),
+  :global(.reveal-mask > span:not(.pending)) {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-halo, .hero-scroll-line { animation: none; }
+  }
+</style>
