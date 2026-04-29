@@ -14,9 +14,9 @@ export const site = {
 };
 
 export const nav = [
-  { label: 'Manifeste', href: '/manifeste' },
   { label: 'Parcours', href: '/parcours' },
   { label: 'Expertise', href: '/expertise' },
+  { label: 'Manifeste', href: '/manifeste' },
   { label: 'Magazine', href: '/magazine' },
   { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
