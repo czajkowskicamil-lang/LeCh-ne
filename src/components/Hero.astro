@@ -5,12 +5,14 @@ import PartnersMarquee from './PartnersMarquee.astro';
 ---
 
 <section class="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
-  <!-- Decorative: floating oak silhouette with subtle parallax -->
-  <div aria-hidden="true" data-parallax="0.15" class="pointer-events-none absolute -right-40 -top-20 w-[600px] h-[600px] opacity-[0.04]">
-    <svg viewBox="0 0 48 48" fill="#0F1B14" class="w-full h-full">
-      <path d="M24 42 L24 30 M24 30 C14 30 10 22 14 18 C8 14 14 6 22 10 C22 4 30 4 30 10 C36 8 40 16 34 18 C38 22 34 30 24 30 Z"/>
-    </svg>
-  </div>
+  <!-- Decorative: monogramme Le Chêne en watermark sobre, style Apple/Tesla -->
+  <img
+    src="/logo.png"
+    alt=""
+    aria-hidden="true"
+    data-parallax="0.15"
+    class="pointer-events-none select-none absolute -right-40 -top-20 w-[600px] h-[600px] object-contain opacity-[0.05]"
+  />
 
   <div class="shell relative grid lg:grid-cols-12 gap-12 items-end">
     <div class="lg:col-span-8">
