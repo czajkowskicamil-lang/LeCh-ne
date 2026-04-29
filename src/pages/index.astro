@@ -1,72 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import ValuesStrip from '../components/ValuesStrip.astro';
 import StoryTeaser from '../components/StoryTeaser.astro';
+import CheneEnChiffres from '../components/CheneEnChiffres.astro';
 import ExpertiseGrid from '../components/ExpertiseGrid.astro';
-import MethodTimeline from '../components/MethodTimeline.astro';
-import Testimonials from '../components/Testimonials.astro';
-import CTA from '../components/CTA.astro';
 import NewsletterTeaser from '../components/NewsletterTeaser.astro';
 import EditorialTicker from '../components/EditorialTicker.astro';
-import CheneEnChiffres from '../components/CheneEnChiffres.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
-
-const articles = (await getCollection('articles'))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
-  .slice(0, 3);
+import CTA from '../components/CTA.astro';
 ---
 
 <Base>
   <Hero />
   <EditorialTicker />
   <NewsletterTeaser />
-  <ValuesStrip />
   <StoryTeaser />
   <CheneEnChiffres />
   <ExpertiseGrid />
-  <MethodTimeline />
-
-  <!-- Magazine teaser -->
-  <section class="py-24 md:py-32 bg-cream-soft">
-    <div class="shell">
-      <div class="grid lg:grid-cols-12 gap-8 mb-16 items-end">
-        <div class="lg:col-span-8 reveal">
-          <p class="eyebrow mb-5 flex items-center gap-3">
-            <span class="inline-block h-px w-8 bg-chene"></span>
-            Le Magazine
-          </p>
-          <h2 class="font-serif text-display text-ink">
-            Pour comprendre <span class="italic text-chene">avant</span> de décider.
-          </h2>
-        </div>
-        <div class="lg:col-span-4 reveal">
-          <p class="text-ink/70">
-            Analyses, décryptages, guides pratiques : des contenus pensés pour
-            que vous maîtrisiez les leviers avant qu'on en parle ensemble.
-          </p>
-          <a href="/magazine" class="link-underline mt-6 inline-block text-chene font-medium">
-            Parcourir tout le magazine →
-          </a>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-1 lg:grid-cols-1">
-        {articles.map((a, i) => (
-          <ArticleCard
-            href={`/magazine/${a.slug}`}
-            title={a.data.title}
-            category={a.data.category}
-            description={a.data.description}
-            publishedAt={a.data.publishedAt}
-            readingTime={a.data.readingTime}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <Testimonials />
   <CTA />
 </Base>
