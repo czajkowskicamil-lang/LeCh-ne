@@ -1,59 +1,69 @@
 ---
-import Logo from './Logo.astro';
-import { site, nav, expertises } from '../data/site';
+import { site, nav } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="relative bg-ink text-cream/80 mt-32">
-  <div class="shell py-20 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-4 flex flex-col gap-6">
-      <Logo variant="cream" />
-      <p class="text-sm leading-relaxed max-w-sm text-cream/70">
-        Conseil en gestion de patrimoine indépendant. Stratégies financières construites sur la durée, avec méthode et transparence.
+<footer class="relative bg-ink text-cream/85 mt-40 overflow-hidden">
+  <!-- Watermark logo géant en arrière-plan du footer -->
+  <img
+    src="/logo-mark.png"
+    alt=""
+    aria-hidden="true"
+    class="pointer-events-none select-none absolute -right-32 -top-20 w-[680px] h-[680px] object-contain opacity-[0.05]"
+  />
+
+  <div class="shell relative pt-24 md:pt-32 pb-12">
+    <!-- Grand titre éditorial type Tesla -->
+    <div class="max-w-4xl mb-20 md:mb-28 reveal">
+      <p class="eyebrow-cream mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-or"></span>
+        Cabinet privé indépendant
       </p>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-or self-start">
+      <h2 class="font-serif text-cream mb-8" style="font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1; letter-spacing: -0.025em;">
+        Faire fructifier<br/>
+        <span class="italic text-or-light">ce qui compte.</span>
+      </h2>
+      <a href={site.calendly} target="_blank" rel="noopener" class="btn-or inline-flex">
         Échanger 30 minutes
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
 
-    <div class="lg:col-span-2">
-      <h4 class="eyebrow-cream mb-5">Le Cabinet</h4>
-      <ul class="space-y-3 text-sm">
-        {nav.map((item) => (
-          <li><a href={item.href} class="hover:text-or-light transition">{item.label}</a></li>
-        ))}
-      </ul>
+    <!-- 3 colonnes minimalistes, beaucoup d'air -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-t border-cream/10 pt-16">
+      <div class="lg:col-span-5">
+        <p class="font-serif text-2xl text-cream mb-3">{site.name}</p>
+        <p class="text-sm leading-relaxed text-cream/60 max-w-sm">
+          Conseil en gestion de patrimoine indépendant. {site.coverage}.
+        </p>
+      </div>
+
+      <div class="lg:col-span-3">
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Naviguer</p>
+        <ul class="space-y-3 text-sm">
+          {nav.map((item) => (
+            <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="lg:col-span-4">
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Contact</p>
+        <ul class="space-y-3 text-sm">
+          <li><a href={`tel:${site.phone.tel}`} class="text-cream/70 hover:text-or-light transition-colors duration-300">{site.phone.display}</a></li>
+          <li><a href={`mailto:${site.email}`} class="text-cream/70 hover:text-or-light transition-colors duration-300">{site.email}</a></li>
+          <li><a href={site.linkedin} target="_blank" rel="noopener" class="text-cream/70 hover:text-or-light transition-colors duration-300">LinkedIn</a></li>
+          <li class="pt-3 text-cream/40 text-xs">{site.city}</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="lg:col-span-3">
-      <h4 class="eyebrow-cream mb-5">Expertise</h4>
-      <ul class="space-y-3 text-sm">
-        {expertises.slice(0, 6).map((e) => (
-          <li><a href={`/expertise/${e.slug}`} class="hover:text-or-light transition">{e.title}</a></li>
-        ))}
-        <li><a href="/expertise" class="text-or-light hover:text-or">Voir tout →</a></li>
-      </ul>
-    </div>
-
-    <div class="lg:col-span-3">
-      <h4 class="eyebrow-cream mb-5">Contact</h4>
-      <ul class="space-y-3 text-sm">
-        <li>{site.city}</li>
-        <li class="text-cream/50 text-xs">{site.coverage}</li>
-        <li><a href={`tel:${site.phone.tel}`} class="hover:text-or-light transition">{site.phone.display}</a></li>
-        <li><a href={`mailto:${site.email}`} class="hover:text-or-light transition">{site.email}</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener" class="hover:text-or-light transition">LinkedIn</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="border-t border-cream/10">
-    <div class="shell py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/50">
-      <p>© {year} {site.name}. Tous droits réservés.</p>
+    <!-- Pied légal ultra discret -->
+    <div class="flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/40 pt-6">
+      <p>© {year} {site.name} · ORIAS 25 00 00 16 · RCS Montpellier 929 887 594</p>
       <div class="flex gap-6">
-        <a href="/mentions-legales" class="hover:text-or-light transition">Mentions légales</a>
-        <a href="/confidentialite" class="hover:text-or-light transition">Confidentialité</a>
+        <a href="/mentions-legales" class="hover:text-or-light transition-colors">Mentions légales</a>
+        <a href="/confidentialite" class="hover:text-or-light transition-colors">Confidentialité</a>
       </div>
     </div>
   </div>
