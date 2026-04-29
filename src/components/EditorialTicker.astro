@@ -1,0 +1,61 @@
+---
+// Bandeau défilant style "ticker" éditorial — sobre cabinet senior
+const items = [
+  'Indépendance',
+  'Méthode',
+  'Patience',
+  'Clarté',
+  'Engagement',
+];
+// Doublé pour boucle continue sans saut visuel
+const loop = [...items, ...items, ...items, ...items];
+---
+
+<section class="border-y border-ink/10 bg-cream-soft/60 overflow-hidden py-5">
+  <div class="ticker-wrap">
+    <div class="ticker-track font-serif italic text-ink/80 text-2xl md:text-3xl whitespace-nowrap flex">
+      {loop.map((word) => (
+        <span class="px-8 inline-flex items-center gap-8">
+          {word}
+          <span class="w-1.5 h-1.5 rounded-full bg-or"></span>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ticker-wrap {
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-wrap::before,
+  .ticker-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ticker-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(250, 247, 239, 0.9), transparent);
+  }
+  .ticker-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(250, 247, 239, 0.9), transparent);
+  }
+  .ticker-track {
+    animation: ticker-scroll 60s linear infinite;
+    will-change: transform;
+  }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-25%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+  }
+</style>
