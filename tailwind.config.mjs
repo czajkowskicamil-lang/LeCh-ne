@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary dark — deep navy, matches the logo
+        // Primary dark — deep navy, matches the logo (assombri 2026-04-29)
         ink: {
-          DEFAULT: '#0A1F4F',
-          soft: '#132858',
+          DEFAULT: '#03102E',
+          soft: '#0A1F4F',
         },
         navy: {
-          DEFAULT: '#0A1F4F',
+          DEFAULT: '#03102E',
           deep: '#061238',
           darker: '#03091C',
           light: '#1B3470',
