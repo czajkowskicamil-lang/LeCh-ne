@@ -57,8 +57,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechene
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Favicon (inline SVG, navy + gold) -->
-    <link rel="icon" type="image/svg+xml" href={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%230A1F4F' d='M24 42 L24 30 M24 30 C14 30 10 22 14 18 C8 14 14 6 22 10 C22 4 30 4 30 10 C36 8 40 16 34 18 C38 22 34 30 24 30 Z' stroke='%230A1F4F' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19' r='2' fill='%23D4A82D'/%3E%3C/svg%3E`} />
+    <!-- Favicons (logo Le Chêne, arbre or sur navy) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#0A1F4F" />
 
     {/* Structured Data, FinancialService + Person (founder) for richer Google rich results */}
