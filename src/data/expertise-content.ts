@@ -271,7 +271,7 @@ export const expertiseContent: ExpertiseContent[] = [
       },
       {
         title: 'Le démembrement : offrir la nue-propriété',
-        body: "Donner la nue-propriété en gardant l'usufruit = transmettre un actif à valeur décotée selon l'âge, tout en conservant les revenus et la jouissance. Au décès, l'usufruit rejoint la nue-propriété sans droits supplémentaires. puissant sur l'immobilier et les titres de société.",
+        body: "Donner la nue-propriété en gardant l'usufruit, c'est transmettre un actif à valeur décotée selon l'âge tout en conservant les revenus et la jouissance. Au décès, l'usufruit rejoint la nue-propriété sans droits supplémentaires. Particulièrement puissant sur l'immobilier et les titres de société.",
       },
       {
         title: 'L\'assurance-vie : le contre-pouvoir successoral',

@@ -12,7 +12,7 @@ const profils = [
   },
   {
     title: 'Dirigeants & cadres',
-    description: 'Revenus solides, enveloppes accumulées au fil des années sans cohérence. PER d\'un côté, assurance-vie de l\'autre, contrats Madelin parfois oubliés. Ce qui n\'est pas mis en cohérence vous coûte chaque année, en fiscalité subie autant qu\'en performance manquée.',
+    description: 'Revenus solides, enveloppes accumulées sans cohérence d\'ensemble. Plusieurs contrats, plusieurs logiques, qui ne se parlent pas. Ce qui n\'est pas mis en cohérence vous coûte chaque année, en fiscalité comme en performance.',
     expertises: [
       { label: 'Plan Épargne Retraite', slug: 'plan-epargne-retraite' },
       { label: 'Immobilier patrimonial', slug: 'immobilier-lmnp-demembrement' },
@@ -65,7 +65,7 @@ const profils = [
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
       {profils.map((p, i) => (
         <div class="bg-cream-soft border border-ink/10 p-8 md:p-10 flex flex-col reveal" style={`animation-delay:${i * 80}ms`}>
-          <h3 class="font-serif text-2xl md:text-[1.7rem] leading-tight mb-4">{p.title}</h3>
+          <h3 class="font-serif text-2xl md:text-[1.7rem] leading-tight mb-4 min-h-[2lh]">{p.title}</h3>
           <p class="text-sm text-ink/70 leading-relaxed mb-8">{p.description}</p>
 
           <div class="border-t border-ink/10 pt-6 mt-auto">
