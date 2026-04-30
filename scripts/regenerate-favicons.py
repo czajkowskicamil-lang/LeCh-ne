@@ -24,6 +24,8 @@ SIZES = {
     "apple-touch-icon.png": 180,
 }
 
+ICO_SIZES = [16, 32, 48]  # tailles empaquetées dans favicon.ico
+
 def build(size: int, tree: Image.Image) -> Image.Image:
     canvas = Image.new("RGB", (size, size), NAVY)
     target = int(size * SAFE_RATIO)
@@ -44,6 +46,12 @@ def main() -> None:
         path = OUT / filename
         img.save(path, "PNG", optimize=True)
         print(f"  -> {filename} ({size}x{size})")
+
+    # favicon.ico multi-résolutions (16, 32, 48) — servi à la racine, requis par Google
+    ico_path = OUT / "favicon.ico"
+    largest = build(max(ICO_SIZES), tree)
+    largest.save(ico_path, format="ICO", sizes=[(s, s) for s in ICO_SIZES])
+    print(f"  -> favicon.ico ({'+'.join(str(s) for s in ICO_SIZES)})")
 
 if __name__ == "__main__":
     main()
