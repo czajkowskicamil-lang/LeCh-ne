@@ -30,6 +30,16 @@ const profils = [
       { label: 'Transmission', slug: 'transmission' },
     ],
   },
+  {
+    eyebrow: 'Construction patrimoniale long terme',
+    title: 'Particuliers',
+    description: 'Salarié, profession libérale, couple en milieu de carrière. Bâtir un patrimoine cohérent ne demande pas d\'être déjà fortuné. Ce sont les premières décisions qui structurent les vingt suivantes.',
+    expertises: [
+      { label: 'Assurance-vie', slug: 'assurance-vie' },
+      { label: 'Plan Épargne Retraite', slug: 'plan-epargne-retraite' },
+      { label: 'SCPI', slug: 'scpi' },
+    ],
+  },
 ];
 ---
 
@@ -42,17 +52,17 @@ const profils = [
           Pour qui
         </p>
         <h2 class="font-serif text-display text-ink">
-          Trois profils, <span class="italic text-chene">une même rigueur.</span>
+          Quatre profils, <span class="italic text-chene">une même rigueur.</span>
         </h2>
       </div>
       <div class="lg:col-span-5 reveal">
         <p class="text-ink/70 leading-relaxed">
-          Le cabinet accompagne en priorité ces trois trajectoires patrimoniales. Chacune appelle des leviers différents, jamais les mêmes priorités.
+          Le cabinet accompagne ces quatre trajectoires patrimoniales. Chacune appelle des leviers différents, jamais les mêmes priorités.
         </p>
       </div>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-4 md:gap-5">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
       {profils.map((p, i) => (
         <div class="bg-cream-soft border border-ink/10 p-8 md:p-10 flex flex-col reveal" style={`animation-delay:${i * 80}ms`}>
           <span class="text-[0.65rem] uppercase tracking-micro text-chene mb-6">{p.eyebrow}</span>
