@@ -1,0 +1,201 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+
+const profils = [
+  {
+    tag: 'Sportif de haut niveau',
+    title: 'Une carrière entre deux pays',
+    body:
+      "Vous évoluez dans un club suisse ou vous vous êtes installé de l'autre côté de la frontière. Rémunération en francs, deuxième pilier, fenêtre de revenus courte et intense : votre situation cumule les enjeux du sportif et ceux du franco-suisse. Fondé par un ancien sportif professionnel, Le Chêne structure votre patrimoine côté France et prépare l'après-carrière, avec méthode et sans jargon.",
+  },
+  {
+    tag: 'Vous vivez en France',
+    title: 'Suisse ou expatrié, installé en France',
+    body:
+      "Vous êtes résident fiscal français, mais votre histoire patrimoniale est restée en partie en Suisse. Deuxième pilier (LPP), troisième pilier, avoirs et comptes en francs, parfois un bien conservé de l'autre côté de la frontière. Le Chêne fait le lien entre ces deux mondes et organise votre patrimoine côté français : assurance-vie, immobilier, préparation de la retraite et de la transmission franco-suisse.",
+  },
+  {
+    tag: 'Vous investissez en France',
+    title: 'Résident suisse, un projet en France',
+    body:
+      "Vous vivez en Suisse et vous souhaitez placer une partie de votre patrimoine dans l'immobilier français. Le Chêne intervient sur le volet français de votre projet : sélection du bien, cadre fiscal adapté à votre situation de non-résident, financement et accompagnement dans la durée. Une porte d'entrée claire, en français, pour investir en France sans naviguer seul dans son administration.",
+  },
+];
+
+const regions = [
+  {
+    nom: 'Paris',
+    note: 'La valeur refuge par excellence. Un marché profond et liquide, qui traverse les cycles.',
+  },
+  {
+    nom: 'Lyon & Rhône-Alpes',
+    note: 'Deuxième métropole française, un marché patrimonial solide, de la Presqu’île à la Croix-Rousse.',
+  },
+  {
+    nom: 'Annecy',
+    note: 'Lac, montagne et art de vivre : l’une des villes les plus recherchées de France.',
+  },
+  {
+    nom: 'Alpes & stations premium',
+    note: 'Megève, Courchevel, Chamonix : l’immobilier de montagne le plus prisé d’Europe.',
+  },
+  {
+    nom: 'Bordeaux',
+    note: 'Ville classée UNESCO, marché dynamique et valeur sûre du Sud-Ouest.',
+  },
+  {
+    nom: 'Cap Ferret & Arcachon',
+    note: 'Le bassin d’Arcachon, un marché rare et très recherché, entre océan et pinède.',
+  },
+  {
+    nom: 'Biarritz & Pays basque',
+    note: 'La côte basque, entre océan et élégance, un marché haut de gamme très demandé.',
+  },
+  {
+    nom: 'Côte d’Azur',
+    note: 'Immobilier de caractère et locatif premium, du littoral à l’arrière-pays.',
+  },
+  {
+    nom: 'Aix-en-Provence',
+    note: 'L’élégance provençale, un marché haut de gamme, stable et recherché.',
+  },
+  {
+    nom: 'Le Touquet',
+    note: 'La station chic de la côte d’Opale, prisée et à forte valeur patrimoniale.',
+  },
+  {
+    nom: 'Normandie',
+    note: 'Deauville et la côte fleurie, l’élégance balnéaire à deux heures de Paris.',
+  },
+  {
+    nom: 'Bretagne',
+    note: 'Un immobilier solide et recherché, entre villes actives et façade maritime.',
+  },
+  {
+    nom: 'Occitanie',
+    note: 'Montpellier, Toulouse, le littoral : des marchés dynamiques et accessibles.',
+  },
+];
+
+const approches = [
+  {
+    nom: 'Neuf',
+    note: 'Programmes récents, garanties constructeur et cadres fiscaux dédiés (LMNP, dispositifs de réduction d’impôt).',
+  },
+  {
+    nom: 'Ancien',
+    note: 'Emplacements établis et charme patrimonial, avec un vrai potentiel de valorisation et de rénovation.',
+  },
+  {
+    nom: 'Luxe patrimonial',
+    note: 'Biens d’exception, hôtels particuliers et propriétés de prestige, pensés pour traverser les générations.',
+  },
+];
+---
+
+<Base
+  title="Suisse & France, Le Chêne Patrimonial"
+  description="Vous êtes suisse ou résident en Suisse, et votre patrimoine touche la France. Le Chêne accompagne le volet français de votre situation : investissement immobilier, retraite et transmission franco-suisse."
+  noIndex={true}
+>
+  <!-- Hero -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-9">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Suisse · France
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Votre patrimoine,<br/>
+          <span class="italic text-chene">entre deux pays.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Quand une vie se construit de part et d'autre de la frontière, le patrimoine a besoin d'un interlocuteur qui parle les deux langages. Le Chêne s'occupe du volet français, avec clarté et méthode.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deux profils -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="grid md:grid-cols-3 gap-8">
+        {profils.map((p, i) => (
+          <div class="rounded-2xl border border-ink/10 bg-white/40 p-8 md:p-10 reveal" style={`animation-delay:${i * 100}ms`}>
+            <p class="eyebrow mb-5">{p.tag}</p>
+            <h2 class="font-serif text-2xl md:text-3xl text-ink mb-5 leading-snug">{p.title}</h2>
+            <p class="text-ink/75 leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Régions -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mb-12 reveal">
+        <p class="eyebrow mb-5">Investir en France</p>
+        <h2 class="font-serif text-display text-ink mb-6">Des emplacements choisis, pensés pour durer</h2>
+        <p class="text-ink/75 leading-relaxed text-lg">
+          Le Chêne accompagne l'investissement immobilier patrimonial sur des marchés français reconnus pour leur solidité et leur qualité de vie. Chaque projet est étudié selon votre situation, jamais sur catalogue.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {regions.map((r, i) => (
+          <div class="rounded-2xl border border-ink/10 p-8 reveal" style={`animation-delay:${i * 100}ms`}>
+            <span class="block w-10 h-px bg-or mb-6"></span>
+            <h3 class="font-serif text-2xl text-chene mb-4">{r.nom}</h3>
+            <p class="text-ink/70 leading-relaxed text-base">{r.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Approches d'investissement -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mb-12 reveal">
+        <p class="eyebrow mb-5">Neuf · Ancien · Luxe patrimonial</p>
+        <h2 class="font-serif text-display text-ink mb-6">Trois façons d'investir, une même exigence</h2>
+        <p class="text-ink/75 leading-relaxed text-lg">
+          Selon votre horizon et vos objectifs, nous orientons votre projet vers le neuf, l'ancien ou l'immobilier de prestige. Le choix découle de votre situation, jamais l'inverse.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {approches.map((a, i) => (
+          <div class="rounded-2xl border border-ink/10 bg-white/40 p-8 reveal" style={`animation-delay:${i * 100}ms`}>
+            <span class="block w-10 h-px bg-or mb-6"></span>
+            <h3 class="font-serif text-2xl text-chene mb-4">{a.nom}</h3>
+            <p class="text-ink/70 leading-relaxed text-base">{a.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Note d'approche -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mx-auto border-t border-ink/15 pt-10 reveal">
+        <p class="text-ink/85 leading-relaxed text-lg">
+          Notre rôle n'est pas de vous vendre un produit, mais de sécuriser le volet français de votre patrimoine. Nous intervenons dans notre périmètre de conseil français, en toute transparence, et nous vous orientons vers les bons interlocuteurs pour tout ce qui relève du droit suisse.
+        </p>
+        <p class="font-serif italic text-3xl text-chene mt-8">Camil</p>
+        <p class="text-sm text-ink/55 mt-2 tracking-micro uppercase">
+          Camil Czajkowski · Conseiller en gestion de patrimoine · Le Chêne Patrimonial
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Un projet entre la Suisse et la France ?"
+    body="Planifions un premier échange de 30 minutes. Nous verrons ensemble ce qui relève du volet français et comment l'organiser, sans engagement et sans jargon."
+  />
+</Base>

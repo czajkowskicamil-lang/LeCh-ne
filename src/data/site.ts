@@ -20,6 +20,7 @@ export const nav = [
   { label: 'Magazine', href: '/magazine' },
   { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
+  { label: 'Suisse & France', href: '/suisse-france' },
   { label: 'Contact', href: '/contact' },
 ];
 
