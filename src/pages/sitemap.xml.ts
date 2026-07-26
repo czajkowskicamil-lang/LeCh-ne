@@ -10,6 +10,7 @@ const staticPages = [
   { path: '/expertise',        priority: 0.9, changefreq: 'monthly' },
   { path: '/magazine',         priority: 0.9, changefreq: 'weekly' },
   { path: '/cas-pratiques',    priority: 0.8, changefreq: 'monthly' },
+  { path: '/suisse-france',    priority: 0.8, changefreq: 'monthly' },
   { path: '/contact',          priority: 0.8, changefreq: 'yearly' },
   { path: '/mentions-legales', priority: 0.3, changefreq: 'yearly' },
   { path: '/confidentialite',  priority: 0.3, changefreq: 'yearly' },
