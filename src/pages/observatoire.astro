@@ -132,6 +132,30 @@ const description = "Étude des 40 premières villes de France : démographie, �
         </div>
       </section>
 
+      <!-- Carte interactive -->
+      <section class="mb-20">
+        <div class="om-card">
+          <p class="om-eye">Observatoire · Interactif</p>
+          <h2 class="om-title">Explorez votre ville</h2>
+          <p class="om-lead">Cliquez sur une ville pour voir ses chiffres. Changez de lentille pour lire le territoire autrement.</p>
+          <div class="om-controls" id="om-controls">
+            <button class="om-btn on" data-m="alerte">Alerte transmission</button>
+            <button class="om-btn" data-m="rendt">Rendement locatif</button>
+            <button class="om-btn" data-m="age">Vieillissement</button>
+          </div>
+          <div class="om-grid">
+            <div>
+              <svg id="om-map" viewBox="0 0 640 700" role="img" aria-label="Carte de France des principales villes"></svg>
+              <div class="om-legend" id="om-legend"></div>
+            </div>
+            <div class="om-panel" id="om-panel">
+              <p class="om-hint">Sélectionnez une ville sur la carte pour afficher son analyse.</p>
+            </div>
+          </div>
+          <p class="om-note">France métropolitaine. Données INSEE (démographie, âge, vacance, chômage) et MeilleursAgents (prix, rendement brut indicatif).</p>
+        </div>
+      </section>
+
       <!-- Tableau -->
       <section class="mb-20">
         <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">Le tableau complet</h2>
@@ -335,5 +359,96 @@ const description = "Étude des 40 premières villes de France : démographie, �
       if (t) t.dataset.ready = "";
       init();
     });
+  })();
+</script>
+
+<style is:global>
+  .om-card{background:#0c1f3c;border:1px solid rgba(212,168,45,.25);border-radius:20px;padding:clamp(22px,4vw,36px);color:#F5F1E8;}
+  .om-eye{color:#E6C259;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
+  .om-title{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:clamp(1.6rem,3.4vw,2.2rem);color:#F5F1E8;font-weight:600;margin-bottom:8px;}
+  .om-lead{color:#9fb0c8;font-size:1rem;margin-bottom:22px;max-width:60ch;}
+  .om-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .om-btn{background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem system-ui,sans-serif;padding:9px 18px;border-radius:30px;cursor:pointer;transition:.2s;}
+  .om-btn:hover{border-color:#D4A82D;color:#F5F1E8;}
+  .om-btn.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+  .om-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:26px;align-items:start;}
+  @media(max-width:820px){.om-grid{grid-template-columns:1fr;}}
+  #om-map{display:block;width:100%;height:auto;}
+  .om-outline{fill:#102847;stroke:#D4A82D;stroke-width:1.2;opacity:.85;}
+  .om-city{stroke:#0c1f3c;stroke-width:1.4;cursor:pointer;transition:r .15s;}
+  .om-city:hover{r:8;}
+  .om-city.sel{stroke:#F5F1E8;stroke-width:2.5;}
+  .om-clbl{font:600 12px system-ui,sans-serif;fill:#eef1f6;pointer-events:none;}
+  .om-lo{fill:#7bbd90;} .om-mid{fill:#E6C259;} .om-hi{fill:#d99a3f;} .om-max{fill:#d9694f;}
+  .om-panel{background:#102847;border:1px solid rgba(212,168,45,.2);border-radius:16px;padding:24px;min-height:340px;}
+  .om-panel h3{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:1.7rem;color:#F5F1E8;margin-bottom:6px;}
+  .om-badge{display:inline-block;font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .om-b0{background:rgba(123,189,144,.18);color:#7bbd90;}.om-b1{background:rgba(230,194,89,.18);color:#E6C259;}.om-b2{background:rgba(217,154,63,.2);color:#d99a3f;}.om-b3{background:rgba(217,105,79,.2);color:#e08a70;}
+  .om-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .om-row:last-child{border-bottom:none;}
+  .om-row .k{color:#9fb0c8;font-size:.9rem;}
+  .om-row .v{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:1.15rem;font-weight:600;}
+  .om-row .v.pos{color:#7bbd90;}.om-row .v.neg{color:#e08a70;}.om-row .v.neu{color:#F5F1E8;}
+  .om-hint{color:#7a8aa3;font-style:italic;}
+  .om-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:.78rem;color:#9fb0c8;}
+  .om-legend span{display:inline-flex;align-items:center;gap:7px;}
+  .om-legend .om-dot{width:11px;height:11px;border-radius:50%;display:block;}
+  .om-note{color:#6f7f98;font-size:.75rem;margin-top:18px;}
+</style>
+
+<script is:inline>
+  (function () {
+    const cities = [
+      ["Paris",48.86,2.35,-3.8,17.7,9.9,7.8,"9 661",4.0],["Marseille",43.30,5.37,2.6,19.5,7.6,10.2,"3 626",5.4],
+      ["Lyon",45.76,4.83,0.6,14.9,9.3,7.4,"4 663",4.3],["Toulouse",43.60,1.44,7.4,13.0,8.2,8.8,"3 564",4.7],
+      ["Nice",43.70,7.27,5.2,23.4,12.4,7.5,"5 205",4.7],["Nantes",47.22,-1.55,5.9,14.3,6.1,6.5,"3 455",5.0],
+      ["Montpellier",43.61,3.88,8.8,14.9,6.9,10.5,"3 433",5.4],["Strasbourg",48.58,7.75,4.6,14.8,8.6,8.0,"3 724",5.0],
+      ["Bordeaux",44.84,-0.58,5.3,15.0,6.7,7.8,"4 343",4.4],["Lille",50.63,3.06,2.3,11.1,8.0,8.2,"3 375",5.6],
+      ["Rennes",48.11,-1.68,6.5,14.3,6.5,6.9,"4 040",4.4],["Toulon",43.12,5.93,4.2,23.8,3.6,7.0,"3 168",5.7],
+      ["Reims",49.26,4.03,-2.6,17.4,10.0,9.0,"2 687",6.0],["Saint-Étienne",45.44,4.39,0.3,20.5,12.0,8.8,"1 230",10.7],
+      ["Le Havre",49.49,0.11,-2.0,20.9,10.9,9.7,"1 919",8.1],["Dijon",47.32,5.04,3.1,17.9,7.3,6.8,"2 710",6.1],
+      ["Angers",47.47,-0.55,4.0,17.9,5.9,8.0,"3 268",5.1],["Grenoble",45.19,5.72,-1.5,15.3,13.5,6.9,"2 556",6.6],
+      ["Nîmes",43.84,4.36,0.8,21.3,11.1,10.1,"2 401",6.3],["Aix-en-Provence",43.53,5.45,5.1,20.0,8.0,6.5,"5 482",3.9],
+      ["Clermont-Ferrand",45.78,3.08,1.7,17.0,9.6,7.2,"2 150",6.7],["Le Mans",48.00,0.20,2.3,22.2,9.5,8.4,"2 023",6.5],
+      ["Brest",48.39,-4.49,1.6,17.6,6.5,7.0,"2 467",5.6],["Tours",47.39,0.69,2.6,19.1,11.2,7.4,"3 014",5.4],
+      ["Amiens",49.89,2.30,1.8,16.2,9.3,9.2,"2 559",6.5],["Annecy",45.90,6.13,4.1,20.4,7.3,5.1,"5 180",3.7],
+      ["Limoges",45.83,1.26,-1.7,22.7,9.2,7.6,"1 611",8.7],["Metz",49.12,6.18,5.3,17.5,11.0,7.7,"2 358",7.1],
+      ["Perpignan",42.70,2.90,1.2,23.0,14.6,12.7,"1 794",7.7],["Besançon",47.24,6.02,2.2,18.8,9.5,6.7,"2 473",6.3],
+      ["Rouen",49.44,1.10,6.8,14.4,9.7,9.1,"2 543",6.1],["Orléans",47.90,1.90,-0.3,16.8,10.3,7.6,"2 577",6.7],
+      ["Caen",49.18,-0.37,3.8,18.9,8.9,7.6,"3 131",5.4]
+    ];
+    const border=[[51.05,2.53],[50.75,3.65],[49.98,4.85],[49.46,5.9],[48.95,8.1],[47.9,7.55],[46.9,6.9],[46.2,6.05],[45.9,6.85],[45.1,6.65],[44.35,7.0],[43.75,7.52],[43.05,6.6],[43.28,5.37],[43.35,4.05],[42.9,3.05],[42.47,3.15],[42.7,1.4],[42.9,-0.35],[43.35,-1.78],[44.6,-1.25],[45.6,-1.15],[46.25,-1.55],[47.0,-2.2],[47.5,-3.15],[47.8,-4.3],[48.45,-4.78],[48.68,-3.9],[48.75,-2.55],[49.35,-1.6],[49.72,-1.95],[49.65,-0.35],[49.5,0.15],[49.9,1.15],[50.7,1.6],[51.02,2.53]];
+    const corsica=[[43.02,9.38],[42.6,9.55],[41.85,9.42],[41.38,9.22],[41.6,8.75],[42.35,8.55],[42.7,8.72],[43.02,9.05]];
+    const latmax=51.2, lonmin=-5.2, k=Math.cos(46.7*Math.PI/180), S=58, pad=18;
+    const px=lon=>(lon-lonmin)*k*S+pad, py=lat=>(latmax-lat)*S+pad;
+    const NS='http://www.w3.org/2000/svg';
+    const alert=c=>(c[4]>=20?1:0)+(c[5]>=10?1:0)+(c[3]<=0?1:0);
+    const colorFns={alerte:c=>['om-lo','om-mid','om-hi','om-max'][alert(c)],rendt:c=>c[8]>=7.5?'om-max':c[8]>=6?'om-hi':c[8]>=4.8?'om-mid':'om-lo',age:c=>c[4]>=20?'om-max':c[4]>=17?'om-hi':c[4]>=14.5?'om-mid':'om-lo'};
+    const legends={alerte:[['om-lo','0/3 serein'],['om-mid','1/3'],['om-hi','2/3 vigilance'],['om-max','3/3 risque']],rendt:[['om-lo','< 4,8 %'],['om-mid','4,8-6 %'],['om-hi','6-7,5 %'],['om-max','> 7,5 %']],age:[['om-lo','jeune'],['om-mid','~15 %'],['om-hi','~18 %'],['om-max','20 %+']]};
+    const cssc=cl=>({'om-lo':'#7bbd90','om-mid':'#E6C259','om-hi':'#d99a3f','om-max':'#d9694f'}[cl]);
+    let metric='alerte', sel=null, dots=[], labels=[];
+    function build(){
+      const svg=document.getElementById('om-map'); if(!svg||svg.dataset.ready) return; svg.dataset.ready='1';
+      svg.innerHTML=''; dots=[]; labels=[]; sel=null; metric='alerte';
+      const ctr=document.getElementById('om-controls');
+      ctr.querySelectorAll('.om-btn').forEach(b=>{b.classList.toggle('on',b.dataset.m==='alerte');b.addEventListener('click',()=>{ctr.querySelectorAll('.om-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');metric=b.dataset.m;paint();});});
+      function pathEl(pts){const p=document.createElementNS(NS,'path');p.setAttribute('d',pts.map((q,i)=>(i?'L':'M')+px(q[1]).toFixed(1)+' '+py(q[0]).toFixed(1)).join(' ')+' Z');p.setAttribute('class','om-outline');svg.appendChild(p);}
+      pathEl(border);pathEl(corsica);
+      cities.forEach((c,i)=>{const x=px(c[2]),y=py(c[1]);const circ=document.createElementNS(NS,'circle');circ.setAttribute('cx',x.toFixed(1));circ.setAttribute('cy',y.toFixed(1));circ.setAttribute('r',6);circ.setAttribute('class','om-city');circ.addEventListener('click',()=>select(i));circ.addEventListener('mouseenter',()=>{labels[i].style.display='block';});circ.addEventListener('mouseleave',()=>{if(sel!==i)labels[i].style.display='none';});svg.appendChild(circ);dots.push(circ);const t=document.createElementNS(NS,'text');t.setAttribute('x',(x+9).toFixed(1));t.setAttribute('y',(y+4).toFixed(1));t.setAttribute('class','om-clbl');t.textContent=c[0];t.style.display='none';svg.appendChild(t);labels.push(t);});
+      paint(); select(0);
+    }
+    function paint(){dots.forEach((d,i)=>{d.setAttribute('class','om-city '+colorFns[metric](cities[i])+(sel===i?' sel':''));});document.getElementById('om-legend').innerHTML=legends[metric].map(l=>'<span><span class="om-dot" style="background:'+cssc(l[0])+'"></span>'+l[1]+'</span>').join('');}
+    function select(i){sel=i;labels.forEach((t,j)=>{t.style.display=j===i?'block':'none';});paint();
+      const c=cities[i],sc=alert(c),dcl=v=>v>=2?'pos':(v<0?'neg':'neu');
+      document.getElementById('om-panel').innerHTML='<h3>'+c[0]+'</h3><span class="om-badge om-b'+sc+'">Alerte transmission '+sc+'/3</span>'+
+        '<div class="om-row"><span class="k">Démographie 2017-2023</span><span class="v '+dcl(c[3])+'">'+(c[3]>0?'+':'')+(''+c[3]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">65 ans et +</span><span class="v neu">'+(''+c[4]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Logements vacants</span><span class="v neu">'+(''+c[5]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Chômage (T1 2026)</span><span class="v neu">'+(''+c[6]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Prix appartement</span><span class="v neu">'+c[7]+' €/m²</span></div>'+
+        '<div class="om-row"><span class="k">Rendement brut</span><span class="v neu">'+(''+c[8]).replace('.',',')+' %</span></div>';
+    }
+    build();
+    document.addEventListener('astro:page-load',()=>{const s=document.getElementById('om-map');if(s)s.dataset.ready='';build();});
   })();
 </script>
