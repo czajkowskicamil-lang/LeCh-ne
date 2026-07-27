@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Simulateur de capacité d'emprunt 2026 | Le Chêne Patrimonial";
+const description = "Combien pouvez-vous emprunter ? Estimez votre capacité d'emprunt et votre mensualité selon vos revenus, vos charges, la durée et le taux. Gratuit et instantané.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Capacité d'emprunt</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Crédit immobilier
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Combien pouvez-vous emprunter ?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Avant de chercher un bien, connaissez votre budget réel. Ajustez vos revenus, la durée et le taux, et voyez votre capacité d'emprunt se recalculer en direct.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Revenus nets du foyer / mois <b id="ce-rev-val">3 500 €</b></label>
+            <input class="tool-range" type="range" id="ce-rev" min="1000" max="15000" step="100" value="3500" />
+          </div>
+          <div class="tool-field">
+            <label>Charges et crédits en cours / mois <b id="ce-chg-val">0 €</b></label>
+            <input class="tool-range" type="range" id="ce-chg" min="0" max="4000" step="50" value="0" />
+          </div>
+          <div class="tool-field">
+            <label>Apport personnel <b id="ce-app-val">20 000 €</b></label>
+            <input class="tool-range" type="range" id="ce-app" min="0" max="300000" step="5000" value="20000" />
+          </div>
+          <div class="tool-field">
+            <label>Durée du prêt <b id="ce-dur-val">20 ans</b></label>
+            <input class="tool-range" type="range" id="ce-dur" min="5" max="25" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Taux d'intérêt (hors assurance) <b id="ce-tx-val">3,50 %</b></label>
+            <input class="tool-range" type="range" id="ce-tx" min="1" max="6" step="0.05" value="3.5" />
+          </div>
+          <p class="tool-note">Taux d'endettement plafonné à 35 % (norme HCSF), assurance emprunteur non incluse. Estimation indicative : votre banque reste seule décisionnaire.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Montant empruntable</p>
+          <p class="big" id="ce-capital">—</p>
+          <div class="tool-brk"><span class="k">Mensualité maximale</span><span class="v" id="ce-mens">—</span></div>
+          <div class="tool-brk"><span class="k">Coût total des intérêts</span><span class="v" id="ce-cout">—</span></div>
+          <div class="tool-brk"><span class="k">Capacité d'achat (avec apport)</span><span class="v" id="ce-achat">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Comment se calcule votre capacité ?</h2>
+      <p>La banque part d'un principe simple : vos mensualités de crédit ne doivent pas dépasser <strong>35 % de vos revenus nets</strong>, assurance comprise. Cette mensualité maximale, appliquée à la durée et au taux, détermine le capital que vous pouvez emprunter. Plus la durée est longue, plus vous empruntez, mais plus le coût des intérêts augmente.</p>
+      <p>C'est un point de départ, pas une décision. Le reste à vivre, la stabilité de vos revenus et votre profil comptent tout autant. C'est là qu'un accompagnement fait la différence.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const rev=+document.getElementById('ce-rev').value, chg=+document.getElementById('ce-chg').value,
+        app=+document.getElementById('ce-app').value, dur=+document.getElementById('ce-dur').value, tx=+document.getElementById('ce-tx').value;
+      document.getElementById('ce-rev-val').textContent=eur(rev);
+      document.getElementById('ce-chg-val').textContent=eur(chg);
+      document.getElementById('ce-app-val').textContent=eur(app);
+      document.getElementById('ce-dur-val').textContent=dur+' ans';
+      document.getElementById('ce-tx-val').textContent=tx.toFixed(2).replace('.',',')+' %';
+      const mens=Math.max(0, rev*0.35 - chg);
+      const i=tx/1200, n=dur*12;
+      const capital = i>0 ? mens*(1-Math.pow(1+i,-n))/i : mens*n;
+      const cout = mens*n - capital;
+      document.getElementById('ce-capital').textContent=eur(capital);
+      document.getElementById('ce-mens').textContent=eur(mens);
+      document.getElementById('ce-cout').textContent=eur(cout);
+      document.getElementById('ce-achat').textContent=eur(capital+app);
+    }
+    function init(){
+      const r=document.getElementById('ce-rev'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['ce-rev','ce-chg','ce-app','ce-dur','ce-tx'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('ce-rev');if(r)r.dataset.ready='';init();});
+  })();
+</script>

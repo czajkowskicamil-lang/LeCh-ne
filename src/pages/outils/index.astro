@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Outils patrimoniaux gratuits — simulateurs immobilier, crédit, transmission | Le Chêne Patrimonial";
+const description = "Des simulateurs simples et gratuits pour y voir clair : frais de notaire, capacité d'emprunt, rentabilité locative, transmission. Calculez, comprenez, décidez.";
+
+const outils = [
+  { titre: "Rentabilité locative", desc: "Prix, loyer, crédit, assurance : votre cash flow réel, mois par mois.", href: "/calculatrice-rentabilite-credit", tag: "Immobilier", live: true },
+  { titre: "Frais de notaire", desc: "Combien allez-vous vraiment payer chez le notaire, dans l'ancien ou le neuf.", href: "/outils/frais-de-notaire", tag: "Achat", live: true },
+  { titre: "Capacité d'emprunt", desc: "Combien pouvez-vous emprunter selon vos revenus et la durée du prêt.", href: "/outils/capacite-emprunt", tag: "Crédit", live: true },
+  { titre: "Droits de succession", desc: "Ce que vos héritiers paieraient, et combien anticiper permet d'économiser.", href: "#", tag: "Transmission", live: false },
+  { titre: "Plus-value immobilière", desc: "L'impôt sur la revente d'un bien locatif ou d'une résidence secondaire.", href: "#", tag: "Immobilier", live: false },
+  { titre: "Investissement LMNP", desc: "Votre revenu locatif net après amortissement, en meublé.", href: "#", tag: "Immobilier", live: false },
+  { titre: "Économie d'impôt (PER)", desc: "Combien un versement sur votre PER réduit votre impôt.", href: "#", tag: "Fiscalité", live: false },
+  { titre: "Louer ou acheter ?", desc: "Le match, chiffré, entre rester locataire et devenir propriétaire.", href: "#", tag: "Immobilier", live: false },
+  { titre: "Intérêts composés", desc: "Ce que votre épargne peut devenir dans 10, 20 ou 30 ans.", href: "#", tag: "Épargne", live: false },
+];
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-10 md:pt-24 md:pb-14">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <span class="text-ink">Outils</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Outils gratuits
+      </p>
+      <h1 class="font-serif text-display text-ink mb-8 leading-tight">Calculez, comprenez, décidez.</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Des simulateurs simples pour répondre aux questions que tout le monde se pose avant d'investir. Sans inscription, sans jargon. Et si vous voulez aller plus loin, on en parle ensemble.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-20 md:pb-28">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {outils.map((o) => (
+        o.live ? (
+          <a href={o.href} class="group bg-cream-soft border border-ink/10 rounded-2xl p-7 transition-all duration-300 hover:border-chene/40 hover:-translate-y-1 flex flex-col">
+            <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-3">{o.tag}</p>
+            <h2 class="font-serif text-2xl text-ink mb-2 group-hover:text-chene transition">{o.titre}</h2>
+            <p class="text-ink/70 text-sm leading-relaxed mb-5 flex-1">{o.desc}</p>
+            <span class="text-sm font-medium text-or-dark inline-flex items-center gap-2">Ouvrir l'outil
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ) : (
+          <div class="bg-cream-soft/50 border border-ink/8 rounded-2xl p-7 flex flex-col opacity-80">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs uppercase tracking-micro text-stone font-semibold">{o.tag}</p>
+              <span class="text-[0.65rem] uppercase tracking-wide font-bold text-or-dark bg-or/12 rounded-full px-2.5 py-1">Bientôt</span>
+            </div>
+            <h2 class="font-serif text-2xl text-ink/70 mb-2">{o.titre}</h2>
+            <p class="text-ink/55 text-sm leading-relaxed flex-1">{o.desc}</p>
+          </div>
+        )
+      ))}
+    </div>
+
+    <p class="text-sm text-stone mt-10 max-w-prose-wide">
+      Ces outils donnent des ordres de grandeur à visée pédagogique. Ils ne remplacent pas une étude adaptée à votre situation.
+    </p>
+  </div>
+
+  <CTA />
+</Base>
