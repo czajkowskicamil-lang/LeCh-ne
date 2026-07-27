@@ -1,0 +1,76 @@
+---
+// Section "Calculatrice de rentabilité et crédit" pour la home page
+// Met en avant l'outil interactif : fond crème, aperçu du panneau de résultats
+---
+
+<section class="py-24 md:py-32 bg-cream-soft relative overflow-hidden">
+  <!-- Filet doré en haut -->
+  <div class="absolute top-0 left-0 right-0 h-px bg-or/30"></div>
+
+  <div class="shell relative">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <!-- Texte -->
+      <div class="lg:col-span-6 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Outil gratuit · Investissement locatif
+        </p>
+        <h2 class="font-serif text-display text-ink mb-6">
+          Calculatrice de<br/>
+          <span class="italic text-chene">rentabilité et crédit.</span>
+        </h2>
+        <p class="text-ink/75 text-lg leading-relaxed max-w-2xl mb-8">
+          Déplacez les curseurs, lisez le résultat en direct. Rentabilité brute et nette, mensualité de crédit et d'assurance emprunteur, et surtout le cash-flow réel, c'est-à-dire l'effort d'épargne mensuel de votre projet. Une première lecture claire, avant d'affiner ensemble.
+        </p>
+        <a href="/calculatrice-rentabilite-credit" class="btn-primary inline-flex">
+          Ouvrir la calculatrice
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Aperçu du résultat -->
+      <div class="lg:col-span-6 reveal" style="animation-delay:120ms">
+        <div class="bg-navy text-cream rounded-2xl p-7 md:p-9 shadow-xl shadow-ink/10">
+          <p class="eyebrow-cream mb-6">Aperçu · Exemple</p>
+
+          <!-- Curseurs illustratifs -->
+          <div class="space-y-5 mb-7">
+            <div>
+              <div class="flex items-baseline justify-between mb-2">
+                <span class="text-sm text-cream/70">Prix du bien</span>
+                <span class="font-serif text-cream tabular-nums">200 000 €</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-cream/15 overflow-hidden">
+                <div class="h-full rounded-full bg-or" style="width:34%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between mb-2">
+                <span class="text-sm text-cream/70">Taux du crédit</span>
+                <span class="font-serif text-cream tabular-nums">3,50 %</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-cream/15 overflow-hidden">
+                <div class="h-full rounded-full bg-or" style="width:50%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-px bg-cream/10 mb-6"></div>
+
+          <div class="grid grid-cols-2 gap-5">
+            <div>
+              <p class="text-xs text-cream/55 mb-1">Rentabilité brute</p>
+              <p class="font-serif text-2xl text-or-light tabular-nums">4,80 %</p>
+            </div>
+            <div>
+              <p class="text-xs text-cream/55 mb-1">Cash-flow mensuel</p>
+              <p class="font-serif text-2xl text-cream tabular-nums">− 496 €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

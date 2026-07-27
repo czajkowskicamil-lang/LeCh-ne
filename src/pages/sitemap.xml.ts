@@ -8,6 +8,7 @@ const staticPages = [
   { path: '/',                 priority: 1.0, changefreq: 'weekly' },
   { path: '/parcours',         priority: 0.9, changefreq: 'monthly' },
   { path: '/expertise',        priority: 0.9, changefreq: 'monthly' },
+  { path: '/calculatrice-rentabilite-credit', priority: 0.8, changefreq: 'monthly' },
   { path: '/magazine',         priority: 0.9, changefreq: 'weekly' },
   { path: '/cas-pratiques',    priority: 0.8, changefreq: 'monthly' },
   { path: '/suisse-france',    priority: 0.8, changefreq: 'monthly' },

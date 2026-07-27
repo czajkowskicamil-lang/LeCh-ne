@@ -19,6 +19,7 @@ export const nav = [
   { label: 'Manifeste', href: '/manifeste' },
   { label: 'Magazine', href: '/magazine' },
   { label: 'Observatoire', href: '/observatoire' },
+  { label: 'Calculatrice', href: '/calculatrice-rentabilite-credit' },
   { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
   { label: 'Suisse & France', href: '/suisse-france' },

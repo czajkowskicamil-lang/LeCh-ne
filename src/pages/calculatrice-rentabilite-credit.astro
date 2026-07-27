@@ -1,0 +1,350 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+
+const title = 'Calculatrice de rentabilité et crédit | Le Chêne Patrimonial';
+const description = "Simulez la rentabilité d'un investissement locatif en temps réel : rentabilité brute et nette, mensualité de crédit et d'assurance emprunteur, cash-flow mensuel. Curseurs interactifs, résultat instantané.";
+---
+
+<Base title={title} description={description}>
+  <article>
+    <!-- Hero -->
+    <header class="pt-16 pb-8 md:pt-24 md:pb-12">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+          <a href="/" class="hover:text-chene">Accueil</a>
+          <span>/</span>
+          <span class="text-ink">Calculatrice de rentabilité et crédit</span>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Outil · Investissement locatif
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-6 leading-tight">Calculatrice de rentabilité et crédit</h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+          Déplacez les curseurs et lisez le résultat en direct : rentabilité brute et nette, mensualité de crédit et d'assurance emprunteur, et surtout le <span class="text-ink font-medium">cash-flow</span> réel chaque mois. Une première lecture, claire, avant d'affiner ensemble.
+        </p>
+      </div>
+    </header>
+
+    <div class="shell max-w-6xl pb-20 md:pb-28">
+      <div class="reveal grid lg:grid-cols-5 gap-6 lg:gap-8 items-start">
+
+        <!-- Colonne réglages -->
+        <div class="lg:col-span-3 space-y-8">
+
+          <!-- Le bien -->
+          <section class="bg-cream-soft border border-ink/10 rounded-2xl p-6 md:p-8">
+            <h2 class="font-serif text-xl text-ink mb-6 flex items-center gap-3">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-chene text-cream text-xs font-sans">1</span>
+              Le bien
+            </h2>
+            <div class="space-y-7">
+              <div class="calc-field" data-min="30000" data-max="1000000" data-step="5000" data-suffix=" €">
+                <div class="calc-head"><label>Prix du bien</label><output data-out="prix">200 000 €</output></div>
+                <input type="range" class="calc-range" data-k="prix" min="30000" max="1000000" step="5000" value="200000" />
+              </div>
+              <div class="calc-field" data-min="0" data-max="15" data-step="0.5" data-suffix=" %">
+                <div class="calc-head"><label>Frais de notaire <span class="calc-hint">(ancien ≈ 8 %, neuf ≈ 3 %)</span></label><output data-out="notaire">8 %</output></div>
+                <input type="range" class="calc-range" data-k="notaire" min="0" max="15" step="0.5" value="8" />
+              </div>
+              <div class="calc-field" data-min="0" data-max="200000" data-step="1000" data-suffix=" €">
+                <div class="calc-head"><label>Travaux</label><output data-out="travaux">0 €</output></div>
+                <input type="range" class="calc-range" data-k="travaux" min="0" max="200000" step="1000" value="0" />
+              </div>
+              <div class="calc-field" data-min="200" data-max="5000" data-step="10" data-suffix=" €">
+                <div class="calc-head"><label>Loyer mensuel (hors charges)</label><output data-out="loyer">800 €</output></div>
+                <input type="range" class="calc-range" data-k="loyer" min="200" max="5000" step="10" value="800" />
+              </div>
+              <div class="calc-field" data-min="0" data-max="12000" data-step="100" data-suffix=" €">
+                <div class="calc-head"><label>Charges annuelles <span class="calc-hint">(taxe foncière, gestion, PNO, entretien)</span></label><output data-out="charges">2 500 €</output></div>
+                <input type="range" class="calc-range" data-k="charges" min="0" max="12000" step="100" value="2500" />
+              </div>
+            </div>
+          </section>
+
+          <!-- Le crédit -->
+          <section class="bg-cream-soft border border-ink/10 rounded-2xl p-6 md:p-8">
+            <h2 class="font-serif text-xl text-ink mb-6 flex items-center gap-3">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-chene text-cream text-xs font-sans">2</span>
+              Le crédit
+            </h2>
+            <div class="space-y-7">
+              <div class="calc-field" data-min="0" data-max="1200000" data-step="1000" data-suffix=" €">
+                <div class="calc-head"><label>Montant emprunté</label><output data-out="emprunt">216 000 €</output></div>
+                <input type="range" class="calc-range" data-k="emprunt" min="0" max="1200000" step="1000" value="216000" />
+                <p class="calc-note" data-note="apport"></p>
+              </div>
+              <div class="calc-field" data-min="5" data-max="30" data-step="1" data-suffix=" ans">
+                <div class="calc-head"><label>Durée du prêt</label><output data-out="duree">20 ans</output></div>
+                <input type="range" class="calc-range" data-k="duree" min="5" max="30" step="1" value="20" />
+              </div>
+              <div class="calc-field" data-min="0" data-max="7" data-step="0.05" data-suffix=" %" data-dec="2">
+                <div class="calc-head"><label>Taux du crédit</label><output data-out="taux">3,50 %</output></div>
+                <input type="range" class="calc-range" data-k="taux" min="0" max="7" step="0.05" value="3.5" />
+              </div>
+              <div class="calc-field" data-min="0" data-max="1" data-step="0.01" data-suffix=" %" data-dec="2">
+                <div class="calc-head"><label>Taux assurance emprunteur <span class="calc-hint">(annuel, sur capital initial)</span></label><output data-out="assur">0,34 %</output></div>
+                <input type="range" class="calc-range" data-k="assur" min="0" max="1" step="0.01" value="0.34" />
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Colonne résultats -->
+        <aside class="lg:col-span-2 lg:sticky lg:top-24">
+          <div class="bg-navy text-cream rounded-2xl p-6 md:p-8">
+            <p class="eyebrow-cream mb-6">Votre simulation</p>
+
+            <div class="space-y-5">
+              <div class="calc-res">
+                <span class="calc-res-lbl">Rentabilité brute</span>
+                <span class="calc-res-val text-or-light" data-res="brute">—</span>
+              </div>
+              <div class="h-px bg-cream/10"></div>
+              <div class="calc-res">
+                <span class="calc-res-lbl">Rentabilité nette de charges</span>
+                <span class="calc-res-val text-or-light" data-res="nette">—</span>
+              </div>
+              <div class="h-px bg-cream/10"></div>
+
+              <div class="calc-res">
+                <span class="calc-res-lbl">Mensualité crédit</span>
+                <span class="calc-res-val" data-res="mcredit">—</span>
+              </div>
+              <div class="calc-res">
+                <span class="calc-res-lbl">Mensualité assurance</span>
+                <span class="calc-res-val" data-res="massur">—</span>
+              </div>
+              <div class="calc-res calc-res-strong">
+                <span class="calc-res-lbl">Mensualité totale</span>
+                <span class="calc-res-val" data-res="mtotal">—</span>
+              </div>
+              <div class="h-px bg-cream/10"></div>
+
+              <div class="rounded-xl p-4 -mx-1" data-cf-box>
+                <div class="flex items-baseline justify-between">
+                  <span class="calc-res-lbl">Cash-flow mensuel</span>
+                  <span class="font-serif text-3xl leading-none" data-res="cashflow">—</span>
+                </div>
+                <p class="text-xs text-cream/60 mt-2 leading-relaxed" data-res="cfnote">Loyer perçu, moins la mensualité totale et les charges mensualisées.</p>
+              </div>
+            </div>
+
+            <div class="mt-7 pt-6 border-t border-cream/10 text-xs text-cream/55 leading-relaxed">
+              <p class="mb-3">Estimation indicative. Elle n'intègre pas la fiscalité (LMNP, foncier, prélèvements sociaux), la vacance locative ni les frais de dossier ou de garantie du prêt, qui pèsent sur le rendement réel.</p>
+              <p>Coût total de l'opération : <span class="text-cream/80 font-medium" data-res="cout">—</span>. Intérêts + assurance sur la durée : <span class="text-cream/80 font-medium" data-res="cintassur">—</span>.</p>
+            </div>
+          </div>
+
+          <div class="mt-4 bg-cream-soft border border-ink/10 rounded-2xl p-5 text-center">
+            <p class="text-sm text-ink/75 leading-relaxed mb-4">Un chiffre qui vous parle ? Passons de la simulation au montage réel, adapté à votre situation et à votre fiscalité.</p>
+            <a href="/contact" class="btn-or w-full justify-center">Faire le point ensemble</a>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </article>
+
+  <CTA />
+</Base>
+
+<style>
+  .calc-head {
+    @apply flex items-baseline justify-between gap-3 mb-2.5;
+  }
+  .calc-head label {
+    @apply text-sm text-ink/80 font-medium;
+  }
+  .calc-hint {
+    @apply text-xs text-stone font-normal;
+  }
+  .calc-head output {
+    @apply font-serif text-lg text-ink tabular-nums whitespace-nowrap;
+  }
+  .calc-note {
+    @apply text-xs text-stone mt-2;
+  }
+  .calc-res {
+    @apply flex items-baseline justify-between gap-4;
+  }
+  .calc-res-lbl {
+    @apply text-sm text-cream/70;
+  }
+  .calc-res-val {
+    @apply font-serif text-lg tabular-nums whitespace-nowrap;
+  }
+  .calc-res-strong .calc-res-lbl {
+    @apply text-cream font-medium;
+  }
+  .calc-res-strong .calc-res-val {
+    @apply text-xl text-cream;
+  }
+
+  /* Curseurs — piste crème, poignée or */
+  .calc-range {
+    @apply w-full appearance-none bg-transparent cursor-pointer;
+    height: 28px;
+  }
+  .calc-range::-webkit-slider-runnable-track {
+    height: 5px;
+    border-radius: 999px;
+    background: linear-gradient(to right, #D4A82D var(--fill, 30%), #EDE6D3 var(--fill, 30%));
+  }
+  .calc-range::-moz-range-track {
+    height: 5px;
+    border-radius: 999px;
+    background: #EDE6D3;
+  }
+  .calc-range::-moz-range-progress {
+    height: 5px;
+    border-radius: 999px;
+    background: #D4A82D;
+  }
+  .calc-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 22px;
+    width: 22px;
+    margin-top: -8.5px;
+    border-radius: 999px;
+    background: #03102E;
+    border: 3px solid #D4A82D;
+    box-shadow: 0 2px 8px rgba(3, 16, 46, 0.25);
+    transition: transform 0.15s var(--ease-apple);
+  }
+  .calc-range::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+  .calc-range::-moz-range-thumb {
+    height: 22px;
+    width: 22px;
+    border-radius: 999px;
+    background: #03102E;
+    border: 3px solid #D4A82D;
+    box-shadow: 0 2px 8px rgba(3, 16, 46, 0.25);
+  }
+</style>
+
+<script>
+  (function () {
+    function initCalc() {
+      const root = document.querySelector('article');
+      if (!root) return;
+      const ranges = Array.from(document.querySelectorAll('.calc-range')) as HTMLInputElement[];
+      if (!ranges.length) return;
+      const out = document.querySelector('.calc-range') as HTMLInputElement | null;
+      if (out && (out as any).dataset.wired) return;
+      ranges.forEach((r) => ((r as any).dataset.wired = '1'));
+
+      const state: Record<string, number> = {};
+      const fmt0 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
+      const fmt2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      function euro(n: number) { return fmt0.format(Math.round(n)) + ' €'; }
+
+      function readVal(el: HTMLElement, sel: string) {
+        return document.querySelector('[data-' + el + '="' + sel + '"]') as HTMLElement | null;
+      }
+
+      function fill(r: HTMLInputElement) {
+        const min = parseFloat(r.min), max = parseFloat(r.max), v = parseFloat(r.value);
+        const pct = max > min ? ((v - min) / (max - min)) * 100 : 0;
+        r.style.setProperty('--fill', pct + '%');
+      }
+
+      function labelFor(k: string, v: number) {
+        if (k === 'prix' || k === 'travaux' || k === 'charges' || k === 'loyer' || k === 'emprunt') return euro(v);
+        if (k === 'duree') return fmt0.format(v) + ' ans';
+        if (k === 'notaire') return fmt0.format(v) + ' %';
+        if (k === 'taux' || k === 'assur') return fmt2.format(v).replace('.', ',') + ' %';
+        return '' + v;
+      }
+
+      function compute() {
+        const prix = state.prix, notaire = state.notaire, travaux = state.travaux;
+        const loyer = state.loyer, charges = state.charges;
+        const emprunt = state.emprunt, duree = state.duree, taux = state.taux, assur = state.assur;
+
+        const fraisNotaire = prix * (notaire / 100);
+        const cout = prix + fraisNotaire + travaux;
+        const loyerAn = loyer * 12;
+
+        const brute = cout > 0 ? (loyerAn / cout) * 100 : 0;
+        const nette = cout > 0 ? ((loyerAn - charges) / cout) * 100 : 0;
+
+        // Mensualité crédit (amortissement constant)
+        const n = duree * 12;
+        const im = taux / 100 / 12;
+        let mCredit = 0;
+        if (emprunt > 0 && n > 0) {
+          mCredit = im > 0 ? (emprunt * im) / (1 - Math.pow(1 + im, -n)) : emprunt / n;
+        }
+        const mAssur = (emprunt * (assur / 100)) / 12;
+        const mTotal = mCredit + mAssur;
+
+        const cashflow = loyer - mTotal - charges / 12;
+        const coutIntAssur = mCredit * n - emprunt + mAssur * n;
+
+        set('brute', fmt2.format(brute).replace('.', ',') + ' %');
+        set('nette', fmt2.format(nette).replace('.', ',') + ' %');
+        set('mcredit', euro(mCredit));
+        set('massur', euro(mAssur));
+        set('mtotal', euro(mTotal));
+        set('cout', euro(cout));
+        set('cintassur', euro(coutIntAssur));
+
+        const cfEl = readVal('res', 'cashflow');
+        const cfBox = document.querySelector('[data-cf-box]') as HTMLElement | null;
+        const cfNote = readVal('res', 'cfnote');
+        if (cfEl) cfEl.textContent = (cashflow >= 0 ? '+' : '') + euro(cashflow).replace('€', '€/mois');
+        if (cfBox) cfBox.style.background = cashflow >= 0 ? 'rgba(62, 98, 71, 0.35)' : 'rgba(167, 128, 31, 0.18)';
+        if (cfEl) cfEl.className = 'font-serif text-3xl leading-none ' + (cashflow >= 0 ? 'text-or-light' : 'text-cream');
+        if (cfNote) {
+          cfNote.textContent = cashflow >= 0
+            ? "Le bien s'autofinance et dégage un excédent chaque mois."
+            : "Effort d'épargne mensuel à prévoir pour couvrir l'opération.";
+        }
+
+        // Note apport
+        const apport = cout - emprunt;
+        const apportEl = document.querySelector('[data-note="apport"]') as HTMLElement | null;
+        if (apportEl) {
+          if (apport > 0) apportEl.textContent = 'Apport implicite : ' + euro(apport);
+          else if (apport < 0) apportEl.textContent = 'Emprunt supérieur au coût total (frais financés + trésorerie).';
+          else apportEl.textContent = 'Financement à 100 %, sans apport.';
+        }
+      }
+
+      function set(key: string, val: string) {
+        const el = readVal('res', key);
+        if (el) el.textContent = val;
+      }
+
+      ranges.forEach((r) => {
+        const k = (r as any).dataset.k as string;
+        state[k] = parseFloat(r.value);
+        fill(r);
+        const outEl = readVal('out', k);
+        if (outEl) outEl.textContent = labelFor(k, state[k]);
+        r.addEventListener('input', () => {
+          state[k] = parseFloat(r.value);
+          fill(r);
+          const o = readVal('out', k);
+          if (o) o.textContent = labelFor(k, state[k]);
+          compute();
+        });
+        // Empêche la molette de modifier le curseur en scrollant la page (desktop uniquement, le tactile n'émet pas de wheel)
+        r.addEventListener('wheel', (e) => { e.preventDefault(); }, { passive: false });
+      });
+
+      compute();
+    }
+
+    initCalc();
+    document.addEventListener('astro:page-load', initCalc);
+  })();
+</script>
