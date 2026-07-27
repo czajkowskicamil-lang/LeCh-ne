@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Simulateur d'intérêts composés — épargne long terme | Le Chêne Patrimonial";
+const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Simulez la puissance des intérêts composés avec un capital de départ et des versements réguliers. Gratuit.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Intérêts composés</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Épargne
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">La force des intérêts composés</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Le temps est votre meilleur allié. Un peu chaque mois, laissé fructifier assez longtemps, se transforme en une somme qui surprend toujours. Voyez par vous-même.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Capital de départ <b id="ic-cap-val">5 000 €</b></label>
+            <input class="tool-range" type="range" id="ic-cap" min="0" max="200000" step="1000" value="5000" />
+          </div>
+          <div class="tool-field">
+            <label>Versement mensuel <b id="ic-vm-val">200 €</b></label>
+            <input class="tool-range" type="range" id="ic-vm" min="0" max="3000" step="50" value="200" />
+          </div>
+          <div class="tool-field">
+            <label>Durée <b id="ic-dur-val">20 ans</b></label>
+            <input class="tool-range" type="range" id="ic-dur" min="1" max="40" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Rendement annuel moyen <b id="ic-tx-val">5,0 %</b></label>
+            <input class="tool-range" type="range" id="ic-tx" min="0" max="12" step="0.5" value="5" />
+          </div>
+          <p class="tool-note">Intérêts composés, versements en début de période mensuelle non indexés, hors inflation et hors fiscalité. Le rendement passé ne préjuge pas du rendement futur.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Capital final estimé</p>
+          <p class="big" id="ic-final">—</p>
+          <div class="ic-bar"><div class="ic-seg" id="ic-bar-v"></div><div class="ic-seg" id="ic-bar-g"></div></div>
+          <div class="ic-leg">
+            <span><i style="background:#3a5f86"></i> Total versé</span>
+            <span><i style="background:#D4A82D"></i> Intérêts générés</span>
+          </div>
+          <div class="tool-brk"><span class="k">Total versé de votre poche</span><span class="v" id="ic-verse">—</span></div>
+          <div class="tool-brk"><span class="k">Intérêts générés</span><span class="v" id="ic-gains">—</span></div>
+          <div class="tool-brk"><span class="k">Part des intérêts dans le total</span><span class="v" id="ic-part">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Pourquoi commencer tôt change tout</h2>
+      <p>Les intérêts composés, ce sont des intérêts qui produisent eux-mêmes des intérêts. Au début, l'effet est discret. Puis il s'accélère : sur les dernières années, ce sont les gains, plus que vos versements, qui font gonfler le capital.</p>
+      <p>C'est pour cela qu'un même effort d'épargne rapporte bien plus quand on s'y prend tôt. Le bon placement, dans la bonne enveloppe, au bon moment : c'est ce qui transforme une habitude en patrimoine.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  .ic-bar{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:4px 0 12px;background:#213a5e;}
+  .ic-seg{height:100%;transition:width .2s;}
+  #ic-bar-v{background:#3a5f86;} #ic-bar-g{background:#D4A82D;}
+  .ic-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-bottom:14px;}
+  .ic-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .ic-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const P0=+document.getElementById('ic-cap').value, PM=+document.getElementById('ic-vm').value,
+        Y=+document.getElementById('ic-dur').value, T=+document.getElementById('ic-tx').value;
+      document.getElementById('ic-cap-val').textContent=eur(P0);
+      document.getElementById('ic-vm-val').textContent=eur(PM);
+      document.getElementById('ic-dur-val').textContent=Y+' ans';
+      document.getElementById('ic-tx-val').textContent=T.toFixed(1).replace('.',',')+' %';
+      const r=T/1200, n=Y*12;
+      const growth=r>0?Math.pow(1+r,n):1;
+      const fv = r>0 ? P0*growth + PM*(growth-1)/r : P0+PM*n;
+      const verse = P0 + PM*n;
+      const gains = Math.max(0, fv - verse);
+      document.getElementById('ic-final').textContent=eur(fv);
+      document.getElementById('ic-verse').textContent=eur(verse);
+      document.getElementById('ic-gains').textContent=eur(gains);
+      document.getElementById('ic-part').textContent=(fv>0?(gains/fv*100):0).toFixed(0)+' %';
+      document.getElementById('ic-bar-v').style.width=(fv>0?verse/fv*100:100)+'%';
+      document.getElementById('ic-bar-g').style.width=(fv>0?gains/fv*100:0)+'%';
+    }
+    function init(){
+      const r=document.getElementById('ic-cap'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['ic-cap','ic-vm','ic-dur','ic-tx'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('ic-cap');if(r)r.dataset.ready='';init();});
+  })();
+</script>

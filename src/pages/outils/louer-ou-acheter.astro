@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Louer ou acheter ? Le comparatif chiffré | Le Chêne Patrimonial";
+const description = "Faut-il acheter votre résidence ou rester locataire et investir ? Comparez le patrimoine final des deux scénarios selon vos hypothèses. Simulateur gratuit.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Louer ou acheter</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Immobilier
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Louer ou acheter ?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Acheter n'est pas toujours gagnant, louer non plus. Tout dépend de la durée, des prix et de ce que vous feriez de votre épargne. Voici la comparaison, chiffrée et honnête.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Prix du bien <b id="la-prix-val">300 000 €</b></label>
+            <input class="tool-range" type="range" id="la-prix" min="80000" max="1200000" step="10000" value="300000" />
+          </div>
+          <div class="tool-field">
+            <label>Apport personnel <b id="la-app-val">30 000 €</b></label>
+            <input class="tool-range" type="range" id="la-app" min="0" max="400000" step="5000" value="30000" />
+          </div>
+          <div class="tool-field">
+            <label>Loyer du même logement / mois <b id="la-loy-val">1 000 €</b></label>
+            <input class="tool-range" type="range" id="la-loy" min="300" max="4000" step="50" value="1000" />
+          </div>
+          <div class="tool-field">
+            <label>Durée du projet <b id="la-dur-val">20 ans</b></label>
+            <input class="tool-range" type="range" id="la-dur" min="3" max="30" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Taux du crédit <b id="la-tx-val">3,50 %</b></label>
+            <input class="tool-range" type="range" id="la-tx" min="1" max="6" step="0.05" value="3.5" />
+          </div>
+          <div class="tool-field">
+            <label>Revalorisation du bien / an <b id="la-rev-val">2,0 %</b></label>
+            <input class="tool-range" type="range" id="la-rev" min="-2" max="6" step="0.5" value="2" />
+          </div>
+          <div class="tool-field">
+            <label>Rendement de votre épargne / an <b id="la-epg-val">4,0 %</b></label>
+            <input class="tool-range" type="range" id="la-epg" min="0" max="10" step="0.5" value="4" />
+          </div>
+          <p class="tool-note">Hypothèses fixes : frais de notaire 7,5 %, charges de propriétaire 1,5 %/an du prix (taxe foncière, copropriété, entretien), crédit remboursé sur la durée du projet. Comparaison de patrimoine à hypothèses données : ce n'est pas une prédiction.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Le plus avantageux sur la durée</p>
+          <p class="big" id="la-verdict">—</p>
+          <div class="tool-brk"><span class="k">Patrimoine final si vous achetez</span><span class="v" id="la-pat-a">—</span></div>
+          <div class="tool-brk"><span class="k">Patrimoine final si vous louez et investissez</span><span class="v" id="la-pat-l">—</span></div>
+          <div class="tool-brk"><span class="k">Écart en votre faveur</span><span class="v" id="la-ecart">—</span></div>
+          <div class="tool-brk"><span class="k">Coût mensuel propriétaire</span><span class="v" id="la-cout">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Comment lire ce résultat</h2>
+      <p>Le propriétaire finit avec un bien remboursé, dont la valeur a évolué. Le locataire, lui, place son apport et l'économie mensuelle qu'il réalise (quand louer coûte moins cher que posséder), et laisse cette somme fructifier. On compare les deux patrimoines à la fin.</p>
+      <p>La bascule dépend surtout de <strong>la durée</strong> (plus on reste longtemps, plus acheter devient intéressant) et du <strong>rendement de votre épargne</strong>. Il n'y a pas de bonne réponse universelle, seulement la vôtre. C'est là qu'un regard extérieur aide à décider sereinement.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const prix=+document.getElementById('la-prix').value, app=+document.getElementById('la-app').value,
+        loy=+document.getElementById('la-loy').value, dur=+document.getElementById('la-dur').value,
+        tx=+document.getElementById('la-tx').value, rev=+document.getElementById('la-rev').value, epg=+document.getElementById('la-epg').value;
+      document.getElementById('la-prix-val').textContent=eur(prix);
+      document.getElementById('la-app-val').textContent=eur(app);
+      document.getElementById('la-loy-val').textContent=eur(loy);
+      document.getElementById('la-dur-val').textContent=dur+' ans';
+      document.getElementById('la-tx-val').textContent=tx.toFixed(2).replace('.',',')+' %';
+      document.getElementById('la-rev-val').textContent=rev.toFixed(1).replace('.',',')+' %';
+      document.getElementById('la-epg-val').textContent=epg.toFixed(1).replace('.',',')+' %';
+
+      const n=dur*12;
+      // Acheter
+      const cout=prix*1.075, emprunt=Math.max(0,cout-app), r=tx/1200;
+      const mens = emprunt>0 ? (r>0 ? emprunt*r/(1-Math.pow(1+r,-n)) : emprunt/n) : 0;
+      const chargesM = prix*0.015/12;
+      const coutProprio = mens + chargesM;
+      const valeurBien = prix*Math.pow(1+rev/100,dur);
+      const patA = valeurBien;
+      // Louer et investir
+      const s=epg/1200, g=s>0?Math.pow(1+s,n):1;
+      const diff=Math.max(0, coutProprio - loy);
+      const patL = s>0 ? app*g + diff*(g-1)/s : app + diff*n;
+
+      const delta = patA - patL;
+      const vEl=document.getElementById('la-verdict');
+      if (delta>=0){ vEl.textContent='Acheter'; vEl.style.color='#7bbd90'; }
+      else { vEl.textContent='Louer et investir'; vEl.style.color='#E6C259'; }
+      document.getElementById('la-pat-a').textContent=eur(patA);
+      document.getElementById('la-pat-l').textContent=eur(patL);
+      document.getElementById('la-ecart').textContent='+ '+eur(Math.abs(delta));
+      document.getElementById('la-cout').textContent=eur(coutProprio);
+    }
+    function init(){
+      const r=document.getElementById('la-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['la-prix','la-app','la-loy','la-dur','la-tx','la-rev','la-epg'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('la-prix');if(r)r.dataset.ready='';init();});
+  })();
+</script>
