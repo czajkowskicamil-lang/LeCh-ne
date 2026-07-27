@@ -9,7 +9,7 @@ const path = Astro.url.pathname;
   <div class="shell flex items-center justify-between h-20">
     <Logo />
 
-    <nav class="hidden lg:flex items-center gap-10" aria-label="Navigation principale">
+    <nav class="hidden lg:flex items-center gap-7" aria-label="Navigation principale">
       {nav.map((item) => {
         const active = path === item.href || (item.href !== '/' && path.startsWith(item.href));
         return (

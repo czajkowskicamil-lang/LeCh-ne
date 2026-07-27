@@ -1,0 +1,339 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import { site } from '../data/site';
+
+const title = "L'Observatoire du Chêne 2026, où investir dans l'immobilier d'ici 2045 | Le Chêne Patrimonial";
+const description = "Étude des 40 premières villes de France : démographie, âge, vacance, emploi, prix et rendement locatif. Une lecture pour anticiper l'immobilier des vingt prochaines années.";
+---
+
+<Base title={title} description={description}>
+  <article>
+    <!-- Hero -->
+    <header class="pt-16 pb-10 md:pt-24 md:pb-14">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+          <a href="/" class="hover:text-chene">Accueil</a>
+          <span>/</span>
+          <span class="text-ink">Observatoire</span>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          L'Observatoire du Chêne · Une lecture 2026
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-8 leading-tight">Où l'immobilier français vaudra-t-il encore quelque chose en 2045 ?</h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed mb-10">
+          Anticiper vingt ans d'immobilier ne se joue pas sur le prix d'aujourd'hui, mais sur l'âge des villes. En croisant plusieurs signaux sur les 40 premières communes de France, une carte du risque et de l'opportunité se dessine. Voici notre lecture, méthode ouverte.
+        </p>
+
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone border-t border-ink/10 pt-6">
+          <span><span class="text-ink font-medium">Périmètre</span> · 40 communes les plus peuplées</span>
+          <span><span class="text-ink font-medium">Démographie, âge, vacance</span> · INSEE 2023</span>
+          <span><span class="text-ink font-medium">Chômage</span> · INSEE, zones d'emploi, T1 2026</span>
+          <span><span class="text-ink font-medium">Prix &amp; loyers</span> · 2025-2026</span>
+        </div>
+
+        <div class="flex items-center gap-3 mt-6">
+          <span class="w-9 h-9 rounded-full bg-chene flex items-center justify-center text-cream font-serif text-xs">CC</span>
+          <div class="text-sm">
+            <p class="text-ink font-medium leading-tight">Camil Czajkowski</p>
+            <p class="text-xs text-stone">Fondateur · Le Chêne Patrimonial · Juillet 2026</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell max-w-5xl pb-20 md:pb-28">
+
+      <!-- Thèse -->
+      <div class="reveal bg-navy text-cream rounded-2xl p-8 md:p-12 mb-16">
+        <p class="eyebrow-cream mb-4">La thèse de l'étude</p>
+        <p class="font-serif text-2xl md:text-4xl leading-tight text-cream-soft text-balance">
+          Pour anticiper ce que vaudra un bien dans vingt ans, une donnée éclaire plus que son prix : <em class="text-or-light not-italic italic">l'âge de la ville</em>. Une ville jeune qui se remplit se protège. Une ville âgée qui se vide s'expose à la vague d'héritages qui arrive.
+        </p>
+        <p class="mt-6 text-cream/70 max-w-prose-wide leading-relaxed">
+          Hypothèse de travail : d'ici 2050, 5 000 à 7 000 milliards d'euros se transmettront entre générations, en grande partie en immobilier. Cette vague ne ferait pas baisser les prix partout. Elle pèserait sur les territoires déjà vieux et vacants, quand les villes jeunes l'absorberaient. La transmission ne noierait pas le marché, elle le trierait. Le reste de l'étude teste cette idée sur les chiffres.
+        </p>
+      </div>
+
+      <!-- Méthode -->
+      <div class="reveal grid sm:grid-cols-3 border border-ink/10 rounded-2xl overflow-hidden mb-20 bg-cream-soft">
+        <div class="p-6 border-b sm:border-b-0 sm:border-r border-ink/10">
+          <h4 class="font-serif text-ink text-base mb-2">Échelle communale, un choix assumé</h4>
+          <p class="text-sm text-stone leading-relaxed">On lit la <span class="text-ink font-medium">commune</span>, pas l'aire d'attraction : c'est là qu'on achète un bien précis. Une agglomération peut diverger de sa ville-centre. À garder en tête.</p>
+        </div>
+        <div class="p-6 border-b sm:border-b-0 sm:border-r border-ink/10">
+          <h4 class="font-serif text-ink text-base mb-2">L'indice d'alerte, une règle ouverte</h4>
+          <p class="text-sm text-stone leading-relaxed">Pas de jugement caché. Il compte <span class="text-ink font-medium">trois signaux au rouge</span> : 65 ans et plus au-delà de 20 %, vacance au-delà de 10 %, population en recul. De 0 à 3, sur données INSEE.</p>
+        </div>
+        <div class="p-6">
+          <h4 class="font-serif text-ink text-base mb-2">Rendement brut, indicatif</h4>
+          <p class="text-sm text-stone leading-relaxed">Loyer sur prix, <span class="text-ink font-medium">hors charges, taxe foncière et fiscalité</span>. En net, l'écart entre villes se resserre. Un ordre de grandeur, pas une promesse.</p>
+        </div>
+      </div>
+
+      <!-- Toile de fond natalité -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">La toile de fond : une France qui ne se renouvelle plus</h2>
+        <p class="text-stone max-w-prose-wide mb-8">Avant de regarder les villes une à une, un fait national change la donne : le pays ne remplace plus ses générations.</p>
+        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-2xl p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">645 000</div>
+            <p class="mt-3 text-sm text-stone">naissances en 2025, <span class="text-ink font-medium">−2,1 % sur un an</span></p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-2xl p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">651 000</div>
+            <p class="mt-3 text-sm text-stone">décès en 2025, <span class="text-ink font-medium">+1,5 % sur un an</span></p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-2xl p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">−6 000</div>
+            <p class="mt-3 text-sm text-stone">solde naturel : <span class="text-ink font-medium">plus de décès que de naissances, une première depuis 1945</span></p>
+          </div>
+        </div>
+        <div class="bg-cream-soft border border-ink/10 rounded-2xl p-6 md:p-8 space-y-4 text-ink/85 leading-relaxed">
+          <p>Le tournant est là. En 2025, pour la première fois depuis la fin de la Seconde Guerre mondiale, la France a enregistré <strong class="text-ink">plus de décès que de naissances</strong>. Avec une fécondité tombée à 1,66 enfant par femme, loin du seuil de renouvellement de 2,1, le pays ne se régénère plus par lui-même. Conséquence directe pour l'immobilier : <strong class="text-ink">une ville ne grandit plus par ses berceaux, seulement si elle attire.</strong> Sans apport extérieur, la population diminue. L'attractivité n'est plus un bonus, c'est le seul moteur de la demande.</p>
+          <p>Pourquoi les prix n'ont-ils pas déjà reculé partout ? Parce qu'un amortisseur a longtemps joué : les ménages se sont multipliés plus vite que la population (séparations, vie en solo, veuvage). Moins d'habitants, mais plus de foyers à loger. Cet amortisseur s'épuise, et à mesure qu'il faiblit, la natalité en berne commencera à peser, d'abord là où personne ne vient s'installer.</p>
+          <p><strong class="text-ink">L'effet ciseau.</strong> Croisez cette natalité basse, soit moins de demande future, avec la vague d'héritages, soit plus d'offre future. Dans les villes qui n'attirent pas, les deux lames se referment sur les prix. Dans celles qui attirent, la migration absorbe le choc.</p>
+        </div>
+      </section>
+
+      <!-- Quatre dynamiques -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">Quatre dynamiques de villes</h2>
+        <p class="text-stone max-w-prose-wide mb-8">Une lecture éditoriale, illustrée par des exemples typiques. La mesure objective, ville par ville, reste l'indice d'alerte du tableau.</p>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-chene rounded-xl p-6">
+            <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-2">Dynamique 1</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Jeunes et en croissance</h3>
+            <p class="text-sm text-ink/80 mb-4">Population qui monte, peu de seniors, faible vacance. Ces villes se renouvellent seules : la demande des vingt prochaines années paraît sécurisée.</p>
+            <p class="text-sm text-stone">Rennes · Toulouse · Montpellier · Nantes · Bordeaux · Lille</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-or rounded-xl p-6">
+            <p class="text-xs uppercase tracking-micro text-or-dark font-semibold mb-2">Dynamique 2</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Premium senior, Sud et montagne</h3>
+            <p class="text-sm text-ink/80 mb-4">Très âgées, donc porteuses de signaux d'alerte, mais chères et recherchées. Des aimants à retraités où le flux d'arrivants aisés compense la transmission.</p>
+            <p class="text-sm text-stone">Nice · Toulon · Aix · Annecy</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 rounded-xl p-6" style="border-top-color:#B0442F">
+            <p class="text-xs uppercase tracking-micro font-semibold mb-2" style="color:#B0442F">Dynamique 3</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Âgées et fragiles</h3>
+            <p class="text-sm text-ink/80 mb-4">Vieilles, population stagnante ou en recul, vacance déjà élevée. La vague d'héritages y frapperait une demande faible. Le vrai point de vigilance.</p>
+            <p class="text-sm text-stone">Perpignan · Le Havre · Saint-Étienne · Limoges · Nîmes</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-stone rounded-xl p-6">
+            <p class="text-xs uppercase tracking-micro text-stone font-semibold mb-2">Dynamique 4</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Matures, à surveiller</h3>
+            <p class="text-sm text-ink/80 mb-4">Ni franchement jeunes ni en déclin net. Tout se jouera sur leur capacité à attirer, souvent quartier par quartier plus qu'en bloc.</p>
+            <p class="text-sm text-stone">Paris · Lyon · Grenoble · Metz · Caen</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tableau -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">Le tableau complet</h2>
+        <div class="bg-cream-deep/60 border border-or/30 rounded-xl p-5 mb-6 text-sm text-ink/85">
+          <strong class="text-ink">Comment lire l'indice d'alerte.</strong> Il additionne trois signaux INSEE au rouge : 65 ans et + ≥ 20 %, vacance ≥ 10 %, population 2017-2023 en recul. Score de 0 à 3. Il mesure l'exposition au vieillissement et à la vague d'héritages, pas la qualité globale d'un investissement.
+        </div>
+        <p class="text-stone text-sm mb-4">Les 40 villes, classées par population. Cliquez sur un en-tête chiffré pour trier.</p>
+        <div class="overflow-x-auto border border-ink/10 rounded-xl bg-cream-soft">
+          <table id="obs-tbl" class="w-full border-collapse text-sm" style="min-width:880px">
+            <thead>
+              <tr>
+                <th data-k="0">#</th><th data-k="1">Ville</th>
+                <th data-k="3" data-num="1">Démo. 17-23</th>
+                <th data-k="4" data-num="1">65 ans +</th>
+                <th data-k="5" data-num="1">Vacance</th>
+                <th data-k="6" data-num="1">Chômage</th>
+                <th data-k="7" data-num="1">Prix €/m²</th>
+                <th data-k="8" data-num="1">Rendt brut</th>
+                <th>Alerte</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-stone mt-4 items-center">
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a0">0/3</span> serein</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a1">1/3</span> à surveiller</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a2">2/3</span> vigilance</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a3">3/3</span> risque élevé</span>
+          <span class="sm:ml-auto">DOM = contexte macro très différent (chômage 16-18 %)</span>
+        </div>
+      </section>
+
+      <!-- Rendement -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">Ce que révèle le rendement</h2>
+        <p class="text-stone max-w-prose-wide mb-6">Le marché n'est pas naïf. Là où il rémunère le mieux, c'est souvent qu'il paie un risque.</p>
+        <div class="bg-cream-soft border border-ink/10 rounded-2xl p-6 md:p-8 space-y-4 text-ink/85 leading-relaxed">
+          <p>Les rendements bruts les plus élevés se trouvent presque tous dans les villes les plus âgées et les plus vacantes : <strong class="text-ink">Saint-Étienne 10,7 %, Limoges 8,7 %, Le Havre 8,1 %, Perpignan 7,7 %</strong>. Le prix d'entrée y est bas, donc le loyer rapporte gros, mais le capital est exposé au vieillissement. À l'inverse, les villes jeunes et premium plafonnent à <strong class="text-ink">3,7 à 4,5 %</strong> (Annecy, Aix, Paris, Boulogne) : on y échange du rendement contre de la sécurité.</p>
+          <p>Nuance décisive : ces chiffres sont <strong class="text-ink">bruts</strong>. En net, l'écart fond. Les villes à fort rendement cumulent taxe foncière plus lourde, vacance plus fréquente et risque d'impayés supérieur. Un 10 % brut fragile peut finir sous un 5 % brut sécurisé. Le rendement affiché ne dit rien de la revente.</p>
+        </div>
+      </section>
+
+      <!-- Grille -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">La grille de lecture du conseiller</h2>
+        <p class="text-stone max-w-prose-wide mb-8">Aucun signal ne suffit seul. C'est leur croisement qui construit une décision solide.</p>
+        <div class="grid sm:grid-cols-2 gap-6 mb-8">
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">L'âge de la ville</h4><p class="text-sm text-ink/80">Le signal d'anticipation. Beaucoup de seniors, c'est une vague de biens transmis dans dix à vingt ans. Une chance si la demande suit, un risque si elle décline.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">La trajectoire de population</h4><p class="text-sm text-ink/80">Qui arrive, qui part. Une ville qui se remplit absorbera l'offre future. Une ville qui se vide la subira.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">La vacance</h4><p class="text-sm text-ink/80">Le thermomètre du trop-plein. Une vacance déjà haute signale un marché qui peine à absorber, avant même la vague d'héritages.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">Le rendement</h4><p class="text-sm text-ink/80">Le prix du risque. Un rendement très élevé n'est pas un cadeau, c'est une prime versée contre une incertitude sur le capital.</p></div>
+        </div>
+        <div class="bg-navy text-cream/90 rounded-2xl p-6 md:p-8">
+          <p class="leading-relaxed">La cible la plus robuste croise les quatre : <strong class="text-or-light font-semibold">une ville jeune, qui gagne des habitants, à faible vacance, avec un rendement encore correct.</strong> Rennes, Nantes, Bordeaux, Montpellier, Angers, Rouen cochent le plus de cases. Pas les plus rentables sur le papier, mais celles où l'on dort tranquille sur vingt ans.</p>
+        </div>
+      </section>
+
+      <!-- Pièges -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-6">Deux pièges à éviter</h2>
+        <div class="space-y-4">
+          <div class="bg-cream-deep/60 border border-or/30 rounded-xl p-6 text-ink/85"><p><strong class="text-ink">Le mirage du rendement.</strong> Un rendement brut de 10 % à Saint-Étienne ou Limoges attire l'œil. Mais seniors au-delà de 20 %, vacance élevée, population qui stagne : le loyer rentre, et pendant ce temps le bien peut perdre de la valeur et devenir difficile à revendre. Le rendement brut ne dit rien de la sortie.</p></div>
+          <div class="bg-cream-deep/60 border border-or/30 rounded-xl p-6 text-ink/85"><p><strong class="text-ink">Attractif n'est pas peuplé.</strong> Mulhouse est arrivée en tête de plusieurs classements d'attractivité 2026. Dans les faits, elle a perdu près de 4 % de sa population et sort du top 40. Un classement mesure l'intérêt, pas les habitants qui s'installent vraiment.</p></div>
+        </div>
+      </section>
+
+      <!-- Conviction -->
+      <section class="mb-20">
+        <div class="reveal bg-navy text-cream rounded-2xl p-8 md:p-12">
+          <p class="eyebrow-cream mb-4">Notre conviction</p>
+          <p class="font-serif text-2xl md:text-3xl leading-snug text-cream-soft text-balance">La France immobilière se coupe en deux. La ligne de fracture n'est pas le prix, c'est l'âge et la capacité d'une ville à attirer.</p>
+          <p class="mt-5 text-cream/75 max-w-prose-wide leading-relaxed">La vague d'héritages qui arrive récompensera les villes jeunes qui se remplissent et pèsera sur celles qui vieillissent et se vident. Anticiper aujourd'hui, c'est choisir le bon territoire, la bonne enveloppe et la bonne stratégie de transmission, avant que l'écart ne se creuse. C'est précisément le travail que nous menons à vos côtés.</p>
+        </div>
+      </section>
+
+      <!-- Sources -->
+      <section class="text-sm text-stone">
+        <h2 class="font-serif text-2xl md:text-3xl text-ink mb-4">Sources, limites et honnêteté de méthode</h2>
+        <ul class="space-y-2 list-disc pl-5 marker:text-or mb-4">
+          <li><span class="text-ink font-medium">Données solides</span> : démographie, part des 65 ans et plus, taux de vacance (INSEE, recensement 2023) et chômage par zone d'emploi (INSEE, T1 2026).</li>
+          <li><span class="text-ink font-medium">Natalité et mortalité</span> : chiffres nationaux (INSEE, bilan démographique 2025 : 645 000 naissances, 651 000 décès, solde naturel −6 000). Toile de fond nationale, pas une donnée par ville.</li>
+          <li><span class="text-ink font-medium">Échelle</span> : lecture en commune, pas en aire d'attraction. Choix assumé, à garder à l'esprit.</li>
+          <li><span class="text-ink font-medium">Prix et loyers</span> : prix appartement MeilleursAgents (juillet 2026), loyers Carte des loyers (DHUP) et portails. Rendement brut indicatif.</li>
+          <li><span class="text-ink font-medium">Évolution des prix sur 5 ans</span> : volontairement écartée, sources publiques trop divergentes pour un chiffre par ville fiable.</li>
+          <li><span class="text-ink font-medium">Cas particuliers</span> : les deux communes des DOM figurent pour l'exhaustivité, mais leur contexte macro les rend peu comparables.</li>
+          <li><span class="text-ink font-medium">Nature de l'exercice</span> : corrélations à un instant donné, pas lois causales. La thèse de la transmission est une hypothèse argumentée.</li>
+          <li><span class="text-ink font-medium">Pour une prochaine édition</span> : encadrement des loyers, fin du Pinel, passoires thermiques (DPE), fiscalité locale, part des étudiants.</li>
+        </ul>
+        <p class="italic">Document à visée pédagogique. Ne constitue pas un conseil en investissement personnalisé. Chaque projet mérite une analyse adaptée à votre situation.</p>
+      </section>
+
+    </div>
+  </article>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  #obs-tbl thead th {
+    position: sticky; top: 0; background: #FAF7EF; text-align: right; font-size: .68rem;
+    letter-spacing: .05em; text-transform: uppercase; color: #7A7566; font-weight: 700;
+    padding: 12px 12px; border-bottom: 2px solid rgba(3,16,46,.12); white-space: nowrap; font-family: 'Inter Variable', Inter, sans-serif;
+  }
+  #obs-tbl thead th:nth-child(1), #obs-tbl thead th:nth-child(2) { text-align: left; }
+  #obs-tbl thead th[data-k] { cursor: pointer; }
+  #obs-tbl thead th[data-k]:hover { color: #A7801F; }
+  #obs-tbl tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(3,16,46,.08); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #obs-tbl tbody td.obs-city { text-align: left; font-weight: 600; color: #03102E; font-family: 'Fraunces Variable', Fraunces, serif; font-size: .95rem; }
+  #obs-tbl tbody td.obs-rank { text-align: left; color: #7A7566; width: 30px; }
+  #obs-tbl tbody tr:hover { background: rgba(212,168,45,.06); }
+  #obs-tbl .obs-dom { color: #A7801F; font-size: .68rem; }
+  .obs-pill { display: inline-block; padding: 2px 8px; border-radius: 7px; font-weight: 600; min-width: 50px; font-variant-numeric: tabular-nums; }
+  .obs-g { background: #e2ebdf; color: #2D4A33; }
+  .obs-r { background: #f4ddd3; color: #B0442F; }
+  .obs-w { background: #f3e7cf; color: #6E5414; }
+  .obs-n { color: #7A7566; }
+  .obs-alert { display: inline-block; padding: 2px 10px; border-radius: 20px; font-weight: 700; font-size: .78rem; font-variant-numeric: tabular-nums; }
+  .obs-a0 { background: #e2ebdf; color: #2D4A33; }
+  .obs-a1 { background: rgba(122,117,102,.16); color: #504B3F; }
+  .obs-a2 { background: #f3e7cf; color: #6E5414; }
+  .obs-a3 { background: #f4ddd3; color: #B0442F; }
+</style>
+
+<script is:inline>
+  (function () {
+    const data = [
+      [1,"Paris",0,-3.8,17.7,9.9,7.8,"9 661",4.0,0],[2,"Marseille",0,2.6,19.5,7.6,10.2,"3 626",5.4,0],
+      [3,"Lyon",0,0.6,14.9,9.3,7.4,"4 663",4.3,0],[4,"Toulouse",0,7.4,13.0,8.2,8.8,"3 564",4.7,0],
+      [5,"Nice",0,5.2,23.4,12.4,7.5,"5 205",4.7,0],[6,"Nantes",0,5.9,14.3,6.1,6.5,"3 455",5.0,0],
+      [7,"Montpellier",0,8.8,14.9,6.9,10.5,"3 433",5.4,0],[8,"Strasbourg",0,4.6,14.8,8.6,8.0,"3 724",5.0,0],
+      [9,"Bordeaux",0,5.3,15.0,6.7,7.8,"4 343",4.4,0],[10,"Lille",0,2.3,11.1,8.0,8.2,"3 375",5.6,0],
+      [11,"Rennes",0,6.5,14.3,6.5,6.9,"4 040",4.4,0],[12,"Toulon",0,4.2,23.8,3.6,7.0,"3 168",5.7,0],
+      [13,"Reims",0,-2.6,17.4,10.0,9.0,"2 687",6.0,0],[14,"Saint-Étienne",0,0.3,20.5,12.0,8.8,"1 230",10.7,0],
+      [15,"Le Havre",0,-2.0,20.9,10.9,9.7,"1 919",8.1,0],[16,"Villeurbanne",0,10.8,13.6,8.1,7.4,"3 703",5.2,0],
+      [17,"Dijon",0,3.1,17.9,7.3,6.8,"2 710",6.1,0],[18,"Angers",0,4.0,17.9,5.9,8.0,"3 268",5.1,0],
+      [19,"Grenoble",0,-1.5,15.3,13.5,6.9,"2 556",6.6,0],[20,"Saint-Denis",0,5.2,14.5,8.8,16.0,"2 780",8.6,1],
+      [21,"Nîmes",0,0.8,21.3,11.1,10.1,"2 401",6.3,0],[22,"Aix-en-Provence",0,5.1,20.0,8.0,6.5,"5 482",3.9,0],
+      [23,"Saint-Denis",0,5.4,10.7,7.2,7.8,"4 054",5.1,0],[24,"Clermont-Ferrand",0,1.7,17.0,9.6,7.2,"2 150",6.7,0],
+      [25,"Le Mans",0,2.3,22.2,9.5,8.4,"2 023",6.5,0],[26,"Brest",0,1.6,17.6,6.5,7.0,"2 467",5.6,0],
+      [27,"Tours",0,2.6,19.1,11.2,7.4,"3 014",5.4,0],[28,"Amiens",0,1.8,16.2,9.3,9.2,"2 559",6.5,0],
+      [29,"Annecy",0,4.1,20.4,7.3,5.1,"5 180",3.7,0],[30,"Limoges",0,-1.7,22.7,9.2,7.6,"1 611",8.7,0],
+      [31,"Metz",0,5.3,17.5,11.0,7.7,"2 358",7.1,0],[32,"Perpignan",0,1.2,23.0,14.6,12.7,"1 794",7.7,0],
+      [33,"Boulogne-Billancourt",0,-0.9,17.4,7.2,7.8,"8 287",3.9,0],[34,"Besançon",0,2.2,18.8,9.5,6.7,"2 473",6.3,0],
+      [35,"Rouen",0,6.8,14.4,9.7,9.1,"2 543",6.1,0],[36,"Orléans",0,-0.3,16.8,10.3,7.6,"2 577",6.7,0],
+      [37,"Montreuil",0,1.9,13.0,5.5,7.8,"6 459",4.5,0],[38,"Caen",0,3.8,18.9,8.9,7.6,"3 131",5.4,0],
+      [39,"Saint-Paul",0,3.4,14.7,9.4,18.1,"5 220",5.1,1],[40,"Argenteuil",0,-3.7,13.6,6.1,7.8,"3 323",6.9,0]
+    ];
+    const num = s => parseFloat((""+s).replace(/\s/g,"").replace(",","."));
+    const pct = v => (v>0?"+":"")+(""+v).replace(".",",")+" %";
+    const demoC = v => v>=3?"obs-g":(v<=-1?"obs-r":"obs-n");
+    const seniorC = v => v>=20?"obs-r":(v<14?"obs-g":"obs-n");
+    const vacC = v => v>=10?"obs-r":(v<=6.5?"obs-g":"obs-n");
+    const chomC = v => v<=7?"obs-g":(v>=9.5?"obs-r":"obs-w");
+    const yieldC = v => v>=7?"obs-g":(v<4.5?"obs-r":"obs-n");
+    const score = r => (r[4]>=20?1:0)+(r[5]>=10?1:0)+(r[3]<=0?1:0);
+    let asc = {};
+
+    function render(rows, tb) {
+      tb.innerHTML = "";
+      rows.forEach(r => {
+        const sc = score(r);
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          '<td class="obs-rank">'+r[0]+'</td>'+
+          '<td class="obs-city">'+r[1]+(r[9]?' <span class="obs-dom">DOM</span>':'')+'</td>'+
+          '<td><span class="obs-pill '+demoC(r[3])+'">'+pct(r[3])+'</span></td>'+
+          '<td><span class="obs-pill '+seniorC(r[4])+'">'+(""+r[4]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-pill '+vacC(r[5])+'">'+(""+r[5]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-pill '+chomC(r[6])+'">'+(""+r[6]).replace(".",",")+' %</span></td>'+
+          '<td>'+r[7]+'</td>'+
+          '<td><span class="obs-pill '+yieldC(r[8])+'">'+(""+r[8]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-alert obs-a'+sc+'">'+sc+'/3</span></td>';
+        tb.appendChild(tr);
+      });
+    }
+
+    function init() {
+      const tbl = document.getElementById("obs-tbl");
+      if (!tbl || tbl.dataset.ready) return;
+      tbl.dataset.ready = "1";
+      const tb = tbl.querySelector("tbody");
+      render(data, tb);
+      tbl.querySelectorAll("thead th[data-k]").forEach(th => {
+        const k = +th.dataset.k, isNum = th.dataset.num;
+        th.addEventListener("click", () => {
+          asc[k] = !asc[k];
+          const sorted = [...data].sort((a,b) => {
+            let x = a[k], y = b[k];
+            if (isNum) { x = num(x); y = num(y); }
+            return (x>y?1:x<y?-1:0)*(asc[k]?1:-1);
+          });
+          render(sorted, tb);
+        });
+      });
+    }
+
+    init();
+    document.addEventListener("astro:page-load", () => {
+      const t = document.getElementById("obs-tbl");
+      if (t) t.dataset.ready = "";
+      init();
+    });
+  })();
+</script>

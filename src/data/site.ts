@@ -18,6 +18,7 @@ export const nav = [
   { label: 'Expertise', href: '/expertise' },
   { label: 'Manifeste', href: '/manifeste' },
   { label: 'Magazine', href: '/magazine' },
+  { label: 'Observatoire', href: '/observatoire' },
   { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
   { label: 'Suisse & France', href: '/suisse-france' },
