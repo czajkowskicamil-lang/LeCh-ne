@@ -1,0 +1,142 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Simulateur PTZ 2026 — montant du Prêt à Taux Zéro par zone et revenu | Le Chêne Patrimonial";
+const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estimez votre PTZ 2026 selon votre zone (A, B1, B2, C), la composition du foyer et vos revenus. Barème officiel.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Simulateur PTZ</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Achat de la résidence principale
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Combien de PTZ pour votre achat ?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Le Prêt à Taux Zéro finance une partie de votre résidence principale sans intérêts. Son montant dépend de votre zone, de la taille de votre foyer et de vos revenus. Estimez le vôtre au barème officiel 2026.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Zone de la commune</label>
+            <div class="tool-seg" id="pz-zone">
+              <button class="on" data-z="A">A / A bis</button>
+              <button data-z="B1">B1</button>
+              <button data-z="B2">B2</button>
+              <button data-z="C">C</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>Type de logement neuf</label>
+            <div class="tool-seg" id="pz-type">
+              <button class="on" data-t="appart">Appartement</button>
+              <button data-t="maison">Maison</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>Personnes dans le foyer</label>
+            <div class="tool-seg" id="pz-pers">
+              <button data-n="1">1</button>
+              <button class="on" data-n="2">2</button>
+              <button data-n="3">3</button>
+              <button data-n="4">4</button>
+              <button data-n="5">5</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>Revenu fiscal de référence (année N-2) <b id="pz-rfr-val">40 000 €</b></label>
+            <input class="tool-range" type="range" id="pz-rfr" min="0" max="130000" step="1000" value="40000" />
+          </div>
+          <div class="tool-field">
+            <label>Coût total de l'opération <b id="pz-prix-val">250 000 €</b></label>
+            <input class="tool-range" type="range" id="pz-prix" min="50000" max="700000" step="5000" value="250000" />
+          </div>
+          <p class="tool-note">Réservé aux primo-accédants (n'ayant pas été propriétaire de leur résidence principale depuis 2 ans) pour l'achat de leur résidence principale dans le neuf. Barème du décret n° 2025-299. Le foyer au-delà de 5 personnes et l'ancien avec travaux ne sont pas couverts ici.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Montant estimé du PTZ</p>
+          <p class="big" id="pz-montant">—</p>
+          <div class="tool-brk"><span class="k" id="pz-elig-k">Éligibilité</span><span class="v" id="pz-elig">—</span></div>
+          <div class="tool-brk"><span class="k">Tranche de revenu</span><span class="v" id="pz-tranche">—</span></div>
+          <div class="tool-brk"><span class="k">Quotité appliquée</span><span class="v" id="pz-quot">—</span></div>
+          <div class="tool-brk"><span class="k">Coût de l'opération retenu</span><span class="v" id="pz-plaf">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Comment lire votre PTZ</h2>
+      <p>Vos revenus, ramenés à la taille de votre foyer, vous placent dans une tranche (de 1 à 4). Plus la tranche est basse, plus la quotité financée est forte : jusqu'à <strong>50 % du prix</strong> pour un appartement neuf en tranche 1, contre 20 % en tranche 4. Le montant est ensuite plafonné selon votre zone.</p>
+      <p>Le PTZ ne se cumule pas seulement avec votre crédit principal : bien articulé avec votre apport et la durée, il peut faire baisser sensiblement votre mensualité. C'est un levier que nous intégrons dans le montage global de votre financement.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const ZONES = {
+      A:  { thr:[25000,31000,37000,49000], base:150000 },
+      B1: { thr:[21500,26000,30000,34500], base:135000 },
+      B2: { thr:[18000,22500,27000,31500], base:110000 },
+      C:  { thr:[15000,19500,24000,28500], base:100000 },
+    };
+    const incomeCoeff=[1,1.5,2,2.5,3], opCoeff=[1,1.5,1.8,2.1,2.4];
+    const quot={ appart:[50,40,40,20], maison:[30,20,20,10] };
+    let zone='A', type='appart', pers=2;
+    function calc(){
+      const rfr=+document.getElementById('pz-rfr').value, prix=+document.getElementById('pz-prix').value;
+      document.getElementById('pz-rfr-val').textContent=eur(rfr);
+      document.getElementById('pz-prix-val').textContent=eur(prix);
+      const z=ZONES[zone], q=rfr/incomeCoeff[pers-1];
+      let tranche = q<=z.thr[0]?1 : q<=z.thr[1]?2 : q<=z.thr[2]?3 : q<=z.thr[3]?4 : 0;
+      const eligEl=document.getElementById('pz-elig');
+      if(tranche===0){
+        document.getElementById('pz-montant').textContent='0 €';
+        eligEl.textContent='Revenus trop élevés'; eligEl.style.color='#e08a70';
+        document.getElementById('pz-tranche').textContent='—';
+        document.getElementById('pz-quot').textContent='—';
+        document.getElementById('pz-plaf').textContent='—';
+        return;
+      }
+      const quotite=quot[type][tranche-1];
+      const plafond=z.base*opCoeff[pers-1];
+      const retenu=Math.min(prix,plafond);
+      const montant=retenu*quotite/100;
+      document.getElementById('pz-montant').textContent=eur(montant);
+      eligEl.textContent='Éligible'; eligEl.style.color='#7bbd90';
+      document.getElementById('pz-tranche').textContent='Tranche '+tranche;
+      document.getElementById('pz-quot').textContent=quotite+' %';
+      document.getElementById('pz-plaf').textContent=eur(retenu);
+    }
+    function seg(id,set){document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));b.classList.add('on');set(b);calc();}));}
+    function init(){
+      const r=document.getElementById('pz-rfr'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['pz-rfr','pz-prix'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      seg('pz-zone',b=>zone=b.dataset.z);
+      seg('pz-type',b=>type=b.dataset.t);
+      seg('pz-pers',b=>pers=+b.dataset.n);
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pz-rfr');if(r)r.dataset.ready='';init();});
+  })();
+</script>
