@@ -286,4 +286,7 @@
 .tool-brk .k{color:#9fb0c8;}
 .tool-brk .v{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;color:#F5F1E8;}
 .tool-note{color:#6f7f98;font-size:.75rem;margin-top:20px;line-height:1.5;}
+.tool-input{width:100%;background:#0a1a30;border:1px solid rgba(212,168,45,.4);color:#F5F1E8;font:500 .95rem system-ui,sans-serif;padding:12px 14px;border-radius:12px;outline:none;}
+.tool-input::placeholder{color:#7a8aa3;}
+.tool-input:focus{border-color:#D4A82D;}
 

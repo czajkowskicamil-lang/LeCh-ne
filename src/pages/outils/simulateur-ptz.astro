@@ -32,6 +32,11 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
       <div class="tool-grid">
         <div>
           <div class="tool-field">
+            <label>Votre ville <b id="pz-ville-zone"></b></label>
+            <input class="tool-input" list="pz-villes" id="pz-ville" placeholder="Tapez votre ville (100 plus grandes)" autocomplete="off" />
+            <datalist id="pz-villes"></datalist>
+          </div>
+          <div class="tool-field">
             <label>Zone de la commune</label>
             <div class="tool-seg" id="pz-zone">
               <button class="on" data-z="A">A / A bis</button>
@@ -65,7 +70,7 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
             <label>Coût total de l'opération <b id="pz-prix-val">250 000 €</b></label>
             <input class="tool-range" type="range" id="pz-prix" min="50000" max="700000" step="5000" value="250000" />
           </div>
-          <p class="tool-note">Réservé aux primo-accédants (n'ayant pas été propriétaire de leur résidence principale depuis 2 ans) pour l'achat de leur résidence principale dans le neuf. Barème du décret n° 2025-299. Le foyer au-delà de 5 personnes et l'ancien avec travaux ne sont pas couverts ici.</p>
+          <p class="tool-note">Réservé aux primo-accédants (n'ayant pas été propriétaire de leur résidence principale depuis 2 ans) pour l'achat de leur résidence principale dans le neuf. Barème du décret n° 2025-299. Le revenu retenu est le plus élevé entre votre RFR (année N-2) et le coût de l'opération divisé par 9. Foyer au-delà de 5 personnes et ancien avec travaux non couverts ici.</p>
         </div>
 
         <div class="tool-result">
@@ -98,14 +103,26 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
       B2: { thr:[18000,22500,27000,31500], base:110000 },
       C:  { thr:[15000,19500,24000,28500], base:100000 },
     };
-    const incomeCoeff=[1,1.5,2,2.5,3], opCoeff=[1,1.5,1.8,2.1,2.4];
+    const incomeCoeff=[1,1.5,1.8,2.1,2.4], opCoeff=[1,1.5,1.8,2.1,2.4];
     const quot={ appart:[50,40,40,20], maison:[30,20,20,10] };
+    const VILLES=[
+      {v:"Paris",z:"Abis"},{v:"Marseille",z:"A"},{v:"Lyon",z:"A"},{v:"Toulouse",z:"A"},{v:"Nice",z:"A"},{v:"Nantes",z:"A"},{v:"Montpellier",z:"A"},{v:"Strasbourg",z:"A"},{v:"Bordeaux",z:"A"},{v:"Lille",z:"A"},
+      {v:"Rennes",z:"A"},{v:"Toulon",z:"A"},{v:"Reims",z:"B1"},{v:"Saint-Étienne",z:"B2"},{v:"Le Havre",z:"B1"},{v:"Villeurbanne",z:"A"},{v:"Dijon",z:"B1"},{v:"Angers",z:"B1"},{v:"Grenoble",z:"A"},{v:"Saint-Denis (La Réunion)",z:"B1"},
+      {v:"Nîmes",z:"B1"},{v:"Aix-en-Provence",z:"A"},{v:"Saint-Denis (93)",z:"Abis"},{v:"Clermont-Ferrand",z:"B1"},{v:"Le Mans",z:"B1"},{v:"Brest",z:"B1"},{v:"Tours",z:"B1"},{v:"Amiens",z:"B1"},{v:"Annecy",z:"A"},{v:"Limoges",z:"B1"},
+      {v:"Metz",z:"B1"},{v:"Perpignan",z:"B1"},{v:"Boulogne-Billancourt",z:"Abis"},{v:"Besançon",z:"B1"},{v:"Rouen",z:"B1"},{v:"Orléans",z:"B1"},{v:"Montreuil",z:"Abis"},{v:"Caen",z:"B1"},{v:"Saint-Paul (La Réunion)",z:"A"},{v:"Argenteuil",z:"A"},
+      {v:"Mulhouse",z:"B1"},{v:"Nancy",z:"B1"},{v:"Tourcoing",z:"B1"},{v:"Roubaix",z:"B1"},{v:"Nanterre",z:"Abis"},{v:"Vitry-sur-Seine",z:"A"},{v:"Asnières-sur-Seine",z:"Abis"},{v:"Créteil",z:"A"},{v:"Avignon",z:"B1"},{v:"Colombes",z:"Abis"},
+      {v:"Poitiers",z:"B1"},{v:"Aubervilliers",z:"Abis"},{v:"Aulnay-sous-Bois",z:"A"},{v:"Dunkerque",z:"B1"},{v:"Saint-Pierre (La Réunion)",z:"B1"},{v:"Versailles",z:"Abis"},{v:"Courbevoie",z:"Abis"},{v:"Rueil-Malmaison",z:"Abis"},{v:"Le Tampon",z:"B1"},{v:"Béziers",z:"B1"},
+      {v:"Pau",z:"B1"},{v:"La Rochelle",z:"A"},{v:"Cherbourg-en-Cotentin",z:"B1"},{v:"Mérignac",z:"A"},{v:"Champigny-sur-Marne",z:"A"},{v:"Antibes",z:"A"},{v:"Saint-Maur-des-Fossés",z:"Abis"},{v:"Ajaccio",z:"A"},{v:"Fort-de-France",z:"B1"},{v:"Saint-Nazaire",z:"B1"},
+      {v:"Cannes",z:"A"},{v:"Noisy-le-Grand",z:"A"},{v:"Drancy",z:"A"},{v:"Cergy",z:"A"},{v:"Levallois-Perret",z:"Abis"},{v:"Issy-les-Moulineaux",z:"Abis"},{v:"Calais",z:"B1"},{v:"Pessac",z:"A"},{v:"Colmar",z:"B1"},{v:"Évry-Courcouronnes",z:"A"},
+      {v:"Vénissieux",z:"B1"},{v:"Ivry-sur-Seine",z:"Abis"},{v:"Valence",z:"B1"},{v:"Clichy",z:"Abis"},{v:"Quimper",z:"B1"},{v:"Antony",z:"Abis"},{v:"Bourges",z:"B2"},{v:"La Seyne-sur-Mer",z:"A"},{v:"Montauban",z:"B1"},{v:"Villeneuve-d'Ascq",z:"B1"},
+      {v:"Cayenne",z:"B1"},{v:"Le Blanc-Mesnil",z:"A"},{v:"Troyes",z:"B1"},{v:"Pantin",z:"Abis"},{v:"Villejuif",z:"Abis"},{v:"Chambéry",z:"B1"},{v:"Niort",z:"B2"},{v:"Fréjus",z:"A"},{v:"Neuilly-sur-Seine",z:"Abis"},{v:"Sarcelles",z:"A"}
+    ];
     let zone='A', type='appart', pers=2;
     function calc(){
       const rfr=+document.getElementById('pz-rfr').value, prix=+document.getElementById('pz-prix').value;
       document.getElementById('pz-rfr-val').textContent=eur(rfr);
       document.getElementById('pz-prix-val').textContent=eur(prix);
-      const z=ZONES[zone], q=rfr/incomeCoeff[pers-1];
+      const z=ZONES[zone], revenu=Math.max(rfr, prix/9), q=revenu/incomeCoeff[pers-1];
       let tranche = q<=z.thr[0]?1 : q<=z.thr[1]?2 : q<=z.thr[2]?3 : q<=z.thr[3]?4 : 0;
       const eligEl=document.getElementById('pz-elig');
       if(tranche===0){
@@ -131,9 +148,20 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
     function init(){
       const r=document.getElementById('pz-rfr'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
       ['pz-rfr','pz-prix'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
-      seg('pz-zone',b=>zone=b.dataset.z);
+      seg('pz-zone',b=>{zone=b.dataset.z;const vi=document.getElementById('pz-ville');if(vi){vi.value='';document.getElementById('pz-ville-zone').textContent='';}});
       seg('pz-type',b=>type=b.dataset.t);
       seg('pz-pers',b=>pers=+b.dataset.n);
+      const dl=document.getElementById('pz-villes');
+      dl.innerHTML=VILLES.map(c=>'<option value="'+c.v+'"></option>').join('');
+      const vi=document.getElementById('pz-ville');
+      vi.addEventListener('input',()=>{
+        const c=VILLES.find(x=>x.v.toLowerCase()===vi.value.trim().toLowerCase());
+        if(!c) return;
+        zone=(c.z==='Abis'||c.z==='A')?'A':c.z;
+        document.querySelectorAll('#pz-zone button').forEach(x=>x.classList.toggle('on',x.dataset.z===zone));
+        document.getElementById('pz-ville-zone').textContent='· Zone '+c.z;
+        calc();
+      });
       calc();
     }
     init();
