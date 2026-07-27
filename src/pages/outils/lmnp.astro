@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Simulateur LMNP au réel — revenu locatif net d'impôt | Le Chêne Patrimonial";
+const description = "En meublé au régime réel, l'amortissement du bien efface souvent l'impôt sur vos loyers. Estimez votre revenu locatif imposable en LMNP. Gratuit et instantané.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">LMNP</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Immobilier
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Votre revenu locatif en LMNP</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        La location meublée au régime réel a un atout puissant : l'amortissement du bien vient en déduction de vos loyers, et efface souvent l'impôt pendant des années. Voyez ce que ça donne pour vous.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Prix du bien <b id="lm-prix-val">200 000 €</b></label>
+            <input class="tool-range" type="range" id="lm-prix" min="40000" max="1000000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Loyer mensuel (meublé) <b id="lm-loy-val">800 €</b></label>
+            <input class="tool-range" type="range" id="lm-loy" min="200" max="4000" step="25" value="800" />
+          </div>
+          <div class="tool-field">
+            <label>Charges annuelles déductibles <b id="lm-chg-val">2 000 €</b></label>
+            <input class="tool-range" type="range" id="lm-chg" min="0" max="15000" step="250" value="2000" />
+          </div>
+          <p class="tool-note">Estimation simplifiée du régime réel LMNP. Amortissement du bâti estimé à 85 % du prix sur 30 ans (le terrain ne s'amortit pas ; mobilier et travaux non détaillés). Charges déductibles : taxe foncière, copropriété, assurance, gestion, intérêts d'emprunt. L'amortissement ne peut pas créer de déficit : l'excédent est reporté.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Revenu locatif imposable / an</p>
+          <p class="big" id="lm-impo">—</p>
+          <div class="tool-brk"><span class="k">Loyers encaissés / an</span><span class="v" id="lm-loyan">—</span></div>
+          <div class="tool-brk"><span class="k">Charges déduites</span><span class="v" id="lm-chgan">—</span></div>
+          <div class="tool-brk"><span class="k">Amortissement du bien / an</span><span class="v" id="lm-amort">—</span></div>
+          <div class="tool-brk"><span class="k">Rendement brut</span><span class="v" id="lm-rdt">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Pourquoi le meublé est si efficace</h2>
+      <p>En location nue, vos loyers sont pleinement imposés. En meublé au réel, vous déduisez vos charges <strong>et l'amortissement du bien</strong>, une charge comptable qui ne vous coûte rien en trésorerie. Résultat : un revenu imposable souvent proche de zéro pendant de longues années, donc des loyers encaissés quasiment sans impôt.</p>
+      <p>Encore faut-il bien tenir la comptabilité, choisir le bon découpage d'amortissement et anticiper la revente. C'est un régime redoutable, à condition d'être bien accompagné.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const prix=+document.getElementById('lm-prix').value, loy=+document.getElementById('lm-loy').value, chg=+document.getElementById('lm-chg').value;
+      document.getElementById('lm-prix-val').textContent=eur(prix);
+      document.getElementById('lm-loy-val').textContent=eur(loy);
+      document.getElementById('lm-chg-val').textContent=eur(chg);
+      const loyAn=loy*12;
+      const amort=prix*0.85/30;
+      const imposable=Math.max(0, loyAn - chg - amort);
+      document.getElementById('lm-loyan').textContent=eur(loyAn);
+      document.getElementById('lm-chgan').textContent=eur(chg);
+      document.getElementById('lm-amort').textContent=eur(amort);
+      document.getElementById('lm-rdt').textContent=(prix>0?(loyAn/prix*100):0).toFixed(1).replace('.',',')+' %';
+      document.getElementById('lm-impo').textContent=eur(imposable);
+    }
+    function init(){
+      const r=document.getElementById('lm-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['lm-prix','lm-loy','lm-chg'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('lm-prix');if(r)r.dataset.ready='';init();});
+  })();
+</script>

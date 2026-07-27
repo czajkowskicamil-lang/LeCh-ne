@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Calcul de la plus-value immobilière 2026 (impôt à la revente) | Le Chêne Patrimonial";
+const description = "Estimez l'impôt sur la plus-value à la revente d'un bien locatif ou d'une résidence secondaire : abattements par durée de détention, impôt sur le revenu et prélèvements sociaux.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Plus-value immobilière</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Immobilier
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Quel impôt à la revente ?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Revendre un bien locatif ou une résidence secondaire déclenche une imposition sur la plus-value, qui diminue avec le temps. Estimez-la, et voyez pourquoi la durée de détention change tout.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Prix d'achat <b id="pv-achat-val">200 000 €</b></label>
+            <input class="tool-range" type="range" id="pv-achat" min="20000" max="1500000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Prix de revente <b id="pv-vente-val">300 000 €</b></label>
+            <input class="tool-range" type="range" id="pv-vente" min="20000" max="2000000" step="5000" value="300000" />
+          </div>
+          <div class="tool-field">
+            <label>Durée de détention <b id="pv-dur-val">10 ans</b></label>
+            <input class="tool-range" type="range" id="pv-dur" min="0" max="32" step="1" value="10" />
+          </div>
+          <p class="tool-note">Bien autre que la résidence principale (celle-ci est exonérée). Plus-value = prix de vente moins prix d'achat (frais et travaux non pris en compte ici). Une surtaxe de 2 à 6 % peut s'ajouter si la plus-value imposable dépasse 50 000 €.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Impôt total sur la plus-value</p>
+          <p class="big" id="pv-total">—</p>
+          <div class="tool-brk"><span class="k">Plus-value brute</span><span class="v" id="pv-brute">—</span></div>
+          <div class="tool-brk"><span class="k">Abattement impôt sur le revenu</span><span class="v" id="pv-abir">—</span></div>
+          <div class="tool-brk"><span class="k">Impôt sur le revenu (19 %)</span><span class="v" id="pv-ir">—</span></div>
+          <div class="tool-brk"><span class="k">Prélèvements sociaux (17,2 %)</span><span class="v" id="pv-ps">—</span></div>
+          <div class="tool-brk"><span class="k">Plus-value nette d'impôt</span><span class="v" id="pv-net">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Le temps efface l'impôt</h2>
+      <p>Deux abattements se cumulent, l'un sur l'impôt sur le revenu, l'autre sur les prélèvements sociaux. Résultat : après <strong>22 ans</strong> de détention, plus d'impôt sur le revenu, et après <strong>30 ans</strong>, exonération totale. Entre les deux, la note fond d'année en année.</p>
+      <p>Vendre un an trop tôt peut coûter plusieurs milliers d'euros. À l'inverse, un montage adapté (démembrement, apport en société, arbitrage du calendrier) peut alléger fortement la facture. C'est le genre de décision qui se prépare, pas qui s'improvise.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function abIR(y){ return y<6?0 : (y<22?(y-5)*6 : 100); }
+    function abPS(y){ return y<6?0 : (y<=21?(y-5)*1.65 : (y===22?28 : Math.min(100,28+(y-22)*9))); }
+    function calc(){
+      const a=+document.getElementById('pv-achat').value, v=+document.getElementById('pv-vente').value, y=+document.getElementById('pv-dur').value;
+      document.getElementById('pv-achat-val').textContent=eur(a);
+      document.getElementById('pv-vente-val').textContent=eur(v);
+      document.getElementById('pv-dur-val').textContent=y+' an'+(y>1?'s':'');
+      const pv=Math.max(0,v-a);
+      const ir=pv*(1-abIR(y)/100)*0.19;
+      const ps=pv*(1-abPS(y)/100)*0.172;
+      const total=ir+ps;
+      document.getElementById('pv-brute').textContent=eur(pv);
+      document.getElementById('pv-abir').textContent=abIR(y)+' %';
+      document.getElementById('pv-ir').textContent=eur(ir);
+      document.getElementById('pv-ps').textContent=eur(ps);
+      document.getElementById('pv-total').textContent=eur(total);
+      document.getElementById('pv-net').textContent=eur(pv-total);
+    }
+    function init(){
+      const r=document.getElementById('pv-achat'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['pv-achat','pv-vente','pv-dur'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pv-achat');if(r)r.dataset.ready='';init();});
+  })();
+</script>

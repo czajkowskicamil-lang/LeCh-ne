@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Simulateur d'économie d'impôt avec le PER 2026 | Le Chêne Patrimonial";
+const description = "Combien un versement sur votre Plan Épargne Retraite réduit-il votre impôt ? Estimez votre économie selon votre tranche marginale d'imposition. Gratuit et instantané.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Économie d'impôt (PER)</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Fiscalité
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Combien le PER vous fait gagner</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Chaque euro versé sur un Plan Épargne Retraite se déduit de votre revenu imposable. Plus votre tranche d'imposition est élevée, plus l'économie est forte. Estimez la vôtre.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Versement sur votre PER (par an) <b id="pe-vers-val">5 000 €</b></label>
+            <input class="tool-range" type="range" id="pe-vers" min="0" max="40000" step="500" value="5000" />
+          </div>
+          <div class="tool-field">
+            <label>Votre tranche marginale d'imposition</label>
+            <div class="tool-seg" id="pe-tmi">
+              <button data-t="11">11 %</button>
+              <button class="on" data-t="30">30 %</button>
+              <button data-t="41">41 %</button>
+              <button data-t="45">45 %</button>
+            </div>
+          </div>
+          <p class="tool-note">Économie estimée sur l'impôt sur le revenu, dans la limite de votre plafond de déductibilité (en général 10 % de vos revenus professionnels). À la sortie, à la retraite, l'épargne sera fiscalisée : le PER décale et lisse l'impôt plus qu'il ne le supprime.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Économie d'impôt cette année</p>
+          <p class="big" id="pe-eco">—</p>
+          <div class="tool-brk"><span class="k">Vous versez sur votre PER</span><span class="v" id="pe-vers2">—</span></div>
+          <div class="tool-brk"><span class="k">Effort réel d'épargne (net d'impôt)</span><span class="v" id="pe-effort">—</span></div>
+          <div class="tool-brk"><span class="k">Taux d'économie</span><span class="v" id="pe-taux">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>L'outil le plus efficace des tranches hautes</h2>
+      <p>Le principe est simple : votre versement sort de votre revenu imposable. Dans la tranche à 30 %, 5 000 € versés vous font économiser 1 500 € d'impôt ; à 41 %, c'est 2 050 €. Votre effort d'épargne réel est d'autant réduit, et cette somme travaille pour votre retraite.</p>
+      <p>Attention toutefois : le PER récupéré à la retraite est imposé. Bien utilisé, il permet de verser quand vous êtes fortement imposé et de retirer quand vous le serez moins. Tout l'art est là, et c'est ce que nous calibrons ensemble.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    let tmi=30;
+    function calc(){
+      const v=+document.getElementById('pe-vers').value;
+      const eco=v*tmi/100;
+      document.getElementById('pe-vers-val').textContent=eur(v);
+      document.getElementById('pe-vers2').textContent=eur(v);
+      document.getElementById('pe-eco').textContent=eur(eco);
+      document.getElementById('pe-effort').textContent=eur(v-eco);
+      document.getElementById('pe-taux').textContent=tmi+' %';
+    }
+    function init(){
+      const r=document.getElementById('pe-vers'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      r.addEventListener('input',calc);
+      document.querySelectorAll('#pe-tmi button').forEach(b=>b.addEventListener('click',()=>{
+        document.querySelectorAll('#pe-tmi button').forEach(x=>x.classList.remove('on'));
+        b.classList.add('on'); tmi=+b.dataset.t; calc();
+      }));
+      calc();
+    }
+    init();
+    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pe-vers');if(r)r.dataset.ready='';init();});
+  })();
+</script>
