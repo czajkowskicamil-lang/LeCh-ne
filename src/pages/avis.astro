@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import { temoignages } from '../data/temoignages';
+---
+
+<Base
+  title="Avis clients, Le Chêne Patrimonial"
+  description="Ce que disent les personnes accompagnées par Le Chêne Patrimonial. Partagez votre expérience."
+>
+  <!-- En-tête -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell max-w-3xl">
+      <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Avis clients
+      </p>
+      <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+        Paroles de<br/>
+        <span class="italic text-chene">clients.</span>
+      </h1>
+      <p class="text-xl text-ink/75 leading-relaxed reveal" style="animation-delay:160ms">
+        La confiance ne se décrète pas, elle se raconte. Voici ce que disent les personnes que j'accompagne, et l'espace pour partager la vôtre.
+      </p>
+    </div>
+  </section>
+
+  <!-- Avis publiés -->
+  <section class="py-12 md:py-16 bg-cream-deep">
+    <div class="shell">
+      {temoignages.length > 0 ? (
+        <div class="grid md:grid-cols-3 gap-8">
+          {temoignages.map((t, i) => (
+            <figure class="bg-cream p-8 md:p-10 border border-ink/5 flex flex-col h-full reveal" style={`animation-delay:${i * 100}ms`}>
+              <svg class="text-or mb-6" width="28" height="20" viewBox="0 0 28 20" fill="currentColor" aria-hidden="true"><path d="M0 20V12C0 5.4 3.8 0.8 10 0L11 3C7.4 4 5.4 6.2 5 9H9V20H0ZM17 20V12C17 5.4 20.8 0.8 27 0L28 3C24.4 4 22.4 6.2 22 9H26V20H17Z"/></svg>
+              <blockquote class="font-serif text-lg md:text-xl leading-snug text-ink flex-1">{t.quote}</blockquote>
+              <figcaption class="mt-8 pt-6 border-t border-ink/10">
+                <p class="font-medium text-ink">{t.author}</p>
+                {t.role && <p class="text-sm text-stone mt-1">{t.role}</p>}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="max-w-xl mx-auto text-center py-8 reveal">
+          <svg class="text-or mx-auto mb-6" width="34" height="24" viewBox="0 0 28 20" fill="currentColor" aria-hidden="true"><path d="M0 20V12C0 5.4 3.8 0.8 10 0L11 3C7.4 4 5.4 6.2 5 9H9V20H0ZM17 20V12C17 5.4 20.8 0.8 27 0L28 3C24.4 4 22.4 6.2 22 9H26V20H17Z"/></svg>
+          <p class="font-serif text-2xl text-ink mb-3">Le premier mot vous revient.</p>
+          <p class="text-ink/60">Vous avez été accompagné par Le Chêne ? Partagez votre expérience ci-dessous.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Formulaire : laisser un avis -->
+  <section class="py-16 md:py-24">
+    <div class="shell max-w-2xl">
+      <div class="reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Votre témoignage
+        </p>
+        <h2 class="font-serif text-display-sm text-ink mb-4">Partager mon expérience</h2>
+        <p class="text-ink/70 leading-relaxed mb-10">
+          Quelques mots suffisent. Votre avis est relu avant publication ; il n'apparaît sur le site qu'une fois validé.
+        </p>
+      </div>
+
+      <form id="avis-form" class="space-y-7 reveal" style="animation-delay:80ms" novalidate>
+        <!-- honeypot anti-spam : ne pas remplir -->
+        <div class="hidden" aria-hidden="true">
+          <label>Ne pas remplir<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-7">
+          <div>
+            <label for="prenom" class="block text-xs uppercase tracking-micro text-chene mb-2">Prénom *</label>
+            <input type="text" id="prenom" name="prenom" required maxlength="60" class="w-full bg-transparent border-b border-ink/20 py-2 text-ink placeholder:text-ink/30 focus:border-or focus:outline-none transition-colors" placeholder="Jean" />
+          </div>
+          <div>
+            <label for="nom" class="block text-xs uppercase tracking-micro text-chene mb-2">Nom *</label>
+            <input type="text" id="nom" name="nom" required maxlength="60" class="w-full bg-transparent border-b border-ink/20 py-2 text-ink placeholder:text-ink/30 focus:border-or focus:outline-none transition-colors" placeholder="Dupont" />
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-7">
+          <div>
+            <label for="role" class="block text-xs uppercase tracking-micro text-chene mb-2">Profil <span class="text-ink/40 normal-case tracking-normal">(optionnel)</span></label>
+            <input type="text" id="role" name="role" maxlength="80" class="w-full bg-transparent border-b border-ink/20 py-2 text-ink placeholder:text-ink/30 focus:border-or focus:outline-none transition-colors" placeholder="Dirigeant · Paris" />
+          </div>
+          <div>
+            <label for="email" class="block text-xs uppercase tracking-micro text-chene mb-2">Email <span class="text-ink/40 normal-case tracking-normal">(optionnel, jamais publié)</span></label>
+            <input type="email" id="email" name="email" maxlength="120" class="w-full bg-transparent border-b border-ink/20 py-2 text-ink placeholder:text-ink/30 focus:border-or focus:outline-none transition-colors" placeholder="jean@exemple.fr" />
+          </div>
+        </div>
+
+        <div>
+          <label for="avis" class="block text-xs uppercase tracking-micro text-chene mb-2">Votre avis *</label>
+          <textarea id="avis" name="avis" rows="5" required minlength="20" maxlength="1500" class="w-full bg-transparent border-b border-ink/20 py-2 text-ink placeholder:text-ink/30 focus:border-or focus:outline-none transition-colors resize-none" placeholder="En quelques mots, votre expérience avec Le Chêne…"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-sm text-ink/70 cursor-pointer">
+          <input type="checkbox" id="consent" name="consent" required class="mt-1 accent-chene w-4 h-4 shrink-0" />
+          <span>J'accepte que mon prénom, mon nom et mon avis soient publiés sur ce site après validation. Voir la <a href="/confidentialite" class="text-chene underline underline-offset-4 decoration-or">politique de confidentialité</a>.</span>
+        </label>
+
+        <div class="pt-2">
+          <button type="submit" id="avis-submit" class="btn-primary">
+            Envoyer mon avis
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <p id="avis-msg" class="text-sm hidden" role="status"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('avis-form') as HTMLFormElement | null;
+  const btn = document.getElementById('avis-submit') as HTMLButtonElement | null;
+  const msg = document.getElementById('avis-msg') as HTMLParagraphElement | null;
+
+  const show = (text: string, ok: boolean) => {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.classList.remove('hidden');
+    msg.style.color = ok ? '#2D4A33' : '#A7801F';
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !btn) return;
+
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+
+    if (!data.prenom?.trim() || !data.nom?.trim() || (data.avis?.trim().length ?? 0) < 20) {
+      show('Merci de renseigner votre prénom, votre nom et un avis d’au moins quelques mots.', false);
+      return;
+    }
+    if (!(form.querySelector('#consent') as HTMLInputElement)?.checked) {
+      show('Merci de cocher la case de consentement pour publier votre avis.', false);
+      return;
+    }
+
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.textContent = 'Envoi…';
+
+    try {
+      const res = await fetch('/api/avis', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ...data, consent: true }),
+      });
+      const json = await res.json().catch(() => ({ ok: false }));
+
+      if (res.ok && json.ok) {
+        form.querySelectorAll('input, textarea, button').forEach((el) => ((el as HTMLInputElement).disabled = true));
+        show('Merci ! Votre avis a bien été transmis. Il sera publié après relecture.', true);
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = original;
+        show('Une erreur est survenue. Réessayez dans un instant ou écrivez-moi directement.', false);
+      }
+    } catch {
+      btn.disabled = false;
+      btn.innerHTML = original;
+      show('Connexion impossible. Réessayez dans un instant ou écrivez-moi directement.', false);
+    }
+  });
+</script>

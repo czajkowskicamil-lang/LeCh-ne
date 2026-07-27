@@ -22,6 +22,7 @@ export const nav = [
   { label: 'Outils', href: '/outils' },
   { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
+  { label: 'Avis', href: '/avis' },
   { label: 'Suisse & France', href: '/suisse-france' },
   { label: 'Contact', href: '/contact' },
 ];
