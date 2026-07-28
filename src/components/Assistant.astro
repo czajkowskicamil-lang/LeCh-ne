@@ -1,0 +1,391 @@
+---
+// Assistant du Chêne — secrétaire virtuelle premium.
+// Bulle flottante présente sur toutes les pages (incluse dans Base.astro).
+// 100% autonome : réponses pré-écrites et validées, aucune IA générative,
+// donc zéro risque d'erreur sur un sujet fiscal ou réglementé.
+import { site } from '../data/site';
+
+// Structure : catégories -> questions -> réponse.
+// Toutes les réponses sont volontairement prudentes, sans chiffre fiscal,
+// et ramènent vers un échange humain avec Camil.
+const categories = [
+  {
+    id: 'cabinet',
+    label: 'Le cabinet',
+    questions: [
+      {
+        q: 'Quels sont vos services ?',
+        a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement.",
+      },
+      {
+        q: "En quoi êtes-vous différent d'une banque ?",
+        a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence.",
+      },
+      {
+        q: 'Faut-il déjà un gros patrimoine ?',
+        a: "Non. J'accompagne aussi bien les patrimoines en construction que les situations déjà établies. L'essentiel est d'avoir un projet et l'envie d'être bien conseillé.",
+      },
+      {
+        q: 'Comment êtes-vous rémunéré ?',
+        a: "En toute transparence. Selon les cas : honoraires de conseil, commissions des partenaires en cas de souscription, ou une combinaison des deux. Vous savez toujours qui me rémunère, comment et combien, avant toute opération.",
+      },
+      {
+        q: 'Travaillez-vous à distance ?',
+        a: "Oui, partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein.",
+      },
+    ],
+  },
+  {
+    id: 'epargne',
+    label: 'Épargne & retraite',
+    questions: [
+      {
+        q: 'Pourquoi ouvrir une assurance-vie ?',
+        a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble.",
+      },
+      {
+        q: "J'ai une somme à placer, que faire ?",
+        a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation.",
+      },
+      {
+        q: 'Comment bien préparer ma retraite ?',
+        a: "En anticipant. Plus on s'y prend tôt, plus les solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif et adapté.",
+      },
+    ],
+  },
+  {
+    id: 'fiscalite',
+    label: 'Impôts & transmission',
+    questions: [
+      {
+        q: 'Pouvez-vous m’aider à réduire mes impôts ?',
+        a: "Oui, l'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation.",
+      },
+      {
+        q: 'Comment protéger mon conjoint et mes enfants ?',
+        a: "C'est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille.",
+      },
+      {
+        q: 'Comment préparer ma succession ?',
+        a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés.",
+      },
+    ],
+  },
+  {
+    id: 'profils',
+    label: 'Immobilier & profils',
+    questions: [
+      {
+        q: 'Accompagnez-vous les projets immobiliers ?',
+        a: "Oui, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris.",
+      },
+      {
+        q: 'Travaillez-vous avec les sportifs de haut niveau ?',
+        a: "Oui, c'est une spécialité du cabinet. Carrières courtes, revenus irréguliers, expatriation : j'accompagne les sportifs pour transformer une carrière en patrimoine durable.",
+      },
+      {
+        q: 'Et avec les expatriés ?',
+        a: "Oui. La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation, on vous orientera.",
+      },
+    ],
+  },
+];
+
+const intro = "Bonjour 👋 et bienvenue chez Le Chêne Patrimonial. Ici, pas de jargon ni de blabla : vous posez votre question, vous obtenez une réponse claire, tout de suite. Retraite, impôts, immobilier, transmission… par quoi commence-t-on ? 🌳";
+---
+
+<div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-phone-display={site.phone.display} data-email={site.email} data-calendly={site.calendly}>
+  <!-- Lanceur -->
+  <button id="lc-launcher" class="lc-launcher" aria-label="Ouvrir l'assistant du Chêne" aria-expanded="false">
+    <span class="lc-launcher-icon lc-icon-chat" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8.5h9M7.5 12h6"/><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.3-4.4A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+    </span>
+    <span class="lc-launcher-icon lc-icon-close" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </span>
+  </button>
+
+  <!-- Panneau -->
+  <div id="lc-panel" class="lc-panel" role="dialog" aria-label="Assistant du Chêne" aria-modal="false" hidden>
+    <header class="lc-head">
+      <div class="lc-head-id">
+        <span class="lc-avatar" aria-hidden="true">
+          <img src="/favicon-96x96.png" alt="" width="40" height="40" />
+          <span class="lc-status-dot"></span>
+        </span>
+        <span class="lc-head-text">
+          <span class="lc-head-name">Assistant du Chêne</span>
+          <span class="lc-head-sub">Le cabinet vous répond</span>
+        </span>
+      </div>
+      <button id="lc-close" class="lc-close" aria-label="Fermer l'assistant">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </header>
+
+    <div id="lc-thread" class="lc-thread" aria-live="polite"></div>
+
+    <div class="lc-suggest">
+      <div id="lc-cats" class="lc-cats"></div>
+      <div id="lc-chips" class="lc-chips"></div>
+    </div>
+
+    <footer class="lc-foot">
+      <a id="lc-cta-rdv" class="lc-cta-rdv" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Prendre rendez-vous
+      </a>
+      <a id="lc-cta-tel" class="lc-cta-mini" aria-label="Appeler Camil">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+      <a id="lc-cta-mail" class="lc-cta-mini" aria-label="Écrire un email à Camil">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+      </a>
+    </footer>
+    <p class="lc-legal">Réponses informatives. Le conseil personnalisé se fait lors d'un échange avec Camil.</p>
+  </div>
+</div>
+
+<script is:inline define:vars={{ categories, intro }}>
+  (function () {
+    function initAssistant() {
+      const root = document.getElementById('lc-assistant');
+      if (!root || root.dataset.ready === '1') return;
+      root.dataset.ready = '1';
+
+      const launcher = document.getElementById('lc-launcher');
+      const panel = document.getElementById('lc-panel');
+      const closeBtn = document.getElementById('lc-close');
+      const thread = document.getElementById('lc-thread');
+      const catsEl = document.getElementById('lc-cats');
+      const chipsEl = document.getElementById('lc-chips');
+
+      // Coordonnées (depuis les data-attributes du composant Astro)
+      const phone = root.dataset.phone;
+      const phoneDisplay = root.dataset.phoneDisplay;
+      const email = root.dataset.email;
+      const calendly = root.dataset.calendly;
+      document.getElementById('lc-cta-rdv').href = calendly;
+      document.getElementById('lc-cta-tel').href = 'tel:' + phone;
+      document.getElementById('lc-cta-mail').href = 'mailto:' + email;
+
+      let activeCat = categories[0].id;
+      let opened = false;
+      const asked = new Set();
+
+      function scrollThread() {
+        requestAnimationFrame(() => { thread.scrollTop = thread.scrollHeight; });
+      }
+
+      function addBubble(text, who) {
+        const el = document.createElement('div');
+        el.className = 'lc-msg lc-msg-' + who;
+        el.innerHTML = '<span class="lc-bubble">' + text + '</span>';
+        thread.appendChild(el);
+        scrollThread();
+        return el;
+      }
+
+      function renderCats() {
+        catsEl.innerHTML = '';
+        categories.forEach((c) => {
+          const b = document.createElement('button');
+          b.className = 'lc-cat' + (c.id === activeCat ? ' is-active' : '');
+          b.textContent = c.label;
+          b.addEventListener('click', () => { activeCat = c.id; renderCats(); renderChips(); });
+          catsEl.appendChild(b);
+        });
+      }
+
+      function renderChips() {
+        chipsEl.innerHTML = '';
+        const cat = categories.find((c) => c.id === activeCat);
+        cat.questions.forEach((item) => {
+          const b = document.createElement('button');
+          b.className = 'lc-chip' + (asked.has(item.q) ? ' is-asked' : '');
+          b.textContent = item.q;
+          b.addEventListener('click', () => answer(item));
+          chipsEl.appendChild(b);
+        });
+      }
+
+      function answer(item) {
+        asked.add(item.q);
+        renderChips();
+        addBubble(item.q, 'user');
+        addBubble(item.a, 'bot');
+      }
+
+      function openPanel() {
+        panel.hidden = false;
+        // reflow pour l'animation
+        void panel.offsetWidth;
+        root.classList.add('is-open');
+        launcher.setAttribute('aria-expanded', 'true');
+        if (!opened) {
+          opened = true;
+          renderCats();
+          renderChips();
+          addBubble(intro, 'bot');
+        }
+      }
+
+      function closePanel() {
+        root.classList.remove('is-open');
+        launcher.setAttribute('aria-expanded', 'false');
+        setTimeout(() => { if (!root.classList.contains('is-open')) panel.hidden = true; }, 260);
+      }
+
+      launcher.addEventListener('click', () => {
+        if (root.classList.contains('is-open')) closePanel(); else openPanel();
+      });
+      closeBtn.addEventListener('click', closePanel);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && root.classList.contains('is-open')) closePanel();
+      });
+    }
+
+    initAssistant();
+    document.addEventListener('astro:page-load', initAssistant);
+  })();
+</script>
+
+<style>
+  .lc-assistant {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 60;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  }
+
+  /* ---- Lanceur ---- */
+  .lc-launcher {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 168, 45, 0.55);
+    background: linear-gradient(160deg, #0A1F4F 0%, #03102E 100%);
+    color: #F5F1E8;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 14px 34px -10px rgba(3, 16, 46, 0.6), 0 0 0 0 rgba(212, 168, 45, 0.35);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  }
+  .lc-launcher:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 18px 40px -10px rgba(3, 16, 46, 0.7); }
+  .lc-launcher-icon { position: absolute; display: grid; place-items: center; transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .lc-icon-chat { color: #E6C259; }
+  .lc-icon-close { opacity: 0; transform: rotate(-45deg) scale(0.6); }
+  .lc-assistant.is-open .lc-icon-chat { opacity: 0; transform: rotate(45deg) scale(0.6); }
+  .lc-assistant.is-open .lc-icon-close { opacity: 1; transform: rotate(0) scale(1); }
+
+  /* ---- Panneau ---- */
+  .lc-panel {
+    position: absolute;
+    right: 0;
+    bottom: 78px;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    height: 560px;
+    max-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    background: #FAF7EF;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(3, 16, 46, 0.08);
+    box-shadow: 0 30px 70px -24px rgba(3, 16, 46, 0.5);
+    transform-origin: bottom right;
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    transition: opacity 0.28s ease, transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .lc-assistant.is-open .lc-panel { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+  /* Header */
+  .lc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 16px;
+    background: linear-gradient(150deg, #0A1F4F 0%, #03102E 100%);
+    color: #F5F1E8;
+    position: relative;
+  }
+  .lc-head::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,168,45,0.6), transparent); }
+  .lc-head-id { display: flex; align-items: center; gap: 11px; }
+  .lc-avatar { position: relative; width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: #F5F1E8; overflow: visible; box-shadow: 0 0 0 1px rgba(212,168,45,0.5); }
+  .lc-avatar img { border-radius: 999px; display: block; }
+  .lc-status-dot { position: absolute; right: -1px; bottom: -1px; width: 11px; height: 11px; border-radius: 999px; background: #4ade80; border: 2px solid #03102E; }
+  .lc-head-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .lc-head-name { font-family: 'Fraunces Variable', Fraunces, Georgia, serif; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .lc-head-sub { font-size: 11.5px; color: rgba(245, 241, 232, 0.7); margin-top: 2px; }
+  .lc-close { background: transparent; border: 0; color: rgba(245,241,232,0.75); cursor: pointer; padding: 6px; border-radius: 8px; transition: background 0.2s, color 0.2s; }
+  .lc-close:hover { background: rgba(245,241,232,0.12); color: #fff; }
+
+  /* Thread */
+  .lc-thread { flex: 1; overflow-y: auto; padding: 18px 16px 8px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+  .lc-msg { display: flex; max-width: 86%; }
+  .lc-msg-bot { align-self: flex-start; }
+  .lc-msg-user { align-self: flex-end; }
+  .lc-bubble {
+    padding: 11px 14px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border-radius: 16px;
+    animation: lc-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .lc-msg-bot .lc-bubble { background: #fff; color: #03102E; border: 1px solid rgba(3,16,46,0.06); border-bottom-left-radius: 5px; box-shadow: 0 4px 14px -8px rgba(3,16,46,0.25); }
+  .lc-msg-user .lc-bubble { background: #03102E; color: #F5F1E8; border-bottom-right-radius: 5px; }
+  @keyframes lc-in { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+
+  /* Suggestions */
+  .lc-suggest { padding: 6px 14px 10px; border-top: 1px solid rgba(3,16,46,0.06); background: #FAF7EF; }
+  .lc-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+  .lc-cats::-webkit-scrollbar { display: none; }
+  .lc-cat {
+    flex: 0 0 auto; padding: 6px 11px; border-radius: 999px; cursor: pointer;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    background: transparent; color: rgba(3,16,46,0.55);
+    border: 1px solid rgba(3,16,46,0.14); transition: all 0.2s ease;
+  }
+  .lc-cat:hover { color: #03102E; border-color: rgba(3,16,46,0.3); }
+  .lc-cat.is-active { background: #2D4A33; color: #F5F1E8; border-color: #2D4A33; }
+  .lc-chips { display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; scrollbar-width: thin; }
+  .lc-chip {
+    text-align: left; padding: 9px 12px; border-radius: 12px; cursor: pointer;
+    font-size: 12.8px; line-height: 1.35; color: #03102E;
+    background: #fff; border: 1px solid rgba(3,16,46,0.1);
+    transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  }
+  .lc-chip:hover { border-color: rgba(212,168,45,0.7); background: #fff; transform: translateX(2px); box-shadow: 0 4px 12px -6px rgba(3,16,46,0.2); }
+  .lc-chip.is-asked { opacity: 0.5; }
+
+  /* Footer */
+  .lc-foot { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #FAF7EF; border-top: 1px solid rgba(3,16,46,0.06); }
+  .lc-cta-rdv {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 14px; border-radius: 999px; text-decoration: none;
+    background: #03102E; color: #F5F1E8; font-size: 13.5px; font-weight: 500;
+    transition: background 0.25s ease;
+  }
+  .lc-cta-rdv:hover { background: #2D4A33; }
+  .lc-cta-mini {
+    display: grid; place-items: center; width: 42px; height: 42px; border-radius: 999px;
+    color: #03102E; text-decoration: none; background: #fff; border: 1px solid rgba(3,16,46,0.12);
+    transition: all 0.2s ease;
+  }
+  .lc-cta-mini:hover { border-color: rgba(212,168,45,0.7); color: #A7801F; }
+  .lc-legal { margin: 0; padding: 0 16px 12px; font-size: 10.5px; line-height: 1.4; color: rgba(3,16,46,0.4); text-align: center; background: #FAF7EF; }
+
+  /* Mobile : le lanceur remonte au-dessus de la barre CTA mobile (76px) */
+  @media (max-width: 767px) {
+    .lc-assistant { right: 16px; bottom: 84px; }
+    .lc-panel { bottom: 74px; height: 68vh; max-height: calc(100vh - 160px); width: calc(100vw - 24px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-bubble, .lc-panel, .lc-launcher { transition: none; animation: none; }
+  }
+</style>
