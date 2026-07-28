@@ -1,29 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { site } from '../data/site';
 ---
 
 <Base
+  heroDark
   title="Contact, Le Chêne Patrimonial"
   description="Prendre rendez-vous ou envoyer un message. Premier échange de 30 minutes offert, sans engagement."
 >
-  <section class="pt-16 pb-16 md:pt-24">
-    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
-      <div class="lg:col-span-8">
-        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
-          <span class="inline-block h-px w-8 bg-chene"></span>
-          Contact
-        </p>
-        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
-          Un premier<br/>
-          <span class="italic text-chene">échange.</span>
-        </h1>
-        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
-          30 minutes, en visio ou au cabinet. Vous posez vos questions, je comprends votre situation. Aucune obligation, aucun engagement, juste une conversation claire.
-        </p>
-      </div>
-    </div>
-  </section>
+  <PageHeader
+    image="/contact-header.jpg"
+    alt="Rayons de lumière dans une forêt"
+    eyebrow="Contact"
+    title={`Un premier<br/><span class="italic text-or-light">échange.</span>`}
+    intro="30 minutes, en visio ou au cabinet. Vous posez vos questions, je comprends votre situation. Sans engagement."
+  />
 
   <!-- Two-column: Calendly + contact form -->
   <section class="py-12 md:py-16">

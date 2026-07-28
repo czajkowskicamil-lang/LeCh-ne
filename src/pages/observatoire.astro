@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
 import CTA from '../components/CTA.astro';
 import { site } from '../data/site';
 
@@ -7,29 +8,19 @@ const title = "Comment l'immobilier français va se redessiner d'ici 2045 | L'Ob
 const description = "Étude des 40 premières villes de France : démographie, âge, vacance, emploi, prix et rendement. Comment la valeur immobilière va se déplacer d'ici 2045.";
 ---
 
-<Base title={title} description={description}>
+<Base heroDark title={title} description={description}>
   <article>
-    <!-- Hero -->
-    <header class="pt-16 pb-10 md:pt-24 md:pb-14">
+    <PageHeader
+      image="/observatoire-header.jpg"
+      alt="Forêt brumeuse vue du ciel"
+      eyebrow="L'Observatoire du Chêne · Une lecture 2026"
+      title="Comment l'immobilier français va se redessiner d'ici 2045"
+      intro="Le prix d'aujourd'hui ne dit presque rien de ce qu'un bien vaudra dans vingt ans. Nous avons passé les 40 premières communes de France au filtre de l'âge et de la démographie."
+    />
+
+    <header class="pt-10 md:pt-14">
       <div class="shell max-w-4xl">
-        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
-          <a href="/" class="hover:text-chene">Accueil</a>
-          <span>/</span>
-          <span class="text-ink">Observatoire</span>
-        </nav>
-
-        <p class="eyebrow mb-6 flex items-center gap-3">
-          <span class="inline-block h-px w-8 bg-chene"></span>
-          L'Observatoire du Chêne · Une lecture 2026
-        </p>
-
-        <h1 class="font-serif text-display text-ink mb-8 leading-tight">Comment l'immobilier français va se redessiner d'ici 2045</h1>
-
-        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed mb-10">
-          Le prix d'aujourd'hui ne dit presque rien de ce qu'un bien vaudra dans vingt ans. Ce qui compte, c'est l'âge de la ville et sa capacité à retenir ses habitants. Nous avons passé les 40 premières communes de France à ce filtre. Voici ce que les chiffres racontent, méthode en clair.
-        </p>
-
-        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone border-t border-ink/10 pt-6">
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone border-b border-ink/10 pb-6">
           <span><span class="text-ink font-medium">Périmètre</span> · 40 communes les plus peuplées</span>
           <span><span class="text-ink font-medium">Démographie, âge, vacance</span> · INSEE 2023</span>
           <span><span class="text-ink font-medium">Chômage</span> · INSEE, zones d'emploi, T1 2026</span>

@@ -1,0 +1,75 @@
+---
+// En-tête image réutilisable pour les pages intérieures.
+// Bande plein largeur, image étalonnée navy/or, titre éditorial en bas à gauche.
+// À utiliser avec <Base heroDark> pour que la nav soit transparente au-dessus.
+interface Props {
+  image: string;
+  alt?: string;
+  eyebrow: string;
+  title: string;   // peut contenir du HTML (ex. <span class="italic text-or-light">…</span>)
+  intro?: string;
+}
+const { image, alt = '', eyebrow, title, intro } = Astro.props;
+---
+
+<section class="page-header relative -mt-20 flex items-end overflow-hidden bg-navy-darker text-cream">
+  <img
+    src={image}
+    alt={alt}
+    class="ph-img absolute inset-0 h-full w-full object-cover object-center"
+    fetchpriority="high"
+    decoding="async"
+  />
+  <div aria-hidden="true" class="ph-warm absolute inset-0"></div>
+  <div aria-hidden="true" class="ph-scrim absolute inset-0"></div>
+  <div aria-hidden="true" class="ph-shade absolute inset-0"></div>
+
+  <div class="shell relative z-10 w-full pt-32 pb-14 md:pt-40 md:pb-20">
+    <div class="max-w-3xl">
+      <p class="ph-eyebrow mb-6 flex items-center gap-3 text-or-light">
+        <span class="inline-block h-px w-10 bg-or"></span>
+        {eyebrow}
+      </p>
+      <h1 class="ph-title font-serif text-cream" set:html={title}></h1>
+      {intro && (
+        <p class="ph-intro mt-7 max-w-xl text-lg leading-relaxed text-cream/85 md:text-xl">{intro}</p>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-header { min-height: clamp(24rem, 60vh, 34rem); }
+
+  .ph-img {
+    filter: saturate(1.04) contrast(1.05) brightness(0.82) sepia(0.15);
+    transform: scale(1.04);
+  }
+  .ph-warm {
+    background: linear-gradient(180deg, rgba(212,168,45,0.10) 0%, transparent 55%);
+    mix-blend-mode: soft-light;
+  }
+  /* Assombrit le bas-gauche pour le texte */
+  .ph-scrim {
+    background: linear-gradient(90deg, rgba(3,9,28,0.55) 0%, rgba(3,9,28,0.25) 35%, transparent 70%);
+  }
+  .ph-shade {
+    background: linear-gradient(180deg, rgba(3,9,28,0.55) 0%, rgba(3,9,28,0.10) 26%, transparent 45%, rgba(3,9,28,0.45) 78%, rgba(3,16,46,0.95) 100%);
+  }
+
+  .ph-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(3,9,28,0.7);
+  }
+  .ph-title {
+    font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    text-shadow: 0 2px 6px rgba(3,9,28,0.55), 0 4px 40px rgba(3,9,28,0.65);
+  }
+  .ph-intro { text-shadow: 0 1px 3px rgba(3,9,28,0.8); }
+</style>
