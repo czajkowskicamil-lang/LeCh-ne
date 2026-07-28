@@ -22,6 +22,31 @@ const year = new Date().getFullYear();
       </a>
     </div>
 
+    <!-- Inscription La Lettre du Chêne -->
+    <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center pb-16 border-t border-cream/10 pt-16 reveal">
+      <div>
+        <p class="eyebrow-cream mb-4 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-or"></span>
+          La Lettre du Chêne
+        </p>
+        <p class="font-serif text-2xl md:text-3xl text-cream leading-snug">
+          Une édition par mois.<br/>
+          <span class="italic text-or-light">Un cas, un chiffre, une actualité.</span>
+        </p>
+      </div>
+      <form id="footer-nl" class="w-full">
+        <label for="footer-nl-email" class="text-xs uppercase tracking-micro text-or-light mb-3 block">Recevoir La Lettre</label>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="email" id="footer-nl-email" name="email" required autocomplete="email" placeholder="votre@email.fr" class="flex-1 bg-transparent border-b border-cream/25 py-2.5 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" />
+          <button type="submit" class="btn-or shrink-0 justify-center">
+            M'inscrire
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+        <p class="text-xs text-cream/40 mt-3">Gratuit, sans engagement. <a href="/newsletter" class="underline underline-offset-2 hover:text-or-light">En savoir plus</a>.</p>
+      </form>
+    </div>
+
     <!-- 3 colonnes minimalistes, beaucoup d'air -->
     <div class="grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-t border-cream/10 pt-16">
       <div class="lg:col-span-4">
@@ -69,4 +94,26 @@ const year = new Date().getFullYear();
       </div>
     </div>
   </div>
+
+  <script>
+    const fnl = document.getElementById('footer-nl') as HTMLFormElement | null;
+    if (fnl) {
+      fnl.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = (document.getElementById('footer-nl-email') as HTMLInputElement)?.value.trim() || '';
+        if (!email) { alert('Merci de saisir votre email.'); return; }
+        const subject = 'Inscription Lettre du Chêne';
+        const body = [
+          'Bonjour Camil,',
+          '',
+          "Je souhaite m'inscrire à La Lettre du Chêne.",
+          '',
+          `Email : ${email}`,
+          '',
+          'Merci !',
+        ].join('\n');
+        window.location.href = `mailto:camil.cz@lechenepatrimonial.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      });
+    }
+  </script>
 </footer>
