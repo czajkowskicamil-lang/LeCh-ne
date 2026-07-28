@@ -31,10 +31,10 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
     <div class="tool-card">
       <div class="tool-grid">
         <div>
-          <div class="tool-field">
+          <div class="tool-field pz-ac-wrap">
             <label>Votre ville <b id="pz-ville-zone"></b></label>
-            <input class="tool-input" list="pz-villes" id="pz-ville" placeholder="Tapez votre ville (200 plus grandes)" autocomplete="off" />
-            <datalist id="pz-villes"></datalist>
+            <input class="tool-input" id="pz-ville" placeholder="Tapez votre ville (200 plus grandes)" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pz-ac-list" />
+            <ul id="pz-ac-list" class="pz-ac" role="listbox" hidden></ul>
           </div>
           <div class="tool-field">
             <label>Zone de la commune</label>
@@ -162,20 +162,67 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
       seg('pz-zone',b=>{zone=b.dataset.z;const vi=document.getElementById('pz-ville');if(vi){vi.value='';document.getElementById('pz-ville-zone').textContent='';}});
       seg('pz-type',b=>type=b.dataset.t);
       seg('pz-pers',b=>pers=+b.dataset.n);
-      const dl=document.getElementById('pz-villes');
-      dl.innerHTML=[...VILLES].sort((a,b)=>a.v.localeCompare(b.v,'fr')).map(c=>'<option value="'+c.v+'"></option>').join('');
+      // Autocomplete maison (le <datalist> HTML ne s'affiche pas sur mobile).
+      const SORTED=[...VILLES].sort((a,b)=>a.v.localeCompare(b.v,'fr'));
+      const norm=s=>s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g,'');
       const vi=document.getElementById('pz-ville');
-      vi.addEventListener('input',()=>{
-        const c=VILLES.find(x=>x.v.toLowerCase()===vi.value.trim().toLowerCase());
+      const list=document.getElementById('pz-ac-list');
+      let acItems=[], acIdx=-1;
+      function selectCity(c){
         if(!c) return;
+        vi.value=c.v;
         zone=(c.z==='Abis'||c.z==='A')?'A':c.z;
         document.querySelectorAll('#pz-zone button').forEach(x=>x.classList.toggle('on',x.dataset.z===zone));
         document.getElementById('pz-ville-zone').textContent='· Zone '+c.z;
-        calc();
+        hideAC(); calc();
+      }
+      function hideAC(){ list.hidden=true; list.innerHTML=''; acItems=[]; acIdx=-1; vi.setAttribute('aria-expanded','false'); }
+      function paintActive(){ [...list.children].forEach((li,i)=>li.classList.toggle('active',i===acIdx)); }
+      function renderAC(){
+        const q=norm(vi.value.trim());
+        if(!q){ hideAC(); return; }
+        acItems=SORTED.filter(c=>norm(c.v).includes(q)).slice(0,8);
+        if(!acItems.length){ hideAC(); return; }
+        list.innerHTML=acItems.map((c,i)=>'<li class="pz-ac-item" role="option" data-i="'+i+'"><span>'+c.v+'</span><em>Zone '+c.z+'</em></li>').join('');
+        list.hidden=false; acIdx=-1; vi.setAttribute('aria-expanded','true');
+      }
+      vi.addEventListener('input',renderAC);
+      vi.addEventListener('focus',()=>{ if(vi.value.trim()) renderAC(); });
+      list.addEventListener('click',e=>{ const li=e.target.closest('.pz-ac-item'); if(li) selectCity(acItems[+li.dataset.i]); });
+      vi.addEventListener('keydown',e=>{
+        if(list.hidden) return;
+        if(e.key==='ArrowDown'){ e.preventDefault(); acIdx=Math.min(acIdx+1,acItems.length-1); paintActive(); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); acIdx=Math.max(acIdx-1,0); paintActive(); }
+        else if(e.key==='Enter' && acIdx>=0){ e.preventDefault(); selectCity(acItems[acIdx]); }
+        else if(e.key==='Escape'){ hideAC(); }
       });
+      vi.addEventListener('blur',()=>setTimeout(()=>{
+        const exact=SORTED.find(c=>norm(c.v)===norm(vi.value.trim()));
+        if(exact) selectCity(exact); else hideAC();
+      },150));
       calc();
     }
     init();
     document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pz-rfr');if(r)r.dataset.ready='';init();});
   })();
 </script>
+
+<style is:global>
+  /* Autocomplete ville du simulateur PTZ (remplace le <datalist>, cassé sur mobile). */
+  .pz-ac-wrap { position: relative; }
+  .pz-ac {
+    position: absolute; left: 0; right: 0; top: 100%; z-index: 40;
+    margin: 6px 0 0; padding: 6px; list-style: none;
+    background: #fff; border: 1px solid rgba(3, 16, 46, 0.12); border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(3, 16, 46, 0.14);
+    max-height: 280px; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .pz-ac[hidden] { display: none; }
+  .pz-ac-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 14px; border-radius: 9px; cursor: pointer;
+    font-size: 0.95rem; color: #03102E;
+  }
+  .pz-ac-item:hover, .pz-ac-item.active { background: #F5F1E8; }
+  .pz-ac-item em { font-style: normal; font-size: 0.78rem; color: #7A7566; white-space: nowrap; }
+</style>
