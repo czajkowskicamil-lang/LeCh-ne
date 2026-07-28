@@ -9,6 +9,7 @@ export const site = {
   email: 'camil.cz@lechenepatrimonial.com',
   phone: { display: '06 12 82 91 90', tel: '+33612829190' },
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
+  instagram: 'https://www.instagram.com/lechenepatrimonial/',
   city: 'Paris · Montpellier · Marseille',
   coverage: 'France entière · en présentiel ou à distance',
 };
