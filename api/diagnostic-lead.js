@@ -72,6 +72,9 @@ export default async function handler(req, res) {
     : process.env.BREVO_LIST_ETUDES
     ? Number(process.env.BREVO_LIST_ETUDES)
     : null;
+  // Téléphone stocké en texte (l'attribut TELEPHONE ne valide pas le format,
+  // contrairement à SMS/LANDLINE_NUMBER qui exigent un format international strict
+  // et feraient échouer toute la création du contact).
   try {
     await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
@@ -79,12 +82,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email,
         attributes: {
-          PRENOM: prenom,
-          NOM: nom,
-          ...(telephone ? { SMS: telephone } : {}),
-          SOURCE: 'Diagnostic patrimonial',
-          SCORE_DIAG: d.score != null ? String(d.score) : '',
-          OPTIN_MARKETING: optin ? 'oui' : 'non',
+          FIRSTNAME: prenom,
+          LASTNAME: nom,
+          ...(telephone ? { TELEPHONE: telephone } : {}),
+          CATEGORIE: 'Diagnostic patrimonial',
+          ...(d.score != null ? { SCORE_DIAG: Number(d.score) } : {}),
+          OPT_IN: !!optin,
         },
         ...(listId ? { listIds: [listId] } : {}),
         updateEnabled: true,
