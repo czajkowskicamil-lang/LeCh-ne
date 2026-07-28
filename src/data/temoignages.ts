@@ -17,6 +17,11 @@ export const temoignages: Temoignage[] = [
     author: 'Hugo Lagrange',
     role: 'Cadre',
   },
+  {
+    quote:
+      "Étant client du Chêne Patrimonial depuis peu, je dois dire que leur accompagnement me rend bien plus serein à propos du développement de mon patrimoine. Limpide et disponible, je note que la plateforme se développe de semaine en semaine et propose maintenant des outils d'estimation ludiques et clairs. Je remercie sincèrement son fondateur. Je recommande à quiconque.",
+    author: 'Kévin Monier',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
