@@ -13,18 +13,24 @@ export const site = {
   coverage: 'France entière · en présentiel ou à distance',
 };
 
+// Menu principal — resserré à 7 entrées qui suivent le parcours du visiteur :
+// qui je suis, ce que je fais, mes preuves, mon expertise data, mes contenus, agir.
 export const nav = [
   { label: 'Parcours', href: '/parcours' },
   { label: 'Expertise', href: '/expertise' },
-  { label: 'Manifeste', href: '/manifeste' },
-  { label: 'Magazine', href: '/magazine' },
-  { label: 'Observatoire', href: '/observatoire' },
-  { label: 'Outils', href: '/outils' },
-  { label: 'La Lettre', href: '/newsletter' },
   { label: 'Cas pratiques', href: '/cas-pratiques' },
-  { label: 'Avis', href: '/avis' },
-  { label: 'Suisse & France', href: '/suisse-france' },
+  { label: 'Observatoire', href: '/observatoire' },
+  { label: 'Magazine', href: '/magazine' },
+  { label: 'Outils', href: '/outils' },
   { label: 'Contact', href: '/contact' },
+];
+
+// Liens secondaires — retirés du menu principal pour l'alléger, mais gardés
+// accessibles dans le footer pour que personne ne soit perdu.
+export const navSecondary = [
+  { label: 'Manifeste', href: '/manifeste' },
+  { label: 'La Lettre du Chêne', href: '/newsletter' },
+  { label: 'Avis clients', href: '/avis' },
 ];
 
 export const expertises = [
