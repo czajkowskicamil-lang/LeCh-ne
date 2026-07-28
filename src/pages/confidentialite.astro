@@ -7,47 +7,114 @@ import { site } from '../data/site';
   <section class="pt-16 pb-16 md:pt-24">
     <div class="shell max-w-3xl">
       <p class="eyebrow mb-6">Confidentialité</p>
-      <h1 class="font-serif text-display text-ink mb-10">Politique de confidentialité</h1>
+      <h1 class="font-serif text-display text-ink mb-4">Politique de confidentialité</h1>
+      <p class="text-sm text-ink/50 mb-10">Dernière mise à jour : 28 juillet 2026.</p>
 
       <div class="prose-editorial">
         <h2>Responsable du traitement</h2>
         <p>
-          Les données personnelles collectées sur ce site sont traitées par Camil Czajkowski, éditeur du site {site.name}.
+          Les données personnelles collectées sur ce site sont traitées par Camil Czajkowski, éditeur du site {site.name},
+          Courtier en Opérations d'Assurance (COA, ORIAS n° 25 00 00 16) et titulaire de la Carte Professionnelle
+          Transaction Immobilière (Carte T). L'identité complète du cabinet figure dans les
+          <a href="/mentions-legales">mentions légales</a>.
           Contact : <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
 
         <h2>Données collectées</h2>
         <ul>
-          <li><strong>Via le formulaire de contact</strong> : nom, email, profil, contenu du message.</li>
-          <li><strong>Via la prise de rendez-vous (Calendly)</strong> : nom, email, créneau choisi.</li>
-          <li><strong>Données de navigation</strong> : adresse IP anonymisée, pages visitées (si outil d'analyse activé).</li>
+          <li><strong>Formulaire de contact</strong> : nom, adresse email, contenu du message.</li>
+          <li><strong>Prise de rendez-vous (Calendly)</strong> : nom, adresse email, créneau choisi.</li>
+          <li>
+            <strong>Diagnostic patrimonial en ligne</strong> : prénom, nom, adresse email, numéro de téléphone,
+            ainsi que les informations patrimoniales que vous saisissez vous-même (âge, situation familiale,
+            personnes à charge, statut professionnel, revenus, tranche marginale d'imposition, patrimoine estimé,
+            épargne, endettement, objectifs). Ces informations sont déclaratives et servent uniquement à produire
+            votre rapport indicatif.
+          </li>
+          <li><strong>La Lettre du Chêne</strong> : adresse email, si vous vous y abonnez volontairement.</li>
+          <li><strong>Données de navigation</strong> : mesure d'audience agrégée et anonymisée, sans cookie publicitaire.</li>
         </ul>
 
         <h2>Finalités</h2>
-        <p>
-          Les données sont utilisées exclusivement pour répondre à vos demandes de contact, organiser des rendez-vous, et améliorer la qualité du site. Aucune donnée n'est cédée à des tiers à des fins commerciales.
-        </p>
+        <ul>
+          <li>Répondre à vos demandes de contact et organiser vos rendez-vous.</li>
+          <li>Établir votre diagnostic patrimonial et vous transmettre le rapport que vous avez demandé.</li>
+          <li>
+            Assurer le suivi de la relation et vous recontacter au sujet de votre demande, au titre de l'intermédiation
+            en assurance et en immobilier, lorsque vous y avez consenti.
+          </li>
+          <li>Vous adresser La Lettre du Chêne, si vous y êtes abonné.</li>
+          <li>Mesurer l'audience du site afin d'en améliorer la qualité.</li>
+        </ul>
+        <p>Vos données ne sont jamais vendues ni cédées à des tiers à des fins commerciales.</p>
 
         <h2>Base légale</h2>
+        <ul>
+          <li>
+            <strong>Consentement</strong> (article 6.1.a du RGPD) pour la réalisation du diagnostic, le recontact
+            commercial et l'abonnement à la newsletter. Ce consentement est libre, distinct pour chaque finalité,
+            et révocable à tout moment.
+          </li>
+          <li>
+            <strong>Exécution de votre demande</strong> (article 6.1.b) pour la remise du rapport de diagnostic
+            que vous sollicitez.
+          </li>
+          <li>
+            <strong>Intérêt légitime</strong> (article 6.1.f) pour le suivi de la relation et la mesure d'audience
+            agrégée.
+          </li>
+        </ul>
+
+        <h2>Destinataires et sous-traitants</h2>
         <p>
-          Consentement (article 6.1.a RGPD) pour la prise de contact, et intérêt légitime (article 6.1.f) pour le suivi anonymisé du site.
+          Vos données sont traitées par Camil Czajkowski et par des prestataires techniques agissant comme
+          sous-traitants, uniquement pour les finalités ci-dessus :
+        </p>
+        <ul>
+          <li><strong>Brevo</strong> (Sendinblue SAS, France) : envoi des emails et gestion des contacts. Données hébergées dans l'Union européenne.</li>
+          <li><strong>Vercel</strong> : hébergement du site. Transferts éventuels hors UE encadrés par les clauses contractuelles types de la Commission européenne.</li>
+          <li><strong>Supabase</strong> : outil interne de suivi de la relation (CRM), hébergement en région européenne, accès restreint et authentifié.</li>
+          <li><strong>Calendly</strong> : prise de rendez-vous. Société établie aux États-Unis, transferts encadrés par les clauses contractuelles types et le cadre Data Privacy Framework.</li>
+        </ul>
+
+        <h2>Transferts hors Union européenne</h2>
+        <p>
+          Certains prestataires (Calendly, Vercel) sont susceptibles de traiter des données en dehors de l'Union
+          européenne. Ces transferts sont encadrés par des garanties appropriées : clauses contractuelles types de
+          la Commission européenne et, le cas échéant, adhésion au Data Privacy Framework.
         </p>
 
         <h2>Durée de conservation</h2>
         <ul>
-          <li>Données de contact : 3 ans après le dernier échange.</li>
+          <li>Données de prospect (contact et diagnostic hors relation contractuelle) : 3 ans à compter du dernier contact de votre part.</li>
+          <li>Abonnement à la newsletter : jusqu'à votre désinscription.</li>
           <li>Données de navigation : 13 mois maximum.</li>
-          <li>Données clients dans le cadre d'une relation contractuelle : selon obligations légales (10 ans pour les conseils en investissement).</li>
+          <li>
+            Données de clients dans le cadre d'une relation contractuelle : selon les obligations légales propres au
+            courtage en assurance et à la transaction immobilière, ainsi qu'aux obligations de lutte contre le
+            blanchiment (conservation de 5 ans après la fin de la relation).
+          </li>
         </ul>
 
         <h2>Vos droits</h2>
         <p>
-          Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition sur vos données. Pour l'exercer : <a href={`mailto:${site.email}`}>{site.email}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).
+          Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et
+          d'opposition sur vos données, ainsi que du droit de retirer votre consentement à tout moment. Pour les
+          exercer : <a href={`mailto:${site.email}`}>{site.email}</a>. Vous pouvez également introduire une réclamation
+          auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).
         </p>
 
-        <h2>Cookies</h2>
+        <h2>Cookies et mesure d'audience</h2>
         <p>
-          Ce site n'utilise pas de cookies de traçage marketing. Seuls des cookies techniques strictement nécessaires au fonctionnement du site (dont ceux du widget Calendly lors de la prise de rendez-vous) peuvent être déposés.
+          Ce site n'utilise pas de cookie de traçage publicitaire. La mesure d'audience est réalisée de façon
+          agrégée et sans cookie. Seuls des cookies techniques strictement nécessaires peuvent être déposés, dont
+          ceux du widget Calendly lorsque vous prenez rendez-vous.
+        </p>
+
+        <h2>Sécurité</h2>
+        <p>
+          Les données sont hébergées au sein de l'Union européenne (hors prestataires listés ci-dessus), transmises
+          de façon chiffrée et accessibles uniquement par le cabinet, via des accès authentifiés.
         </p>
       </div>
     </div>

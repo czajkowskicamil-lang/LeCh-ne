@@ -4,8 +4,10 @@
 //   1. valide + filtre le spam (honeypot),
 //   2. crée / met à jour le contact dans Brevo (opt-in marketing explicite et facultatif),
 //   3. envoie à Camil un récapitulatif du diagnostic par email.
+//   4. envoie au visiteur son rapport PDF par email (document transactionnel qu'il a demandé).
 // RGPD : consentement obligatoire, opt-in marketing séparé et facultatif.
-// Aucun email n'est envoyé automatiquement au visiteur : Camil reprend la main.
+
+import { buildDiagnosticPdf } from './_lib/diagnostic-pdf.js';
 
 const DEST = 'camil.cz@lechenepatrimonial.com';
 const SENDER = { name: 'Site Le Chêne', email: 'etudes@lechenepatrimonial.com' };
@@ -45,6 +47,9 @@ export default async function handler(req, res) {
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
   if (!prenom || !nom || !emailOk) {
     return res.status(400).json({ ok: false, error: 'champs_invalides' });
+  }
+  if (!telephone) {
+    return res.status(400).json({ ok: false, error: 'telephone_requis' });
   }
   if (!body.consent) {
     return res.status(400).json({ ok: false, error: 'consentement_requis' });
@@ -96,7 +101,7 @@ export default async function handler(req, res) {
 
   const htmlContent = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E">
-      <p style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#A7801F;margin:0 0 4px">Nouveau diagnostic patrimonial</p>
+      <p style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#A7801F;margin:0 0 4px">Nouveau lead &middot; rapport PDF téléchargé</p>
       <h2 style="margin:0 0 6px;font-size:20px">${escapeHtml(prenom)} ${escapeHtml(nom)}</h2>
       ${scoreBadge}
       <p style="margin:0 0 2px;font-size:14px"><a href="mailto:${escapeHtml(email)}" style="color:#0A1F4F">${escapeHtml(email)}</a>${telephone ? ` &middot; ${escapeHtml(telephone)}` : ''}</p>
@@ -133,7 +138,7 @@ export default async function handler(req, res) {
         sender: SENDER,
         to: [{ email: DEST, name: 'Camil Czajkowski' }],
         replyTo: { email, name: `${prenom} ${nom}` },
-        subject: `Diagnostic patrimonial — ${prenom} ${nom}${d.score != null ? ` (${d.score}/100)` : ''}`,
+        subject: `Diagnostic patrimonial · ${prenom} ${nom}${d.score != null ? ` (${d.score}/100)` : ''}`,
         htmlContent,
       }),
     });
@@ -145,6 +150,38 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error('Fetch Brevo failed', err);
     return res.status(502).json({ ok: false, error: 'envoi' });
+  }
+
+  // 3) Envoi du rapport PDF directement au visiteur (email transactionnel : document demandé).
+  //    Un échec ici ne bloque pas la réponse : Camil a déjà été notifié.
+  const full = body.diagnosticFull;
+  if (full && typeof full === 'object' && typeof full.score === 'number') {
+    try {
+      const pdf = await buildDiagnosticPdf({ answers: { prenom, nom }, diagnostic: full });
+      const pdfBase64 = pdf.toString('base64');
+      const visitorHtml = `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E;line-height:1.55">
+          <p style="font-size:15px">Bonjour ${escapeHtml(prenom)},</p>
+          <p style="font-size:15px">Merci d'avoir réalisé votre diagnostic patrimonial avec Le Chêne Patrimonial. Vous trouverez <strong>votre rapport complet en pièce jointe</strong> (PDF)${d.score != null ? `, avec votre indice de santé patrimoniale de <strong>${escapeHtml(String(d.score))}/100</strong>` : ''}.</p>
+          <p style="font-size:15px">Ce diagnostic pose une première photographie. Pour la transformer en stratégie concrète et chiffrée, Camil Czajkowski vous recontacte prochainement. Vous pouvez aussi réserver directement un créneau :</p>
+          <p style="margin:22px 0"><a href="https://calendly.com/camil-cz-lechenepatrimonial/30min" style="background:#0A1F4F;color:#E6C259;text-decoration:none;padding:12px 26px;border-radius:100px;font-weight:bold;font-size:14px">Prendre rendez-vous (30 min)</a></p>
+          <p style="font-size:15px">À très bientôt,<br>Camil Czajkowski<br><span style="color:#7A7566">Le Chêne Patrimonial</span></p>
+          <p style="font-size:11px;color:#9a9484;border-top:1px solid #EDE6D3;padding-top:14px;margin-top:22px">Vous recevez cet email car vous avez demandé votre diagnostic sur lechenepatrimonial.com. Vos données ne sont pas revendues. Pour exercer vos droits d'accès, de rectification ou de suppression : camil.cz@lechenepatrimonial.com.</p>
+        </div>`;
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'api-key': apiKey, 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({
+          sender: SENDER,
+          to: [{ email, name: `${prenom} ${nom}` }],
+          subject: 'Votre diagnostic patrimonial · Le Chêne Patrimonial',
+          htmlContent: visitorHtml,
+          attachment: [{ name: 'diagnostic-patrimonial-le-chene.pdf', content: pdfBase64 }],
+        }),
+      });
+    } catch (err) {
+      console.error('Envoi PDF visiteur échoué', err);
+    }
   }
 
   return res.status(200).json({ ok: true });

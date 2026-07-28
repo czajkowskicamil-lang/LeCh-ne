@@ -794,27 +794,28 @@ const description =
 
     function leadFormHTML(): string {
       return `
-        <h3 class="font-serif text-xl text-ink mb-1.5">Recevoir ce diagnostic et être recontacté(e)</h3>
-        <p class="text-sm text-ink/60 mb-5 leading-relaxed">Camil Czajkowski vous rappelle pour en parler, sans engagement. Vos données ne sont jamais revendues.</p>
+        <h3 class="font-serif text-xl text-ink mb-1.5">Recevez votre rapport complet en PDF</h3>
+        <p class="text-sm text-ink/60 mb-5 leading-relaxed">Renseignez vos coordonnées pour télécharger votre diagnostic détaillé. Camil Czajkowski vous rappelle pour en parler, sans engagement. Vos données ne sont jamais revendues.</p>
         <form id="diag-lead-form" class="space-y-3.5" novalidate>
           <div class="grid sm:grid-cols-2 gap-3.5">
             <input name="prenom" required placeholder="Prénom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
             <input name="nom" required placeholder="Nom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
           </div>
           <input name="email" type="email" required placeholder="Adresse email" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
-          <input name="telephone" type="tel" placeholder="Téléphone (facultatif)" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input name="telephone" type="tel" required placeholder="Téléphone" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
           <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
           <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
             <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
-            <span>J'accepte que Le Chêne Patrimonial traite ces informations pour me recontacter au sujet de mon diagnostic. <a href="/confidentialite" class="underline hover:text-ink" target="_blank">Politique de confidentialité</a>.</span>
+            <span>J'accepte que Le Chêne Patrimonial collecte et traite ces informations (nom, email, téléphone, réponses au diagnostic) afin de m'adresser mon rapport et de me recontacter à ce sujet. Je peux exercer mes droits d'accès, de rectification et de suppression à tout moment. <a href="/confidentialite" class="underline hover:text-ink" target="_blank">Politique de confidentialité</a>.</span>
           </label>
           <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
             <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
             <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désinscription à tout moment).</span>
           </label>
           <button type="submit" class="btn-primary w-full justify-center py-3">
-            <span class="diag-lead-btn-label">Envoyer ma demande</span>
+            <span class="diag-lead-btn-label">Recevoir mon rapport (PDF)</span>
           </button>
+          <p class="text-[11px] text-ink/45 text-center leading-relaxed">Responsable de traitement : Le Chêne Patrimonial. Données conservées le temps de la relation commerciale, jamais revendues.</p>
           <p id="diag-lead-msg" class="text-sm text-center hidden"></p>
         </form>`;
     }
@@ -845,12 +846,8 @@ const description =
     function wireResults(d: Diagnostic, wrap: HTMLElement) {
       (wrap.querySelector('#diag-restart') as HTMLButtonElement).onclick = () => { reset(); renderIntro(false); };
 
-      // PDF
-      const pdfBtn = wrap.querySelector('#diag-pdf') as HTMLButtonElement;
-      const pdfLabel = wrap.querySelector('#diag-pdf-label') as HTMLElement;
-      pdfBtn.onclick = async () => {
-        pdfLabel.textContent = 'Préparation...';
-        pdfBtn.disabled = true;
+      // Génère et télécharge le rapport PDF (appelé après validation du formulaire).
+      async function downloadPdf(): Promise<boolean> {
         try {
           const res = await fetch('/api/diagnostic-pdf', {
             method: 'POST', headers: { 'content-type': 'application/json' },
@@ -863,13 +860,23 @@ const description =
           a.href = url; a.download = 'diagnostic-patrimonial-le-chene.pdf';
           document.body.appendChild(a); a.click(); a.remove();
           URL.revokeObjectURL(url);
-          pdfLabel.textContent = 'Rapport téléchargé';
-        } catch {
-          pdfLabel.textContent = 'Réessayer le téléchargement';
-        } finally { pdfBtn.disabled = false; }
+          return true;
+        } catch { return false; }
+      }
+
+      // Le bouton "Télécharger" du bloc conversion renvoie vers le formulaire :
+      // le PDF n'est délivré qu'après saisie des coordonnées + consentement.
+      const pdfBtn = wrap.querySelector('#diag-pdf') as HTMLButtonElement;
+      pdfBtn.onclick = () => {
+        const lead = wrap.querySelector('#diag-lead') as HTMLElement;
+        lead.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        lead.classList.add('ring-2', 'ring-or', 'ring-offset-2', 'ring-offset-cream');
+        setTimeout(() => lead.classList.remove('ring-2', 'ring-or', 'ring-offset-2', 'ring-offset-cream'), 1800);
+        const first = wrap.querySelector('#diag-lead-form input[name="prenom"]') as HTMLInputElement | null;
+        if (first) setTimeout(() => first.focus(), 500);
       };
 
-      // Lead
+      // Lead : notifie Camil + délivre le PDF
       const form = wrap.querySelector('#diag-lead-form') as HTMLFormElement;
       const msg = wrap.querySelector('#diag-lead-msg') as HTMLElement;
       const btnLabel = wrap.querySelector('.diag-lead-btn-label') as HTMLElement;
@@ -877,13 +884,15 @@ const description =
         e.preventDefault();
         const fd = new FormData(form);
         if (!fd.get('prenom') || !fd.get('nom') || !fd.get('email')) { showMsg('Merci de renseigner vos coordonnées.', false); return; }
-        if (!fd.get('consent')) { showMsg('Le consentement est nécessaire pour vous recontacter.', false); return; }
+        if (!fd.get('telephone')) { showMsg('Merci d\'indiquer un numéro de téléphone.', false); return; }
+        if (!fd.get('consent')) { showMsg('Votre consentement est nécessaire pour recevoir le rapport.', false); return; }
         btnLabel.textContent = 'Envoi...';
         const payload = {
           prenom: fd.get('prenom'), nom: fd.get('nom'), email: fd.get('email'),
           telephone: fd.get('telephone'), consent: !!fd.get('consent'), optin: !!fd.get('optin'),
           website: fd.get('website'),
           diagnostic: summaryFor(d),
+          diagnosticFull: d,
         };
         try {
           const res = await fetch('/api/diagnostic-lead', {
@@ -891,21 +900,26 @@ const description =
           });
           const data = await res.json().catch(() => ({}));
           if (res.ok && data.ok) {
+            downloadPdf();
+            const email = String(fd.get('email') || '');
             form.innerHTML = `<div class="text-center py-4">
               <div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>
               </div>
-              <p class="font-serif text-xl text-ink mb-1">Demande envoyée</p>
-              <p class="text-sm text-ink/60">Camil vous recontacte très vite. En attendant, vous pouvez réserver un créneau directement.</p>
-              <a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-primary mt-5">Choisir un créneau</a>
+              <p class="font-serif text-xl text-ink mb-1">Votre rapport vous a été envoyé par email</p>
+              <p class="text-sm text-ink/60 mb-4">Il vient de partir vers <strong class="text-ink">${email}</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite pour en parler.</p>
+              <button id="diag-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button>
+              <div class="mt-5"><a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-primary">Choisir un créneau avec Camil</a></div>
             </div>`;
+            const again = form.querySelector('#diag-pdf-again') as HTMLButtonElement | null;
+            if (again) again.onclick = () => downloadPdf();
           } else {
             showMsg('Un souci est survenu. Réessayez ou écrivez-nous directement.', false);
-            btnLabel.textContent = 'Envoyer ma demande';
+            btnLabel.textContent = 'Recevoir mon rapport (PDF)';
           }
         } catch {
           showMsg('Connexion impossible. Réessayez dans un instant.', false);
-          btnLabel.textContent = 'Envoyer ma demande';
+          btnLabel.textContent = 'Recevoir mon rapport (PDF)';
         }
       };
       function showMsg(text: string, ok: boolean) {
