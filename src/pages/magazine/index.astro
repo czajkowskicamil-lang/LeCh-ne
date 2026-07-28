@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import CTA from '../../components/CTA.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
@@ -14,34 +15,27 @@ const rest = articles.filter((a) => a.slug !== featured?.slug);
 ---
 
 <Base
+  heroDark
   title="Magazine, Le Chêne Patrimonial"
   description="Analyses, décryptages et guides pratiques pour comprendre et piloter son patrimoine sans langue de bois."
 >
-  <section class="pt-16 pb-12 md:pt-24">
-    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
-      <div class="lg:col-span-8">
-        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
-          <span class="inline-block h-px w-8 bg-chene"></span>
-          Le Magazine
-        </p>
-        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
-          Comprendre avant <span class="italic text-chene">de décider.</span>
-        </h1>
-        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
-          Des textes travaillés, sans jargon gratuit, pour vous rendre autonome sur vos choix patrimoniaux. Un nouveau décryptage publié deux fois par mois.
-        </p>
-      </div>
-    </div>
-  </section>
+  <PageHeader
+    image="/magazine-header.jpg"
+    alt="Forêt d'automne aux teintes dorées"
+    eyebrow="Le Magazine"
+    title={`Comprendre avant<br/><span class="italic text-or-light">de décider.</span>`}
+    intro="Des textes travaillés, sans jargon gratuit, pour vous rendre autonome sur vos choix patrimoniaux. Un nouveau décryptage deux fois par mois."
+  />
 
   {featured && (
     <section class="py-12 md:py-16 bg-cream-soft">
       <div class="shell">
         <a href={`/magazine/${featured.slug}`} class="group grid lg:grid-cols-12 gap-10 items-end">
           <div class="lg:col-span-7 aspect-[16/10] relative overflow-hidden bg-chene-dark">
-            <div class="absolute inset-0 opacity-50 mix-blend-overlay" style="background-image: radial-gradient(circle at 30% 20%, rgba(184,153,104,0.6), transparent 60%), radial-gradient(circle at 70% 80%, rgba(15,27,20,0.8), transparent 70%);"></div>
+            <img src="/oak-band.jpg" alt="" class="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" decoding="async" style="filter:saturate(1.04) contrast(1.04) brightness(0.82) sepia(0.12)" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-ink/10"></div>
             <div class="absolute top-6 left-6 bg-or px-3 py-1 text-[0.65rem] uppercase tracking-micro text-ink">À la une</div>
-            <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between text-cream/80 text-xs uppercase tracking-micro">
+            <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between text-cream/90 text-xs uppercase tracking-micro">
               <span>{featured.data.category}</span>
               <span>{featured.data.readingTime} min</span>
             </div>
@@ -61,9 +55,9 @@ const rest = articles.filter((a) => a.slug !== featured?.slug);
   <section class="py-8 border-y border-ink/10 bg-cream">
     <div class="shell flex flex-wrap items-center gap-3 text-sm">
       <span class="eyebrow mr-2">Filtrer :</span>
-      <span class="px-4 py-1.5 rounded-full bg-ink text-cream">Tous</span>
+      <span class="px-4 py-1.5 rounded-none bg-ink text-cream">Tous</span>
       {categories.map((c) => (
-        <span class="px-4 py-1.5 rounded-full border border-ink/15 text-ink/70">{c}</span>
+        <span class="px-4 py-1.5 rounded-none border border-ink/15 text-ink/70">{c}</span>
       ))}
     </div>
   </section>
