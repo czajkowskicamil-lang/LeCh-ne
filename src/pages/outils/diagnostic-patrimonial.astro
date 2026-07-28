@@ -233,8 +233,13 @@ const description =
   const clean = (v: string) => (v || '').replace(/[^\d]/g, '');
 
   // ---------- État ----------
-  const app = document.getElementById('diag-app') as HTMLElement | null;
-  if (app) {
+  // Démarrage encapsulé : ce script est un module (import), donc Astro ne le
+  // rejoue PAS lors d'une navigation par View Transitions. On rappelle boot()
+  // sur astro:page-load ; la garde dataset.diagReady évite un double init.
+  function boot() {
+    const app = document.getElementById('diag-app') as HTMLElement | null;
+    if (!app || app.dataset.diagReady) return;
+    app.dataset.diagReady = '1';
     const stage = document.getElementById('diag-stage') as HTMLElement;
     const progress = document.getElementById('diag-progress') as HTMLElement;
     const bar = document.getElementById('diag-bar') as HTMLElement;
@@ -950,4 +955,7 @@ const description =
     const resumable = load();
     renderIntro(resumable);
   }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
 </script>
