@@ -62,7 +62,7 @@ const description =
       </div>
 
       <noscript>
-        <div class="bg-cream-soft border border-ink/10 rounded-2xl p-8 text-center">
+        <div class="bg-cream-soft border border-ink/10 rounded-none p-8 text-center">
           <p class="text-ink/80">Ce diagnostic interactif nécessite JavaScript. Vous pouvez aussi
             <a href={site.calendly} class="text-chene underline" target="_blank" rel="noopener">prendre rendez-vous directement</a>.</p>
         </div>
@@ -299,8 +299,7 @@ const description =
       transition(() => {
         stage.innerHTML = `
           <div class="diag-screen">
-            <div class="relative mx-auto max-w-lg text-center bg-gradient-to-b from-white to-cream-soft border border-ink/10 rounded-[2rem] px-6 py-9 md:px-12 md:py-11 shadow-[0_30px_80px_-42px_rgba(3,16,46,0.4)] overflow-hidden">
-              <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-or/10 blur-3xl"></div>
+            <div class="relative mx-auto max-w-lg text-center bg-cream-soft border border-ink/12 px-6 py-9 md:px-12 md:py-11 overflow-hidden">
               <div class="relative">
                 <div class="mx-auto w-full max-w-[250px]">
                   <svg viewBox="0 0 220 126" class="w-full" role="img" aria-label="Jauge de 0 à 100">
@@ -615,7 +614,7 @@ const description =
           <h3 class="font-serif text-xl text-ink mb-4">${title}</h3>
           <div class="space-y-3">
             ${items.map((it) => `
-              <div class="flex gap-3.5 bg-cream-soft border border-ink/8 rounded-xl p-4">
+              <div class="flex gap-3.5 bg-cream-soft border border-ink/8 rounded-none p-4">
                 <span class="mt-1.5 flex-none w-2 h-2 rounded-full" style="background:${dot}"></span>
                 <div>
                   <div class="font-medium text-ink text-[0.95rem]">${it.titre}</div>
@@ -636,7 +635,7 @@ const description =
       ];
       const donut = donutHTML(d);
       const eco = d.economieFiscaleEstimee > 0 ? `
-        <div class="rounded-2xl bg-navy text-cream p-6 md:p-8 my-10 relative overflow-hidden">
+        <div class="rounded-none bg-navy text-cream p-6 md:p-8 my-10 relative overflow-hidden">
           <p class="eyebrow-cream mb-3">Piste d'optimisation fiscale</p>
           <div class="flex flex-wrap items-end gap-x-4 gap-y-1">
             <span class="font-serif text-4xl md:text-5xl text-or-light">${eur(d.economieFiscaleEstimee)}</span>
@@ -674,7 +673,7 @@ const description =
         <!-- KPIs -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 my-9">
           ${kpis.map((k) => `
-            <div class="bg-cream-soft border border-ink/8 rounded-xl p-4 text-center">
+            <div class="bg-cream-soft border border-ink/8 rounded-none p-4 text-center">
               <div class="font-serif text-xl md:text-2xl text-ink tabular-nums">${k.v}</div>
               <div class="text-xs text-stone mt-1 leading-tight">${k.l}</div>
             </div>`).join('')}
@@ -721,7 +720,7 @@ const description =
           <h3 class="font-serif text-2xl text-ink mb-6">Vos priorités</h3>
           <div class="grid sm:grid-cols-3 gap-4">
             ${d.priorites.map((p, i) => `
-              <div class="bg-cream-soft border border-ink/8 rounded-2xl p-5">
+              <div class="bg-cream-soft border border-ink/8 rounded-none p-5">
                 <div class="w-8 h-8 rounded-full bg-navy text-or grid place-items-center font-serif text-sm mb-3">${i + 1}</div>
                 <div class="font-medium text-ink mb-1">${p.titre}</div>
                 <div class="text-sm text-ink/60 leading-relaxed">${p.detail}</div>
@@ -744,7 +743,7 @@ const description =
         </div>
 
         <!-- Conversion -->
-        <div class="rounded-3xl bg-navy-deep text-cream p-8 md:p-12 my-10 text-center relative overflow-hidden">
+        <div class="rounded-none bg-navy-deep text-cream p-8 md:p-12 my-10 text-center relative overflow-hidden">
           <p class="eyebrow-cream mb-4">L'étape suivante</p>
           <h3 class="font-serif text-2xl md:text-3xl text-cream mb-4 max-w-xl mx-auto">Prenez rendez-vous avec un conseiller du Chêne Patrimonial pour obtenir une étude patrimoniale complète.</h3>
           <p class="text-cream/70 max-w-lg mx-auto mb-8 leading-relaxed">Ce diagnostic pose la photographie. Ensemble, nous la transformons en stratégie sur mesure, chiffrée et actionnable.</p>
@@ -761,7 +760,7 @@ const description =
         </div>
 
         <!-- Recevoir / être recontacté -->
-        <div id="diag-lead" class="rounded-2xl border border-ink/10 bg-cream-soft p-6 md:p-8 my-8">
+        <div id="diag-lead" class="rounded-none border border-ink/10 bg-cream-soft p-6 md:p-8 my-8">
           ${leadFormHTML()}
         </div>
 
@@ -773,7 +772,7 @@ const description =
     function donutHTML(d: Diagnostic): string {
       const R = 54, CIRC = 2 * Math.PI * R;
       if (!d.repartition.length) {
-        return `<p class="text-sm text-stone bg-cream-soft border border-ink/8 rounded-xl p-5">Renseignez vos actifs pour visualiser la répartition de votre patrimoine.</p>`;
+        return `<p class="text-sm text-stone bg-cream-soft border border-ink/8 rounded-none p-5">Renseignez vos actifs pour visualiser la répartition de votre patrimoine.</p>`;
       }
       let acc = 0;
       const segs = d.repartition.map((r) => {

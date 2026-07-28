@@ -2,26 +2,38 @@
 import Logo from './Logo.astro';
 import { nav, site } from '../data/site';
 
+interface Props {
+  heroDark?: boolean;
+}
+const { heroDark = false } = Astro.props;
+
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 const pad = (n: number) => String(n + 1).padStart(2, '0');
 ---
 
-<header class="sticky top-0 z-40 bg-cream/80 backdrop-blur-xl border-b border-ink/5">
+<header
+  id="site-header"
+  data-hero-dark={heroDark ? 'true' : undefined}
+  class:list={[
+    'sticky top-0 z-40 transition-colors duration-500',
+    heroDark ? 'nav-hero' : 'bg-cream/80 backdrop-blur-xl border-b border-ink/5 text-ink',
+  ]}
+>
   <div class="shell flex items-center justify-between h-20">
     <Logo />
 
     <div class="flex items-center gap-5 md:gap-7">
-      <a href={site.calendly} target="_blank" rel="noopener" class="hidden sm:inline-flex btn-primary text-sm">
+      <a href={site.calendly} target="_blank" rel="noopener" class="nav-cta hidden sm:inline-flex btn-primary text-sm">
         Prendre rendez-vous
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
       </a>
 
-      <button id="menu-toggle" class="group flex items-center gap-3 text-ink" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-overlay">
+      <button id="menu-toggle" class="group flex items-center gap-3 text-current" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-overlay">
         <span class="hidden sm:inline text-xs uppercase tracking-micro font-medium">Menu</span>
         <span class="flex flex-col items-end gap-[5px] w-6">
-          <span class="block h-px w-6 bg-ink transition-all duration-500 ease-out-expo"></span>
-          <span class="block h-px w-4 bg-ink transition-all duration-500 ease-out-expo group-hover:w-6"></span>
+          <span class="block h-px w-6 bg-current transition-all duration-500 ease-out-expo"></span>
+          <span class="block h-px w-4 bg-current transition-all duration-500 ease-out-expo group-hover:w-6"></span>
         </span>
       </button>
     </div>
@@ -90,6 +102,32 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
 </div>
 
 <style>
+  /* Nav transparente au-dessus du hero sombre, puis crème au scroll */
+  header.nav-hero {
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    color: #FAF7EF;
+  }
+  header.nav-hero.is-solid {
+    background: rgba(245, 241, 232, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: rgba(3, 16, 46, 0.06);
+    color: #03102E;
+  }
+  /* Logo lisible sur la zone claire du hero (ombre portée douce) */
+  header.nav-hero:not(.is-solid) img {
+    filter: drop-shadow(0 1px 2px rgba(3, 9, 28, 0.55)) drop-shadow(0 3px 10px rgba(3, 9, 28, 0.45));
+  }
+  /* Bouton CTA doré tant qu'on survole le hero */
+  header.nav-hero:not(.is-solid) .nav-cta {
+    background-color: #D4A82D;
+    color: #03102E;
+  }
+  header.nav-hero:not(.is-solid) .nav-cta:hover {
+    background-color: #E6C259;
+  }
+
   #menu-overlay .menu-link {
     opacity: 0;
     transform: translateY(14px);
@@ -147,4 +185,17 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
 
   initFullscreenMenu();
   document.addEventListener('astro:page-load', initFullscreenMenu);
+
+  // Solidifie la nav transparente (hero sombre) dès qu'on scrolle.
+  function initHeaderScroll() {
+    const header = document.getElementById('site-header');
+    if (!header || header.dataset.heroDark !== 'true') return;
+    const onScroll = () => {
+      header.classList.toggle('is-solid', window.scrollY > 40);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+  initHeaderScroll();
+  document.addEventListener('astro:page-load', initHeaderScroll);
 </script>

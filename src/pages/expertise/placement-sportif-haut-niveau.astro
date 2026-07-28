@@ -1,0 +1,146 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Placement pour sportif de haut niveau : que faire de son argent ? | Le Chêne Patrimonial";
+const description =
+  "Sportif de haut niveau : comment gérer et faire fructifier des revenus élevés mais concentrés dans le temps ? Les leviers patrimoniaux adaptés à votre carrière, expliqués par un conseiller ancien sportif de haut niveau.";
+
+const heroIntro =
+  "Gagner beaucoup, sur peu d'années : c'est la particularité de la carrière sportive. La vraie question n'est pas de placer pour placer, mais d'organiser des revenus concentrés pour qu'ils vous soutiennent bien au-delà de la carrière. Voici les leviers patrimoniaux qui répondent le mieux à cette réalité, et comment les articuler.";
+
+const leviers = [
+  {
+    titre: "Constituer un patrimoine immobilier (LMNP)",
+    desc: "Utiliser vos années de revenus élevés pour bâtir un parc immobilier dont les loyers, peu ou pas fiscalisés grâce à l'amortissement, deviendront un revenu de complément après la carrière.",
+    href: "/expertise/lmnp-sportif-haut-niveau",
+    cta: "La page LMNP sportif",
+  },
+  {
+    titre: "L'assurance-vie, socle de long terme",
+    desc: "L'enveloppe la plus souple du patrimoine français : capitalisation, disponibilité de l'épargne et fiscalité avantageuse dans la durée. Un socle pour faire travailler la trésorerie sans la bloquer.",
+    href: "/expertise/assurance-vie",
+    cta: "En savoir plus",
+  },
+  {
+    titre: "Le PER, pour lisser la fiscalité",
+    desc: "Pendant les années où vous êtes fortement imposé, le plan épargne retraite permet de déduire vos versements et de préparer l'après. Un levier puissant à condition d'en maîtriser la mécanique de sortie.",
+    href: "/expertise/plan-epargne-retraite",
+    cta: "En savoir plus",
+  },
+  {
+    titre: "Anticiper la falaise de fin de carrière",
+    desc: "Le moment où les revenus du sport s'arrêtent se prépare pendant qu'ils sont élevés. Un simulateur pour visualiser à quel âge vous pouvez être libre financièrement.",
+    href: "/outils/apres-carriere",
+    cta: "Le simulateur après-carrière",
+  },
+];
+
+const faq = [
+  {
+    q: "Par où commencer quand on est jeune sportif à hauts revenus ?",
+    a: "Avant tout produit, par une vision d'ensemble : combien vous gagnez, pour combien de temps, quels sont vos projets. La bonne stratégie découle de votre situation, pas d'un placement à la mode. C'est l'objet du premier échange.",
+  },
+  {
+    q: "Faut-il tout placer d'un coup ?",
+    a: "Non. Une carrière sportive comporte des aléas, blessures et transferts compris. On garde une trésorerie de sécurité disponible, puis on déploie progressivement vers des solutions adaptées à votre horizon.",
+  },
+  {
+    q: "En quoi un ancien sportif comprend-il mieux ces enjeux ?",
+    a: "Parce que la falaise de fin de carrière, je l'ai vécue. Je sais ce que représente le passage d'un revenu élevé à une nouvelle vie professionnelle, et je construis les stratégies avec cette réalité en tête.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/expertise" class="hover:text-chene">Expertise</a>
+        <span>/</span>
+        <span class="text-ink">Placement sportif de haut niveau</span>
+      </nav>
+
+      <div class="max-w-prose-wide">
+        <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Sportifs de haut niveau
+        </p>
+        <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+          Que faire de son argent quand on est sportif de haut niveau ?
+        </h1>
+        <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+          Organiser des revenus concentrés pour qu'ils durent
+        </p>
+        <p class="text-lg text-ink/80 leading-relaxed reveal" style="animation-delay:240ms">
+          {heroIntro}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leviers -->
+  <section class="py-16 md:py-24 bg-cream-soft border-y border-ink/10">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Les leviers adaptés</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Quatre façons de faire travailler vos revenus.</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {leviers.map((l, i) => (
+          <a href={l.href} class="group block bg-cream p-8 md:p-10 border border-ink/10 hover:border-chene transition reveal" style={`transition-delay:${i * 80}ms`}>
+            <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Levier {String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-chene transition">{l.titre}</h3>
+            <p class="text-ink/75 leading-relaxed mb-6">{l.desc}</p>
+            <span class="text-chene font-medium inline-flex items-center gap-2">
+              {l.cta}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="text-sm text-stone mt-8 max-w-prose-wide reveal">
+        Le Chêne Patrimonial intervient sur l'assurance, l'épargne retraite assurantielle et l'immobilier, dans le cadre de ses statuts de courtier. Cette page est informative et ne constitue pas un conseil en investissement personnalisé.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 md:py-28">
+    <div class="shell max-w-prose-wide">
+      <p class="eyebrow mb-4 reveal">Questions fréquentes</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-10 reveal">Ce qu'on me demande le plus.</h2>
+      <div class="divide-y divide-ink/10 border-t border-ink/10">
+        {faq.map((f) => (
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+              <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+              <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-ink/75 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Un patrimoine de sportif se construit tôt."
+    body="Premier échange offert, sans engagement. Nous partons de votre carrière et de vos objectifs, pas d'un produit défini à l'avance."
+  />
+</Base>

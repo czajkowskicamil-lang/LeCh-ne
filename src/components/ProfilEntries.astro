@@ -43,56 +43,89 @@ const profils = [
 ];
 ---
 
-<section class="py-24 md:py-32">
+<section class="py-24 md:py-36 bg-cream">
   <div class="shell">
-    <div class="grid lg:grid-cols-12 gap-8 md:gap-16 mb-16 items-end">
+    <!-- En-tête asymétrique -->
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-16 md:mb-20">
       <div class="lg:col-span-7 reveal">
-        <p class="eyebrow mb-5 flex items-center gap-3">
-          <span class="inline-block h-px w-8 bg-chene"></span>
-          Pour qui
-        </p>
-        <h2 class="font-serif text-display text-ink">
-          Quatre profils, <span class="italic text-chene">une même rigueur.</span>
+        <p class="pe-label mb-6">Pour qui</p>
+        <h2 class="font-serif text-ink leading-[0.98] text-[clamp(2.4rem,5vw,4rem)] tracking-tight">
+          Quatre profils,<br/>une même exigence.
         </h2>
       </div>
-      <div class="lg:col-span-5 reveal">
-        <p class="text-ink/70 leading-relaxed">
-          Le cabinet accompagne ces quatre trajectoires patrimoniales. Chacune appelle des leviers différents, jamais les mêmes priorités.
+      <div class="lg:col-span-4 lg:col-start-9 reveal">
+        <p class="text-ink/65 leading-relaxed">
+          Le cabinet accompagne quatre trajectoires patrimoniales. Chacune appelle ses propres leviers, jamais les mêmes priorités.
         </p>
       </div>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+    <!-- Index éditorial -->
+    <div class="border-t border-ink/15">
       {profils.map((p, i) => (
-        <div class="bg-cream-soft border border-ink/10 p-8 md:p-10 flex flex-col reveal" style={`animation-delay:${i * 80}ms`}>
-          <h3 class="font-serif text-2xl md:text-[1.7rem] leading-tight mb-4 min-h-[2lh]">{p.title}</h3>
-          <p class="text-sm text-ink/70 leading-relaxed mb-8">{p.description}</p>
+        <div class="pe-row group grid lg:grid-cols-12 gap-y-5 lg:gap-x-10 py-10 md:py-14 border-b border-ink/15 reveal">
+          <!-- Numéro + titre -->
+          <div class="lg:col-span-4 flex items-baseline gap-5">
+            <span class="pe-num font-serif">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-serif text-ink text-[clamp(1.5rem,2.4vw,2rem)] leading-tight">{p.title}</h3>
+          </div>
 
-          <div class="border-t border-ink/10 pt-6 mt-auto">
-            <p class="text-[0.65rem] uppercase tracking-micro text-ink/50 mb-3">Leviers principaux</p>
-            <ul class="space-y-2 mb-8">
+          <!-- Description -->
+          <div class="lg:col-span-5">
+            <p class="text-ink/70 leading-relaxed max-w-prose-wide">{p.description}</p>
+          </div>
+
+          <!-- Leviers + lien -->
+          <div class="lg:col-span-3">
+            <p class="pe-label mb-3">Leviers</p>
+            <ul class="flex flex-wrap gap-x-4 gap-y-1.5 mb-6">
               {p.expertises.map((e) => (
                 <li>
-                  <a href={`/expertise/${e.slug}`} class="text-sm text-ink hover:text-chene transition flex items-center gap-2">
-                    <span class="w-1 h-1 rounded-full bg-or"></span>
-                    {e.label}
-                  </a>
+                  <a href={`/expertise/${e.slug}`} class="text-sm text-ink/80 hover:text-chene transition-colors">{e.label}</a>
                 </li>
               ))}
             </ul>
-            <a href="/contact" class="inline-flex items-center gap-2 text-sm font-medium text-chene hover:text-ink transition">
-              <span>Premier échange offert</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <a href="/contact" class="inline-flex items-center gap-2 text-sm font-medium text-chene">
+              <span class="pe-cta">Premier échange offert</span>
+              <svg class="transition-transform duration-300 group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
         </div>
       ))}
     </div>
 
-    <div class="mt-12 text-center reveal">
-      <a href="/expertise" class="link-underline text-chene font-medium text-sm">
-        Voir les dix domaines d'expertise en détail →
+    <div class="mt-14 reveal">
+      <a href="/expertise" class="inline-flex items-baseline gap-3 font-serif text-ink text-xl md:text-2xl group">
+        <span class="pe-cta">Voir les dix domaines d'expertise</span>
+        <svg class="translate-y-0.5 transition-transform duration-300 group-hover:translate-x-1.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  .pe-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(45, 74, 51, 0.75);
+    font-weight: 600;
+  }
+  .pe-num {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: rgba(212, 168, 45, 0.9);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    padding-top: 0.35rem;
+  }
+  /* Soulignement fin qui s'anime, façon lien éditorial */
+  .pe-cta {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: 2px;
+  }
+  .group:hover .pe-cta { background-size: 100% 1px; }
+</style>

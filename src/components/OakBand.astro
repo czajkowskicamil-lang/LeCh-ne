@@ -1,0 +1,76 @@
+---
+// Bande cinématique "chêne" — respiration + signature de marque, avant le CTA final.
+---
+
+<section class="oak-band relative flex items-center overflow-hidden bg-navy-darker">
+  <!-- Image (conteneur = parallaxe, image = léger zoom) -->
+  <div class="oak-media absolute inset-0" data-parallax="0.1" aria-hidden="true">
+    <img
+      src="/oak-band.jpg"
+      alt=""
+      class="oak-img h-full w-full object-cover object-center"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <!-- Étalonnage navy / doré -->
+  <div aria-hidden="true" class="oak-warm absolute inset-0"></div>
+  <div aria-hidden="true" class="oak-shade absolute inset-0"></div>
+
+  <!-- Contenu -->
+  <div class="shell relative z-10 py-24 md:py-32">
+    <div class="reveal mx-auto max-w-3xl text-center">
+      <p class="mb-6 flex items-center justify-center gap-3 text-or-light" style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;">
+        <span class="inline-block h-px w-8 bg-or/70"></span>
+        La philosophie du Chêne
+        <span class="inline-block h-px w-8 bg-or/70"></span>
+      </p>
+      <p class="oak-quote font-serif text-cream">
+        Des racines profondes, une croissance qui traverse
+        <span class="italic text-or-light"> les générations.</span>
+      </p>
+      <p class="mx-auto mt-7 max-w-xl text-base leading-relaxed text-cream/75 md:text-lg">
+        C'est ainsi que se construit un patrimoine : lentement, solidement,
+        pensé pour ceux qui viennent après vous.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .oak-band { min-height: clamp(28rem, 62vh, 40rem); }
+
+  .oak-img {
+    filter: saturate(1.02) contrast(1.05) brightness(0.7) sepia(0.2);
+    transform: scale(1.06);
+    animation: oak-zoom 30s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes oak-zoom {
+    from { transform: scale(1.06); }
+    to   { transform: scale(1.14); }
+  }
+
+  .oak-warm {
+    background: linear-gradient(180deg, rgba(212,168,45,0.10) 0%, transparent 60%);
+    mix-blend-mode: soft-light;
+  }
+  .oak-shade {
+    background:
+      radial-gradient(120% 120% at 50% 45%, rgba(3,9,28,0.35) 0%, rgba(3,9,28,0.62) 70%, rgba(3,9,28,0.8) 100%),
+      linear-gradient(180deg, rgba(3,16,46,0.85) 0%, transparent 22%, transparent 78%, rgba(3,16,46,0.9) 100%);
+  }
+
+  .oak-quote {
+    font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    text-shadow: 0 2px 30px rgba(3,9,28,0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .oak-img { animation: none; transform: scale(1.03); }
+  }
+</style>

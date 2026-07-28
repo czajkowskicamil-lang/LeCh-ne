@@ -9,43 +9,64 @@ const etapes = [
 ];
 ---
 
-<section class="py-24 md:py-32 bg-cream relative">
-  <div class="absolute top-0 left-0 right-0 h-px bg-ink/8"></div>
+<section class="py-24 md:py-36 bg-cream border-t border-ink/10">
   <div class="shell">
-    <div class="max-w-2xl mb-16 reveal">
-      <p class="eyebrow mb-5 flex items-center gap-3">
-        <span class="inline-block h-px w-8 bg-chene"></span>
-        Notre méthode
-      </p>
-      <h2 class="font-serif text-display-sm text-ink mb-5 leading-tight">Une méthode claire, en quatre temps.</h2>
-      <p class="text-lg text-ink/70 leading-relaxed">
-        Pas de boîte noire, pas de jargon. Vous savez à chaque étape où vous en êtes et ce qui vient ensuite.
-      </p>
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-16 md:mb-20">
+      <div class="lg:col-span-7 reveal">
+        <p class="ms-label mb-6">Notre méthode</p>
+        <h2 class="font-serif text-ink leading-[0.98] text-[clamp(2.4rem,5vw,4rem)] tracking-tight">
+          Une méthode claire,<br/>en quatre temps.
+        </h2>
+      </div>
+      <div class="lg:col-span-4 lg:col-start-9 reveal">
+        <p class="text-ink/65 leading-relaxed">
+          Vous savez à chaque étape où vous en êtes, et ce qui vient ensuite.
+        </p>
+      </div>
     </div>
 
-    <ol class="grid gap-y-12 md:grid-cols-4 md:gap-8 relative">
-      <!-- Filet horizontal reliant les étapes (desktop) -->
-      <div aria-hidden="true" class="hidden md:block absolute left-0 right-0 top-[22px] h-px bg-ink/12"></div>
-
+    <ol class="border-t border-ink/15">
       {etapes.map((e, i) => (
-        <li class="relative reveal" style={`transition-delay:${i * 90}ms`}>
-          <div class="flex items-center gap-4 mb-5 md:mb-6">
-            <span class="relative z-10 flex-none w-11 h-11 rounded-full bg-navy text-or-light grid place-items-center font-serif text-lg">
-              {i + 1}
-            </span>
-            <span class="md:hidden font-serif text-xl text-ink">{e.t}</span>
+        <li class="grid lg:grid-cols-12 gap-y-3 lg:gap-x-10 py-9 md:py-12 border-b border-ink/15 items-baseline reveal">
+          <div class="lg:col-span-5 flex items-baseline gap-5">
+            <span class="ms-num font-serif">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-serif text-ink text-[clamp(1.5rem,2.4vw,2.1rem)] leading-tight">{e.t}</h3>
           </div>
-          <h3 class="hidden md:block font-serif text-xl text-ink mb-2">{e.t}</h3>
-          <p class="text-ink/65 text-[0.95rem] leading-relaxed md:pr-4">{e.d}</p>
+          <p class="lg:col-span-6 lg:col-start-7 text-ink/70 leading-relaxed max-w-prose-wide">{e.d}</p>
         </li>
       ))}
     </ol>
 
-    <div class="mt-16 reveal">
-      <a href="/contact" class="btn-primary">
-        Réserver mon premier échange
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <div class="mt-14 reveal">
+      <a href="/contact" class="group inline-flex items-baseline gap-3 font-serif text-ink text-xl md:text-2xl">
+        <span class="ms-cta">Réserver mon premier échange</span>
+        <svg class="translate-y-0.5 transition-transform duration-300 group-hover:translate-x-1.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  .ms-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(45, 74, 51, 0.75);
+    font-weight: 600;
+  }
+  .ms-num {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: rgba(212, 168, 45, 0.9);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .ms-cta {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: 2px;
+  }
+  .group:hover .ms-cta { background-size: 100% 1px; }
+</style>

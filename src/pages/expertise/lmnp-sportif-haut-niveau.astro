@@ -1,0 +1,210 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { site } from '../../data/site';
+
+const title = 'LMNP pour sportif de haut niveau : des revenus immobiliers peu fiscalisés | Le Chêne Patrimonial';
+const description =
+  "Sportif de haut niveau : le statut LMNP permet de constituer, pendant vos années de revenus élevés, un patrimoine immobilier dont les loyers sont peu ou pas imposés. Analyse par un conseiller en gestion de patrimoine, ancien sportif de haut niveau.";
+
+const heroIntro =
+  "La carrière sportive concentre des revenus élevés sur une période courte, et souvent fortement fiscalisés. Le statut de Loueur en Meublé Non Professionnel (LMNP) permet d'utiliser cette période pour constituer un patrimoine immobilier dont les loyers, grâce au mécanisme de l'amortissement, restent peu ou pas imposés. C'est l'un des rares dispositifs dont l'horizon correspond exactement à celui d'un athlète : bâtir aujourd'hui un revenu de complément pour l'après-carrière.";
+
+const pourQui = [
+  "Sportifs professionnels en activité, à revenus élevés et fortement imposés",
+  "Athlètes qui anticipent une baisse de revenus en fin de carrière",
+  "Sportifs souhaitant structurer un premier investissement immobilier",
+  "Joueurs expatriés qui s'interrogent sur un ancrage patrimonial en France",
+];
+
+const chiffresCles = [
+  { label: 'Fiscalité des loyers', value: 'Souvent nulle plusieurs années' },
+  { label: 'Régime conseillé', value: 'Réel' },
+  { label: 'Horizon utile', value: 'Dès la carrière' },
+  { label: 'Amortissement', value: 'Bien et mobilier' },
+];
+
+const sections = [
+  {
+    title: "Pourquoi le LMNP répond à la situation d'un sportif",
+    body: "Trois réalités caractérisent votre métier : des revenus concentrés sur dix à quinze ans, une fiscalité lourde pendant la carrière, et un après-carrière à financer très tôt. Le LMNP adresse ces trois points. Pendant que vous êtes fortement imposé, l'amortissement efface la fiscalité des loyers. Une fois la carrière terminée, ces loyers deviennent un revenu de complément régulier, au moment où les revenus du sport s'arrêtent.",
+  },
+  {
+    title: "Le mécanisme de l'amortissement, expliqué simplement",
+    body: "Au régime réel, vous déduisez chaque année une fraction de la valeur du bien et du mobilier de vos revenus locatifs. Cette charge comptable, qui ne correspond à aucune sortie d'argent, vient neutraliser tout ou partie des loyers imposables. Résultat concret : pendant de nombreuses années, des loyers encaissés mais peu ou pas d'impôt dessus.",
+  },
+  {
+    title: "Régime réel plutôt que micro-BIC",
+    body: "Le micro-BIC applique un abattement forfaitaire simple mais interdit l'amortissement. Pour un investisseur qui vise l'optimisation sur la durée, le régime réel est presque toujours plus favorable. Il suppose en contrepartie une comptabilité tenue chaque année, généralement confiée à un expert-comptable spécialisé.",
+  },
+  {
+    title: "Location nue et LMNP : la différence sur vos loyers",
+    body: "En location nue, les loyers s'ajoutent à vos revenus et sont imposés à votre tranche marginale, souvent élevée pendant la carrière. En LMNP au réel, l'amortissement ramène la base imposable proche de zéro pendant des années. Sur un même bien, l'écart de fiscalité se compte en milliers d'euros par an.",
+  },
+  {
+    title: "Le cas des sportifs non-résidents fiscaux",
+    body: "De nombreux athlètes évoluent une partie de leur carrière à l'étranger. L'accès au LMNP et son traitement fiscal dépendent alors de votre pays de résidence et de la convention fiscale applicable. C'est un sujet à examiner au cas par cas, avant tout engagement, pour éviter les mauvaises surprises.",
+  },
+];
+
+const piegesClassiques = [
+  "Acheter par affinité géographique, près du club, plutôt que sur la qualité réelle de l'emplacement",
+  "Choisir le micro-BIC par simplicité et perdre tout le bénéfice de l'amortissement",
+  "Sous-estimer le suivi comptable qu'impose le régime réel",
+  "Confondre réduction d'impôt affichée et pertinence économique du bien",
+];
+
+const faq = [
+  {
+    q: "Peut-on commencer un LMNP en cours de carrière ?",
+    a: "Oui, et c'est même la période idéale. Les années de revenus élevés sont celles où l'effet de l'amortissement et la capacité d'emprunt sont les plus utiles. Commencer tôt laisse aussi le temps au bien de se valoriser avant l'après-carrière.",
+  },
+  {
+    q: "Le LMNP fonctionne-t-il pour un sportif non-résident fiscal ?",
+    a: "C'est possible, mais le traitement dépend de votre pays de résidence et de la convention fiscale entre ce pays et la France. Chaque situation doit être analysée individuellement avant de décider.",
+  },
+  {
+    q: "Quel budget faut-il pour démarrer ?",
+    a: "Il n'y a pas de montant unique. L'investissement est souvent financé en partie à crédit, ce qui permet de conserver de la trésorerie. Le bon point de départ est votre situation globale, pas un produit défini à l'avance.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/expertise" class="hover:text-chene">Expertise</a>
+        <span>/</span>
+        <span class="text-ink">LMNP sportif de haut niveau</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Sportifs de haut niveau
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            LMNP pour sportif de haut niveau
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            Transformer des revenus concentrés en patrimoine durable
+          </p>
+          <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+            {heroIntro}
+          </p>
+        </div>
+
+        <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+          <div class="bg-ink text-cream p-8">
+            <p class="eyebrow-cream mb-5">Pour qui ?</p>
+            <ul class="space-y-3 text-sm">
+              {pourQui.map((p) => (
+                <li class="flex gap-3">
+                  <span class="text-or mt-1">,</span>
+                  <span class="text-cream/85">{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key numbers -->
+  <section class="border-y border-ink/10 bg-cream-soft py-12">
+    <div class="shell">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+        {chiffresCles.map((c, i) => (
+          <div class="md:p-6 md:bg-cream reveal" style={`transition-delay:${i * 80}ms`}>
+            <p class="text-xs uppercase tracking-micro text-stone mb-2">{c.label}</p>
+            <p class="font-serif text-2xl md:text-3xl text-ink">{c.value}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Body sections -->
+  <section class="py-20 md:py-28">
+    <div class="shell grid lg:grid-cols-12 gap-12">
+      <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-28">
+          <p class="eyebrow mb-4">Sommaire</p>
+          <ul class="space-y-3 text-sm">
+            {sections.map((s, i) => (
+              <li><a href={`#section-${i}`} class="text-ink/70 hover:text-chene transition">{s.title}</a></li>
+            ))}
+            <li><a href="#pieges" class="text-ink/70 hover:text-chene transition">Pièges classiques</a></li>
+            <li><a href="#faq" class="text-ink/70 hover:text-chene transition">Questions fréquentes</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="lg:col-span-9">
+        <div class="prose-editorial">
+          {sections.map((s, i) => (
+            <article id={`section-${i}`} class="reveal mb-14">
+              <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">§ {String(i + 1).padStart(2, '0')}</p>
+              <h2 class="font-serif text-3xl md:text-[2.25rem] text-ink mb-5 leading-tight">{s.title}</h2>
+              <p>{s.body}</p>
+            </article>
+          ))}
+
+          <aside id="pieges" class="my-16 p-8 md:p-10 bg-ink text-cream reveal">
+            <p class="eyebrow-cream mb-5">Pièges classiques à éviter</p>
+            <h3 class="font-serif text-2xl md:text-3xl text-cream mb-6">Ce que je vois, et qui coûte cher.</h3>
+            <ul class="space-y-4 text-cream/85">
+              {piegesClassiques.map((p) => (
+                <li class="flex gap-4">
+                  <span class="text-or-light mt-0.5">✕</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <section id="faq" class="mt-16 reveal">
+            <p class="eyebrow mb-4">Questions fréquentes</p>
+            <h3 class="font-serif text-3xl md:text-4xl text-ink mb-10">Ce qu'on me demande le plus.</h3>
+            <div class="divide-y divide-ink/10 border-t border-ink/10">
+              {faq.map((f) => (
+                <details class="group py-6">
+                  <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                    <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+                    <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                    </span>
+                  </summary>
+                  <p class="mt-4 text-ink/75 leading-relaxed max-w-3xl">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Un projet immobilier à structurer intelligemment ?"
+    body="Premier échange offert, sans engagement. Nous partons de votre situation réelle, pas d'un produit défini à l'avance."
+  />
+</Base>

@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import { site } from '../data/site';
+
+const title = 'Conseiller en gestion de patrimoine à Montpellier | Le Chêne Patrimonial';
+const description =
+  "Conseiller en gestion de patrimoine indépendant à Montpellier et dans l'Hérault. Assurance-vie, PER, immobilier, transmission : un accompagnement clair, en présentiel ou à distance. Premier échange offert.";
+
+const zones = [
+  'Montpellier',
+  'Hérault (34)',
+  'Occitanie',
+  "Partout en France, à distance",
+];
+
+const etapes = [
+  {
+    t: "Premier échange, offert",
+    d: "Trente minutes pour comprendre votre situation, vos objectifs et vos contraintes. Sans engagement, et sans jargon.",
+  },
+  {
+    t: "Bilan patrimonial",
+    d: "Une analyse structurée de votre patrimoine, de votre fiscalité et de vos projets. Vous repartez avec une vision claire des priorités.",
+  },
+  {
+    t: "Recommandations et mise en œuvre",
+    d: "Des propositions concrètes, expliquées et hiérarchisées. Vous décidez, j'accompagne la mise en place et le suivi dans la durée.",
+  },
+];
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FinancialService',
+  '@id': 'https://www.lechenepatrimonial.com/conseiller-gestion-patrimoine-montpellier#localbusiness',
+  name: 'Le Chêne Patrimonial, conseiller en gestion de patrimoine à Montpellier',
+  url: 'https://www.lechenepatrimonial.com/conseiller-gestion-patrimoine-montpellier',
+  description:
+    "Conseiller en gestion de patrimoine indépendant à Montpellier et dans l'Hérault.",
+  email: site.email,
+  telephone: site.phone.tel,
+  priceRange: 'Sur devis',
+  areaServed: [
+    { '@type': 'City', name: 'Montpellier' },
+    { '@type': 'AdministrativeArea', name: 'Hérault' },
+    { '@type': 'Country', name: 'France' },
+  ],
+  serviceType: [
+    'Conseil en gestion de patrimoine',
+    'Assurance-vie',
+    'Plan Épargne Retraite',
+    'Investissement immobilier',
+    'Transmission de patrimoine',
+  ],
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <span class="text-ink">Conseiller en gestion de patrimoine à Montpellier</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Montpellier et Hérault
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            Conseiller en gestion de patrimoine à Montpellier
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            Un accompagnement indépendant, clair et dans la durée
+          </p>
+          <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+            Le Chêne Patrimonial accompagne les particuliers, dirigeants, entrepreneurs et sportifs de Montpellier et de l'Hérault dans la construction et la protection de leur patrimoine. Assurance-vie, plan épargne retraite, immobilier, transmission : un conseil indépendant, en présentiel dans la région ou à distance, adapté à votre situation réelle.
+          </p>
+        </div>
+
+        <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+          <div class="bg-ink text-cream p-8">
+            <p class="eyebrow-cream mb-5">Zone d'intervention</p>
+            <ul class="space-y-3 text-sm">
+              {zones.map((z) => (
+                <li class="flex gap-3">
+                  <span class="text-or mt-1">,</span>
+                  <span class="text-cream/85">{z}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="text-cream/60 text-xs mt-6 leading-relaxed">
+              Rendez-vous sur Montpellier et alentours, ou en visioconférence partout en France.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statuts réglementaires -->
+  <section class="border-y border-ink/10 bg-cream-soft py-12">
+    <div class="shell">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+        <div class="md:p-6 md:bg-cream reveal">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Statut</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Indépendant</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:80ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Immatriculation</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">ORIAS</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:160ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Premier échange</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Offert</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:240ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Rendez-vous</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Sur place ou à distance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comment ça se passe -->
+  <section class="py-20 md:py-28">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Comment se passe un accompagnement</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Trois étapes simples, à votre rythme.</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        {etapes.map((e, i) => (
+          <div class="reveal" style={`transition-delay:${i * 100}ms`}>
+            <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Étape {String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-2xl text-ink mb-3">{e.t}</h3>
+            <p class="text-ink/75 leading-relaxed">{e.d}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-14 reveal">
+        <a href="/avis" class="text-chene font-medium hover:underline underline-offset-4">
+          Lire les avis de mes clients
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Vous cherchez un conseiller en gestion de patrimoine à Montpellier ?"
+    body="Planifions un premier échange de 30 minutes, en présentiel ou à distance. Une conversation claire sur votre situation, et les priorités qui en découlent."
+  />
+</Base>

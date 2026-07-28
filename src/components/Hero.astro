@@ -1,163 +1,215 @@
 ---
 import { site } from '../data/site';
 import Magnetic from './Magnetic.astro';
-import PartnersMarquee from './PartnersMarquee.astro';
 ---
 
-<!-- Hero CINÉMATIQUE plein écran, style Apple/Tesla -->
-<section class="hero-cine relative overflow-hidden flex flex-col">
-  <!-- Background dégradé subtil + grain -->
-  <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-cream via-cream-soft to-cream-deep/40"></div>
-  <div aria-hidden="true" class="absolute inset-0 hero-noise opacity-40 pointer-events-none"></div>
+<!-- Hero cinématique plein écran — forêt à l'aube, étalonnée navy/or -->
+<section class="hero-forest relative -mt-20 flex min-h-[100svh] flex-col overflow-hidden bg-navy-darker">
+  <!-- Image (conteneur = parallaxe, image = Ken Burns) -->
+  <div class="hero-media absolute inset-0" data-parallax="0.12" aria-hidden="true">
+    <img
+      src="/hero-forest.jpg"
+      alt=""
+      class="hero-img h-full w-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
 
-  <!-- Halo doré subtil, sans logo derrière -->
-  <div
-    aria-hidden="true"
-    class="hero-halo pointer-events-none absolute"
-  ></div>
+  <!-- Réchauffement doré (heure dorée) -->
+  <div aria-hidden="true" class="hero-warm absolute inset-0"></div>
+  <!-- Halo de lumière (soleil qui perce) -->
+  <div aria-hidden="true" class="hero-sun absolute inset-0"></div>
+  <!-- Vignette + voiles navy pour la lisibilité et la transition -->
+  <div aria-hidden="true" class="hero-vignette absolute inset-0"></div>
+  <div aria-hidden="true" class="hero-scrim absolute inset-0"></div>
+  <div aria-hidden="true" class="hero-shade absolute inset-0"></div>
 
-  <!-- Contenu principal -->
-  <div class="shell relative flex-1 flex flex-col justify-center pt-24 md:pt-32 pb-16">
-    <p class="eyebrow mb-8 flex items-center gap-3">
-      <span class="inline-block h-px w-12 bg-chene"></span>
-      Conseil en gestion de patrimoine · Indépendant
-    </p>
+  <!-- Contenu -->
+  <div class="shell relative z-10 flex flex-1 flex-col justify-center pt-32 pb-28 md:pb-32">
+    <div class="hero-copy max-w-3xl">
+      <p class="hero-eyebrow mb-7 flex items-center gap-4 text-or-light">
+        <span class="hero-index font-serif">01</span>
+        <span class="inline-block h-px w-10 bg-or/70"></span>
+        Conseil en gestion de patrimoine · Indépendant
+      </p>
 
-    <h1 class="hero-title font-serif text-ink mb-8 max-w-5xl">
-      <span class="reveal-mask block"><span>Faire fructifier</span></span>
-      <span class="reveal-mask block" style="transition-delay:140ms"><span class="italic text-chene">ce qui compte.</span></span>
-    </h1>
+      <h1 class="hero-title mb-7 font-serif text-cream">
+        <span class="hero-line block"><span>Faire fructifier</span></span>
+        <span class="hero-line block" style="transition-delay:120ms"><span class="italic text-or-light">ce qui compte.</span></span>
+      </h1>
 
-    <p class="max-w-2xl text-xl md:text-2xl text-ink/75 leading-relaxed mb-10">
-      Conseiller en gestion de patrimoine indépendant. J'accompagne <span class="text-ink font-medium">dirigeants, professions libérales, cadres et sportifs</span> à structurer, protéger et transmettre leur patrimoine, avec une méthode de haut niveau.
-    </p>
+      <p class="hero-sub mb-10 max-w-xl text-lg leading-relaxed text-cream md:text-xl">
+        J'accompagne <span class="font-medium text-cream">dirigeants, professions libérales, cadres et sportifs</span> dans les décisions qui engagent leur patrimoine, avec pour seul horizon le temps long.
+      </p>
+    </div>
 
-    <div class="flex flex-wrap gap-4">
+    <div class="hero-cta flex flex-wrap gap-4">
       <Magnetic>
-        <a href="/outils/diagnostic-patrimonial" class="btn-primary">
+        <a href="/outils/diagnostic-patrimonial" class="btn-or">
           Faire mon diagnostic gratuit
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </Magnetic>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost">Planifier un rendez-vous découverte</a>
+      <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost-cream">Planifier un rendez-vous découverte</a>
     </div>
 
-    <!-- Bandeau de confiance : preuve immédiate, au-dessus de la ligne de flottaison -->
-    <ul class="hero-trust flex flex-wrap items-center gap-x-3 gap-y-2 mt-10 text-xs md:text-sm text-ink/55">
-      <li class="font-medium text-ink/70">Cabinet indépendant</li>
-      <li aria-hidden="true" class="text-or">•</li>
-      <li>ORIAS n° 25&nbsp;000&nbsp;016</li>
-      <li aria-hidden="true" class="text-or">•</li>
-      <li>Paris · Montpellier · Marseille</li>
-      <li aria-hidden="true" class="text-or">•</li>
-      <li>Premier échange offert</li>
-    </ul>
+    <!-- Références : grille libellée, sobre -->
+    <div class="hero-trust mt-14 max-w-2xl">
+      <div class="hero-meta-rule mb-6"></div>
+      <dl class="grid grid-cols-2 gap-x-10 gap-y-6 sm:grid-cols-3">
+        <div>
+          <dt class="hero-meta-label">Cabinet</dt>
+          <dd class="hero-meta-value">Indépendant</dd>
+        </div>
+        <div>
+          <dt class="hero-meta-label">Immatriculation</dt>
+          <dd class="hero-meta-value">ORIAS 25&nbsp;000&nbsp;016</dd>
+        </div>
+        <div>
+          <dt class="hero-meta-label">Présence</dt>
+          <dd class="hero-meta-value">Paris · Montpellier · Marseille</dd>
+        </div>
+      </dl>
+    </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="hero-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-ink/50 text-xs uppercase tracking-micro">
-    <span>Scroll</span>
-    <span class="block w-px h-12 bg-ink/30 hero-scroll-line"></span>
-  </div>
-
-  <!-- Partners marquee tout en bas -->
-  <div class="relative">
-    <PartnersMarquee />
+  <!-- Indicateur de scroll -->
+  <div class="hero-scroll absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-xs uppercase tracking-micro text-cream/50 md:flex">
+    <span>Découvrir</span>
+    <span class="block h-12 w-px bg-cream/30 hero-scroll-line"></span>
   </div>
 </section>
 
 <style>
-  .hero-cine {
-    min-height: 92vh;
+  /* ---------- Étalonnage de l'image ---------- */
+  .hero-img {
+    /* réchauffe (sepia léger), densifie, adoucit — retire le côté froid du brut */
+    filter: saturate(1.05) contrast(1.04) brightness(0.92) sepia(0.16);
+    transform: scale(1.08);
+    animation: hero-kenburns 26s ease-in-out infinite alternate;
+    will-change: transform;
   }
-  @media (max-width: 768px) {
-    .hero-cine {
-      min-height: 100svh;
-    }
+  @keyframes hero-kenburns {
+    from { transform: scale(1.08) translate3d(0, 0, 0); }
+    to   { transform: scale(1.16) translate3d(-1.5%, -1.2%, 0); }
   }
 
-  /* Title size très grand pour effet WOW, contrôle fluide */
+  /* Voile ambré chaud posé sur l'image (heure dorée) */
+  .hero-warm {
+    background:
+      linear-gradient(180deg, rgba(212,168,45,0.10) 0%, rgba(167,128,31,0.06) 45%, transparent 75%);
+    mix-blend-mode: soft-light;
+    opacity: 0.9;
+  }
+  /* Soleil qui perce, en haut à droite */
+  .hero-sun {
+    background: radial-gradient(120% 90% at 78% 8%, rgba(255,224,150,0.30) 0%, rgba(212,168,45,0.10) 28%, transparent 55%);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+  }
+  /* Vignette douce pour concentrer le regard */
+  .hero-vignette {
+    background: radial-gradient(130% 120% at 50% 40%, transparent 45%, rgba(3,9,28,0.55) 100%);
+  }
+  /* Voile latéral léger : juste ce qu'il faut pour la lisibilité, image lumineuse */
+  .hero-scrim {
+    background:
+      linear-gradient(100deg, rgba(3,9,28,0.42) 0%, rgba(3,9,28,0.20) 30%, rgba(3,9,28,0.05) 52%, transparent 72%);
+  }
+  /* Voile navy léger : haut lisible + fondu vers la section suivante */
+  .hero-shade {
+    background:
+      linear-gradient(180deg, rgba(3,9,28,0.40) 0%, rgba(3,9,28,0.06) 20%, transparent 40%, rgba(3,9,28,0.22) 70%, rgba(3,16,46,0.90) 100%);
+  }
+
+  /* ---------- Structure éditoriale (signature, pas un template) ---------- */
+  .hero-copy {
+    border-left: 1px solid rgba(212, 168, 45, 0.45);
+    padding-left: clamp(1.25rem, 3vw, 2.75rem);
+  }
+  .hero-index {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: rgba(230, 194, 89, 0.85);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-meta-rule {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(212,168,45,0.55), rgba(245,241,232,0.12) 60%, transparent);
+  }
+  .hero-meta-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(230, 194, 89, 0.9);
+    margin-bottom: 0.35rem;
+  }
+  .hero-meta-value {
+    font-size: 0.95rem;
+    color: rgba(245, 241, 232, 0.92);
+    text-shadow: 0 1px 3px rgba(3,9,28,0.7);
+  }
+  @media (max-width: 640px) {
+    .hero-copy { border-left: none; padding-left: 0; }
+  }
+
+  /* ---------- Typographie ---------- */
+  .hero-eyebrow {
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(3, 9, 28, 0.7), 0 2px 22px rgba(3, 9, 28, 0.65);
+  }
   .hero-title {
-    font-size: clamp(3.5rem, 9vw, 8rem);
-    line-height: 0.96;
-    letter-spacing: -0.035em;
+    font-size: clamp(2.75rem, 6.4vw, 5.6rem);
+    line-height: 1.0;
+    letter-spacing: -0.032em;
     font-weight: 400;
+    text-shadow: 0 2px 6px rgba(3,9,28,0.55), 0 4px 40px rgba(3,9,28,0.7);
+  }
+  .hero-sub {
+    text-shadow: 0 1px 3px rgba(3,9,28,0.85), 0 2px 24px rgba(3,9,28,0.8);
   }
 
-  /* Watermark logo géant en arrière-plan, position élégante */
-  .hero-watermark {
-    width: clamp(420px, 55vw, 820px);
-    height: auto;
-    aspect-ratio: 1.43;
-    right: -8vw;
-    top: 50%;
-    transform: translateY(-45%);
-    opacity: 0.08;
-    z-index: 0;
+  /* ---------- Entrée à l'arrivée ---------- */
+  .hero-line { overflow: hidden; }
+  .hero-line > span {
+    display: block;
+    transform: translateY(110%);
+    animation: hero-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  @media (min-width: 1024px) {
-    .hero-watermark {
-      opacity: 0.12;
-    }
-  }
+  .hero-line:nth-child(2) > span { animation-delay: 0.12s; }
+  @keyframes hero-rise { to { transform: translateY(0); } }
 
-  /* Halo doré derrière le watermark, lueur diffuse */
-  .hero-halo {
-    width: 60vw;
-    height: 60vw;
-    max-width: 900px;
-    max-height: 900px;
-    right: -15vw;
-    top: 50%;
-    transform: translateY(-50%);
-    background: radial-gradient(circle, rgba(212, 168, 45, 0.10) 0%, transparent 65%);
-    z-index: 0;
-    animation: halo-pulse 8s ease-in-out infinite;
+  .hero-eyebrow, .hero-sub, .hero-cta, .hero-trust {
+    opacity: 0;
+    animation: hero-fade 1s ease-out forwards;
   }
-  @keyframes halo-pulse {
-    0%, 100% { opacity: 0.85; transform: translateY(-50%) scale(1); }
-    50%      { opacity: 1;    transform: translateY(-50%) scale(1.05); }
-  }
+  .hero-eyebrow { animation-delay: 0.05s; }
+  .hero-sub    { animation-delay: 0.45s; }
+  .hero-cta    { animation-delay: 0.6s; }
+  .hero-trust  { animation-delay: 0.75s; }
+  @keyframes hero-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Grain texture */
-  .hero-noise {
-    background-image:
-      radial-gradient(circle at 25% 35%, rgba(10, 31, 79, 0.02) 1px, transparent 2px),
-      radial-gradient(circle at 75% 65%, rgba(10, 31, 79, 0.015) 1px, transparent 2px);
-    background-size: 4px 4px, 6px 6px;
-  }
-
-  /* Scroll indicator avec ligne qui pulse */
+  /* Ligne de scroll animée */
   .hero-scroll-line {
     transform-origin: top;
-    animation: scroll-line 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation: hero-scroll 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
-  @keyframes scroll-line {
+  @keyframes hero-scroll {
     0%   { transform: scaleY(0); transform-origin: top; }
     50%  { transform: scaleY(1); transform-origin: top; }
     51%  { transform: scaleY(1); transform-origin: bottom; }
     100% { transform: scaleY(0); transform-origin: bottom; }
   }
 
-  /* Tous les contenus principaux au-dessus du décor */
-  .shell { z-index: 10; position: relative; }
-
-  /* Reveal mask : effet "rideau" élégant pour le titre */
-  :global(.reveal-mask) {
-    overflow: hidden;
-    display: block;
-  }
-  :global(.reveal-mask > span) {
-    display: block;
-    transform: translateY(110%);
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  :global(.reveal-mask.in > span),
-  :global(.reveal-mask > span:not(.pending)) {
-    transform: translateY(0);
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .hero-halo, .hero-scroll-line { animation: none; }
+    .hero-img { animation: none; transform: scale(1.05); }
+    .hero-line > span,
+    .hero-eyebrow, .hero-sub, .hero-cta, .hero-trust { animation: none; opacity: 1; transform: none; }
+    .hero-scroll-line { animation: none; }
   }
 </style>
