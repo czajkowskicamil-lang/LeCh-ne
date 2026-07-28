@@ -126,6 +126,6 @@ const description = "Faut-il acheter votre résidence ou rester locataire et inv
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('la-prix');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_la-prix']){window['__hk_la-prix']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

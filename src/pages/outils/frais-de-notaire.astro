@@ -101,6 +101,6 @@ const description = "Estimez gratuitement vos frais de notaire pour un achat imm
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('fn-prix');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_fn-prix']){window['__hk_fn-prix']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

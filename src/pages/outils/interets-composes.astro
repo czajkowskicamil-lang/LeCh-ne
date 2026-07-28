@@ -96,7 +96,9 @@ const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Sim
       document.getElementById('ic-tx-val').textContent=T.toFixed(1).replace('.',',')+' %';
       const r=T/1200, n=Y*12;
       const growth=r>0?Math.pow(1+r,n):1;
-      const fv = r>0 ? P0*growth + PM*(growth-1)/r : P0+PM*n;
+      // Versements en début de période (annuité de début) : le facteur (1+r)
+      // fait coller le calcul à l'hypothèse affichée dans la note.
+      const fv = r>0 ? P0*growth + PM*(growth-1)/r*(1+r) : P0+PM*n;
       const verse = P0 + PM*n;
       const gains = Math.max(0, fv - verse);
       document.getElementById('ic-final').textContent=eur(fv);
@@ -112,6 +114,6 @@ const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Sim
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('ic-cap');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_ic-cap']){window['__hk_ic-cap']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

@@ -90,6 +90,6 @@ const description = "En meublé au régime réel, l'amortissement du bien efface
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('lm-prix');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_lm-prix']){window['__hk_lm-prix']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

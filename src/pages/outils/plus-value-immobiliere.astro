@@ -95,6 +95,6 @@ const description = "Estimez l'impôt sur la plus-value à la revente d'un bien 
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pv-achat');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_pv-achat']){window['__hk_pv-achat']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

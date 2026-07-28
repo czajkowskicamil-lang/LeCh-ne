@@ -203,7 +203,7 @@ const description = "Combien de Prêt à Taux Zéro pouvez-vous obtenir ? Estime
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pz-rfr');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_pz-rfr']){window['__hk_pz-rfr']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>
 

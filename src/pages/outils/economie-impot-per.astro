@@ -90,6 +90,6 @@ const description = "Combien un versement sur votre Plan Épargne Retraite rédu
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('pe-vers');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_pe-vers']){window['__hk_pe-vers']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>

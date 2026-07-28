@@ -106,6 +106,6 @@ const description = "Combien vos enfants paieraient-ils de droits de succession 
       calc();
     }
     init();
-    document.addEventListener('astro:page-load',()=>{const r=document.getElementById('ds-pat');if(r)r.dataset.ready='';init();});
+    if(!window['__hk_ds-pat']){window['__hk_ds-pat']=1;document.addEventListener('astro:page-load',init);}
   })();
 </script>
