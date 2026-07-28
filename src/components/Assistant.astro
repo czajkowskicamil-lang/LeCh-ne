@@ -91,12 +91,12 @@ const categories = [
   },
 ];
 
-const intro = "Bonjour 👋 et bienvenue chez Le Chêne Patrimonial. Ici, pas de jargon ni de blabla : vous posez votre question, vous obtenez une réponse claire, tout de suite. Retraite, impôts, immobilier, transmission… par quoi commence-t-on ? 🌳";
+const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. Dites-moi ce qui vous amène, je vous réponds tout de suite. Et si vous préférez, on échange directement par téléphone ou par mail, avec plaisir. Alors, par quoi commence-t-on ?";
 ---
 
 <div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-phone-display={site.phone.display} data-email={site.email} data-calendly={site.calendly}>
   <!-- Lanceur -->
-  <button id="lc-launcher" class="lc-launcher" aria-label="Ouvrir l'assistant du Chêne" aria-expanded="false">
+  <button id="lc-launcher" class="lc-launcher" aria-label="Ouvrir la discussion avec Le Chêne Patrimonial" aria-expanded="false">
     <span class="lc-launcher-icon lc-icon-chat" aria-hidden="true">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8.5h9M7.5 12h6"/><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.3-4.4A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
     </span>
@@ -106,7 +106,7 @@ const intro = "Bonjour 👋 et bienvenue chez Le Chêne Patrimonial. Ici, pas de
   </button>
 
   <!-- Panneau -->
-  <div id="lc-panel" class="lc-panel" role="dialog" aria-label="Assistant du Chêne" aria-modal="false" hidden>
+  <div id="lc-panel" class="lc-panel" role="dialog" aria-label="Discuter avec Le Chêne Patrimonial" aria-modal="false" hidden>
     <header class="lc-head">
       <div class="lc-head-id">
         <span class="lc-avatar" aria-hidden="true">
@@ -114,11 +114,11 @@ const intro = "Bonjour 👋 et bienvenue chez Le Chêne Patrimonial. Ici, pas de
           <span class="lc-status-dot"></span>
         </span>
         <span class="lc-head-text">
-          <span class="lc-head-name">Assistant du Chêne</span>
-          <span class="lc-head-sub">Le cabinet vous répond</span>
+          <span class="lc-head-name">Le Chêne Patrimonial</span>
+          <span class="lc-head-sub">Camil vous répond</span>
         </span>
       </div>
-      <button id="lc-close" class="lc-close" aria-label="Fermer l'assistant">
+      <button id="lc-close" class="lc-close" aria-label="Fermer la discussion">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </header>
@@ -142,7 +142,7 @@ const intro = "Bonjour 👋 et bienvenue chez Le Chêne Patrimonial. Ici, pas de
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
       </a>
     </footer>
-    <p class="lc-legal">Réponses informatives. Le conseil personnalisé se fait lors d'un échange avec Camil.</p>
+    <p class="lc-legal">Pour un conseil adapté à votre situation, rien ne vaut un vrai échange. Appelez-moi ou écrivez-moi, avec plaisir.</p>
   </div>
 </div>
 
