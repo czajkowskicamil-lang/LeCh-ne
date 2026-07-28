@@ -1,0 +1,105 @@
+---
+// Section home : met en avant le Diagnostic Patrimonial Intelligent (outil gratuit,
+// aimant à leads). Fond navy pour trancher et attirer l'oeil vers l'action principale.
+// Visuel : un anneau de score illustratif /100 + aperçu de piliers.
+const pillars = [
+  { label: 'Épargne de précaution', v: 82 },
+  { label: 'Diversification', v: 54 },
+  { label: 'Préparation retraite', v: 38 },
+];
+const R = 52;
+const C = 2 * Math.PI * R;
+const demoScore = 72;
+---
+
+<section class="py-24 md:py-32 bg-navy-deep text-cream relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-or/30"></div>
+
+  <div class="shell relative">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <!-- Texte + CTA -->
+      <div class="lg:col-span-7 reveal">
+        <p class="eyebrow-cream mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-or"></span>
+          Nouveau · Gratuit · 3 minutes
+        </p>
+        <h2 class="font-serif text-display text-cream mb-6 leading-tight">
+          Où en est vraiment<br/>
+          <span class="italic text-or-light">votre patrimoine&nbsp;?</span>
+        </h2>
+        <p class="text-cream/75 text-lg leading-relaxed max-w-2xl mb-8">
+          Répondez à quelques questions simples et obtenez votre Indice de Santé Patrimoniale sur 100 :
+          vos forces, vos angles morts, vos opportunités d'optimisation et un plan d'action clair sur 12 mois.
+          Confidentiel, sans engagement, et calibré selon votre statut.
+        </p>
+
+        <ul class="grid sm:grid-cols-3 gap-4 mb-9">
+          <li class="flex items-start gap-2.5 text-sm text-cream/85">
+            <svg class="mt-0.5 shrink-0 text-or-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Votre score sur 100
+          </li>
+          <li class="flex items-start gap-2.5 text-sm text-cream/85">
+            <svg class="mt-0.5 shrink-0 text-or-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Analyse personnalisée
+          </li>
+          <li class="flex items-start gap-2.5 text-sm text-cream/85">
+            <svg class="mt-0.5 shrink-0 text-or-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Rapport PDF offert
+          </li>
+        </ul>
+
+        <a href="/outils/diagnostic-patrimonial" class="btn-or text-base px-8 py-3.5 inline-flex">
+          Faire mon diagnostic gratuit
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Aperçu : anneau de score + piliers -->
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="bg-navy rounded-3xl p-8 md:p-10 shadow-xl shadow-black/20 border border-cream/5">
+          <div class="flex items-center gap-6 mb-8">
+            <div class="relative shrink-0 grid place-items-center">
+              <svg width="132" height="132" viewBox="0 0 120 120" class="-rotate-90">
+                <defs>
+                  <linearGradient id="diagTeaserGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#E6C259"/>
+                    <stop offset="100%" stop-color="#3E6247"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r={R} fill="none" stroke="#ffffff14" stroke-width="9"/>
+                <circle cx="60" cy="60" r={R} fill="none" stroke="url(#diagTeaserGrad)" stroke-width="9"
+                  stroke-linecap="round" stroke-dasharray={C} stroke-dashoffset={C * (1 - demoScore / 100)}/>
+              </svg>
+              <div class="absolute inset-0 grid place-items-center">
+                <div class="text-center -rotate-0">
+                  <div class="font-serif text-3xl text-cream tabular-nums leading-none">{demoScore}<span class="text-base text-cream/50">/100</span></div>
+                  <div class="text-[0.6rem] uppercase tracking-micro text-or-light mt-1">Solide</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="eyebrow-cream mb-2">Aperçu · Exemple</p>
+              <p class="text-cream/75 text-sm leading-relaxed">Votre indice de santé patrimoniale, calculé en direct à partir de vos réponses.</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            {pillars.map((p) => (
+              <div>
+                <div class="flex justify-between items-baseline mb-1.5">
+                  <span class="text-sm text-cream/70">{p.label}</span>
+                  <span class="text-sm text-cream tabular-nums">{p.v}<span class="text-cream/40 text-xs">/100</span></span>
+                </div>
+                <div class="h-1.5 rounded-full bg-cream/10 overflow-hidden">
+                  <div class="h-full rounded-full" style={`width:${p.v}%;background:${p.v >= 66 ? '#3E6247' : p.v >= 40 ? '#D4A82D' : '#b4472e'}`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
