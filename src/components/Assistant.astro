@@ -91,38 +91,46 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
       // Cerveau local : réponses pré-validées, utilisées quand l'IA n'est pas
       // active (pas de clé) ou indisponible. Zéro risque, zéro coût.
       const KB = [
-        { k: ['bonjour','salut','hello','coucou','bonsoir','hey'], a: "Bonjour et bienvenue chez Le Chêne Patrimonial. Dites-moi ce qui vous amène : épargne, retraite, immobilier, fiscalité ou transmission ?" },
-        { k: ['service','accompagn','faites','proposez','aide','expertise'], a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement." },
+        { k: ['service','accompagn','faites','proposez','aide','expertise','metier','métier'], a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement." },
         { k: ['banque','different','différent','difference','différence','pourquoi vous'], a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence." },
-        { k: ['minimum','gros patrimoine','débuter','debuter','commencer','petit','riche','fortune'], a: "Pas besoin d'un gros patrimoine. J'accompagne aussi bien les patrimoines en construction que les situations établies. L'essentiel, c'est d'avoir un projet et l'envie d'être bien conseillé." },
+        { k: ['minimum','gros patrimoine','debut','début','commenc','petit','jeune','riche','fortune','pour moi'], a: "Pas besoin d'un gros patrimoine. J'accompagne aussi bien les patrimoines en construction que les situations établies. L'essentiel, c'est d'avoir un projet et l'envie d'être bien conseillé." },
         { k: ['rémuner','remuner','honoraire','payer','coûte','coute','tarif','prix','combien ça','commission'], a: "En toute transparence : selon les cas, honoraires de conseil, commissions des partenaires en cas de souscription, ou les deux. Vous savez toujours qui me rémunère et comment, avant toute opération. Le premier rendez-vous est offert." },
         { k: ['distance','visio','présentiel','presentiel','déplace','deplace','où êtes','ou etes','rendez-vous physique'], a: "J'accompagne mes clients partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein." },
         { k: ['assurance-vie','assurance vie','assurance'], a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble." },
-        { k: ['placer','somme','investir','argent','épargne','epargne','placement'], a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation." },
-        { k: ['retraite','per '], a: "Pour la retraite, l'anticipation change tout. Plus on s'y prend tôt, plus des solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif." },
-        { k: ['impôt','impot','fiscal','défiscal','defiscal','réduire mes','reduire mes','taxe'], a: "L'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation." },
+        { k: ['placer','somme','investir','argent','épargne','epargne','placement','économie','economie'], a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation." },
+        { k: ['retraite','retrait',' per'], a: "Pour la retraite, l'anticipation change tout. Plus on s'y prend tôt, plus des solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif." },
+        { k: ['impôt','impot','fiscal','défiscal','defiscal','réduire','reduire','taxe'], a: "L'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation." },
         { k: ['conjoint','enfant','protéger','proteger','famille','décès','deces','proches'], a: "Protéger vos proches est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille." },
         { k: ['succession','transmi','transmettre','héritage','heritage','donation','démembrement','demembrement'], a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés." },
-        { k: ['immobil','locatif','acheter','appartement','maison','résidence','residence','lmnp'], a: "J'accompagne les projets immobiliers, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris." },
+        { k: ['immobil','locatif','acheter','achat','appartement','maison','résidence','residence','lmnp','pierre'], a: "J'accompagne les projets immobiliers, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris." },
         { k: ['sportif','athlète','athlete','carrière','carriere'], a: "L'accompagnement des sportifs de haut niveau est une spécialité du cabinet : carrières courtes, revenus irréguliers, expatriation. L'objectif, transformer une carrière en patrimoine durable." },
         { k: ['expatri','étranger','etranger','expat','résident fiscal','resident fiscal','frontalier'], a: "La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation et on vous orientera." },
         { k: ['rendez-vous','rendez vous','rdv','prendre','contact','joindre','appeler','téléphone','telephone','parler','email','mail'], a: "Avec plaisir. Vous pouvez joindre Camil directement au 06 12 82 91 90 ou par email à camil.cz@lechenepatrimonial.com, ou réserver un créneau via le bouton Prendre rendez-vous ci-dessous. Le premier échange est offert." },
         { k: ['indépendant','independant','conflit','intérêt','interet'], a: "Oui, Le Chêne est un cabinet totalement indépendant : les recommandations sont faites dans votre seul intérêt, avec une transparence complète sur la rémunération." },
+      ];
+
+      // Entrées "sociales" : n'écrasent jamais une vraie question. Utilisées
+      // seulement si rien d'autre ne correspond.
+      const KB_SOCIAL = [
         { k: ['merci','super','parfait','top','génial','genial'], a: "Avec plaisir. Si vous voulez aller plus loin sur votre situation, Camil se fera un plaisir d'en discuter avec vous, sans engagement." },
+        { k: ['bonjour','salut','hello','coucou','bonsoir','hey','ça va','ca va'], a: "Bonjour et bienvenue chez Le Chêne Patrimonial. Dites-moi ce qui vous amène : épargne, retraite, immobilier, fiscalité ou transmission ?" },
       ];
 
       function lcNorm(s) {
         return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
       }
-      function localAnswer(text) {
-        const t = lcNorm(text);
+      function scoreBest(list, t) {
         let best = null, bestScore = 0;
-        for (const item of KB) {
+        for (const item of list) {
           let score = 0;
           for (const kw of item.k) { if (t.indexOf(lcNorm(kw)) !== -1) score++; }
           if (score > bestScore) { bestScore = score; best = item; }
         }
         return bestScore > 0 ? best.a : null;
+      }
+      function localAnswer(text) {
+        const t = lcNorm(text);
+        return scoreBest(KB, t) || scoreBest(KB_SOCIAL, t) || null;
       }
 
       let opened = false;
