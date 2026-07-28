@@ -1,6 +1,14 @@
 ---
 import { site, nav, navSecondary } from '../data/site';
 const year = new Date().getFullYear();
+
+// Pages de destination ciblées (niche sportifs + local), reliées ici pour
+// qu'elles soient accessibles depuis tout le site et indexées par Google.
+const specialites = [
+  { label: 'LMNP pour sportif', href: '/expertise/lmnp-sportif-haut-niveau' },
+  { label: 'Placement du sportif', href: '/expertise/placement-sportif-haut-niveau' },
+  { label: 'CGP à Montpellier', href: '/conseiller-gestion-patrimoine-montpellier' },
+];
 ---
 
 <footer class="relative bg-ink text-cream/85 mt-40 overflow-hidden">
@@ -50,7 +58,7 @@ const year = new Date().getFullYear();
 
     <!-- 3 colonnes minimalistes, beaucoup d'air -->
     <div class="grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-t border-cream/10 pt-16">
-      <div class="lg:col-span-4">
+      <div class="lg:col-span-3">
         <p class="font-serif text-2xl text-cream mb-3">{site.name}</p>
         <p class="text-sm leading-relaxed text-cream/60 max-w-sm">
           Conseil en gestion de patrimoine indépendant. {site.coverage}.
@@ -66,10 +74,19 @@ const year = new Date().getFullYear();
         </ul>
       </div>
 
-      <div class="lg:col-span-3">
+      <div class="lg:col-span-2">
         <p class="text-xs uppercase tracking-micro text-or-light mb-5">Ressources</p>
         <ul class="space-y-3 text-sm">
           {navSecondary.map((item) => (
+            <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Spécialités</p>
+        <ul class="space-y-3 text-sm">
+          {specialites.map((item) => (
             <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
           ))}
         </ul>
