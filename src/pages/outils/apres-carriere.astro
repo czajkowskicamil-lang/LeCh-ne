@@ -1,0 +1,281 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "Le compte à rebours de l'après-carrière — simulateur pour sportifs de haut niveau | Le Chêne Patrimonial";
+const description = "Athlète de haut niveau : à quel âge serez-vous libre financièrement ? Visualisez la falaise de revenus de fin de carrière, votre nombre de la liberté et le plan pour lisser l'après. Gratuit, confidentiel.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Après-carrière</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Sportifs de haut niveau
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Le compte à rebours de l'après-carrière</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Un jour, les revenus du sport s'arrêtent. La vraie question n'est pas <em class="text-chene not-italic font-medium">si</em>, mais
+        <em class="text-chene not-italic font-medium">à quel âge vous serez libre</em>. Visualisez la falaise, votre nombre de la liberté, et le chemin pour la préparer pendant que vous gagnez bien votre vie.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label for="ac-sport">Votre discipline</label>
+            <select class="tool-input" id="ac-sport">
+              <option value="football">Football</option>
+              <option value="basket">Basketball</option>
+              <option value="rugby">Rugby</option>
+              <option value="tennis">Tennis</option>
+              <option value="handball">Handball</option>
+              <option value="volley">Volley-ball</option>
+              <option value="athletisme">Athlétisme</option>
+              <option value="natation">Natation</option>
+              <option value="cyclisme">Cyclisme</option>
+              <option value="ski">Ski / sports d'hiver</option>
+              <option value="autre" selected>Autre discipline</option>
+            </select>
+          </div>
+          <div class="tool-field">
+            <label>Votre âge aujourd'hui <b id="ac-age-val">26 ans</b></label>
+            <input class="tool-range" type="range" id="ac-age" min="16" max="45" step="1" value="26" />
+          </div>
+          <div class="tool-field">
+            <label>Fin de carrière estimée <b id="ac-fin-val">34 ans</b></label>
+            <input class="tool-range" type="range" id="ac-fin" min="25" max="50" step="1" value="34" />
+          </div>
+          <div class="tool-field">
+            <label>Revenu net annuel aujourd'hui <b id="ac-rev-val">150 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-rev" min="20000" max="2000000" step="10000" value="150000" />
+          </div>
+          <div class="tool-field">
+            <label>Votre train de vie annuel <b id="ac-dep-val">70 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-dep" min="15000" max="600000" step="5000" value="70000" />
+          </div>
+          <div class="tool-field">
+            <label>Épargne déjà constituée <b id="ac-epa-val">60 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-epa" min="0" max="3000000" step="10000" value="60000" />
+          </div>
+          <div class="tool-field">
+            <label>Revenu net annuel après la carrière <b id="ac-apres-val">35 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-apres" min="0" max="200000" step="5000" value="35000" />
+          </div>
+          <div class="tool-field">
+            <label>Rendement annuel visé (hypothèse) <b id="ac-rdt-val">4,0 %</b></label>
+            <input class="tool-range" type="range" id="ac-rdt" min="2" max="7" step="0.5" value="4" />
+          </div>
+          <p class="tool-note">Estimation indicative et pédagogique, à partir des seules informations saisies. Rente calculée sur un taux de retrait prudent de 3,5 %. Hors inflation et fiscalité détaillée. Ne constitue pas un conseil personnalisé ni une recommandation sur des instruments financiers. Le Chêne Patrimonial intervient au titre du courtage en assurance et de l'intermédiation immobilière.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Votre nombre de la liberté</p>
+          <p class="big" id="ac-nombre">—</p>
+          <p class="ac-sub" id="ac-nombre-sub">le capital qui rend votre train de vie autonome</p>
+
+          <div class="ac-falaise">
+            <div class="ac-col">
+              <span class="ac-val" id="ac-rev-av">—</span>
+              <div class="ac-bar av" id="ac-bar-av" style="height:100%"></div>
+              <span class="ac-lab">Pendant la carrière</span>
+            </div>
+            <div class="ac-drop"><span id="ac-chute">—</span></div>
+            <div class="ac-col">
+              <span class="ac-val" id="ac-rev-ap">—</span>
+              <div class="ac-bar ap" id="ac-bar-ap" style="height:20%"></div>
+              <span class="ac-lab">Après la carrière</span>
+            </div>
+          </div>
+
+          <div class="tool-brk"><span class="k">Votre date de liberté estimée</span><span class="v" id="ac-liberte">—</span></div>
+          <div class="tool-brk"><span class="k">À capitaliser / mois jusqu'à la fin de carrière</span><span class="v" id="ac-versement">—</span></div>
+          <div class="tool-brk"><span class="k">Votre capacité d'épargne actuelle</span><span class="v" id="ac-capacite">—</span></div>
+          <p class="ac-verdict" id="ac-verdict">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="ac-lead" class="mt-10 rounded-2xl border border-ink/10 bg-cream-soft p-6 md:p-8">
+      <h3 class="font-serif text-xl text-ink mb-1.5">Recevez votre plan d'après-carrière en PDF</h3>
+      <p class="text-sm text-ink/60 mb-5 leading-relaxed">Renseignez vos coordonnées pour recevoir votre rapport détaillé. Camil Czajkowski vous recontacte pour en parler, sans engagement. Vos données ne sont jamais revendues.</p>
+      <form id="ac-lead-form" class="space-y-3.5" novalidate>
+        <div class="grid sm:grid-cols-2 gap-3.5">
+          <input name="prenom" required placeholder="Prénom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input name="nom" required placeholder="Nom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        </div>
+        <input name="email" type="email" required placeholder="Adresse email" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input name="telephone" type="tel" required placeholder="Téléphone" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
+          <span>J'accepte que Le Chêne Patrimonial collecte et traite ces informations (nom, email, téléphone, réponses au simulateur) afin de m'adresser mon rapport et de me recontacter à ce sujet. <a href="/confidentialite" class="underline hover:text-ink" target="_blank">Politique de confidentialité</a>.</span>
+        </label>
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
+          <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désinscription à tout moment).</span>
+        </label>
+        <button type="submit" class="btn-primary w-full justify-center py-3"><span class="ac-lead-btn-label">Recevoir mon plan (PDF)</span></button>
+        <p class="text-[11px] text-ink/45 text-center leading-relaxed">Responsable de traitement : Le Chêne Patrimonial. Données conservées le temps de la relation commerciale, jamais revendues.</p>
+        <p id="ac-lead-msg" class="text-sm text-center hidden"></p>
+      </form>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Pourquoi ce compte à rebours change tout</h2>
+      <p>La carrière d'un sportif de haut niveau est courte et intense. Les revenus arrivent tôt, fort, puis s'arrêtent, souvent avant 35 ans. C'est ce que montre la falaise : le jour où le sport s'arrête, si rien n'a été préparé, le niveau de vie s'effondre.</p>
+      <p>Le <strong>nombre de la liberté</strong>, c'est le capital qui, bien placé, génère assez de revenus pour couvrir votre train de vie sans dépendre d'un salaire. L'atteindre pendant les années où vous gagnez bien, c'est transformer une carrière brillante en sécurité durable. C'est exactement le travail que je mène avec les athlètes que j'accompagne.</p>
+    </div>
+  </div>
+
+  <CTA
+    title="Votre après-carrière se prépare maintenant."
+    body="Ce compte à rebours pose le cadre. Ensemble, nous le transformons en stratégie concrète : enveloppes, allocation, protection. Un premier échange de 30 minutes, sans engagement."
+  />
+</Base>
+
+<style is:global>
+  .ac-sub { font-size: .82rem; color: #9fb0c8; margin: -6px 0 18px; }
+  .ac-falaise { display: flex; align-items: flex-end; gap: 10px; height: 160px; margin: 4px 0 22px; }
+  .ac-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .ac-bar { width: 100%; border-radius: 8px 8px 0 0; transition: height .45s cubic-bezier(.16,1,.3,1); min-height: 6px; }
+  .ac-bar.av { background: linear-gradient(180deg,#E6C259,#D4A82D); }
+  .ac-bar.ap { background: #3a5f86; }
+  .ac-val { font-family: Georgia, serif; font-size: .82rem; color: #F5F1E8; margin-bottom: 6px; font-weight: 600; }
+  .ac-lab { font-size: .72rem; color: #9fb0c8; margin-top: 8px; text-align: center; }
+  .ac-drop { align-self: center; font-size: .8rem; color: #E6C259; font-weight: 700; white-space: nowrap; padding-bottom: 30px; }
+  .ac-drop span::before { content: "\2193 "; }
+  .ac-verdict { font-size: .9rem; line-height: 1.5; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); color: #EDE7DA; }
+  .ac-verdict.on-track { color: #a9e0bd; }
+  .ac-verdict.effort { color: #f2d38a; }
+  select.tool-input { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237A7566' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const SPORTFIN = { football:34, basket:35, rugby:33, tennis:32, handball:34, volley:34, athletisme:32, natation:29, cyclisme:36, ski:32, autre:35 };
+    const TAUX_RETRAIT = 0.035;
+    const CALENDLY = 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+    let state = {};
+
+    function calc(){
+      const spEl=document.getElementById('ac-sport');
+      const sportVal=spEl.value, sportLabel=spEl.options[spEl.selectedIndex].text;
+      const age=+document.getElementById('ac-age').value, fin=+document.getElementById('ac-fin').value,
+        rev=+document.getElementById('ac-rev').value, dep=+document.getElementById('ac-dep').value,
+        epa=+document.getElementById('ac-epa').value, apres=+document.getElementById('ac-apres').value,
+        rdt=+document.getElementById('ac-rdt').value;
+
+      document.getElementById('ac-age-val').textContent=age+' ans';
+      document.getElementById('ac-fin-val').textContent=fin+' ans';
+      document.getElementById('ac-rev-val').textContent=eur(rev);
+      document.getElementById('ac-dep-val').textContent=eur(dep);
+      document.getElementById('ac-epa-val').textContent=eur(epa);
+      document.getElementById('ac-apres-val').textContent=eur(apres);
+      document.getElementById('ac-rdt-val').textContent=rdt.toFixed(1).replace('.',',')+' %';
+
+      const r=rdt/100, rm=r/12;
+      const n=Math.max(0, fin-age), N=n*12;
+      const deficit=Math.max(0, dep-apres);
+      const cible=deficit/TAUX_RETRAIT;
+      const capaciteM=Math.max(0,(rev-dep)/12);
+      const fvEpa=epa*Math.pow(1+r,n);
+      const besoin=Math.max(0, cible-fvEpa);
+      const versementNec = N>0 ? (rm>0 ? besoin*rm/(Math.pow(1+rm,N)-1) : besoin/N) : besoin;
+
+      // Simulation année par année pour la date de liberté.
+      let cap=epa, freedom=null;
+      for(let a=age; a<=99; a++){
+        const flux = a<fin ? (rev-dep) : (apres-dep);
+        cap = cap*(1+r) + flux;
+        if(freedom===null && cible>0 && cap>=cible){ freedom=a+1; }
+        if(cap < -50000000) break;
+      }
+
+      document.getElementById('ac-nombre').textContent = cible>0 ? eur(cible) : 'Déjà couvert';
+      document.getElementById('ac-nombre-sub').textContent = cible>0 ? "le capital qui rend votre train de vie autonome" : "votre revenu d'après-carrière couvre déjà votre train de vie";
+
+      // Falaise
+      const chute = rev>0 ? Math.max(0, Math.round((1-apres/rev)*100)) : 0;
+      document.getElementById('ac-chute').textContent = chute+' %';
+      document.getElementById('ac-rev-av').textContent = eur(rev);
+      document.getElementById('ac-rev-ap').textContent = eur(apres);
+      document.getElementById('ac-bar-ap').style.height = (rev>0 ? Math.max(4, apres/rev*100) : 4)+'%';
+
+      document.getElementById('ac-liberte').textContent = freedom ? freedom+' ans' : 'non atteinte en l’état';
+      document.getElementById('ac-versement').textContent = n>0 ? eur(versementNec)+' / mois' : 'à constituer maintenant';
+      document.getElementById('ac-capacite').textContent = eur(capaciteM)+' / mois';
+
+      const v=document.getElementById('ac-verdict');
+      v.classList.remove('on-track','effort');
+      if(cible<=0){
+        v.textContent = "Votre revenu d'après-carrière couvre déjà votre train de vie. L'enjeu devient la transmission et la performance de votre capital.";
+        v.classList.add('on-track');
+      } else if(n<=0){
+        v.textContent = "Vos revenus sportifs sont derrière vous : la priorité est de faire travailler votre capital et vos revenus de reconversion vers votre nombre de la liberté.";
+        v.classList.add('effort');
+      } else if(capaciteM>=versementNec){
+        v.textContent = "Vous êtes sur la bonne voie : votre capacité d'épargne couvre l'effort nécessaire. Tout se joue maintenant dans la façon de le placer.";
+        v.classList.add('on-track');
+      } else {
+        const ecart=Math.max(0, versementNec-capaciteM);
+        v.textContent = "À ce rythme, il manque environ "+eur(ecart)+" / mois pour atteindre votre liberté à la fin de carrière. On peut agir sur le train de vie, l'horizon ou le rendement. C'est le cœur de mon accompagnement.";
+        v.classList.add('effort');
+      }
+
+      state = { sport:sportVal, sportLabel, age, fin, revenu:rev, depenses:dep, epargne:epa, apres, rendement:rdt,
+        nombreLiberte:Math.round(cible), chute, dateLiberte: freedom ? (freedom+' ans') : "non atteinte en l'état",
+        versementNecessaire: n>0 ? Math.round(versementNec) : null, capaciteMensuelle: Math.round(capaciteM),
+        verdict: v.textContent };
+    }
+
+    function init(){
+      const g=document.getElementById('ac-age'); if(!g||g.dataset.ready) return; g.dataset.ready='1';
+      ['ac-age','ac-fin','ac-rev','ac-dep','ac-epa','ac-apres','ac-rdt'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      document.getElementById('ac-sport').addEventListener('change',(e)=>{
+        const f=SPORTFIN[e.target.value]; if(f){ const fin=document.getElementById('ac-fin'); fin.value=f; }
+        calc();
+      });
+      calc();
+
+      const form=document.getElementById('ac-lead-form');
+      if(form){
+        const msg=document.getElementById('ac-lead-msg');
+        const btnLabel=document.querySelector('.ac-lead-btn-label');
+        const showMsg=(t,ok)=>{msg.textContent=t;msg.className='text-sm text-center '+(ok?'text-chene':'text-[#b4472e]');msg.classList.remove('hidden');};
+        const downloadPdf=async()=>{try{const res=await fetch('/api/apres-carriere-pdf',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='apres-carriere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
+        form.addEventListener('submit',async(e)=>{
+          e.preventDefault();
+          const fd=new FormData(form);
+          if(!fd.get('prenom')||!fd.get('nom')||!fd.get('email')){showMsg('Merci de renseigner vos coordonnées.',false);return;}
+          if(!fd.get('telephone')){showMsg("Merci d'indiquer un numéro de téléphone.",false);return;}
+          if(!fd.get('consent')){showMsg('Votre consentement est nécessaire pour recevoir le rapport.',false);return;}
+          btnLabel.textContent='Envoi...';
+          try{
+            const res=await fetch('/api/apres-carriere-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:fd.get('prenom'),nom:fd.get('nom'),email:fd.get('email'),telephone:fd.get('telephone'),consent:!!fd.get('consent'),optin:!!fd.get('optin'),website:fd.get('website'),data:state})});
+            const data=await res.json().catch(()=>({}));
+            if(res.ok&&data.ok){
+              downloadPdf();
+              const em=String(fd.get('email')||'');
+              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Votre plan vous a été envoyé par email</p><p class="text-sm text-ink/60 mb-4">Il part vers <strong class="text-ink">'+em+'</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite.</p><button id="ac-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button><div class="mt-5"><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="btn-primary">Choisir un créneau avec Camil</a></div></div>';
+              const again=form.querySelector('#ac-pdf-again'); if(again) again.onclick=downloadPdf;
+            } else { showMsg('Un souci est survenu. Réessayez ou écrivez-nous directement.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }
+          }catch(err){ showMsg('Connexion impossible. Réessayez dans un instant.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }
+        });
+      }
+    }
+    init();
+    if(!window['__hk_ac-age']){window['__hk_ac-age']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>
