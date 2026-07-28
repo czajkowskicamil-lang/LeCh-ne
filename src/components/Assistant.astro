@@ -1,100 +1,15 @@
 ---
-// Assistant du Chêne — secrétaire virtuelle premium.
-// Bulle flottante présente sur toutes les pages (incluse dans Base.astro).
-// 100% autonome : réponses pré-écrites et validées, aucune IA générative,
-// donc zéro risque d'erreur sur un sujet fiscal ou réglementé.
+// Assistant du Chêne — conversation en direct, voix de Camil.
+// Le visiteur écrit librement ; la réponse vient d'une IA STRICTEMENT cadrée
+// (voir api/chat.js) : orientation générale seulement, jamais de conseil
+// chiffré, périmètre COA / Carte T, redirection vers un vrai échange.
+// Présent sur toutes les pages (inclus dans Base.astro).
 import { site } from '../data/site';
 
-// Structure : catégories -> questions -> réponse.
-// Toutes les réponses sont volontairement prudentes, sans chiffre fiscal,
-// et ramènent vers un échange humain avec Camil.
-const categories = [
-  {
-    id: 'cabinet',
-    label: 'Le cabinet',
-    questions: [
-      {
-        q: 'Quels sont vos services ?',
-        a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement.",
-      },
-      {
-        q: "En quoi êtes-vous différent d'une banque ?",
-        a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence.",
-      },
-      {
-        q: 'Faut-il déjà un gros patrimoine ?',
-        a: "Non. J'accompagne aussi bien les patrimoines en construction que les situations déjà établies. L'essentiel est d'avoir un projet et l'envie d'être bien conseillé.",
-      },
-      {
-        q: 'Comment êtes-vous rémunéré ?',
-        a: "En toute transparence. Selon les cas : honoraires de conseil, commissions des partenaires en cas de souscription, ou une combinaison des deux. Vous savez toujours qui me rémunère, comment et combien, avant toute opération.",
-      },
-      {
-        q: 'Travaillez-vous à distance ?',
-        a: "Oui, partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein.",
-      },
-    ],
-  },
-  {
-    id: 'epargne',
-    label: 'Épargne & retraite',
-    questions: [
-      {
-        q: 'Pourquoi ouvrir une assurance-vie ?',
-        a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble.",
-      },
-      {
-        q: "J'ai une somme à placer, que faire ?",
-        a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation.",
-      },
-      {
-        q: 'Comment bien préparer ma retraite ?',
-        a: "En anticipant. Plus on s'y prend tôt, plus les solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif et adapté.",
-      },
-    ],
-  },
-  {
-    id: 'fiscalite',
-    label: 'Impôts & transmission',
-    questions: [
-      {
-        q: 'Pouvez-vous m’aider à réduire mes impôts ?',
-        a: "Oui, l'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation.",
-      },
-      {
-        q: 'Comment protéger mon conjoint et mes enfants ?',
-        a: "C'est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille.",
-      },
-      {
-        q: 'Comment préparer ma succession ?',
-        a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés.",
-      },
-    ],
-  },
-  {
-    id: 'profils',
-    label: 'Immobilier & profils',
-    questions: [
-      {
-        q: 'Accompagnez-vous les projets immobiliers ?',
-        a: "Oui, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris.",
-      },
-      {
-        q: 'Travaillez-vous avec les sportifs de haut niveau ?',
-        a: "Oui, c'est une spécialité du cabinet. Carrières courtes, revenus irréguliers, expatriation : j'accompagne les sportifs pour transformer une carrière en patrimoine durable.",
-      },
-      {
-        q: 'Et avec les expatriés ?',
-        a: "Oui. La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation, on vous orientera.",
-      },
-    ],
-  },
-];
-
-const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. Dites-moi ce qui vous amène, je vous réponds tout de suite. Et si vous préférez, on échange directement par téléphone ou par mail, avec plaisir. Alors, par quoi commence-t-on ?";
+const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. Posez-moi votre question sur votre épargne, votre retraite, un projet immobilier, votre fiscalité ou la transmission, je vous réponds tout de suite. Et si vous préférez, on échange directement par téléphone ou par mail.";
 ---
 
-<div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-phone-display={site.phone.display} data-email={site.email} data-calendly={site.calendly}>
+<div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-email={site.email} data-calendly={site.calendly} data-intro={intro}>
   <!-- Lanceur -->
   <button id="lc-launcher" class="lc-launcher" aria-label="Ouvrir la discussion avec Le Chêne Patrimonial" aria-expanded="false">
     <span class="lc-launcher-icon lc-icon-chat" aria-hidden="true">
@@ -125,10 +40,12 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
 
     <div id="lc-thread" class="lc-thread" aria-live="polite"></div>
 
-    <div class="lc-suggest">
-      <div id="lc-cats" class="lc-cats"></div>
-      <div id="lc-chips" class="lc-chips"></div>
-    </div>
+    <form id="lc-form" class="lc-input">
+      <input id="lc-text" class="lc-text" type="text" autocomplete="off" maxlength="800" placeholder="Écrivez votre message…" aria-label="Écrivez votre message" />
+      <button type="submit" id="lc-send" class="lc-send" aria-label="Envoyer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
 
     <footer class="lc-foot">
       <a id="lc-cta-rdv" class="lc-cta-rdv" target="_blank" rel="noopener">
@@ -142,11 +59,11 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
       </a>
     </footer>
-    <p class="lc-legal">Pour un conseil adapté à votre situation, rien ne vaut un vrai échange. Appelez-moi ou écrivez-moi, avec plaisir.</p>
+    <p class="lc-legal">Vos messages servent uniquement à vous répondre. Pour un conseil adapté à votre situation, rien ne vaut un vrai échange avec Camil.</p>
   </div>
 </div>
 
-<script is:inline define:vars={{ categories, intro }}>
+<script is:inline>
   (function () {
     function initAssistant() {
       const root = document.getElementById('lc-assistant');
@@ -157,21 +74,60 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
       const panel = document.getElementById('lc-panel');
       const closeBtn = document.getElementById('lc-close');
       const thread = document.getElementById('lc-thread');
-      const catsEl = document.getElementById('lc-cats');
-      const chipsEl = document.getElementById('lc-chips');
+      const form = document.getElementById('lc-form');
+      const input = document.getElementById('lc-text');
+      const sendBtn = document.getElementById('lc-send');
 
-      // Coordonnées (depuis les data-attributes du composant Astro)
       const phone = root.dataset.phone;
-      const phoneDisplay = root.dataset.phoneDisplay;
       const email = root.dataset.email;
       const calendly = root.dataset.calendly;
+      const intro = root.dataset.intro;
       document.getElementById('lc-cta-rdv').href = calendly;
       document.getElementById('lc-cta-tel').href = 'tel:' + phone;
       document.getElementById('lc-cta-mail').href = 'mailto:' + email;
 
-      let activeCat = categories[0].id;
+      const FALLBACK = "Bonne question. Le mieux, c'est d'en parler directement avec Camil : il vous répond personnellement au 06 12 82 91 90 ou par email. Dites-lui simplement votre situation.";
+
+      // Cerveau local : réponses pré-validées, utilisées quand l'IA n'est pas
+      // active (pas de clé) ou indisponible. Zéro risque, zéro coût.
+      const KB = [
+        { k: ['bonjour','salut','hello','coucou','bonsoir','hey'], a: "Bonjour et bienvenue chez Le Chêne Patrimonial. Dites-moi ce qui vous amène : épargne, retraite, immobilier, fiscalité ou transmission ?" },
+        { k: ['service','accompagn','faites','proposez','aide','expertise'], a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement." },
+        { k: ['banque','different','différent','difference','différence','pourquoi vous'], a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence." },
+        { k: ['minimum','gros patrimoine','débuter','debuter','commencer','petit','riche','fortune'], a: "Pas besoin d'un gros patrimoine. J'accompagne aussi bien les patrimoines en construction que les situations établies. L'essentiel, c'est d'avoir un projet et l'envie d'être bien conseillé." },
+        { k: ['rémuner','remuner','honoraire','payer','coûte','coute','tarif','prix','combien ça','commission'], a: "En toute transparence : selon les cas, honoraires de conseil, commissions des partenaires en cas de souscription, ou les deux. Vous savez toujours qui me rémunère et comment, avant toute opération. Le premier rendez-vous est offert." },
+        { k: ['distance','visio','présentiel','presentiel','déplace','deplace','où êtes','ou etes','rendez-vous physique'], a: "J'accompagne mes clients partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein." },
+        { k: ['assurance-vie','assurance vie','assurance'], a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble." },
+        { k: ['placer','somme','investir','argent','épargne','epargne','placement'], a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation." },
+        { k: ['retraite','per '], a: "Pour la retraite, l'anticipation change tout. Plus on s'y prend tôt, plus des solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif." },
+        { k: ['impôt','impot','fiscal','défiscal','defiscal','réduire mes','reduire mes','taxe'], a: "L'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation." },
+        { k: ['conjoint','enfant','protéger','proteger','famille','décès','deces','proches'], a: "Protéger vos proches est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille." },
+        { k: ['succession','transmi','transmettre','héritage','heritage','donation','démembrement','demembrement'], a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés." },
+        { k: ['immobil','locatif','acheter','appartement','maison','résidence','residence','lmnp'], a: "J'accompagne les projets immobiliers, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris." },
+        { k: ['sportif','athlète','athlete','carrière','carriere'], a: "L'accompagnement des sportifs de haut niveau est une spécialité du cabinet : carrières courtes, revenus irréguliers, expatriation. L'objectif, transformer une carrière en patrimoine durable." },
+        { k: ['expatri','étranger','etranger','expat','résident fiscal','resident fiscal','frontalier'], a: "La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation et on vous orientera." },
+        { k: ['rendez-vous','rendez vous','rdv','prendre','contact','joindre','appeler','téléphone','telephone','parler','email','mail'], a: "Avec plaisir. Vous pouvez joindre Camil directement au 06 12 82 91 90 ou par email à camil.cz@lechenepatrimonial.com, ou réserver un créneau via le bouton Prendre rendez-vous ci-dessous. Le premier échange est offert." },
+        { k: ['indépendant','independant','conflit','intérêt','interet'], a: "Oui, Le Chêne est un cabinet totalement indépendant : les recommandations sont faites dans votre seul intérêt, avec une transparence complète sur la rémunération." },
+        { k: ['merci','super','parfait','top','génial','genial'], a: "Avec plaisir. Si vous voulez aller plus loin sur votre situation, Camil se fera un plaisir d'en discuter avec vous, sans engagement." },
+      ];
+
+      function lcNorm(s) {
+        return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      }
+      function localAnswer(text) {
+        const t = lcNorm(text);
+        let best = null, bestScore = 0;
+        for (const item of KB) {
+          let score = 0;
+          for (const kw of item.k) { if (t.indexOf(lcNorm(kw)) !== -1) score++; }
+          if (score > bestScore) { bestScore = score; best = item; }
+        }
+        return bestScore > 0 ? best.a : null;
+      }
+
       let opened = false;
-      const asked = new Set();
+      let busy = false;
+      const history = []; // { role: 'user' | 'assistant', content }
 
       function scrollThread() {
         requestAnimationFrame(() => { thread.scrollTop = thread.scrollHeight; });
@@ -180,54 +136,78 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
       function addBubble(text, who) {
         const el = document.createElement('div');
         el.className = 'lc-msg lc-msg-' + who;
-        el.innerHTML = '<span class="lc-bubble">' + text + '</span>';
+        const b = document.createElement('span');
+        b.className = 'lc-bubble';
+        b.textContent = text;
+        el.appendChild(b);
         thread.appendChild(el);
         scrollThread();
         return el;
       }
 
-      function renderCats() {
-        catsEl.innerHTML = '';
-        categories.forEach((c) => {
-          const b = document.createElement('button');
-          b.className = 'lc-cat' + (c.id === activeCat ? ' is-active' : '');
-          b.textContent = c.label;
-          b.addEventListener('click', () => { activeCat = c.id; renderCats(); renderChips(); });
-          catsEl.appendChild(b);
-        });
+      function addPending() {
+        const el = document.createElement('div');
+        el.className = 'lc-msg lc-msg-bot lc-pending';
+        el.innerHTML = '<span class="lc-bubble"><span class="lc-dot"></span><span class="lc-dot"></span><span class="lc-dot"></span></span>';
+        thread.appendChild(el);
+        scrollThread();
+        return el;
       }
 
-      function renderChips() {
-        chipsEl.innerHTML = '';
-        const cat = categories.find((c) => c.id === activeCat);
-        cat.questions.forEach((item) => {
-          const b = document.createElement('button');
-          b.className = 'lc-chip' + (asked.has(item.q) ? ' is-asked' : '');
-          b.textContent = item.q;
-          b.addEventListener('click', () => answer(item));
-          chipsEl.appendChild(b);
-        });
+      async function send(text) {
+        const clean = (text || '').trim();
+        if (!clean || busy) return;
+        busy = true;
+        sendBtn.disabled = true;
+        input.value = '';
+        addBubble(clean, 'user');
+        history.push({ role: 'user', content: clean });
+        const pending = addPending();
+
+        let aiReply = null; // réponse de l'IA cadrée, si elle est active
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 25000);
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ messages: history.slice(-12) }),
+            signal: ctrl.signal,
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.ai && typeof data.reply === 'string' && data.reply.trim()) {
+              aiReply = data.reply.trim();
+            }
+          }
+        } catch (e) {
+          /* réseau/délai : on bascule sur les réponses validées locales */
+        } finally {
+          clearTimeout(timer);
+        }
+
+        // IA si disponible, sinon réponse validée locale, sinon contact direct.
+        const reply = aiReply || localAnswer(clean) || FALLBACK;
+        pending.remove();
+        addBubble(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
       }
 
-      function answer(item) {
-        asked.add(item.q);
-        renderChips();
-        addBubble(item.q, 'user');
-        addBubble(item.a, 'bot');
-      }
+      form.addEventListener('submit', (e) => { e.preventDefault(); send(input.value); });
 
       function openPanel() {
         panel.hidden = false;
-        // reflow pour l'animation
         void panel.offsetWidth;
         root.classList.add('is-open');
         launcher.setAttribute('aria-expanded', 'true');
         if (!opened) {
           opened = true;
-          renderCats();
-          renderChips();
           addBubble(intro, 'bot');
         }
+        setTimeout(() => { try { input.focus(); } catch (e) {} }, 320);
       }
 
       function closePanel() {
@@ -271,7 +251,7 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
     cursor: pointer;
     display: grid;
     place-items: center;
-    box-shadow: 0 14px 34px -10px rgba(3, 16, 46, 0.6), 0 0 0 0 rgba(212, 168, 45, 0.35);
+    box-shadow: 0 14px 34px -10px rgba(3, 16, 46, 0.6);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   }
   .lc-launcher:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 18px 40px -10px rgba(3, 16, 46, 0.7); }
@@ -315,7 +295,7 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
   }
   .lc-head::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,168,45,0.6), transparent); }
   .lc-head-id { display: flex; align-items: center; gap: 11px; }
-  .lc-avatar { position: relative; width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: #F5F1E8; overflow: visible; box-shadow: 0 0 0 1px rgba(212,168,45,0.5); }
+  .lc-avatar { position: relative; width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: #F5F1E8; box-shadow: 0 0 0 1px rgba(212,168,45,0.5); }
   .lc-avatar img { border-radius: 999px; display: block; }
   .lc-status-dot { position: absolute; right: -1px; bottom: -1px; width: 11px; height: 11px; border-radius: 999px; background: #4ade80; border: 2px solid #03102E; }
   .lc-head-text { display: flex; flex-direction: column; line-height: 1.2; }
@@ -325,7 +305,7 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
   .lc-close:hover { background: rgba(245,241,232,0.12); color: #fff; }
 
   /* Thread */
-  .lc-thread { flex: 1; overflow-y: auto; padding: 18px 16px 8px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+  .lc-thread { flex: 1; overflow-y: auto; padding: 18px 16px 10px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
   .lc-msg { display: flex; max-width: 86%; }
   .lc-msg-bot { align-self: flex-start; }
   .lc-msg-user { align-self: flex-end; }
@@ -334,58 +314,62 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
     font-size: 13.5px;
     line-height: 1.5;
     border-radius: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     animation: lc-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .lc-msg-bot .lc-bubble { background: #fff; color: #03102E; border: 1px solid rgba(3,16,46,0.06); border-bottom-left-radius: 5px; box-shadow: 0 4px 14px -8px rgba(3,16,46,0.25); }
   .lc-msg-user .lc-bubble { background: #03102E; color: #F5F1E8; border-bottom-right-radius: 5px; }
   @keyframes lc-in { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
 
-  /* Suggestions */
-  .lc-suggest { padding: 6px 14px 10px; border-top: 1px solid rgba(3,16,46,0.06); background: #FAF7EF; }
-  .lc-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-  .lc-cats::-webkit-scrollbar { display: none; }
-  .lc-cat {
-    flex: 0 0 auto; padding: 6px 11px; border-radius: 999px; cursor: pointer;
-    font-size: 12px; font-weight: 500; white-space: nowrap;
-    background: transparent; color: rgba(3,16,46,0.55);
-    border: 1px solid rgba(3,16,46,0.14); transition: all 0.2s ease;
+  .lc-pending .lc-bubble { display: inline-flex; gap: 4px; align-items: center; }
+  .lc-dot { width: 6px; height: 6px; border-radius: 999px; background: rgba(3,16,46,0.3); animation: lc-blink 1.2s infinite; }
+  .lc-dot:nth-child(2) { animation-delay: 0.2s; }
+  .lc-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes lc-blink { 0%,60%,100% { opacity: 0.25; } 30% { opacity: 1; } }
+
+  /* Saisie */
+  .lc-input { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid rgba(3,16,46,0.06); background: #FAF7EF; }
+  .lc-text {
+    flex: 1; border: 1px solid rgba(3,16,46,0.14); background: #fff; border-radius: 999px;
+    padding: 11px 16px; font-family: inherit; font-size: 13.5px; color: #03102E; outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .lc-cat:hover { color: #03102E; border-color: rgba(3,16,46,0.3); }
-  .lc-cat.is-active { background: #2D4A33; color: #F5F1E8; border-color: #2D4A33; }
-  .lc-chips { display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; scrollbar-width: thin; }
-  .lc-chip {
-    text-align: left; padding: 9px 12px; border-radius: 12px; cursor: pointer;
-    font-size: 12.8px; line-height: 1.35; color: #03102E;
-    background: #fff; border: 1px solid rgba(3,16,46,0.1);
-    transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  .lc-text::placeholder { color: rgba(3,16,46,0.4); }
+  .lc-text:focus { border-color: rgba(212,168,45,0.7); box-shadow: 0 0 0 3px rgba(212,168,45,0.12); }
+  .lc-send {
+    flex: 0 0 auto; width: 42px; height: 42px; border-radius: 999px; border: 0; cursor: pointer;
+    display: grid; place-items: center; background: #03102E; color: #E6C259;
+    transition: background 0.25s ease, transform 0.2s ease;
   }
-  .lc-chip:hover { border-color: rgba(212,168,45,0.7); background: #fff; transform: translateX(2px); box-shadow: 0 4px 12px -6px rgba(3,16,46,0.2); }
-  .lc-chip.is-asked { opacity: 0.5; }
+  .lc-send:hover { background: #2D4A33; color: #F5F1E8; }
+  .lc-send:disabled { opacity: 0.5; cursor: default; }
 
   /* Footer */
-  .lc-foot { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #FAF7EF; border-top: 1px solid rgba(3,16,46,0.06); }
+  .lc-foot { display: flex; align-items: center; gap: 8px; padding: 4px 12px 8px; background: #FAF7EF; }
   .lc-cta-rdv {
     flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 11px 14px; border-radius: 999px; text-decoration: none;
-    background: #03102E; color: #F5F1E8; font-size: 13.5px; font-weight: 500;
-    transition: background 0.25s ease;
+    padding: 10px 14px; border-radius: 999px; text-decoration: none;
+    background: transparent; color: #03102E; font-size: 13px; font-weight: 500;
+    border: 1px solid rgba(3,16,46,0.14); transition: all 0.25s ease;
   }
-  .lc-cta-rdv:hover { background: #2D4A33; }
+  .lc-cta-rdv:hover { border-color: rgba(212,168,45,0.7); color: #A7801F; }
   .lc-cta-mini {
-    display: grid; place-items: center; width: 42px; height: 42px; border-radius: 999px;
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px;
     color: #03102E; text-decoration: none; background: #fff; border: 1px solid rgba(3,16,46,0.12);
     transition: all 0.2s ease;
   }
   .lc-cta-mini:hover { border-color: rgba(212,168,45,0.7); color: #A7801F; }
   .lc-legal { margin: 0; padding: 0 16px 12px; font-size: 10.5px; line-height: 1.4; color: rgba(3,16,46,0.4); text-align: center; background: #FAF7EF; }
 
-  /* Mobile : le lanceur remonte au-dessus de la barre CTA mobile (76px) */
+  /* Mobile : le lanceur remonte au-dessus de la barre CTA mobile */
   @media (max-width: 767px) {
     .lc-assistant { right: 16px; bottom: 84px; }
-    .lc-panel { bottom: 74px; height: 68vh; max-height: calc(100vh - 160px); width: calc(100vw - 24px); }
+    .lc-panel { bottom: 74px; height: 70vh; max-height: calc(100vh - 150px); width: calc(100vw - 24px); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .lc-bubble, .lc-panel, .lc-launcher { transition: none; animation: none; }
+    .lc-dot { animation: none; }
   }
 </style>
