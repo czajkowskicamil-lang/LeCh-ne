@@ -10,6 +10,8 @@ const staticPages = [
   { path: '/expertise',        priority: 0.9, changefreq: 'monthly' },
   { path: '/calculatrice-rentabilite-credit', priority: 0.8, changefreq: 'monthly' },
   { path: '/magazine',         priority: 0.9, changefreq: 'weekly' },
+  { path: '/actualites',       priority: 0.7, changefreq: 'weekly' },
+  { path: '/opportunites',     priority: 0.8, changefreq: 'weekly' },
   { path: '/cas-pratiques',    priority: 0.8, changefreq: 'monthly' },
   { path: '/suisse-france',    priority: 0.8, changefreq: 'monthly' },
   { path: '/contact',          priority: 0.8, changefreq: 'yearly' },
@@ -20,6 +22,8 @@ const staticPages = [
 export const GET: APIRoute = async () => {
   const articles = await getCollection('articles');
   const cas = await getCollection('cas');
+  const news = await getCollection('news');
+  const opportunites = await getCollection('opportunites');
   const today = new Date().toISOString().split('T')[0];
 
   const urls = [
@@ -47,6 +51,22 @@ export const GET: APIRoute = async () => {
       changefreq: 'monthly',
       priority: 0.7,
     })),
+    ...news
+      .filter((n) => !n.data.external)
+      .map((n) => ({
+        loc: `${SITE}/actualites/${n.slug}`,
+        lastmod: n.data.publishedAt.toISOString().split('T')[0],
+        changefreq: 'monthly',
+        priority: 0.6,
+      })),
+    ...opportunites
+      .filter((o) => !o.data.external)
+      .map((o) => ({
+        loc: `${SITE}/opportunites/${o.slug}`,
+        lastmod: o.data.publishedAt.toISOString().split('T')[0],
+        changefreq: 'weekly',
+        priority: 0.7,
+      })),
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

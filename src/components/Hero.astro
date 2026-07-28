@@ -18,22 +18,21 @@ import PartnersMarquee from './PartnersMarquee.astro';
 
   <!-- Contenu principal -->
   <div class="shell relative flex-1 flex flex-col justify-center pt-24 md:pt-32 pb-16">
-    <p class="eyebrow mb-8 flex items-center gap-3 reveal">
+    <p class="eyebrow mb-8 flex items-center gap-3">
       <span class="inline-block h-px w-12 bg-chene"></span>
       Conseil en gestion de patrimoine · Indépendant
     </p>
 
-    <h1 class="hero-title font-serif text-ink mb-10 max-w-5xl">
+    <h1 class="hero-title font-serif text-ink mb-8 max-w-5xl">
       <span class="reveal-mask block"><span>Faire fructifier</span></span>
       <span class="reveal-mask block" style="transition-delay:140ms"><span class="italic text-chene">ce qui compte.</span></span>
     </h1>
 
-    <p class="max-w-2xl text-xl md:text-2xl text-ink/70 leading-relaxed mb-12 reveal" style="transition-delay:300ms">
-      Stratégie, méthode et transparence pour construire, protéger et transmettre un patrimoine qui dure.
-      Sans banque derrière, sans jargon, sans compromis.
+    <p class="max-w-2xl text-xl md:text-2xl text-ink/75 leading-relaxed mb-10">
+      Conseiller en gestion de patrimoine indépendant. J'accompagne <span class="text-ink font-medium">dirigeants, professions libérales et sportifs</span> à structurer, protéger et transmettre leur patrimoine. Sans banque, avec une méthode de haut niveau.
     </p>
 
-    <div class="flex flex-wrap gap-4 reveal" style="transition-delay:420ms">
+    <div class="flex flex-wrap gap-4">
       <Magnetic>
         <a href="/outils/diagnostic-patrimonial" class="btn-primary">
           Faire mon diagnostic gratuit
@@ -42,6 +41,17 @@ import PartnersMarquee from './PartnersMarquee.astro';
       </Magnetic>
       <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost">Planifier un rendez-vous découverte</a>
     </div>
+
+    <!-- Bandeau de confiance : preuve immédiate, au-dessus de la ligne de flottaison -->
+    <ul class="hero-trust flex flex-wrap items-center gap-x-3 gap-y-2 mt-10 text-xs md:text-sm text-ink/55">
+      <li class="font-medium text-ink/70">Cabinet indépendant</li>
+      <li aria-hidden="true" class="text-or">•</li>
+      <li>ORIAS n° 25&nbsp;000&nbsp;016</li>
+      <li aria-hidden="true" class="text-or">•</li>
+      <li>Paris · Montpellier · Marseille</li>
+      <li aria-hidden="true" class="text-or">•</li>
+      <li>Premier échange offert</li>
+    </ul>
   </div>
 
   <!-- Scroll indicator -->

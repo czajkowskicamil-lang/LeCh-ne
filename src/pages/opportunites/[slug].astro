@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const opportunites = await getCollection('opportunites');
+  // Page détail uniquement pour les opportunités sans lien externe.
+  return opportunites
+    .filter((o) => !o.data.external)
+    .map((o) => ({ params: { slug: o.slug }, props: { item: o } }));
+}
+
+interface Props { item: CollectionEntry<'opportunites'> }
+const { item } = Astro.props;
+const { Content } = await item.render();
+
+const dateStr = new Intl.DateTimeFormat('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(item.data.publishedAt);
+---
+
+<Base title={`${item.data.title}, Opportunités | Le Chêne Patrimonial`} description={item.data.excerpt}>
+  <article>
+    <header class="pt-16 pb-12 md:pt-24 md:pb-16">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+          <a href="/" class="hover:text-chene">Accueil</a>
+          <span>/</span>
+          <a href="/opportunites" class="hover:text-chene">Opportunités</a>
+          <span>/</span>
+          <span class="text-ink truncate max-w-xs">{item.data.title}</span>
+        </nav>
+
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <p class="eyebrow flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            {item.data.type}
+          </p>
+          <span class="text-[0.6rem] uppercase tracking-micro rounded-full px-2.5 py-1 bg-chene/10 text-chene">{item.data.status}</span>
+        </div>
+
+        <h1 class="font-serif text-display text-ink mb-8 leading-tight">{item.data.title}</h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed mb-10">{item.data.excerpt}</p>
+
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-stone border-t border-ink/10 pt-6">
+          {item.data.location && <span>{item.data.location}</span>}
+          {item.data.ticket && <><span class="hidden md:inline h-4 w-px bg-ink/20"></span><span>{item.data.ticket}</span></>}
+          <span class="hidden md:inline h-4 w-px bg-ink/20"></span>
+          <time datetime={item.data.publishedAt.toISOString()}>Mise en avant le {dateStr}</time>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell max-w-4xl pb-16 md:pb-24">
+      <div class="prose-editorial">
+        <Content />
+      </div>
+
+      <p class="text-xs text-stone/80 leading-relaxed mt-14 pt-6 border-t border-ink/10">
+        Communication à caractère informatif et non contractuel. Ne constitue ni un conseil en investissement personnalisé, ni une sollicitation. Tout investissement comporte des risques, notamment de perte en capital.
+      </p>
+
+      <div class="mt-10">
+        <a href="/opportunites" class="link-underline text-chene font-medium">← Toutes les opportunités</a>
+      </div>
+    </div>
+  </article>
+
+  <CTA title="Cette opportunité vous parle ?" body="Voyons ensemble si elle a du sens dans votre situation. Un premier échange de 30 minutes, sans engagement." />
+</Base>

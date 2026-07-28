@@ -1,0 +1,103 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const title = "Votre étude patrimoniale est prête | Le Chêne Patrimonial";
+const description = "Merci pour votre confiance. Votre étude patrimoniale personnalisée est en cours de préparation.";
+---
+
+<Base title={title} description={description} noIndex={true}>
+  <div class="shell max-w-2xl py-24 md:py-32 min-h-[60vh]">
+    <div id="mr-state" class="text-center">
+      <!-- État : chargement -->
+      <div id="mr-loading">
+        <div class="mr-spinner" aria-hidden="true"></div>
+        <h1 class="font-serif text-display-sm text-ink mt-8 mb-3">Nous préparons votre étude…</h1>
+        <p class="text-ink/70">Votre paiement est confirmé. Votre document personnalisé se génère, un instant.</p>
+      </div>
+
+      <!-- État : succès -->
+      <div id="mr-success" hidden>
+        <div class="mr-check" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <p class="eyebrow mt-8 mb-5 flex items-center justify-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Merci pour votre confiance
+        </p>
+        <h1 class="font-serif text-display-sm text-ink mb-4">Votre étude patrimoniale est prête</h1>
+        <p class="text-ink/70 mb-8 max-w-prose-wide mx-auto">Le téléchargement démarre automatiquement. Une copie vient aussi de vous être envoyée par email. Pour l'adapter précisément à votre situation, échangeons de vive voix.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button id="mr-download" class="bg-ink text-cream font-semibold rounded-xl px-6 py-3.5 hover:bg-navy-deep transition">Télécharger à nouveau</button>
+          <a href="/contact" class="border border-ink/25 text-ink font-semibold rounded-xl px-6 py-3.5 hover:border-chene/50 transition">Prendre rendez-vous</a>
+        </div>
+      </div>
+
+      <!-- État : erreur -->
+      <div id="mr-error" hidden>
+        <h1 class="font-serif text-display-sm text-ink mb-4">Un instant nécessaire</h1>
+        <p id="mr-error-msg" class="text-ink/70 mb-8 max-w-prose-wide mx-auto">Nous n'avons pas pu finaliser la génération automatique de votre étude. Pas d'inquiétude : votre paiement est bien pris en compte et Camil vous adresse votre document au plus vite.</p>
+        <a href="/contact" class="inline-block bg-ink text-cream font-semibold rounded-xl px-6 py-3.5 hover:bg-navy-deep transition">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style is:global>
+  .mr-spinner{width:46px;height:46px;border-radius:50%;border:3px solid #EDE6D3;border-top-color:#D4A82D;margin:0 auto;animation:mrspin .9s linear infinite;}
+  @keyframes mrspin{to{transform:rotate(360deg);}}
+  .mr-check{width:64px;height:64px;border-radius:50%;background:#2D4A33;color:#F5F1E8;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+</style>
+
+<script is:inline>
+  (function () {
+    function show(id) {
+      ['mr-loading', 'mr-success', 'mr-error'].forEach(function (k) {
+        var el = document.getElementById(k); if (el) el.hidden = (k !== id);
+      });
+    }
+    function b64ToBlob(b64) {
+      var bin = atob(b64);
+      var arr = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new Blob([arr], { type: 'application/pdf' });
+    }
+
+    function run() {
+      var params = new URLSearchParams(window.location.search);
+      var sid = params.get('session_id');
+      if (!sid) { show('mr-error'); return; }
+
+      var analysis = {};
+      try { analysis = JSON.parse(sessionStorage.getItem('epAnalysis') || '{}'); } catch (e) { analysis = {}; }
+
+      fetch('/api/etude-generate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ session_id: sid, analysis: analysis }),
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (res.ok && res.j.ok && res.j.pdf) {
+            var blob = b64ToBlob(res.j.pdf);
+            var url = URL.createObjectURL(blob);
+            var name = res.j.filename || 'Etude-patrimoniale.pdf';
+            var dl = function () {
+              var a = document.createElement('a');
+              a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+            };
+            dl();
+            var btn = document.getElementById('mr-download');
+            if (btn) btn.addEventListener('click', dl);
+            try { sessionStorage.removeItem('epAnalysis'); } catch (e) {}
+            show('mr-success');
+          } else {
+            show('mr-error');
+          }
+        })
+        .catch(function () { show('mr-error'); });
+    }
+
+    run();
+    document.addEventListener('astro:page-load', run);
+  })();
+</script>

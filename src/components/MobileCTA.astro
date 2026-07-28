@@ -1,0 +1,53 @@
+---
+// Barre d'action permanente sur mobile : le geste de conversion le plus rentable.
+// Masquée sur desktop (le bouton "Prendre rendez-vous" est déjà dans l'en-tête).
+import { site } from '../data/site';
+---
+
+<div class="mobile-cta md:hidden" aria-hidden="false">
+  <a
+    href={site.calendly}
+    target="_blank"
+    rel="noopener"
+    class="mobile-cta-btn"
+  >
+    Prendre rendez-vous
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+</div>
+
+<style>
+  .mobile-cta {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 45;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, #F5F1E8 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(3, 16, 46, 0.08);
+  }
+  .mobile-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: #03102E;
+    color: #F5F1E8;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    box-shadow: 0 8px 24px -8px rgba(3, 16, 46, 0.4);
+    transition: background 0.3s var(--ease-apple, ease);
+  }
+  .mobile-cta-btn:hover { background: #2D4A33; }
+
+  /* Évite que la barre ne masque le bas du contenu (pied de page). */
+  @media (max-width: 767px) {
+    :global(body) { padding-bottom: 76px; }
+  }
+</style>

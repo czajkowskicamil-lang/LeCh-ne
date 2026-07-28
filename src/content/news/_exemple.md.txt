@@ -1,0 +1,26 @@
+Modèle d'actualité — Le Chêne Patrimonial
+==========================================
+
+Pour publier une actualité : crée un fichier « mon-actualite.md » dans ce
+dossier (src/content/news/) en copiant le bloc ci-dessous. Le nom du fichier
+devient l'adresse : /actualites/mon-actualite
+
+Ce fichier-ci (_exemple.md.txt) est ignoré par le site : il commence par « _ »
+et n'a pas l'extension .md, donc il ne génère aucune page.
+
+--- COPIER À PARTIR D'ICI ---
+
+---
+title: "Titre de l'actualité"
+excerpt: "Une ou deux phrases qui résument la nouvelle, affichées dans la liste."
+publishedAt: 2026-07-28
+category: "Cabinet"        # Cabinet | Réglementation | Marché | Partenariat
+pinned: false              # true = épinglée en haut de la liste
+# external: "https://..."  # (optionnel) lien externe : la carte y renvoie directement
+---
+
+Le corps de l'actualité en Markdown. Titres, listes, liens, tout est possible.
+
+## Un sous-titre
+
+Du texte, **en gras** si besoin, et [un lien](https://www.lechenepatrimonial.com).

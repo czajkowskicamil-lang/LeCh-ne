@@ -1,0 +1,997 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { site } from '../../data/site.ts';
+
+const title = "Étude patrimoniale personnalisée — bilan fiscal et diagnostic | Le Chêne Patrimonial";
+const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer, revenus, épargne, immobilier, crédits, objectifs. Obtenez une estimation de votre impôt, de votre patrimoine net et vos premières pistes d'optimisation.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Étude patrimoniale</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Bilan patrimonial
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Votre étude patrimoniale, comme en rendez-vous</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Les mêmes questions qu'un conseiller en gestion de patrimoine vous poserait lors d'un premier bilan. En quelques minutes, une estimation de votre imposition, de votre patrimoine net et de vos premières pistes d'optimisation. Confidentiel, sans engagement.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <form id="ep" class="tool-card" novalidate>
+      <!-- ======================= 1. COORDONNÉES ======================= -->
+      <p class="ep-step"><span>01</span> Vous</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Prénom</label>
+          <input class="tool-input" id="l-prenom" placeholder="Votre prénom" autocomplete="given-name" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Nom</label>
+          <input class="tool-input" id="l-nom" placeholder="Votre nom" autocomplete="family-name" />
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Adresse email</label>
+          <input class="tool-input" id="l-email" type="email" placeholder="vous@email.com" autocomplete="email" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Téléphone</label>
+          <input class="tool-input" id="l-tel" placeholder="06 12 34 56 78" autocomplete="tel" />
+        </div>
+      </div>
+
+      <!-- ======================= 2. FOYER ======================= -->
+      <p class="ep-step ep-step-mt"><span>02</span> Votre foyer</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Situation familiale</label>
+          <select class="tool-input" id="f-situation">
+            <option value="single">Célibataire</option>
+            <option value="couple">Marié·e ou pacsé·e</option>
+            <option value="divorce">Divorcé·e</option>
+            <option value="veuf">Veuf·ve</option>
+          </select>
+        </div>
+        <div class="tool-field ep-col" id="wrap-regime" hidden>
+          <label>Régime matrimonial</label>
+          <select class="tool-input" id="f-regime">
+            <option value="communaute">Communauté réduite aux acquêts (défaut)</option>
+            <option value="separation">Séparation de biens</option>
+            <option value="universelle">Communauté universelle</option>
+            <option value="participation">Participation aux acquêts</option>
+            <option value="pacs">Pacs (indivision ou séparation)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Enfants à charge <b id="v-enfants">0</b></label>
+          <input class="tool-range" type="range" id="f-enfants" min="0" max="6" step="1" value="0" />
+        </div>
+        <div class="tool-field ep-col ep-check-wrap" id="wrap-parentiso" hidden>
+          <label class="ep-check"><input type="checkbox" id="f-parentiso" /> <span>Je vis seul·e avec mes enfants (parent isolé)</span></label>
+        </div>
+      </div>
+
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Votre âge</label>
+          <input class="tool-input" inputmode="numeric" id="f-age" placeholder="ex. 42" />
+        </div>
+      </div>
+
+      <!-- ======================= 3. REVENUS ======================= -->
+      <p class="ep-step ep-step-mt"><span>03</span> Votre statut & vos revenus</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col" style="grid-column:1/-1">
+          <label>Votre statut professionnel</label>
+          <select class="tool-input" id="f-statut">
+            <option value="salarie">Salarié·e</option>
+            <option value="dirigeant">Dirigeant assimilé salarié (SAS, SASU)</option>
+            <option value="tns">Indépendant / TNS (gérant majoritaire, libéral, EI)</option>
+            <option value="sportif">Sportif · revenus irréguliers</option>
+            <option value="retraite">Retraité·e</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Revenus d'activité — vous (net imposable / an)</label>
+          <input class="tool-input" inputmode="numeric" id="f-rev1" placeholder="ex. 55 000" />
+        </div>
+        <div class="tool-field ep-col" id="wrap-rev2" hidden>
+          <label>Revenus d'activité — conjoint·e (net imposable / an)</label>
+          <input class="tool-input" inputmode="numeric" id="f-rev2" placeholder="ex. 42 000" />
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Revenus fonciers bruts (loyers / an)</label>
+          <input class="tool-input" inputmode="numeric" id="f-foncier" placeholder="ex. 12 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Régime foncier</label>
+          <div class="tool-seg" id="f-foncier-regime">
+            <button type="button" class="on" data-r="micro">Micro (−30 %)</button>
+            <button type="button" data-r="reel">Réel</button>
+          </div>
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col" id="wrap-charges" hidden>
+          <label>Charges & travaux déductibles (régime réel / an)</label>
+          <input class="tool-input" inputmode="numeric" id="f-charges" placeholder="ex. 8 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Autres revenus imposables (pensions, BNC/BIC…)</label>
+          <input class="tool-input" inputmode="numeric" id="f-autres" placeholder="ex. 0" />
+        </div>
+      </div>
+
+      <!-- ======================= 4. PATRIMOINE ======================= -->
+      <p class="ep-step ep-step-mt"><span>04</span> Votre patrimoine</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Épargne de précaution (livrets, comptes)</label>
+          <input class="tool-input" inputmode="numeric" id="f-epargne" placeholder="ex. 30 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Assurance-vie (encours)</label>
+          <input class="tool-input" inputmode="numeric" id="f-av" placeholder="ex. 60 000" />
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>PER (encours)</label>
+          <input class="tool-input" inputmode="numeric" id="f-per" placeholder="ex. 15 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Valeurs mobilières (PEA, comptes-titres…)</label>
+          <input class="tool-input" inputmode="numeric" id="f-valeurs" placeholder="ex. 25 000" />
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Résidence principale (valeur estimée)</label>
+          <input class="tool-input" inputmode="numeric" id="f-immo-rp" placeholder="ex. 350 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Immobilier locatif (valeur estimée)</label>
+          <input class="tool-input" inputmode="numeric" id="f-immo-loc" placeholder="ex. 200 000" />
+        </div>
+      </div>
+
+      <!-- ======================= 5. CRÉDITS ======================= -->
+      <p class="ep-step ep-step-mt"><span>05</span> Vos crédits en cours</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Capital restant dû (tous crédits)</label>
+          <input class="tool-input" inputmode="numeric" id="f-crd" placeholder="ex. 220 000" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Mensualités de crédit (total / mois)</label>
+          <input class="tool-input" inputmode="numeric" id="f-mensualite" placeholder="ex. 1 250" />
+        </div>
+      </div>
+
+      <!-- ======================= 6. OBJECTIFS ======================= -->
+      <p class="ep-step ep-step-mt"><span>06</span> Vos priorités</p>
+      <div class="ep-obj" id="f-objectifs">
+        <button type="button" data-o="Réduire mon impôt">Réduire mon impôt</button>
+        <button type="button" data-o="Préparer ma retraite">Préparer ma retraite</button>
+        <button type="button" data-o="Transmettre à mes proches">Transmettre à mes proches</button>
+        <button type="button" data-o="Me constituer un patrimoine">Me constituer un patrimoine</button>
+        <button type="button" data-o="Générer des revenus complémentaires">Revenus complémentaires</button>
+        <button type="button" data-o="Protéger ma famille">Protéger ma famille</button>
+      </div>
+
+      <!-- ======================= 7. PROJET & PROFIL ======================= -->
+      <p class="ep-step ep-step-mt"><span>07</span> Projet, protection & profil</p>
+      <div class="ep-row">
+        <div class="tool-field ep-col">
+          <label>Capacité d'épargne mensuelle</label>
+          <input class="tool-input" inputmode="numeric" id="f-epargne-mois" placeholder="ex. 800" />
+        </div>
+        <div class="tool-field ep-col">
+          <label>Votre profil d'investisseur</label>
+          <select class="tool-input" id="f-profil">
+            <option value="prudent">Prudent — je privilégie la sécurité</option>
+            <option value="equilibre" selected>Équilibré — rendement et risque maîtrisés</option>
+            <option value="dynamique">Dynamique — je vise la performance long terme</option>
+          </select>
+        </div>
+      </div>
+      <div class="ep-row">
+        <div class="tool-field ep-col" style="grid-column:1/-1">
+          <label>Avez-vous une prévoyance (décès, invalidité, arrêt de travail) ?</label>
+          <select class="tool-input" id="f-prevoyance">
+            <option value="oui">Oui, je suis couvert·e</option>
+            <option value="non">Non, ou seulement le minimum obligatoire</option>
+            <option value="nsp">Je ne sais pas</option>
+          </select>
+        </div>
+      </div>
+      <div class="tool-field">
+        <label style="margin-bottom:12px">Vos projets à financer</label>
+        <div class="ep-obj" id="f-projets">
+          <button type="button" data-o="Achat résidence principale">Achat résidence principale</button>
+          <button type="button" data-o="Investissement locatif">Investissement locatif</button>
+          <button type="button" data-o="Études des enfants">Études des enfants</button>
+          <button type="button" data-o="Création ou reprise d'entreprise">Création / reprise d'entreprise</button>
+          <button type="button" data-o="Retraite anticipée">Retraite anticipée</button>
+          <button type="button" data-o="Résidence secondaire">Résidence secondaire</button>
+        </div>
+      </div>
+
+      <p class="tool-note">Toutes les valeurs restent dans votre navigateur tant que vous ne demandez pas votre étude complète. Les résultats sont des estimations, calculées sur le barème de l'impôt sur les revenus 2025 (imposition 2026).</p>
+    </form>
+
+    <!-- ======================= RÉSULTAT — AVIS ======================= -->
+    <section class="ep-avis" id="ep-avis" aria-live="polite">
+      <div class="ep-avis-head">
+        <div>
+          <p class="ep-avis-kicker">Estimation patrimoniale</p>
+          <p class="ep-avis-title">Votre situation en un coup d'œil</p>
+        </div>
+        <p class="ep-avis-brand">Le Chêne Patrimonial</p>
+      </div>
+
+      <div class="ep-avis-grid">
+        <div class="ep-avis-cell ep-avis-hero">
+          <span class="k">Impôt sur le revenu estimé</span>
+          <span class="v" id="r-impot">—</span>
+          <span class="s" id="r-impot-sub">Renseignez vos revenus</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Tranche marginale (TMI)</span>
+          <span class="v" id="r-tmi">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Taux moyen d'imposition</span>
+          <span class="v" id="r-taux">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Revenu net imposable</span>
+          <span class="v" id="r-revimpo">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Nombre de parts</span>
+          <span class="v" id="r-parts">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Patrimoine net estimé</span>
+          <span class="v" id="r-patnet">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Épargne financière</span>
+          <span class="v" id="r-epfin">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Taux d'endettement</span>
+          <span class="v" id="r-endet">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Poids de l'immobilier</span>
+          <span class="v" id="r-poidsimmo">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Part de liquidités</span>
+          <span class="v" id="r-liquid">—</span>
+        </div>
+        <div class="ep-avis-cell">
+          <span class="k">Base taxable IFI (est.)</span>
+          <span class="v" id="r-ifi">—</span>
+        </div>
+      </div>
+
+      <div class="ep-lecture" id="ep-lecture" hidden>
+        <p class="ep-lecture-lbl">Lecture de votre situation</p>
+        <ul id="ep-lecture-list"></ul>
+      </div>
+
+      <div class="ep-reparti" id="ep-reparti" hidden>
+        <p class="ep-reparti-lbl">Répartition de votre patrimoine financier</p>
+        <div class="ep-bar" id="ep-bar"></div>
+        <div class="ep-bar-legend" id="ep-bar-legend"></div>
+      </div>
+
+      <p class="ep-optim-lbl" id="ep-optim-lbl" hidden>Vos axes d'optimisation prioritaires</p>
+      <div class="ep-optim" id="ep-optim"></div>
+    </section>
+
+    <!-- ======================= CTA — ÉTUDE COMPLÈTE ======================= -->
+    <section class="ep-cta">
+      <div class="ep-cta-inner">
+        <p class="ep-avis-kicker">Aller plus loin</p>
+        <h2 class="font-serif text-display-sm text-cream mb-4">Recevez votre étude patrimoniale complète</h2>
+        <p class="ep-cta-lead">
+          Un document PDF personnalisé et détaillé, à votre nom : diagnostic fiscal, lecture de votre patrimoine, pistes d'optimisation chiffrées et hiérarchisées. Un avis éclairé pour préparer votre réflexion.
+        </p>
+
+        <form id="ep-lead" class="ep-lead">
+          <p class="ep-lead-recap" id="l-recap">Votre étude sera établie au nom renseigné en haut de page.</p>
+
+          <div class="ep-upload">
+            <label for="l-file" class="ep-upload-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              Joindre votre avis d'impôt
+            </label>
+            <input type="file" id="l-file" accept=".pdf,.jpg,.jpeg,.png" />
+            <span class="ep-upload-hint" id="l-file-name">Facultatif — PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.</span>
+          </div>
+
+          <!-- honeypot anti-spam -->
+          <input type="text" id="l-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+
+          <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>J'accepte que Le Chêne Patrimonial traite les informations saisies pour préparer mon étude et me recontacter. <a href="/confidentialite">Politique de confidentialité</a>.</span></label>
+          <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désabonnement à tout moment).</span></label>
+
+          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète — 10 €</button>
+          <p class="ep-lead-msg" id="l-msg" hidden></p>
+          <p class="ep-lead-fine">Paiement sécurisé à venir. En attendant, votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
+        </form>
+
+        <div class="ep-or"><span>ou</span></div>
+        <a href={site.calendly} target="_blank" rel="noopener" class="ep-rdv">Réserver un échange gratuit de 30 min</a>
+      </div>
+    </section>
+
+    <!-- ======================= DISCLAIMER ======================= -->
+    <div class="ep-legal">
+      <p><strong>Avis important.</strong> Cet outil fournit une <strong>estimation indicative et automatisée</strong>, à but pédagogique. Il ne constitue ni un avis d'imposition officiel, ni un conseil personnalisé en investissement, en fiscalité ou en gestion de patrimoine au sens réglementaire. Les calculs reposent sur le barème de l'impôt sur les revenus 2025 et n'intègrent pas l'ensemble des dispositifs (décote, réductions et crédits d'impôt, situations particulières). Seule une <strong>étude personnalisée, réalisée avec un conseiller</strong>, tient compte de votre situation complète et de vos projets. Le Chêne Patrimonial intervient dans le cadre de ses habilitations (courtage en assurance et intermédiation immobilière) et ne délivre pas de conseil sur les instruments financiers.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  .ep-step{display:flex;align-items:center;gap:12px;font:600 .78rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#E6C259;margin:0 0 18px;}
+  .ep-step span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid rgba(212,168,45,.5);border-radius:50%;font-size:.72rem;color:#E6C259;}
+  .ep-step-mt{margin-top:34px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08);}
+  .ep-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:820px){.ep-row{grid-template-columns:1fr;gap:0;}}
+  .ep-col{margin-bottom:20px;}
+  select.tool-input{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23D4A82D' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer;}
+  .ep-check-wrap{display:flex;align-items:flex-end;}
+  .ep-check-wrap[hidden]{display:none;}
+  .ep-check{display:flex;align-items:center;gap:10px;color:#cbd3e0;font-size:.9rem;cursor:pointer;padding-bottom:12px;}
+  .ep-check input{width:17px;height:17px;accent-color:#D4A82D;}
+  .ep-obj{display:flex;flex-wrap:wrap;gap:10px;}
+  .ep-obj button{background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem system-ui,sans-serif;padding:10px 16px;border-radius:999px;cursor:pointer;transition:.2s;}
+  .ep-obj button.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+
+  /* ---- Avis / résultat ---- */
+  .ep-avis{margin-top:22px;background:#FAF7EF;border:1px solid #EDE6D3;border-radius:20px;padding:clamp(22px,4vw,38px);box-shadow:0 24px 60px -40px rgba(3,16,46,.4);}
+  .ep-avis-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:2px solid #03102E;padding-bottom:16px;margin-bottom:24px;}
+  .ep-avis-kicker{font:700 .72rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#A7801F;margin:0 0 4px;}
+  .ep-avis-title{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.5rem;color:#03102E;font-weight:600;margin:0;}
+  .ep-avis-brand{font-family:'Fraunces Variable',Fraunces,serif;font-size:1rem;color:#2D4A33;font-weight:600;white-space:nowrap;}
+  .ep-avis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#EDE6D3;border:1px solid #EDE6D3;border-radius:14px;overflow:hidden;}
+  @media(max-width:820px){.ep-avis-grid{grid-template-columns:repeat(2,1fr);}}
+  .ep-avis-cell{background:#fff;padding:18px;display:flex;flex-direction:column;gap:6px;}
+  .ep-avis-cell .k{font-size:.75rem;color:#7A7566;line-height:1.3;}
+  .ep-avis-cell .v{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.5rem;font-weight:600;color:#03102E;}
+  .ep-avis-cell .s{font-size:.72rem;color:#A7801F;}
+  .ep-avis-hero{grid-column:span 2;background:#03102E;}
+  @media(max-width:820px){.ep-avis-hero{grid-column:span 2;}}
+  .ep-avis-hero .k{color:#9fb0c8;}
+  .ep-avis-hero .v{color:#E6C259;font-size:2.2rem;}
+  .ep-avis-hero .s{color:#9fb0c8;}
+
+  /* ---- Lecture de la situation ---- */
+  .ep-lecture{margin-top:24px;background:#F5F1E8;border:1px solid #EDE6D3;border-radius:14px;padding:22px 24px;}
+  .ep-lecture-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#A7801F;font-weight:700;margin:0 0 12px;}
+  .ep-lecture ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .ep-lecture li{position:relative;padding-left:22px;font-size:.94rem;color:#3d3a30;line-height:1.55;}
+  .ep-lecture li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:2px;background:#2D4A33;transform:rotate(45deg);}
+  .ep-lecture li b{color:#03102E;}
+
+  .ep-optim-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#A7801F;font-weight:700;margin:28px 0 4px;}
+
+  /* ---- Répartition ---- */
+  .ep-reparti{margin-top:24px;}
+  .ep-reparti-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#7A7566;font-weight:700;margin:0 0 12px;}
+  .ep-bar{display:flex;height:22px;border-radius:8px;overflow:hidden;background:#EDE6D3;}
+  .ep-bar span{display:block;height:100%;}
+  .ep-bar-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;}
+  .ep-bar-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:middle;}
+  .ep-bar-legend span{font-size:.82rem;color:#504B3F;}
+
+  /* ---- Optimisation ---- */
+  .ep-optim{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px;}
+  @media(max-width:820px){.ep-optim{grid-template-columns:1fr;}}
+  .ep-optim:empty{display:none;}
+  .ep-opt{border:1px solid #EDE6D3;border-left:3px solid #D4A82D;border-radius:12px;padding:18px 20px;background:#fff;}
+  .ep-opt h4{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.12rem;color:#03102E;margin:0 0 6px;font-weight:600;}
+  .ep-opt p{font-size:.9rem;color:#504B3F;line-height:1.5;margin:0;}
+  .ep-opt .num{color:#2D4A33;font-weight:700;}
+  .ep-opt-cta{margin-top:14px;background:#2D4A33;color:#F5F1E8;border:none;border-radius:10px;padding:11px 18px;font:600 .88rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
+  .ep-opt-cta:hover{background:#3E6247;}
+  .ep-opt-emprunteur{border-left-color:#2D4A33;}
+
+  /* ---- CTA étude complète ---- */
+  .ep-cta{margin-top:28px;background:linear-gradient(160deg,#03102E,#061238);border:1px solid rgba(212,168,45,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
+  .ep-cta-inner{max-width:620px;margin:auto;}
+  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 26px;}
+  .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,45,.2);border-radius:12px;}
+  .ep-lead-recap b{color:#E6C259;}
+  .ep-upload{margin:0 0 14px;}
+  .ep-upload input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;}
+  .ep-upload-btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:1px dashed rgba(212,168,45,.5);color:#E6C259;border-radius:12px;padding:12px 18px;font:600 .9rem system-ui,sans-serif;transition:.2s;}
+  .ep-upload-btn:hover{background:rgba(212,168,45,.08);border-color:#D4A82D;}
+  .ep-upload-btn.has-file{border-style:solid;border-color:#3E6247;color:#d6e6d9;background:rgba(45,74,51,.25);}
+  .ep-upload-hint{display:block;color:#7f8da3;font-size:.76rem;margin-top:8px;line-height:1.5;}
+  .ep-upload-hint.err{color:#f0b4b4;}
+  .ep-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  @media(max-width:640px){.ep-lead-row{grid-template-columns:1fr;}}
+  .ep-consent{display:flex;gap:11px;align-items:flex-start;color:#aebacb;font-size:.82rem;line-height:1.45;margin:6px 0;cursor:pointer;}
+  .ep-consent input{margin-top:2px;width:16px;height:16px;accent-color:#D4A82D;flex-shrink:0;}
+  .ep-consent a{color:#E6C259;text-decoration:underline;}
+  .ep-consent-soft{color:#8b98ab;}
+  .ep-submit{width:100%;margin-top:16px;background:#D4A82D;color:#0c1f3c;border:none;border-radius:14px;padding:16px;font:700 1rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
+  .ep-submit:hover{background:#E6C259;}
+  .ep-submit:disabled{opacity:.55;cursor:default;}
+  .ep-lead-msg{margin:14px 0 0;padding:13px 16px;border-radius:12px;font-size:.9rem;line-height:1.4;}
+  .ep-lead-msg.ok{background:rgba(45,74,51,.35);border:1px solid #3E6247;color:#d6e6d9;}
+  .ep-lead-msg.err{background:rgba(120,40,40,.3);border:1px solid #8a4a4a;color:#f0d4d4;}
+  .ep-lead-fine{color:#7f8da3;font-size:.76rem;margin:14px 0 0;line-height:1.5;}
+  .ep-or{display:flex;align-items:center;gap:16px;color:#6f7f98;font-size:.82rem;margin:24px 0;}
+  .ep-or::before,.ep-or::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.12);}
+  .ep-rdv{display:block;text-align:center;border:1px solid rgba(212,168,45,.5);color:#E6C259;border-radius:14px;padding:15px;font:600 .95rem system-ui,sans-serif;text-decoration:none;transition:.2s;}
+  .ep-rdv:hover{background:rgba(212,168,45,.1);}
+
+  /* ---- Legal ---- */
+  .ep-legal{margin-top:24px;padding:20px 22px;background:#F5F1E8;border:1px solid #EDE6D3;border-radius:14px;}
+  .ep-legal p{font-size:.8rem;color:#6b6656;line-height:1.6;margin:0;}
+  .ep-legal strong{color:#504B3F;}
+</style>
+
+<script is:inline>
+  (function () {
+    'use strict';
+    // ---------- Constantes fiscales — revenus 2025, imposition 2026 ----------
+    // Barème progressif officiel (loi de finances 2026, indexation +0,9 %).
+    var BAREME = [
+      { max: 11600, taux: 0 },
+      { max: 29579, taux: 0.11 },
+      { max: 84577, taux: 0.30 },
+      { max: 181917, taux: 0.41 },
+      { max: Infinity, taux: 0.45 },
+    ];
+    var PLAFOND_DEMIPART = 1807;   // plafonnement général du quotient familial / demi-part
+    var ABATT_TAUX = 0.10;         // abattement forfaitaire de 10 % sur salaires
+    var ABATT_MIN = 500;
+    var ABATT_MAX = 14300;         // plafond de l'abattement 10 % par déclarant (estimé 2025)
+    var PER_PLAFOND_MAX = 35194;   // plafond de déduction PER (estimé)
+    var DEFICIT_FONCIER_MAX = 10700;
+
+    var eur = function (n) { return Math.round(n).toLocaleString('fr-FR') + ' €'; };
+    var num = function (id) {
+      var el = document.getElementById(id);
+      if (!el) return 0;
+      var v = parseFloat(String(el.value).replace(/[^0-9,.-]/g, '').replace(',', '.'));
+      return isFinite(v) ? v : 0;
+    };
+
+    // Impôt pour une part de quotient familial
+    function impotUnePart(base) {
+      var tax = 0, prev = 0;
+      for (var i = 0; i < BAREME.length; i++) {
+        var t = BAREME[i];
+        if (base > t.max) { tax += (t.max - prev) * t.taux; prev = t.max; }
+        else { tax += (base - prev) * t.taux; break; }
+      }
+      return Math.max(0, tax);
+    }
+    function tmiPour(base) {
+      for (var i = 0; i < BAREME.length; i++) { if (base <= BAREME[i].max) return Math.round(BAREME[i].taux * 100); }
+      return 45;
+    }
+
+    var objectifs = [];
+    var projets = [];
+
+    function situationSync() {
+      var s = document.getElementById('f-situation').value;
+      var couple = s === 'couple';
+      var single = s === 'single' || s === 'divorce' || s === 'veuf';
+      document.getElementById('wrap-regime').hidden = !couple;
+      document.getElementById('wrap-rev2').hidden = !couple;
+      var enfants = num('f-enfants');
+      document.getElementById('wrap-parentiso').hidden = !(single && enfants > 0);
+    }
+
+    function calc() {
+      situationSync();
+      var s = document.getElementById('f-situation').value;
+      var couple = s === 'couple';
+      var base = couple ? 2 : 1;
+
+      // ----- Parts -----
+      var enfants = Math.round(num('f-enfants'));
+      var partsEnfants = enfants <= 2 ? enfants * 0.5 : 1 + (enfants - 2);
+      var parentIso = document.getElementById('f-parentiso').checked && !couple && enfants > 0;
+      var parts = base + partsEnfants + (parentIso ? 0.5 : 0);
+
+      // ----- Revenus -----
+      var rev1 = num('f-rev1'), rev2 = couple ? num('f-rev2') : 0;
+      var abatt = function (r) { return r > 0 ? Math.min(Math.min(Math.max(r * ABATT_TAUX, ABATT_MIN), ABATT_MAX), r) : 0; };
+      var salNet = (rev1 - abatt(rev1)) + (rev2 - abatt(rev2));
+
+      var foncierBrut = num('f-foncier');
+      var regimeFoncier = document.querySelector('#f-foncier-regime button.on').getAttribute('data-r');
+      var foncierNet;
+      if (regimeFoncier === 'micro') {
+        foncierNet = foncierBrut * 0.70;
+      } else {
+        foncierNet = foncierBrut - num('f-charges');
+        if (foncierNet < 0) foncierNet = Math.max(foncierNet, -DEFICIT_FONCIER_MAX);
+      }
+      var autres = num('f-autres');
+      var revenuImposable = Math.max(0, salNet + foncierNet + autres);
+
+      // ----- Impôt avec quotient familial + plafonnement -----
+      var impotFull = impotUnePart(revenuImposable / parts) * parts;
+      var impotBase = impotUnePart(revenuImposable / base) * base;
+      var demiParts = (parts - base) / 0.5;
+      var impot;
+      if (demiParts > 0) {
+        var reduction = impotBase - impotFull;
+        var cap = PLAFOND_DEMIPART * demiParts;
+        impot = reduction > cap ? (impotBase - cap) : impotFull;
+      } else {
+        impot = impotFull;
+      }
+      impot = Math.max(0, impot);
+      var tmi = tmiPour(revenuImposable / parts);
+      var tauxMoyen = revenuImposable > 0 ? (impot / revenuImposable * 100) : 0;
+
+      // ----- Patrimoine -----
+      var epargne = num('f-epargne'), av = num('f-av'), per = num('f-per'), valeurs = num('f-valeurs');
+      var immoRP = num('f-immo-rp'), immoLoc = num('f-immo-loc');
+      var crd = num('f-crd');
+      var epargneFinanciere = epargne + av + per + valeurs;
+      var actifsBruts = epargneFinanciere + immoRP + immoLoc;
+      var patrimoineNet = actifsBruts - crd;
+
+      // ----- Endettement -----
+      var mensualite = num('f-mensualite');
+      var revenusMensuels = (rev1 + rev2 + autres + Math.max(0, foncierNet)) / 12;
+      var tauxEndet = revenusMensuels > 0 ? (mensualite / revenusMensuels * 100) : 0;
+
+      // ----- Indicateurs patrimoniaux -----
+      var immoTotal = immoRP + immoLoc;
+      var poidsImmo = actifsBruts > 0 ? (immoTotal / actifsBruts * 100) : 0;
+      var partLiquid = epargneFinanciere > 0 ? (epargne / epargneFinanciere * 100) : 0;
+      var baseIFI = Math.max(0, immoRP * 0.70 + immoLoc - crd); // approx : abattement 30% RP, nette de dette
+      var age = Math.round(num('f-age'));
+      var horizonRetraite = age > 0 && age < 67 ? (67 - age) : 0;
+      var epargneMois = num('f-epargne-mois');
+      var profil = document.getElementById('f-profil').value;
+      var prevoyance = document.getElementById('f-prevoyance').value;
+
+      // ----- Rendu avis -----
+      var hasRevenu = revenuImposable > 0;
+      document.getElementById('r-impot').textContent = hasRevenu ? eur(impot) : '—';
+      document.getElementById('r-impot-sub').textContent = hasRevenu ? ('soit ' + (tauxMoyen).toFixed(1).replace('.', ',') + ' % de vos revenus') : 'Renseignez vos revenus';
+      document.getElementById('r-tmi').textContent = hasRevenu ? (tmi + ' %') : '—';
+      document.getElementById('r-taux').textContent = hasRevenu ? (tauxMoyen.toFixed(1).replace('.', ',') + ' %') : '—';
+      document.getElementById('r-revimpo').textContent = hasRevenu ? eur(revenuImposable) : '—';
+      document.getElementById('r-parts').textContent = parts.toLocaleString('fr-FR');
+      document.getElementById('r-patnet').textContent = actifsBruts > 0 || crd > 0 ? eur(patrimoineNet) : '—';
+      document.getElementById('r-epfin').textContent = epargneFinanciere > 0 ? eur(epargneFinanciere) : '—';
+      document.getElementById('r-endet').textContent = revenusMensuels > 0 && mensualite > 0 ? (tauxEndet.toFixed(1).replace('.', ',') + ' %') : '—';
+      document.getElementById('r-poidsimmo').textContent = immoTotal > 0 ? Math.round(poidsImmo) + ' %' : '—';
+      document.getElementById('r-liquid').textContent = epargneFinanciere > 0 ? Math.round(partLiquid) + ' %' : '—';
+      document.getElementById('r-ifi').textContent = baseIFI > 0 ? eur(baseIFI) : '—';
+
+      // ----- Coordonnées : récap nominatif -----
+      var recap = document.getElementById('l-recap');
+      var rp = document.getElementById('l-prenom').value.trim();
+      var rn = document.getElementById('l-nom').value.trim();
+      if (recap) {
+        var base = (rp || rn)
+          ? 'Votre étude sera établie au nom de <b>' + (rp + ' ' + rn).trim().replace(/</g, '') + '</b>.'
+          : 'Votre étude sera établie au nom renseigné en haut de page.';
+        if (window.__epInteret) base += ' Objet : <b>' + window.__epInteret + '</b>.';
+        recap.innerHTML = base;
+      }
+
+      // ----- Répartition financière -----
+      renderReparti(epargne, av + per, valeurs, immoLoc);
+
+      // ----- Lecture de la situation -----
+      var lecture = [];
+      if (hasRevenu && tmi >= 41) lecture.push('Votre tranche marginale à <b>' + tmi + ' %</b> place la réduction d\'impôt parmi vos priorités : chaque euro déductible vous en fait économiser ' + tmi + ' centimes.');
+      else if (hasRevenu && tmi === 30) lecture.push('À <b>30 %</b> de tranche marginale, les dispositifs de déduction (PER en tête) deviennent nettement rentables.');
+      if (poidsImmo >= 65 && actifsBruts > 50000) lecture.push('Votre patrimoine est concentré à <b>' + Math.round(poidsImmo) + ' %</b> sur l\'immobilier. Diversifier vers des actifs financiers apporterait liquidité et équilibre.');
+      if (partLiquid >= 40 && epargne > 30000) lecture.push('Vous conservez <b>' + Math.round(partLiquid) + ' %</b> de votre épargne financière en liquidités peu rémunérées : au-delà d\'une réserve de précaution, une partie pourrait mieux travailler.');
+      if (baseIFI > 1300000) lecture.push('Votre patrimoine immobilier net dépasse le seuil de <b>1,3 M€</b> : vous êtes potentiellement redevable de l\'<b>IFI</b>, à anticiper.');
+      if (tauxEndet > 35 && mensualite > 0) lecture.push('Votre taux d\'endettement estimé (<b>' + Math.round(tauxEndet) + ' %</b>) est élevé : la structure de vos crédits mérite un réexamen avant tout nouveau projet.');
+      if (horizonRetraite > 0 && horizonRetraite <= 20) lecture.push('À environ <b>' + horizonRetraite + ' ans</b> de la retraite, l\'arbitrage entre capitalisation et sécurisation progressive devient central.');
+      if (prevoyance === 'non' || prevoyance === 'nsp') lecture.push('Point de vigilance : <b>votre protection semble incomplète</b>. En cas d\'arrêt de travail, d\'invalidité ou de décès, vos revenus et vos proches ne sont pas couverts. C\'est souvent l\'angle mort d\'un patrimoine par ailleurs bien construit.');
+      if (epargneMois > 0) lecture.push('Vous dégagez environ <b>' + eur(epargneMois) + '/mois</b>, soit <b>' + eur(epargneMois * 12) + '/an</b> à orienter vers les bons supports selon votre horizon et votre profil ' + profil + '.');
+      if (!lecture.length && hasRevenu) lecture.push('Votre situation est équilibrée. Quelques ajustements ciblés peuvent améliorer votre fiscalité et préparer vos projets.');
+      renderLecture(lecture);
+      window.__epLecture = lecture;
+
+      // ----- Optimisations -----
+      var perVersement = 0, perEconomie = 0;
+      var optim = [];
+
+      // ----- Piste calibrée sur le statut professionnel -----
+      var statut = document.getElementById('f-statut').value;
+      var statutCards = {
+        sportif: {
+          t: 'Lisser vos revenus dans le temps',
+          h: 'Statut sportif : vos revenus sont concentrés sur quelques années. L\'<span class="num">étalement</span> (art. 84 A du CGI) répartit l\'imposition d\'un contrat ou d\'une prime sur plusieurs années, et le <span class="num">système du quotient</span> évite qu\'un revenu exceptionnel ne fasse basculer toute votre imposition dans la tranche à ' + (tmi || 30) + ' %. Couplé à un PER alimenté sur vos grosses saisons, c\'est le socle de votre après-carrière.'
+        },
+        tns: {
+          t: 'Loi Madelin & PER à plafond majoré',
+          h: 'En tant qu\'indépendant, votre plafond de déduction <span class="num">PER est majoré</span> (10 % du bénéfice, puis 15 % sur la fraction au-delà du PASS). Les contrats <span class="num">Madelin prévoyance et santé</span> restent déductibles de votre bénéfice. L\'arbitrage rémunération / dividendes se cale avec votre expert-comptable.'
+        },
+        dirigeant: {
+          t: 'Dirigeant : PER & épargne salariale',
+          h: 'Même en solo, vous pouvez mettre en place un <span class="num">PER</span> et un dispositif d\'<span class="num">épargne salariale</span> (PEE, PER collectif) avec un abondement déductible pour la société. L\'équilibre rémunération / dividendes s\'optimise avec votre expert-comptable.'
+        },
+        salarie: {
+          t: 'Salarié : activez votre épargne salariale',
+          h: 'Avant même le PER individuel, vérifiez votre <span class="num">épargne salariale</span> : PEE, PER collectif, intéressement, participation et surtout <span class="num">abondement de l\'employeur</span>, souvent le levier le plus rentable et le moins connu.'
+        },
+      };
+      if (statutCards[statut]) optim.push(statutCards[statut]);
+
+      if (hasRevenu && tmi >= 30) {
+        var revenusActivite = rev1 + rev2;
+        var plafondPER = Math.min(Math.max(revenusActivite * 0.10, 4637), PER_PLAFOND_MAX);
+        // Montant pour redescendre sous la tranche actuelle
+        var floors = { 30: 29580, 41: 84578, 45: 181918 };
+        var floor = floors[tmi] || 29580;
+        var pourTranche = Math.max(0, revenuImposable - floor * parts);
+        perVersement = Math.min(plafondPER, pourTranche > 1000 ? pourTranche : Math.min(plafondPER, 6000));
+        perVersement = Math.round(perVersement / 500) * 500;
+        perEconomie = perVersement * tmi / 100;
+        optim.push({
+          t: 'Plan Épargne Retraite (PER)',
+          h: 'Avec un versement d\'environ <span class="num">' + eur(perVersement) + '</span>, vous pourriez réduire votre impôt de l\'ordre de <span class="num">' + eur(perEconomie) + '</span> cette année, tout en préparant votre retraite. L\'effet est d\'autant plus fort que votre tranche est à ' + tmi + ' %.'
+        });
+      }
+
+      if (foncierBrut > 0 && regimeFoncier === 'micro' && foncierBrut > 4000) {
+        optim.push({
+          t: 'Régime foncier réel',
+          h: 'Vous êtes au micro-foncier (abattement forfaitaire de 30 %). Si vos charges et travaux réels dépassent ce forfait, le <span class="num">régime réel</span> peut créer un déficit foncier imputable jusqu\'à <span class="num">' + eur(DEFICIT_FONCIER_MAX) + '</span> sur votre revenu global.'
+        });
+      }
+
+      if ((av + per) < epargneFinanciere * 0.5 && epargne > 30000) {
+        optim.push({
+          t: 'Assurance-vie',
+          h: 'Une part importante de votre épargne dort sur des livrets. Une <span class="num">assurance-vie</span> bien construite offre un cadre souple, une fiscalité avantageuse après 8 ans et un levier de transmission puissant.'
+        });
+      }
+
+      var veutTransmettre = objectifs.indexOf('Transmettre à mes proches') !== -1;
+      if (veutTransmettre && couple) {
+        var reg = document.getElementById('f-regime').value;
+        var msg = reg === 'separation'
+          ? 'En séparation de biens, la protection du conjoint survivant repose surtout sur des dispositions à prévoir (clause bénéficiaire, donation entre époux, testament). À cadrer précisément.'
+          : 'Le régime matrimonial et la clause bénéficiaire de vos contrats déterminent ce qui revient à votre conjoint et à vos enfants. Un point d\'attention prioritaire si la transmission compte pour vous.';
+        optim.push({ t: 'Transmission & régime matrimonial', h: msg });
+      }
+
+      if (immoLoc > 0) {
+        optim.push({
+          t: 'Louer en meublé (LMNP)',
+          h: 'Sur votre immobilier locatif, le régime <span class="num">LMNP au réel</span> permet d\'amortir le bien et le mobilier : une large part de vos loyers peut être perçue en <span class="num">quasi-franchise d\'impôt</span> pendant des années.'
+        });
+      }
+
+      if (baseIFI > 1300000) {
+        optim.push({
+          t: 'IFI : alléger la base taxable',
+          h: 'Votre patrimoine immobilier net dépasse <span class="num">1,3 M€</span>. Le <span class="num">démembrement</span> (nue-propriété, donation temporaire d\'usufruit) et le rééquilibrage vers des actifs financiers réduisent l\'assiette de l\'IFI, en cohérence avec vos objectifs.'
+        });
+      }
+
+      var patrimoineImportant = patrimoineNet > 400000;
+      if (veutTransmettre || age >= 55 || patrimoineImportant) {
+        optim.push({
+          t: 'Anticiper la transmission',
+          h: 'Chaque parent peut donner <span class="num">100 000 €</span> par enfant tous les 15 ans en franchise de droits. Avant 70 ans, l\'assurance-vie transmet <span class="num">152 500 €</span> par bénéficiaire hors succession. Donation, démembrement et clause bénéficiaire se combinent selon votre régime matrimonial.'
+        });
+      }
+
+      if ((partLiquid >= 40 && epargne > 40000) || (poidsImmo >= 70 && actifsBruts > 200000)) {
+        optim.push({
+          t: 'Diversifier & faire travailler l\'épargne',
+          h: 'Une allocation pilotée (assurance-vie, SCPI logées dans un contrat, unités de compte) équilibre votre patrimoine entre rendement, liquidité et horizon, sans surexposition à une seule classe d\'actifs.'
+        });
+      }
+
+      if (crd > 0 || mensualite > 0) {
+        optim.push({
+          t: 'Assurance emprunteur : la faire baisser (loi Lemoine)',
+          h: 'Vous remboursez un crédit : l\'assurance emprunteur peut représenter <span class="num">jusqu\'à un tiers</span> du coût total. La <span class="num">loi Lemoine</span> vous autorise à en changer <span class="num">à tout moment</span>, sans frais ni attendre une date. Un devis gratuit révèle souvent <span class="num">plusieurs milliers d\'euros</span> d\'économies sur la durée du prêt.',
+          cta: { label: 'Demander un devis gratuit', action: 'devis-emprunteur' }
+        });
+      }
+
+      if (prevoyance === 'non' || prevoyance === 'nsp') {
+        optim.push({
+          t: 'Protéger vos revenus & vos proches',
+          h: 'Avant d\'optimiser le rendement, on sécurise l\'essentiel. Un contrat de <span class="num">prévoyance</span> (décès, invalidité, incapacité) garantit le maintien de vos revenus et protège votre famille. Chez un indépendant, il est souvent déductible via la <span class="num">loi Madelin</span>.'
+        });
+      }
+
+      if (tauxEndet > 35 && mensualite > 0) {
+        optim.push({
+          t: 'Endettement à surveiller',
+          h: 'Votre taux d\'endettement estimé dépasse <span class="num">35 %</span>. Avant tout nouveau projet, un point sur la structure de vos crédits (rachat, réallocation) mérite d\'être fait.'
+        });
+      }
+
+      renderOptim(optim);
+      window.__epOptim = optim;
+
+      // ----- Payload pour l'étude complète -----
+      var situationLabel = document.getElementById('f-situation').selectedOptions[0].text;
+      var regimeLabel = couple ? document.getElementById('f-regime').selectedOptions[0].text : '—';
+      window.__epDiag = {
+        situation: situationLabel,
+        statut: document.getElementById('f-statut').selectedOptions[0].text,
+        age: age || null,
+        regime: regimeLabel,
+        parts: parts,
+        revenuImposable: Math.round(revenuImposable),
+        foncierNet: Math.round(foncierNet),
+        impot: Math.round(impot),
+        tmi: tmi,
+        tauxMoyen: Math.round(tauxMoyen * 10) / 10,
+        patrimoineNet: Math.round(patrimoineNet),
+        epargneFinanciere: Math.round(epargneFinanciere),
+        poidsImmo: Math.round(poidsImmo),
+        baseIFI: Math.round(baseIFI),
+        creditCRD: Math.round(crd),
+        tauxEndettement: Math.round(tauxEndet * 10) / 10,
+        objectifs: objectifs.join(', '),
+        projets: projets.join(', '),
+        interet: window.__epInteret || null,
+        capaciteEpargneMois: Math.round(epargneMois),
+        profil: document.getElementById('f-profil').selectedOptions[0].text,
+        prevoyance: document.getElementById('f-prevoyance').selectedOptions[0].text,
+        perVersement: Math.round(perVersement),
+        perEconomie: Math.round(perEconomie),
+      };
+    }
+
+    function renderReparti(secur, retraite, valeurs, immo) {
+      var wrap = document.getElementById('ep-reparti');
+      var total = secur + retraite + valeurs + immo;
+      if (total <= 0) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      var segs = [
+        { l: 'Épargne sécurisée', v: secur, c: '#7A9CC6' },
+        { l: 'Assurance-vie / PER', v: retraite, c: '#2D4A33' },
+        { l: 'Valeurs mobilières', v: valeurs, c: '#D4A82D' },
+        { l: 'Immobilier locatif', v: immo, c: '#A7801F' },
+      ];
+      var bar = '', leg = '';
+      segs.forEach(function (g) {
+        if (g.v <= 0) return;
+        var pct = (g.v / total * 100);
+        bar += '<span style="width:' + pct + '%;background:' + g.c + '"></span>';
+        leg += '<span><i style="background:' + g.c + '"></i>' + g.l + ' · ' + Math.round(pct) + ' %</span>';
+      });
+      document.getElementById('ep-bar').innerHTML = bar;
+      document.getElementById('ep-bar-legend').innerHTML = leg;
+    }
+
+    function renderLecture(list) {
+      var wrap = document.getElementById('ep-lecture');
+      var ul = document.getElementById('ep-lecture-list');
+      if (!list.length) { wrap.hidden = true; ul.innerHTML = ''; return; }
+      wrap.hidden = false;
+      ul.innerHTML = list.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    }
+
+    function renderOptim(list) {
+      var box = document.getElementById('ep-optim');
+      var lbl = document.getElementById('ep-optim-lbl');
+      if (!list.length) { box.innerHTML = ''; lbl.hidden = true; return; }
+      lbl.hidden = false;
+      box.innerHTML = list.map(function (o) {
+        var cta = o.cta ? '<button type="button" class="ep-opt-cta" data-action="' + o.cta.action + '">' + o.cta.label + '</button>' : '';
+        return '<div class="ep-opt"><h4>' + o.t + '</h4><p>' + o.h + '</p>' + cta + '</div>';
+      }).join('');
+    }
+
+    // ---------- Wiring ----------
+    function bind() {
+      var form = document.getElementById('ep');
+      if (!form || form.dataset.ready) return;
+      form.dataset.ready = '1';
+
+      form.addEventListener('input', calc);
+      form.addEventListener('change', calc);
+
+      document.getElementById('f-enfants').addEventListener('input', function () {
+        document.getElementById('v-enfants').textContent = Math.round(num('f-enfants'));
+      });
+
+      // Régime foncier segmenté
+      document.querySelectorAll('#f-foncier-regime button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('#f-foncier-regime button').forEach(function (x) { x.classList.remove('on'); });
+          b.classList.add('on');
+          document.getElementById('wrap-charges').hidden = b.getAttribute('data-r') !== 'reel';
+          calc();
+        });
+      });
+
+      // Objectifs
+      document.querySelectorAll('#f-objectifs button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          b.classList.toggle('on');
+          var o = b.getAttribute('data-o');
+          var idx = objectifs.indexOf(o);
+          if (idx === -1) objectifs.push(o); else objectifs.splice(idx, 1);
+          calc();
+        });
+      });
+
+      // Projets
+      document.querySelectorAll('#f-projets button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          b.classList.toggle('on');
+          var o = b.getAttribute('data-o');
+          var idx = projets.indexOf(o);
+          if (idx === -1) projets.push(o); else projets.splice(idx, 1);
+          calc();
+        });
+      });
+
+      // Boutons d'action dans les cartes d'optimisation (délégation)
+      var optimBox = document.getElementById('ep-optim');
+      if (optimBox) optimBox.addEventListener('click', function (e) {
+        var b = e.target.closest ? e.target.closest('.ep-opt-cta') : null;
+        if (!b) return;
+        if (b.getAttribute('data-action') === 'devis-emprunteur') {
+          window.__epInteret = 'Devis assurance emprunteur (loi Lemoine)';
+          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis — 10 €';
+          calc();
+          document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        }
+      });
+
+      bindLead();
+      calc();
+    }
+
+    function bindLead() {
+      var lead = document.getElementById('ep-lead');
+      if (!lead) return;
+
+      // ----- Pièce jointe facultative (avis d'impôt) -----
+      var attachment = null;
+      var MAX_BYTES = 5 * 1024 * 1024;
+      var okTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+      var fileInput = document.getElementById('l-file');
+      var fileBtn = lead.querySelector('.ep-upload-btn');
+      var fileHint = document.getElementById('l-file-name');
+      var defaultHint = 'Facultatif — PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.';
+      function resetFile(errTxt) {
+        attachment = null;
+        fileInput.value = '';
+        fileBtn.classList.remove('has-file');
+        if (errTxt) { fileHint.classList.add('err'); fileHint.textContent = errTxt; }
+        else { fileHint.classList.remove('err'); fileHint.textContent = defaultHint; }
+      }
+      fileInput.addEventListener('change', function () {
+        var f = fileInput.files && fileInput.files[0];
+        if (!f) { resetFile(); return; }
+        var typeOk = okTypes.indexOf(f.type) !== -1 || /\.(pdf|jpe?g|png)$/i.test(f.name);
+        if (!typeOk) { resetFile('Format non accepté. Utilisez un PDF, JPG ou PNG.'); return; }
+        if (f.size > MAX_BYTES) { resetFile('Fichier trop lourd (5 Mo maximum).'); return; }
+        var reader = new FileReader();
+        reader.onload = function () {
+          var res = String(reader.result || '');
+          var b64 = res.indexOf(',') !== -1 ? res.slice(res.indexOf(',') + 1) : res;
+          attachment = { name: f.name.slice(0, 120), type: f.type, content: b64 };
+          fileBtn.classList.add('has-file');
+          fileHint.classList.remove('err');
+          fileHint.textContent = 'Joint : ' + f.name + ' — sera envoyé avec votre demande.';
+        };
+        reader.onerror = function () { resetFile('Lecture du fichier impossible. Réessayez.'); };
+        reader.readAsDataURL(f);
+      });
+
+      lead.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var msg = document.getElementById('l-msg');
+        var btn = document.getElementById('l-submit');
+        var show = function (txt, cls) { msg.hidden = false; msg.textContent = txt; msg.className = 'ep-lead-msg ' + cls; };
+
+        var prenom = document.getElementById('l-prenom').value.trim();
+        var nom = document.getElementById('l-nom').value.trim();
+        var email = document.getElementById('l-email').value.trim();
+        if (!prenom || !nom || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          show('Merci de renseigner vos coordonnées (prénom, nom, email valide) en haut de page.', 'err');
+          document.getElementById('l-prenom').scrollIntoView({ block: 'center', behavior: 'smooth' });
+          return;
+        }
+        if (!document.getElementById('l-consent').checked) {
+          show('Merci de cocher la case de consentement pour continuer.', 'err'); return;
+        }
+
+        btn.disabled = true; btn.textContent = 'Un instant…';
+        var defaultBtn = 'Recevoir mon étude complète — 10 €';
+
+        var payloadBase = {
+          prenom: prenom, nom: nom, email: email,
+          telephone: document.getElementById('l-tel').value.trim(),
+          consent: true,
+          optin: document.getElementById('l-optin').checked,
+          website: document.getElementById('l-website').value,
+          diagnostic: window.__epDiag || {},
+        };
+
+        // 1) Transmettre la demande + pièce jointe à Camil (dans tous les cas).
+        var leadDone = fetch('/api/etude-lead', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(Object.assign({}, payloadBase, { attachment: attachment })),
+        }).catch(function () { return null; });
+
+        // 2) Lancer le paiement Stripe ; repli si Stripe n'est pas encore actif.
+        leadDone.then(function () {
+          return fetch('/api/etude-checkout', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payloadBase),
+          }).then(function (r) { return r.json().catch(function () { return {}; }); });
+        }).then(function (cj) {
+          if (cj && cj.ok && cj.url) {
+            try {
+              sessionStorage.setItem('epAnalysis', JSON.stringify({
+                prenom: prenom, nom: nom,
+                diag: window.__epDiag || {},
+                lecture: window.__epLecture || [],
+                optim: window.__epOptim || [],
+              }));
+            } catch (e) {}
+            window.location.href = cj.url;
+            return;
+          }
+          // Repli : la demande est déjà transmise à Camil.
+          lead.reset(); resetFile();
+          show('Merci ' + prenom + '. Votre demande est bien transmise à Camil, qui vous adresse votre étude personnalisée sous 24 h.', 'ok');
+          btn.textContent = 'Demande envoyée ✓';
+        }).catch(function () {
+          show('Un souci est survenu. Réessayez, ou écrivez à camil.cz@lechenepatrimonial.com.', 'err');
+          btn.disabled = false; btn.textContent = defaultBtn;
+        });
+      });
+    }
+
+    bind();
+    document.addEventListener('astro:page-load', function () {
+      var form = document.getElementById('ep');
+      if (form) form.dataset.ready = '';
+      bind();
+    });
+  })();
+</script>

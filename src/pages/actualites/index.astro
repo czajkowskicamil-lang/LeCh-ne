@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const news = (await getCollection('news')).sort((a, b) => {
+  if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+  return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
+});
+
+const fmt = new Intl.DateTimeFormat('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base
+  title="Actualités, Le Chêne Patrimonial"
+  description="Les nouvelles importantes du cabinet Le Chêne Patrimonial : annonces, évolutions réglementaires et repères de marché."
+>
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Actualités
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Ce qui bouge, <span class="italic text-chene">au bon moment.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Les nouvelles importantes du cabinet et les repères utiles : évolutions réglementaires, mouvements de marché, annonces. Pour les analyses de fond, direction le <a href="/magazine" class="link-underline text-chene">Magazine</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {news.length > 0 ? (
+    <section class="py-12 md:py-16">
+      <div class="shell">
+        <div class="border-t border-ink/10">
+          {news.map((n) => {
+            const href = n.data.external ?? `/actualites/${n.slug}`;
+            const isExternal = Boolean(n.data.external);
+            return (
+              <a
+                href={href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener' : undefined}
+                class="group grid md:grid-cols-12 gap-4 md:gap-8 items-baseline py-8 border-b border-ink/10 hover:bg-cream-soft/60 transition-colors -mx-4 px-4"
+              >
+                <div class="md:col-span-3 flex items-center gap-3 text-sm">
+                  <span class="text-xs uppercase tracking-micro text-chene">{n.data.category}</span>
+                  {n.data.pinned && (
+                    <span class="text-[0.6rem] uppercase tracking-micro text-ink bg-or rounded-full px-2 py-0.5">Épinglé</span>
+                  )}
+                </div>
+                <div class="md:col-span-7">
+                  <h2 class="font-serif text-2xl md:text-3xl text-ink leading-tight group-hover:text-chene transition">
+                    {n.data.title}
+                    {isExternal && (
+                      <svg class="inline-block ml-2 w-4 h-4 -translate-y-0.5 text-chene/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    )}
+                  </h2>
+                  <p class="text-ink/70 leading-relaxed mt-3 max-w-2xl">{n.data.excerpt}</p>
+                </div>
+                <time
+                  datetime={n.data.publishedAt.toISOString()}
+                  class="md:col-span-2 text-sm text-stone md:text-right"
+                >
+                  {fmt.format(n.data.publishedAt)}
+                </time>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="py-12 md:py-20">
+      <div class="shell">
+        <div class="border border-dashed border-ink/15 rounded-2xl bg-cream-soft/50 px-8 py-16 md:py-24 text-center max-w-3xl mx-auto">
+          <span class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-chene/10 text-chene mb-6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0V9h4"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          </span>
+          <h2 class="font-serif text-2xl md:text-3xl text-ink mb-4">Aucune actualité pour le moment.</h2>
+          <p class="text-ink/65 leading-relaxed max-w-xl mx-auto mb-8">
+            Cette page accueillera bientôt les nouvelles importantes du cabinet. En attendant, la Lettre du Chêne reste le meilleur moyen de rester informé, une fois par mois.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/newsletter" class="btn-primary text-sm">
+              Recevoir la Lettre du Chêne
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a href="/magazine" class="link-underline text-chene text-sm font-medium">Explorer le Magazine</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CTA />
+</Base>

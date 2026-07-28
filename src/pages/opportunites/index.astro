@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const opportunites = (await getCollection('opportunites')).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
+});
+
+const statusStyle: Record<string, string> = {
+  Disponible: 'bg-chene/10 text-chene',
+  'Dernières opportunités': 'bg-or/20 text-ink',
+  Bientôt: 'bg-ink/10 text-ink/70',
+  Clôturée: 'bg-ink/5 text-stone line-through',
+};
+---
+
+<Base
+  title="Opportunités du moment, Le Chêne Patrimonial"
+  description="Une sélection de biens immobiliers et de placements du moment, présentés avec méthode. Pour aller plus loin, un échange personnalisé avec le cabinet."
+>
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Opportunités du moment
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Les bonnes idées, <span class="italic text-chene">au bon moment.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Une sélection resserrée de biens et de placements que le cabinet suit de près. Chaque opportunité mérite d'être regardée à la lumière de <em>votre</em> situation, c'est tout l'objet d'un premier échange.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {opportunites.length > 0 ? (
+    <section class="py-12 md:py-16">
+      <div class="shell">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {opportunites.map((o) => {
+            const href = o.data.external ?? `/opportunites/${o.slug}`;
+            const isExternal = Boolean(o.data.external);
+            return (
+              <a
+                href={href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener' : undefined}
+                class="group flex flex-col border border-ink/10 rounded-2xl bg-cream-soft/40 p-6 hover:border-chene/40 hover:bg-cream-soft transition-colors"
+              >
+                <div class="flex items-center justify-between gap-3 mb-5">
+                  <span class="text-xs uppercase tracking-micro text-chene">{o.data.type}</span>
+                  <span class:list={['text-[0.6rem] uppercase tracking-micro rounded-full px-2.5 py-1', statusStyle[o.data.status]]}>
+                    {o.data.status}
+                  </span>
+                </div>
+
+                <h2 class="font-serif text-2xl text-ink leading-tight group-hover:text-chene transition mb-3">
+                  {o.data.title}
+                  {isExternal && (
+                    <svg class="inline-block ml-1.5 w-4 h-4 -translate-y-0.5 text-chene/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                  )}
+                </h2>
+                <p class="text-ink/70 leading-relaxed mb-6 flex-1">{o.data.excerpt}</p>
+
+                {o.data.highlight && (
+                  <p class="flex items-start gap-2 text-sm text-ink/75 mb-5">
+                    <svg class="w-4 h-4 mt-0.5 shrink-0 text-chene" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                    {o.data.highlight}
+                  </p>
+                )}
+
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-stone border-t border-ink/10 pt-4">
+                  {o.data.location && (
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                      {o.data.location}
+                    </span>
+                  )}
+                  {o.data.ticket && <span class="text-ink/70">{o.data.ticket}</span>}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="py-12 md:py-20">
+      <div class="shell">
+        <div class="border border-dashed border-ink/15 rounded-2xl bg-cream-soft/50 px-8 py-16 md:py-24 text-center max-w-3xl mx-auto">
+          <span class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-chene/10 text-chene mb-6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+          </span>
+          <h2 class="font-serif text-2xl md:text-3xl text-ink mb-4">Sélection en cours de préparation.</h2>
+          <p class="text-ink/65 leading-relaxed max-w-xl mx-auto mb-8">
+            Le cabinet publiera ici les biens et placements du moment qui méritent le coup d'œil. En attendant, le plus simple reste d'en parler de vive voix, selon vos objectifs.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/contact" class="btn-primary text-sm">
+              Me parler de mon projet
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a href="/expertise" class="link-underline text-chene text-sm font-medium">Voir les expertises</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Mention réglementaire -->
+  <section class="pb-16 md:pb-24">
+    <div class="shell">
+      <p class="text-xs text-stone/80 leading-relaxed max-w-3xl border-t border-ink/10 pt-6">
+        Communication à caractère informatif et non contractuel. Les informations présentées ne constituent ni un conseil en investissement personnalisé, ni une sollicitation ou une offre de souscription. Tout investissement comporte des risques, notamment de perte en capital, et doit être apprécié au regard de votre situation. Le Chêne Patrimonial · Camil Czajkowski, courtier en assurance (COA) et agent immobilier (carte T).
+      </p>
+    </div>
+  </section>
+
+  <CTA />
+</Base>

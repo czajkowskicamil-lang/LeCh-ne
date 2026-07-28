@@ -1,0 +1,38 @@
+Modèle d'opportunité — Le Chêne Patrimonial
+===========================================
+
+Pour publier une opportunité : crée un fichier « mon-opportunite.md » dans ce
+dossier (src/content/opportunites/) en copiant le bloc ci-dessous. Le nom du
+fichier devient l'adresse : /opportunites/mon-opportunite
+
+Ce fichier-ci (_exemple.md.txt) est ignoré par le site : il commence par « _ »
+et n'a pas l'extension .md, donc il ne génère aucune page.
+
+Rappel réglementaire : cette page est publique. Rester factuel, éviter les
+rendements bruts « garantis », préférer une formulation prudente dans
+« highlight ». Le conseil personnalisé se fait en rendez-vous, pas sur la page.
+
+--- COPIER À PARTIR D'ICI ---
+
+---
+title: "Résidence services — Bordeaux Bastide"
+excerpt: "Programme neuf en zone tendue, éligible LMNP, livraison T4 2027."
+publishedAt: 2026-07-28
+type: "Immobilier neuf"     # Immobilier neuf | Immobilier ancien | LMNP | Nue-propriété | SCPI | Private Equity | Autre
+status: "Disponible"        # Disponible | Dernières opportunités | Bientôt | Clôturée
+location: "Bordeaux (33)"
+ticket: "à partir de 180 000 €"
+highlight: "Zone tendue, forte demande locative étudiante"
+featured: false
+# external: "https://..."   # (optionnel) plaquette / PDF partenaire : la carte y renvoie directement
+---
+
+Description détaillée de l'opportunité en Markdown : localisation, atouts,
+cadre fiscal, cible d'investisseur. Rester factuel et prudent.
+
+## Points clés
+
+- Point 1
+- Point 2
+
+Pour étudier cette opportunité dans votre situation, [prenons rendez-vous](https://calendly.com/camil-cz-lechenepatrimonial/30min).

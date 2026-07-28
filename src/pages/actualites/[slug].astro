@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const news = await getCollection('news');
+  // On ne génère de page détail que pour les actualités sans lien externe.
+  return news
+    .filter((n) => !n.data.external)
+    .map((n) => ({ params: { slug: n.slug }, props: { item: n } }));
+}
+
+interface Props { item: CollectionEntry<'news'> }
+const { item } = Astro.props;
+const { Content } = await item.render();
+
+const dateStr = new Intl.DateTimeFormat('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(item.data.publishedAt);
+---
+
+<Base title={`${item.data.title}, Actualités | Le Chêne Patrimonial`} description={item.data.excerpt}>
+  <article>
+    <header class="pt-16 pb-12 md:pt-24 md:pb-16">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+          <a href="/" class="hover:text-chene">Accueil</a>
+          <span>/</span>
+          <a href="/actualites" class="hover:text-chene">Actualités</a>
+          <span>/</span>
+          <span class="text-ink truncate max-w-xs">{item.data.title}</span>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          {item.data.category}
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-8 leading-tight">{item.data.title}</h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed mb-10">{item.data.excerpt}</p>
+
+        <div class="flex flex-wrap items-center gap-6 text-sm text-stone border-t border-ink/10 pt-6">
+          <time datetime={item.data.publishedAt.toISOString()}>{dateStr}</time>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell max-w-4xl pb-20 md:pb-32">
+      <div class="prose-editorial">
+        <Content />
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-ink/10">
+        <a href="/actualites" class="link-underline text-chene font-medium">← Toutes les actualités</a>
+      </div>
+    </div>
+  </article>
+
+  <CTA />
+</Base>
