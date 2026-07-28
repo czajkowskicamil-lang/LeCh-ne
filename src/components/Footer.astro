@@ -38,12 +38,13 @@ const year = new Date().getFullYear();
         <label for="footer-nl-email" class="text-xs uppercase tracking-micro text-or-light mb-3 block">Recevoir La Lettre</label>
         <div class="flex flex-col sm:flex-row gap-3">
           <input type="email" id="footer-nl-email" name="email" required autocomplete="email" placeholder="votre@email.fr" class="flex-1 bg-transparent border-b border-cream/25 py-2.5 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" />
-          <button type="submit" class="btn-or shrink-0 justify-center">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+          <button type="submit" id="footer-nl-btn" class="btn-or shrink-0 justify-center">
             M'inscrire
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </button>
         </div>
-        <p class="text-xs text-cream/40 mt-3">Gratuit, sans engagement. <a href="/newsletter" class="underline underline-offset-2 hover:text-or-light">En savoir plus</a>.</p>
+        <p id="footer-nl-msg" role="status" class="text-xs text-cream/40 mt-3">Gratuit, sans engagement. <a href="/newsletter" class="underline underline-offset-2 hover:text-or-light">En savoir plus</a>.</p>
       </form>
     </div>
 
@@ -98,21 +99,38 @@ const year = new Date().getFullYear();
   <script>
     const fnl = document.getElementById('footer-nl') as HTMLFormElement | null;
     if (fnl) {
-      fnl.addEventListener('submit', (e) => {
+      const msg = document.getElementById('footer-nl-msg') as HTMLElement;
+      const btn = document.getElementById('footer-nl-btn') as HTMLButtonElement;
+      const input = document.getElementById('footer-nl-email') as HTMLInputElement;
+      fnl.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = (document.getElementById('footer-nl-email') as HTMLInputElement)?.value.trim() || '';
-        if (!email) { alert('Merci de saisir votre email.'); return; }
-        const subject = 'Inscription Lettre du Chêne';
-        const body = [
-          'Bonjour Camil,',
-          '',
-          "Je souhaite m'inscrire à La Lettre du Chêne.",
-          '',
-          `Email : ${email}`,
-          '',
-          'Merci !',
-        ].join('\n');
-        window.location.href = `mailto:camil.cz@lechenepatrimonial.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const email = input?.value.trim() || '';
+        const website = (fnl.querySelector('input[name="website"]') as HTMLInputElement)?.value || '';
+        if (!email) { msg.textContent = 'Merci de saisir votre email.'; msg.className = 'text-xs text-or-light mt-3'; return; }
+        btn.disabled = true;
+        const label = btn.innerHTML;
+        btn.textContent = 'Envoi…';
+        try {
+          const r = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email, website }),
+          });
+          const data = await r.json().catch(() => ({}));
+          if (r.ok && data.ok) {
+            fnl.querySelector('div')?.remove();
+            msg.innerHTML = 'Presque&nbsp;! Cliquez sur le lien de confirmation qu\'on vient de vous envoyer par email.';
+            msg.className = 'text-sm text-cream mt-1';
+          } else {
+            msg.textContent = data.error === 'email_invalide' ? 'Cet email ne semble pas valide.' : 'Une erreur est survenue. Réessayez ou écrivez à camil.cz@lechenepatrimonial.com.';
+            msg.className = 'text-xs text-or-light mt-3';
+            btn.disabled = false; btn.innerHTML = label;
+          }
+        } catch {
+          msg.textContent = 'Connexion impossible. Réessayez dans un instant.';
+          msg.className = 'text-xs text-or-light mt-3';
+          btn.disabled = false; btn.innerHTML = label;
+        }
       });
     }
   </script>

@@ -91,18 +91,20 @@ import { site } from '../data/site';
               <input type="email" id="nl-email" name="email" required autocomplete="email" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="jean@dupont.fr" />
             </div>
 
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+
             <p class="text-xs text-cream/60 leading-relaxed pt-2">
-              En cliquant ci-dessous, votre client mail s'ouvre avec un message pré-rempli vers Camil. Envoyez-le, et vous serez ajouté à la liste sous 24h.
+              Vous recevrez un email de confirmation. Un clic pour valider, et vous êtes inscrit. Désinscription en un clic à tout moment.
               <a href="/confidentialite" class="text-or-light underline underline-offset-2 hover:text-or">Politique de confidentialité</a>.
             </p>
 
             <div class="flex-1"></div>
 
-            <button type="submit" class="bg-or text-ink font-medium px-6 py-3 hover:bg-or-light transition-colors">
+            <button type="submit" id="nl-btn" class="bg-or text-ink font-medium px-6 py-3 hover:bg-or-light transition-colors disabled:opacity-60">
               M'inscrire à La Lettre
             </button>
 
-            <p class="text-xs text-cream/50 mt-2">
+            <p id="nl-msg" role="status" class="text-xs text-cream/50 mt-2">
               Ou écrivez directement à <a href={`mailto:${site.email}?subject=Inscription%20Lettre%20du%20Ch%C3%AAne`} class="text-or-light underline underline-offset-2">{site.email}</a>
             </p>
           </form>
@@ -115,31 +117,44 @@ import { site } from '../data/site';
     const form = document.getElementById('nl-form') as HTMLFormElement | null;
 
     if (form) {
-      form.addEventListener('submit', (e) => {
+      const msg = document.getElementById('nl-msg') as HTMLElement;
+      const btn = document.getElementById('nl-btn') as HTMLButtonElement;
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const prenom = (document.getElementById('nl-prenom') as HTMLInputElement)?.value.trim() || '';
         const email = (document.getElementById('nl-email') as HTMLInputElement)?.value.trim() || '';
+        const website = (form.querySelector('input[name="website"]') as HTMLInputElement)?.value || '';
 
         if (!email) {
-          alert('Merci de saisir votre email.');
+          msg.textContent = 'Merci de saisir votre email.';
+          msg.className = 'text-xs text-or-light mt-2';
           return;
         }
 
-        // Construit un mailto pré-rempli vers Camil
-        const subject = 'Inscription Lettre du Chêne';
-        const body = [
-          'Bonjour Camil,',
-          '',
-          'Je souhaite m\'inscrire à La Lettre du Chêne.',
-          '',
-          `Prénom : ${prenom || '(non renseigné)'}`,
-          `Email : ${email}`,
-          '',
-          'Merci !',
-        ].join('\n');
-
-        const mailto = `mailto:camil.cz@lechenepatrimonial.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailto;
+        btn.disabled = true;
+        const label = btn.textContent;
+        btn.textContent = 'Envoi…';
+        try {
+          const r = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ prenom, email, website }),
+          });
+          const data = await r.json().catch(() => ({}));
+          if (r.ok && data.ok) {
+            form.querySelectorAll('div, button').forEach((el) => el.remove());
+            msg.innerHTML = 'Presque terminé&nbsp;! Un email de confirmation vient de partir vers <strong>' + email.replace(/</g, '') + '</strong>. Cliquez sur le lien qu\'il contient pour valider votre inscription.';
+            msg.className = 'text-sm text-cream leading-relaxed';
+          } else {
+            msg.textContent = data.error === 'email_invalide' ? 'Cet email ne semble pas valide.' : 'Une erreur est survenue. Réessayez, ou écrivez à camil.cz@lechenepatrimonial.com.';
+            msg.className = 'text-xs text-or-light mt-2';
+            btn.disabled = false; btn.textContent = label;
+          }
+        } catch {
+          msg.textContent = 'Connexion impossible. Réessayez dans un instant.';
+          msg.className = 'text-xs text-or-light mt-2';
+          btn.disabled = false; btn.textContent = label;
+        }
       });
     }
   </script>
