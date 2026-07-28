@@ -244,6 +244,8 @@ const description =
 
     let answers: Answers = {};
     let currentId: string | null = null;
+    let introRAF = 0;
+    const stopIntroAnim = () => { if (introRAF) cancelAnimationFrame(introRAF); introRAF = 0; };
 
     // ---------- Persistance ----------
     function load(): boolean {
@@ -295,8 +297,8 @@ const description =
             <div class="relative mx-auto max-w-lg text-center bg-gradient-to-b from-white to-cream-soft border border-ink/10 rounded-[2rem] px-6 py-9 md:px-12 md:py-11 shadow-[0_30px_80px_-42px_rgba(3,16,46,0.4)] overflow-hidden">
               <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-or/10 blur-3xl"></div>
               <div class="relative">
-                <div class="mx-auto mb-5 w-full max-w-[248px]">
-                  <svg viewBox="0 0 220 140" class="w-full" role="img" aria-label="Jauge de 0 à 100">
+                <div class="mx-auto w-full max-w-[250px]">
+                  <svg viewBox="0 0 220 126" class="w-full" role="img" aria-label="Jauge de 0 à 100">
                     <defs>
                       <linearGradient id="diag-gauge-grad" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stop-color="#c2543a"/>
@@ -306,13 +308,18 @@ const description =
                     </defs>
                     <path d="M18 112 A92 92 0 0 1 202 112" fill="none" stroke="#EDE6D3" stroke-width="14" stroke-linecap="round"/>
                     <path d="M18 112 A92 92 0 0 1 202 112" fill="none" stroke="url(#diag-gauge-grad)" stroke-width="14" stroke-linecap="round"/>
-                    <text x="110" y="106" text-anchor="middle" font-family="'Fraunces Variable', Fraunces, serif" font-size="52" fill="#03102E">?</text>
-                    <text x="20" y="134" text-anchor="middle" font-size="12" fill="#A8A395" font-family="Inter, sans-serif">0</text>
-                    <text x="200" y="134" text-anchor="middle" font-size="12" fill="#A8A395" font-family="Inter, sans-serif">100</text>
+                    <text x="20" y="126" text-anchor="middle" font-size="11" fill="#A8A395" font-family="Inter, sans-serif">0</text>
+                    <text x="200" y="126" text-anchor="middle" font-size="11" fill="#A8A395" font-family="Inter, sans-serif">100</text>
+                    <g id="diag-needle" transform="rotate(-90 110 112)">
+                      <path d="M110 44 L114.5 111 L105.5 111 Z" fill="#03102E"/>
+                    </g>
+                    <circle cx="110" cy="112" r="7.5" fill="#03102E"/>
+                    <circle cx="110" cy="112" r="3.2" fill="#E6C259"/>
                   </svg>
                 </div>
-                <p class="text-xs uppercase tracking-micro text-chene font-medium mb-3">Indice de santé patrimoniale</p>
-                <h2 class="font-serif text-3xl md:text-[2.5rem] leading-tight text-ink mb-4">Découvrons votre score</h2>
+                <div class="font-serif text-4xl md:text-5xl tabular-nums leading-none mt-1 mb-4"><span id="diag-intro-num" style="color:#b4472e">0</span><span class="text-2xl text-stone">/100</span></div>
+                <p class="text-xs uppercase tracking-micro text-chene font-medium mb-2">Indice de santé patrimoniale</p>
+                <h2 class="font-serif text-3xl md:text-[2.4rem] leading-tight text-ink mb-4">Prêt à découvrir le vôtre&nbsp;?</h2>
                 <p class="text-ink/65 max-w-md mx-auto mb-8 leading-relaxed">
                   Quelques questions guidées, une seule à la fois. À la fin, votre note sur 100, une analyse personnalisée et un plan d'action clair.
                 </p>
@@ -343,11 +350,39 @@ const description =
         };
         const rb = document.getElementById('diag-resume');
         if (rb) rb.onclick = () => { const id = currentId && idxOf(currentId) >= 0 ? currentId : visible()[0].id; goTo(id); };
+
+        // Jauge vivante : l'aiguille balaie 0 -> 100 et le chiffre défile, en boucle douce.
+        const needle = document.getElementById('diag-needle');
+        const numEl = document.getElementById('diag-intro-num');
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (needle && numEl) {
+          const zone = (v: number) => (v >= 62 ? '#2f6b40' : v >= 42 ? '#A7801F' : '#b4472e');
+          const setTo = (v: number) => {
+            needle.setAttribute('transform', `rotate(${(1.8 * v - 90).toFixed(2)} 110 112)`);
+            numEl.textContent = String(Math.round(v));
+            numEl.style.color = zone(v);
+          };
+          if (reduce) {
+            setTo(72); // rendu state agréable si l'utilisateur limite les animations
+          } else {
+            stopIntroAnim();
+            const period = 5200;
+            const start = performance.now();
+            const loop = (now: number) => {
+              if (!document.body.contains(needle)) { introRAF = 0; return; }
+              const v = 50 - 50 * Math.cos((2 * Math.PI * (now - start)) / period);
+              setTo(v);
+              introRAF = requestAnimationFrame(loop);
+            };
+            introRAF = requestAnimationFrame(loop);
+          }
+        }
       });
     }
 
     // ---------- Rendu d'une question ----------
     function goTo(id: string) {
+      stopIntroAnim();
       currentId = id; save();
       const steps = visible();
       const step = steps.find((s) => s.id === id)!;
