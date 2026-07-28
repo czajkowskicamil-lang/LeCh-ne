@@ -11,6 +11,12 @@ export interface Temoignage {
 }
 
 export const temoignages: Temoignage[] = [
+  {
+    quote:
+      "Excellent travail de Camil, après explication de ma situation il en déduit mon besoin, la stratégie à adopter et le produit sur lequel investir. Il a été impliqué tout au long du processus et continue de m'accompagner. Un gestionnaire de patrimoine qui s'adapte à votre situation et qui n'est pas seulement là pour vous vendre quelque chose.",
+    author: 'Hugo Lagrange',
+    role: 'Cadre',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
