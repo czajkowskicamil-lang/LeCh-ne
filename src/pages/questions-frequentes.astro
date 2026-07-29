@@ -34,6 +34,16 @@ const faq = [
   title="Questions fréquentes, Le Chêne Patrimonial"
   description="Indépendance, rémunération, ticket minimum, présentiel ou à distance : les questions essentielles avant un premier échange avec un cabinet de gestion de patrimoine."
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  })} />
+
   <!-- Hero éditorial -->
   <section class="pt-16 pb-12 md:pt-24">
     <div class="shell grid lg:grid-cols-12 gap-12 items-end">
