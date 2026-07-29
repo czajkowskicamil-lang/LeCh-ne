@@ -27,6 +27,12 @@ export const temoignages: Temoignage[] = [
       "Je recommande vivement Camil. Il m'accompagne avec beaucoup de professionnalisme et de bienveillance dans mon projet. Toujours disponible, à l'écoute et de bon conseil, il prend le temps de répondre à toutes mes questions et me guide à chaque étape. Son expertise et son soutien me permettent d'avancer en toute confiance. Un grand merci à Camil pour cet accompagnement de qualité !",
     author: 'Temenuzhka Nikolova',
   },
+  {
+    quote:
+      "Camil a vraiment pris le temps de répondre à toutes mes interrogations. Il a été très à l'écoute, disponible et a consacré le temps nécessaire pour expliquer les choses avec clarté. Merci Camil, pour ton accompagnement de qualité !! Je reprendrai contact avec toi, c'est certain !",
+    author: 'Lucia M',
+    role: 'Lyon',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
