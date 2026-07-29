@@ -1,0 +1,223 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+import { lmnp, nue, neuf, type Bien } from '../../../data/opportunites-biens';
+
+const families = [
+  {
+    k: '01 — Turnkey',
+    t: 'LMNP in managed residences',
+    intro:
+      "You buy a furnished home in a managed residence (student, tourism or senior). A professional operator handles everything — tenants, upkeep, management — and pays you a rent set by a commercial lease. Income with no management on your side, and the favourable tax treatment of the LMNP (furnished rental) status.",
+    items: lmnp,
+    kind: 'lmnp' as const,
+  },
+  {
+    k: '02 — No management, no tax',
+    t: 'Bare ownership',
+    intro:
+      "You buy the walls only, at a discounted price. An institutional landlord holds the usufruct for a fixed term: they rent it out, manage it and pay the charges. During that period, no rent but no charges, no property tax, and the asset stays outside the IFI wealth-tax base. At the end, you recover full ownership.",
+    items: nue,
+    kind: 'patrimonial' as const,
+  },
+  {
+    k: '03 — Building your estate',
+    t: 'New-build property',
+    intro:
+      "New homes (off-plan / VEFA), to live in (main residence, zero-rate loan) or to rent out. Reduced notary fees. No guaranteed rent here: you manage the letting yourself.",
+    items: neuf,
+    kind: 'patrimonial' as const,
+  },
+];
+
+const dispositifs = [
+  { nom: 'LMNP in managed residences', desc: 'Managed furnished lettings: income with no management, in student, tourism or senior residences.' },
+  { nom: 'LMNP in existing property', desc: 'Furnished in existing stock: depreciation of the asset and rents that are lightly taxed or not at all.' },
+  { nom: 'Bare ownership', desc: 'Discounted purchase of the walls, with no charges and no IFI throughout the usufruct period.' },
+  { nom: 'New-build property (VEFA)', desc: 'To live in or to rent out, reduced notary fees, new-build guarantees.' },
+  { nom: 'Main residence', desc: 'Support with buying your home: new or existing, zero-rate loan, financing.' },
+  { nom: 'Jeanbrun scheme', desc: 'New private-landlord framework for the unfurnished letting of new homes.' },
+  { nom: 'Denormandie', desc: 'Existing property to renovate in town centres, with a tax reduction at the end.' },
+  { nom: 'Malraux', desc: 'Restoration of buildings in protected areas: tax reduction on the works.' },
+  { nom: 'Historic Monuments', desc: 'Exceptional heritage assets, deduction of works under the specific regime.' },
+  { nom: 'Girardin (Overseas)', desc: 'Tax reduction through overseas investment.' },
+  { nom: 'Prestige apartments', desc: 'Rare addresses and exceptional assets, sourced directly.' },
+];
+
+const total = lmnp.length + nue.length + neuf.length;
+const moisLabel = 'July 2026';
+---
+
+<Base
+  title="This month's opportunities, Le Chêne Patrimonial"
+  description="The month's property selection: LMNP in managed residences, bare ownership and new-build property, presented with method. Indicative information, a conversation to go further."
+>
+  <!-- Hero -->
+  <section class="pt-16 pb-10 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Selection · {moisLabel}
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-5">
+          The right ideas, <span class="italic text-chene">at the right time.</span>
+        </h1>
+        <p class="inline-flex items-center gap-2 text-sm font-medium text-or-dark bg-or/10 border border-or/25 rounded-full px-4 py-1.5 mb-7">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-or"></span>
+          A new selection every month
+        </p>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
+          A selection of assets the firm follows closely, sorted into three distinct families. Each opportunity deserves to be looked at in the light of <em>your</em> situation and your tax position — that is exactly what a first conversation is for.
+        </p>
+      </div>
+      <div class="lg:col-span-4">
+        <div class="grid grid-cols-3 gap-px bg-ink/10 border border-ink/10">
+          <div class="bg-cream-soft text-center py-5">
+            <div class="font-serif text-3xl text-ink">{lmnp.length}</div>
+            <div class="text-[0.6rem] uppercase tracking-micro text-stone mt-1">Managed LMNP</div>
+          </div>
+          <div class="bg-cream-soft text-center py-5">
+            <div class="font-serif text-3xl text-ink">{nue.length}</div>
+            <div class="text-[0.6rem] uppercase tracking-micro text-stone mt-1">Bare ownership</div>
+          </div>
+          <div class="bg-cream-soft text-center py-5">
+            <div class="font-serif text-3xl text-ink">{neuf.length}</div>
+            <div class="text-[0.6rem] uppercase tracking-micro text-stone mt-1">New-build</div>
+          </div>
+        </div>
+        <p class="text-xs text-stone/80 mt-3 leading-relaxed">
+          {total} assets offered under agreements with our developer and operator partners.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- A preview, not a catalogue -->
+  <section class="pb-6">
+    <div class="shell">
+      <div class="bg-navy-deep text-cream px-6 py-8 md:px-10 md:py-9 flex flex-col md:flex-row md:items-center gap-6">
+        <div class="md:flex-1">
+          <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-3 flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-or"></span>
+            A preview, not a catalogue
+          </p>
+          <p class="text-cream/85 leading-relaxed max-w-3xl">
+            This page shows only a <strong class="text-cream">selection of the month</strong>, renewed with each new Lettre du Chêne. The firm follows <strong class="text-cream">assets all across France</strong> and across <strong class="text-cream">the full range of wealth-planning schemes</strong> (details below). Tell me your area and your objective: I will send you the assets that fit you, including those not listed here.
+          </p>
+        </div>
+        <a href="/en/contact" class="btn-or shrink-0 self-start">
+          Tell me what I'm looking for
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our schemes -->
+  <section class="py-10 md:py-14">
+    <div class="shell">
+      <div class="max-w-3xl mb-8">
+        <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">Every lever, to match your profile</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-3">The schemes we cover</h2>
+        <p class="text-ink/70 leading-relaxed">
+          From rental yield to wealth-planning tax relief, from a main residence to prestige property, directly or through our partners. The selection below shows only part of it; the right scheme depends on your tax position and your objectives — and <strong class="text-ink">we adapt to every request</strong>.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
+        {dispositifs.map((d) => (
+          <div class="bg-cream-soft/60 p-5 hover:bg-cream-soft transition-colors">
+            <div class="flex items-start gap-3">
+              <span class="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-or"></span>
+              <div>
+                <h3 class="font-serif text-lg text-ink leading-tight">{d.nom}</h3>
+                <p class="text-sm text-stone mt-1 leading-relaxed">{d.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Families -->
+  {families.map((fam) => (
+    <section class="py-10 md:py-14 border-t border-ink/10">
+      <div class="shell">
+        <div class="max-w-3xl mb-10">
+          <div class="border-t-2 border-or w-11 mb-4"></div>
+          <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">{fam.k}</p>
+          <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-4">{fam.t}</h2>
+          <p class="text-ink/70 leading-relaxed">{fam.intro}</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {fam.items.map((b: Bien) => (
+            <article class="group flex flex-col border border-ink/10 bg-cream-soft/40 overflow-hidden hover:border-chene/40 hover:bg-cream-soft transition-colors">
+              <div class="aspect-[4/3] overflow-hidden bg-navy-deep">
+                <img
+                  src={`/emails/${b.ph}.jpg`}
+                  alt={`${b.nom} — ${b.ville}`}
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                />
+              </div>
+              <div class="p-5 flex flex-col flex-1">
+                <p class="text-[0.65rem] uppercase tracking-micro text-chene font-semibold">{b.sub}</p>
+                <h3 class="font-serif text-xl text-ink leading-tight mt-1">{b.nom}</h3>
+                <p class="text-sm text-stone mt-0.5">{b.ville} · {b.ts}</p>
+
+                {fam.kind === 'lmnp' ? (
+                  <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-ink/10 text-center">
+                    <div>
+                      <div class="text-[0.55rem] uppercase tracking-wide text-stone">Price</div>
+                      <div class="font-serif text-[0.95rem] text-ink mt-0.5">{b.prix}</div>
+                    </div>
+                    <div class="border-x border-ink/10">
+                      <div class="text-[0.55rem] uppercase tracking-wide text-stone">Rent/mo</div>
+                      <div class="font-serif text-[0.95rem] text-ink mt-0.5">{b.loyer}</div>
+                    </div>
+                    <div>
+                      <div class="text-[0.55rem] uppercase tracking-wide text-stone">Yield</div>
+                      <div class="font-serif text-[0.95rem] text-or-dark mt-0.5">{b.rent}</div>
+                    </div>
+                  </div>
+                ) : (
+                  <div class="mt-4 pt-4 border-t border-ink/10">
+                    <div class="font-serif text-2xl text-or-dark">{b.prix}</div>
+                    {b.extra && <p class="text-xs text-stone mt-1">{b.extra}</p>}
+                  </div>
+                )}
+
+                {b.note && <p class="text-xs text-stone mt-3 leading-relaxed flex-1">{b.note}</p>}
+
+                <a
+                  href="/en/contact"
+                  class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink group-hover:text-chene transition-colors"
+                >
+                  Request the detailed sheet
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Regulatory notice -->
+  <section class="pt-12 pb-16 md:pb-24 border-t border-ink/10">
+    <div class="shell">
+      <p class="text-xs text-stone/80 leading-relaxed max-w-3xl">
+        Information-only, non-contractual communication. The assets shown are offered under agreements with developer and operator partners; the characteristics, prices, rents and yields are indicative and detailed in each asset's own sheet, which alone is binding. The information presented constitutes neither personalised investment advice nor a solicitation or an offer to subscribe. Any property investment carries risks, including loss of capital, illiquidity and dependence on the operator's soundness (managed residences). Le Chêne Patrimonial · Camil Czajkowski, insurance broker (COA, ORIAS no. 25 00 00 16) and estate agent (carte T no. CPI 3402 2024 000 000 049).
+      </p>
+    </div>
+  </section>
+
+  <CTA
+    title="Is one of these assets catching your eye?"
+    body="Tell me which one: I'll send you the full sheet and we'll look together at whether it fits your project and your tax position. 30 minutes, no commitment."
+  />
+</Base>
