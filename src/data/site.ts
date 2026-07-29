@@ -23,6 +23,7 @@ export const nav = [
   { label: 'Observatoire', href: '/observatoire' },
   { label: 'Magazine', href: '/magazine' },
   { label: 'Outils', href: '/outils' },
+  { label: 'Avis clients', href: '/avis' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -31,7 +32,6 @@ export const nav = [
 export const navSecondary = [
   { label: 'Manifeste', href: '/manifeste' },
   { label: 'La Lettre du Chêne', href: '/newsletter' },
-  { label: 'Avis clients', href: '/avis' },
 ];
 
 export const expertises = [
