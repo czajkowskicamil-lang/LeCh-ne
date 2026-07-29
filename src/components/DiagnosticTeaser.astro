@@ -2,10 +2,14 @@
 // Section home : met en avant le Diagnostic Patrimonial Intelligent (outil gratuit,
 // aimant à leads). Fond navy pour trancher et attirer l'oeil vers l'action principale.
 // Visuel : un anneau de score illustratif /100 + aperçu de piliers.
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
 const pillars = [
-  { label: 'Épargne de précaution', v: 82 },
-  { label: 'Diversification', v: 54 },
-  { label: 'Préparation retraite', v: 38 },
+  { label: t('diag.pillar1'), v: 82 },
+  { label: t('diag.pillar2'), v: 54 },
+  { label: t('diag.pillar3'), v: 38 },
 ];
 const R = 52;
 const C = 2 * Math.PI * R;
@@ -22,35 +26,33 @@ const demoScore = 72;
       <div class="lg:col-span-7 reveal">
         <p class="eyebrow-cream mb-5 flex items-center gap-3">
           <span class="inline-block h-px w-8 bg-or"></span>
-          Nouveau · Gratuit · 3 minutes
+          {t('diag.eyebrow')}
         </p>
         <h2 class="font-serif text-display text-cream mb-6 leading-tight">
-          Où en est vraiment<br/>
-          votre patrimoine&nbsp;?
+          {t('diag.title1')}<br/>
+          {t('diag.title2')}
         </h2>
         <p class="text-cream/75 text-lg leading-relaxed max-w-2xl mb-8">
-          Quelques questions suffisent pour obtenir votre Indice de Santé Patrimoniale sur 100 :
-          vos forces, vos angles morts, et un plan d'action sur 12 mois, calibré selon votre statut.
-          C'est confidentiel et sans engagement.
+          {t('diag.body')}
         </p>
 
         <dl class="flex flex-wrap gap-x-12 gap-y-4 mb-10 border-t border-cream/15 pt-7">
           <div>
             <dt class="dt-label">01</dt>
-            <dd class="text-cream/85 text-sm mt-1">Votre score sur 100</dd>
+            <dd class="text-cream/85 text-sm mt-1">{t('diag.step1')}</dd>
           </div>
           <div>
             <dt class="dt-label">02</dt>
-            <dd class="text-cream/85 text-sm mt-1">Analyse personnalisée</dd>
+            <dd class="text-cream/85 text-sm mt-1">{t('diag.step2')}</dd>
           </div>
           <div>
             <dt class="dt-label">03</dt>
-            <dd class="text-cream/85 text-sm mt-1">Rapport PDF offert</dd>
+            <dd class="text-cream/85 text-sm mt-1">{t('diag.step3')}</dd>
           </div>
         </dl>
 
-        <a href="/outils/diagnostic-patrimonial" class="btn-or text-base">
-          Faire mon diagnostic gratuit
+        <a href={diagnosticHref} class="btn-or text-base">
+          {t('diag.cta')}
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
@@ -60,12 +62,12 @@ const demoScore = 72;
         <div class="border border-cream/15 p-8 md:p-11">
           <div class="flex items-start justify-between mb-8">
             <div>
-              <p class="eyebrow-cream mb-4">Aperçu · Exemple</p>
+              <p class="eyebrow-cream mb-4">{t('diag.previewLabel')}</p>
               <div class="flex items-baseline gap-2">
                 <span class="font-serif text-cream leading-none tabular-nums text-[clamp(4rem,8vw,6rem)]">{demoScore}</span>
                 <span class="font-serif text-cream/40 text-2xl">/100</span>
               </div>
-              <p class="text-[0.62rem] uppercase tracking-micro text-or-light mt-3">Indice solide</p>
+              <p class="text-[0.62rem] uppercase tracking-micro text-or-light mt-3">{t('diag.solidIndex')}</p>
             </div>
           </div>
 

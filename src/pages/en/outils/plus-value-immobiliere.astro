@@ -1,0 +1,100 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "2026 Real Estate Capital Gains Tax Calculator (plus-value immobilière) | Le Chêne Patrimonial";
+const description = "Estimate the tax on the capital gain when reselling a rental property or a second home: allowances by holding period, income tax and social security contributions.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Real estate capital gains</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Real estate
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">How much tax on resale?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Reselling a rental property or a second home triggers tax on the capital gain (plus-value immobilière), which decreases over time. Estimate it, and see why the holding period changes everything.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Purchase price <b id="pv-achat-val">200 000 €</b></label>
+            <input class="tool-range" type="range" id="pv-achat" min="20000" max="1500000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Resale price <b id="pv-vente-val">300 000 €</b></label>
+            <input class="tool-range" type="range" id="pv-vente" min="20000" max="2000000" step="5000" value="300000" />
+          </div>
+          <div class="tool-field">
+            <label>Holding period <b id="pv-dur-val">10 years</b></label>
+            <input class="tool-range" type="range" id="pv-dur" min="0" max="32" step="1" value="10" />
+          </div>
+          <p class="tool-note">Property other than your primary residence (which is exempt). Capital gain = resale price minus purchase price (fees and renovation costs are not factored in here). A surtax of 2 to 6% may apply if the taxable capital gain exceeds 50,000 €.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Total tax on the capital gain</p>
+          <p class="big" id="pv-total">—</p>
+          <div class="tool-brk"><span class="k">Gross capital gain</span><span class="v" id="pv-brute">—</span></div>
+          <div class="tool-brk"><span class="k">Income tax allowance</span><span class="v" id="pv-abir">—</span></div>
+          <div class="tool-brk"><span class="k">Income tax (19%)</span><span class="v" id="pv-ir">—</span></div>
+          <div class="tool-brk"><span class="k">Social security contributions (17.2%)</span><span class="v" id="pv-ps">—</span></div>
+          <div class="tool-brk"><span class="k">Capital gain net of tax</span><span class="v" id="pv-net">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Time erases the tax</h2>
+      <p>Two allowances stack, one on income tax, the other on social security contributions. The result: after <strong>22 years</strong> of ownership, no more income tax, and after <strong>30 years</strong>, full exemption. In between, the bill shrinks year by year.</p>
+      <p>Selling a year too early can cost several thousand euros. Conversely, a well-designed structure (split ownership, contribution to a company, timing the sale) can significantly lighten the bill. This is the kind of decision that is prepared for, not improvised.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function abIR(y){ return y<6?0 : (y<22?(y-5)*6 : 100); }
+    function abPS(y){ return y<6?0 : (y<=21?(y-5)*1.65 : (y===22?28 : Math.min(100,28+(y-22)*9))); }
+    function calc(){
+      const a=+document.getElementById('pv-achat').value, v=+document.getElementById('pv-vente').value, y=+document.getElementById('pv-dur').value;
+      document.getElementById('pv-achat-val').textContent=eur(a);
+      document.getElementById('pv-vente-val').textContent=eur(v);
+      document.getElementById('pv-dur-val').textContent=y+' year'+(y>1?'s':'');
+      const pv=Math.max(0,v-a);
+      const ir=pv*(1-abIR(y)/100)*0.19;
+      const ps=pv*(1-abPS(y)/100)*0.172;
+      const total=ir+ps;
+      document.getElementById('pv-brute').textContent=eur(pv);
+      document.getElementById('pv-abir').textContent=abIR(y)+' %';
+      document.getElementById('pv-ir').textContent=eur(ir);
+      document.getElementById('pv-ps').textContent=eur(ps);
+      document.getElementById('pv-total').textContent=eur(total);
+      document.getElementById('pv-net').textContent=eur(pv-total);
+    }
+    function init(){
+      const r=document.getElementById('pv-achat'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['pv-achat','pv-vente','pv-dur'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_pv-achat']){window['__hk_pv-achat']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

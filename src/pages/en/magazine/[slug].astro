@@ -1,0 +1,100 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { site } from '../../../data/site';
+
+const CAT_EN: Record<string, string> = {
+  'Fiscalité': 'Tax',
+  'Placements': 'Investments',
+  'Immobilier': 'Real estate',
+  'Retraite': 'Retirement',
+  'Transmission': 'Estate transfer',
+  'Méthode': 'Method',
+};
+const cat = (c: string) => CAT_EN[c] ?? c;
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articlesEn');
+  return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+
+interface Props { article: CollectionEntry<'articlesEn'> }
+const { article } = Astro.props;
+const { Content } = await article.render();
+
+const dateStr = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }).format(article.data.publishedAt);
+
+const all = await getCollection('articlesEn');
+const related = all
+  .filter((a) => a.slug !== article.slug && a.data.category === article.data.category)
+  .slice(0, 2);
+---
+
+<Base title={`${article.data.title}, Magazine | Le Chêne Patrimonial`} description={article.data.description}>
+  <article>
+    <!-- Hero -->
+    <header class="pt-16 pb-12 md:pt-24 md:pb-16">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+          <a href="/en/" class="hover:text-chene">Home</a>
+          <span>/</span>
+          <a href="/en/magazine" class="hover:text-chene">Magazine</a>
+          <span>/</span>
+          <span class="text-ink truncate max-w-xs">{article.data.title}</span>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          {cat(article.data.category)}
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-8 leading-tight">{article.data.title}</h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed mb-10">{article.data.description}</p>
+
+        <div class="flex flex-wrap items-center gap-6 text-sm text-stone border-t border-ink/10 pt-6">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-full bg-chene flex items-center justify-center text-cream font-serif text-sm">CC</span>
+            <div>
+              <p class="text-ink font-medium">{article.data.author}</p>
+              <p class="text-xs">Founder · {site.name}</p>
+            </div>
+          </div>
+          <span class="hidden md:inline h-4 w-px bg-ink/20"></span>
+          <time datetime={article.data.publishedAt.toISOString()}>{dateStr}</time>
+          <span class="hidden md:inline h-4 w-px bg-ink/20"></span>
+          <span>{article.data.readingTime} min read</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="shell max-w-4xl pb-20 md:pb-32">
+      <div class="prose-editorial">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <!-- Related -->
+  {related.length > 0 && (
+    <section class="py-20 bg-cream-soft border-t border-ink/10">
+      <div class="shell">
+        <p class="eyebrow mb-6">Read next</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12">In the same vein.</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {related.map((a) => (
+            <a href={`/en/magazine/${a.slug}`} class="group card-editorial">
+              <p class="text-xs uppercase tracking-micro text-chene mb-3">{cat(a.data.category)} · {a.data.readingTime} min</p>
+              <h3 class="font-serif text-2xl mb-3 text-ink group-hover:text-chene transition">{a.data.title}</h3>
+              <p class="text-ink/70 leading-relaxed">{a.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CTA />
+</Base>

@@ -1,0 +1,95 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import CTA from '../../../components/CTA.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+// Libellés de catégorie FR (valeur enum) -> affichage EN.
+const CAT_EN: Record<string, string> = {
+  'Fiscalité': 'Tax',
+  'Placements': 'Investments',
+  'Immobilier': 'Real estate',
+  'Retraite': 'Retirement',
+  'Transmission': 'Estate transfer',
+  'Méthode': 'Method',
+};
+const cat = (c: string) => CAT_EN[c] ?? c;
+
+const articles = (await getCollection('articlesEn')).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
+);
+
+const categories = Array.from(new Set(articles.map((a) => a.data.category)));
+const featured = articles.find((a) => a.data.featured) ?? articles[0];
+const rest = articles.filter((a) => a.slug !== featured?.slug);
+---
+
+<Base
+  heroDark
+  title="Magazine, Le Chêne Patrimonial"
+  description="Analysis, plain-spoken breakdowns and practical guides to understand and steer your wealth."
+>
+  <PageHeader
+    image="/magazine-header.jpg"
+    alt="Autumn forest in golden tones"
+    eyebrow="The Magazine"
+    title={`Understand before<br/><span class="italic text-or-light">you decide.</span>`}
+    intro="Carefully written pieces, no gratuitous jargon, to make you autonomous in your wealth decisions. A new breakdown twice a month."
+  />
+
+  {featured && (
+    <section class="py-12 md:py-16 bg-cream-soft">
+      <div class="shell">
+        <a href={`/en/magazine/${featured.slug}`} class="group grid lg:grid-cols-12 gap-10 items-end">
+          <div class="lg:col-span-7 aspect-[16/10] relative overflow-hidden bg-chene-dark">
+            <img src="/oak-band.jpg" alt="" class="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" decoding="async" style="filter:saturate(1.04) contrast(1.04) brightness(0.82) sepia(0.12)" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-ink/10"></div>
+            <div class="absolute top-6 left-6 bg-or px-3 py-1 text-[0.65rem] uppercase tracking-micro text-ink">Featured</div>
+            <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between text-cream/90 text-xs uppercase tracking-micro">
+              <span>{cat(featured.data.category)}</span>
+              <span>{featured.data.readingTime} min</span>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <p class="eyebrow mb-4">Featured</p>
+            <h2 class="font-serif text-3xl md:text-4xl text-ink mb-5 leading-tight group-hover:text-chene transition">{featured.data.title}</h2>
+            <p class="text-ink/70 mb-6 leading-relaxed">{featured.data.description}</p>
+            <span class="link-underline text-chene font-medium">Read the article →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- Category filter (static, visual) -->
+  <section class="py-8 border-y border-ink/10 bg-cream">
+    <div class="shell flex flex-wrap items-center gap-3 text-sm">
+      <span class="eyebrow mr-2">Filter:</span>
+      <span class="px-4 py-1.5 rounded-none bg-ink text-cream">All</span>
+      {categories.map((c) => (
+        <span class="px-4 py-1.5 rounded-none border border-ink/15 text-ink/70">{cat(c)}</span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Article list -->
+  <section class="py-16 md:py-24">
+    <div class="shell">
+      <div class="grid gap-0 border-b border-ink/10">
+        {rest.map((a) => (
+          <ArticleCard
+            href={`/en/magazine/${a.slug}`}
+            title={a.data.title}
+            category={cat(a.data.category)}
+            description={a.data.description}
+            publishedAt={a.data.publishedAt}
+            readingTime={a.data.readingTime}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Want to go further than reading?" body="An hour of conversation is often worth a thousand articles. Pick a slot, I'll call you back." />
+</Base>

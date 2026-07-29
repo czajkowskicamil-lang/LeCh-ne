@@ -1,5 +1,9 @@
 ---
 // Storytelling section, "from athlete to wealth advisor"
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const parcoursHref = localizePath('/parcours', lang);
 ---
 
 <section class="py-24 md:py-32 bg-cream-soft relative overflow-hidden">
@@ -7,26 +11,23 @@
     <div class="lg:col-span-6 reveal">
       <p class="eyebrow mb-5 flex items-center gap-3">
         <span class="inline-block h-px w-8 bg-chene"></span>
-        Un parcours atypique
+        {t('story.eyebrow')}
       </p>
       <h2 class="font-serif text-display text-ink mb-8">
-        L'athlète devenu<br/>
-        conseiller.
+        {t('story.title1')}<br/>
+        {t('story.title2')}
       </h2>
       <div class="space-y-5 text-ink/80 leading-relaxed max-w-prose-wide">
         <p class="text-lg">
-          Avant le conseil en gestion de patrimoine, j'ai été sportif de compétition.
-          J'y ai appris qu'on ne construit rien de solide dans l'improvisation, et que
-          <strong>tout ce qui dure se prépare longtemps à l'avance.</strong>
+          {t('story.p1a')}<strong>{t('story.p1strong')}</strong>
         </p>
         <p>
-          Cette exigence, je la garde pour chaque dossier : du travail, des chiffres,
-          et des décisions qui tiennent la route dans le temps.
+          {t('story.p2')}
         </p>
       </div>
       <div class="mt-10">
-        <a href="/parcours" class="link-underline text-chene font-medium">
-          Lire mon histoire en détail →
+        <a href={parcoursHref} class="link-underline text-chene font-medium">
+          {t('story.link')}
         </a>
       </div>
     </div>
@@ -43,7 +44,7 @@
             src="/camil-1200.jpg"
             srcset="/camil-800.jpg 800w, /camil-1200.jpg 1200w, /camil-1600.jpg 1600w"
             sizes="(min-width: 1024px) 28rem, 90vw"
-            alt="Camil Czajkowski, fondateur du Chêne Patrimonial, en course sous la pluie"
+            alt={t('story.imgAlt')}
             width="1069"
             height="1471"
             loading="lazy"
@@ -55,9 +56,9 @@
         <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
         <!-- Overlaid quote -->
         <div class="absolute bottom-6 left-6 right-6 bg-ink/85 backdrop-blur-sm text-cream p-6 border border-or/20">
-          <p class="font-serif italic text-or-light mb-2 text-sm">« Le chêne ne plie pas. »</p>
+          <p class="font-serif italic text-or-light mb-2 text-sm">{t('story.quoteSmall')}</p>
           <p class="font-serif text-xl leading-snug">
-            Il pousse lentement, tient longtemps, et traverse les saisons.
+            {t('story.quoteBig')}
           </p>
         </div>
         <!-- Corner accent -->

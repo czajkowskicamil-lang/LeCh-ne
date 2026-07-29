@@ -1,0 +1,158 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import { site } from '../../data/site';
+
+const title = 'Wealth Management Advisor in Montpellier | Le Chêne Patrimonial';
+const description =
+  "Independent wealth management advisor in Montpellier and the Hérault. Life insurance (assurance-vie), PER, real estate, estate transmission: clear guidance, in person or remotely. First conversation free.";
+
+const zones = [
+  'Montpellier',
+  'Hérault (34)',
+  'Occitanie',
+  "Anywhere in France, remotely",
+];
+
+const etapes = [
+  {
+    t: "First conversation, free",
+    d: "Thirty minutes to understand your situation, your objectives and your constraints. No commitment, no jargon.",
+  },
+  {
+    t: "Wealth review",
+    d: "A structured analysis of your wealth, your tax situation and your plans. You leave with a clear view of your priorities.",
+  },
+  {
+    t: "Recommendations and implementation",
+    d: "Concrete proposals, explained and prioritized. You decide, I support the implementation and the long-term follow-up.",
+  },
+];
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FinancialService',
+  '@id': 'https://www.lechenepatrimonial.com/en/conseiller-gestion-patrimoine-montpellier#localbusiness',
+  name: 'Le Chêne Patrimonial, wealth management advisor in Montpellier',
+  url: 'https://www.lechenepatrimonial.com/en/conseiller-gestion-patrimoine-montpellier',
+  description:
+    "Independent wealth management advisor in Montpellier and the Hérault.",
+  email: site.email,
+  telephone: site.phone.tel,
+  priceRange: 'On request',
+  areaServed: [
+    { '@type': 'City', name: 'Montpellier' },
+    { '@type': 'AdministrativeArea', name: 'Hérault' },
+    { '@type': 'Country', name: 'France' },
+  ],
+  serviceType: [
+    'Wealth management advisory',
+    'Life insurance (assurance-vie)',
+    'Retirement savings plan (PER)',
+    'Real estate investment',
+    'Estate transmission',
+  ],
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <span class="text-ink">Wealth Management Advisor in Montpellier</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Montpellier and Hérault
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            Wealth Management Advisor in Montpellier
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            Independent, clear, long-term guidance
+          </p>
+          <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+            Le Chêne Patrimonial supports individuals, executives, entrepreneurs and athletes in Montpellier and the Hérault in building and protecting their wealth. Life insurance (assurance-vie), retirement savings plan (PER), real estate, estate transmission: independent advice, in person across the region or remotely, tailored to your actual situation.
+          </p>
+        </div>
+
+        <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+          <div class="bg-ink text-cream p-8">
+            <p class="eyebrow-cream mb-5">Area covered</p>
+            <ul class="space-y-3 text-sm">
+              {zones.map((z) => (
+                <li class="flex gap-3">
+                  <span class="text-or mt-1">,</span>
+                  <span class="text-cream/85">{z}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="text-cream/60 text-xs mt-6 leading-relaxed">
+              Meetings in Montpellier and the surrounding area, or by video call anywhere in France.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regulatory status -->
+  <section class="border-y border-ink/10 bg-cream-soft py-12">
+    <div class="shell">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+        <div class="md:p-6 md:bg-cream reveal">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Status</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Independent</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:80ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Registration</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">ORIAS</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:160ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">First conversation</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Free</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:240ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Meetings</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">In person or remotely</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="py-20 md:py-28">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">How an engagement unfolds</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Three simple steps, at your own pace.</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        {etapes.map((e, i) => (
+          <div class="reveal" style={`transition-delay:${i * 100}ms`}>
+            <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Step {String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-2xl text-ink mb-3">{e.t}</h3>
+            <p class="text-ink/75 leading-relaxed">{e.d}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-14 reveal">
+        <a href="/en/avis" class="text-chene font-medium hover:underline underline-offset-4">
+          Read my clients' reviews
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Looking for a wealth management advisor in Montpellier?"
+    body="Let's schedule a first 30-minute conversation, in person or remotely. A clear discussion about your situation, and the priorities that follow."
+  />
+</Base>

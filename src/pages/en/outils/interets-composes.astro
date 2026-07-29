@@ -1,0 +1,119 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "Compound Interest Calculator: Long-Term Savings | Le Chêne Patrimonial";
+const description = "What could your savings become in 10, 20 or 30 years? Simulate the power of compound interest with a starting capital and regular contributions. Free.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Compound interest</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Savings
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">The power of compound interest</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Time is your best ally. A little each month, left to grow long enough, turns into a sum that always surprises. See for yourself.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Starting capital <b id="ic-cap-val">5 000 €</b></label>
+            <input class="tool-range" type="range" id="ic-cap" min="0" max="200000" step="1000" value="5000" />
+          </div>
+          <div class="tool-field">
+            <label>Monthly contribution <b id="ic-vm-val">200 €</b></label>
+            <input class="tool-range" type="range" id="ic-vm" min="0" max="3000" step="50" value="200" />
+          </div>
+          <div class="tool-field">
+            <label>Duration <b id="ic-dur-val">20 years</b></label>
+            <input class="tool-range" type="range" id="ic-dur" min="1" max="40" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Average annual return <b id="ic-tx-val">5,0 %</b></label>
+            <input class="tool-range" type="range" id="ic-tx" min="0" max="12" step="0.5" value="5" />
+          </div>
+          <p class="tool-note">Compound interest, contributions made at the start of each monthly period, not indexed, before inflation and before tax. Past performance is no guarantee of future results.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Estimated final capital</p>
+          <p class="big" id="ic-final">N/A</p>
+          <div class="ic-bar"><div class="ic-seg" id="ic-bar-v"></div><div class="ic-seg" id="ic-bar-g"></div></div>
+          <div class="ic-leg">
+            <span><i style="background:#3a5f86"></i> Total contributed</span>
+            <span><i style="background:#D4A82D"></i> Interest generated</span>
+          </div>
+          <div class="tool-brk"><span class="k">Total paid in from your own pocket</span><span class="v" id="ic-verse">N/A</span></div>
+          <div class="tool-brk"><span class="k">Interest generated</span><span class="v" id="ic-gains">N/A</span></div>
+          <div class="tool-brk"><span class="k">Share of interest in the total</span><span class="v" id="ic-part">N/A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Why starting early changes everything</h2>
+      <p>Compound interest is interest that itself earns interest. At first, the effect is subtle. Then it accelerates: in the later years, it's the returns, more than your own contributions, that swell the capital.</p>
+      <p>That's why the same savings effort pays off far more when you start early. The right investment, in the right wrapper, at the right time, is what turns a habit into wealth.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  .ic-bar{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:4px 0 12px;background:#213a5e;}
+  .ic-seg{height:100%;transition:width .2s;}
+  #ic-bar-v{background:#3a5f86;} #ic-bar-g{background:#D4A82D;}
+  .ic-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-bottom:14px;}
+  .ic-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .ic-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const P0=+document.getElementById('ic-cap').value, PM=+document.getElementById('ic-vm').value,
+        Y=+document.getElementById('ic-dur').value, T=+document.getElementById('ic-tx').value;
+      document.getElementById('ic-cap-val').textContent=eur(P0);
+      document.getElementById('ic-vm-val').textContent=eur(PM);
+      document.getElementById('ic-dur-val').textContent=Y+' years';
+      document.getElementById('ic-tx-val').textContent=T.toFixed(1).replace('.',',')+' %';
+      const r=T/1200, n=Y*12;
+      const growth=r>0?Math.pow(1+r,n):1;
+      // Versements en début de période (annuité de début) : le facteur (1+r)
+      // fait coller le calcul à l'hypothèse affichée dans la note.
+      const fv = r>0 ? P0*growth + PM*(growth-1)/r*(1+r) : P0+PM*n;
+      const verse = P0 + PM*n;
+      const gains = Math.max(0, fv - verse);
+      document.getElementById('ic-final').textContent=eur(fv);
+      document.getElementById('ic-verse').textContent=eur(verse);
+      document.getElementById('ic-gains').textContent=eur(gains);
+      document.getElementById('ic-part').textContent=(fv>0?(gains/fv*100):0).toFixed(0)+' %';
+      document.getElementById('ic-bar-v').style.width=(fv>0?verse/fv*100:100)+'%';
+      document.getElementById('ic-bar-g').style.width=(fv>0?gains/fv*100:0)+'%';
+    }
+    function init(){
+      const r=document.getElementById('ic-cap'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['ic-cap','ic-vm','ic-dur','ic-tx'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_ic-cap']){window['__hk_ic-cap']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

@@ -1,0 +1,183 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const chapters = [
+  {
+    year: 'The court',
+    title: 'Elite sport, from a young age',
+    body: "Scouted as a teenager on a basketball court, I stepped into a life where training, competition and demand became the everyday norm. Strasbourg, Limoges, Dijon in France, then Radom, Wrocław, Kraków in Poland: six clubs, six seasons, six locker rooms. There, I learned what it truly means to face performance, and to accept that some days, you lose despite all the work put in.",
+  },
+  {
+    year: 'The method',
+    title: 'Discipline, method, structure',
+    body: "Elite sport is a school of structure. You plan the season in blocks. You measure everything: load, recovery, progression. You adjust continuously. That grammar, objective, plan, execution, feedback, became my way of approaching any complex problem.",
+  },
+  {
+    year: 'The observation',
+    title: 'Career transition, an unspoken subject',
+    body: "Like many athletes, I watched brilliant careers around me land badly. The reasons? Rarely a lack of skill. Almost always a lack of financial foresight: no structured wealth plan, no tax optimisation during the peak years, no safety net for what comes after. I decided to take on this subject.",
+  },
+  {
+    year: 'The shift',
+    title: 'From athlete to advisor',
+    body: "I completed the demanding training to become a wealth management advisor (ORIAS registration no. 25 00 00 16), while continuing to train in the tax specifics of atypical income: executives, self-employed professionals, athletes, artists. I chose total independence: no bank behind me, no targets imposed by a network.",
+  },
+  {
+    year: 'Today',
+    title: 'Le Chêne Patrimonial',
+    body: "The firm supports entrepreneurs, individuals, executives and athletes in building, protecting and passing on their wealth. The promise is simple: a clear strategy, decisions that are explained, follow-up that lasts. Like a sporting season prepared with rigour, never left to chance.",
+  },
+];
+---
+
+<Base title="Journey, Camil Czajkowski | Le Chêne Patrimonial" description="From elite sport to wealth advisory: the journey of Camil Czajkowski, founder of Le Chêne Patrimonial.">
+  <!-- En-tête image (split) -->
+  <section class="relative bg-navy-darker text-cream overflow-hidden">
+    <div class="grid lg:grid-cols-2 items-stretch min-h-[64vh]">
+      <!-- Texte -->
+      <div class="order-2 lg:order-1 flex flex-col justify-center px-6 md:px-10 lg:pl-16 lg:pr-14 py-16 md:py-24 lg:max-w-2xl lg:justify-self-end w-full">
+        <p class="eyebrow-cream mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-10 bg-or"></span>
+          The journey
+        </p>
+        <h1 class="font-serif text-cream leading-[0.98] tracking-tight mb-7 text-[clamp(2.6rem,5.4vw,4.6rem)]">
+          Athlete, then<br/>
+          <span class="italic text-or-light">advisor.</span>
+        </h1>
+        <p class="text-cream/80 text-lg md:text-xl leading-relaxed max-w-xl mb-10">
+          A path guided by a simple conviction: the rigour that wins in competition
+          is the rigour that wins in wealth management.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-5 border-t border-cream/15 pt-7 max-w-md">
+          <div><dt class="text-[0.62rem] uppercase tracking-micro text-or-light mb-1.5">Status</dt><dd class="text-sm text-cream/90">Independent advisor</dd></div>
+          <div><dt class="text-[0.62rem] uppercase tracking-micro text-or-light mb-1.5">ORIAS</dt><dd class="text-sm text-cream/90">no.&nbsp;25&nbsp;00&nbsp;00&nbsp;16</dd></div>
+          <div><dt class="text-[0.62rem] uppercase tracking-micro text-or-light mb-1.5">Background</dt><dd class="text-sm text-cream/90">Professional basketball → CGP</dd></div>
+          <div><dt class="text-[0.62rem] uppercase tracking-micro text-or-light mb-1.5">Coverage</dt><dd class="text-sm text-cream/90">Paris · Montpellier · Marseille</dd></div>
+        </dl>
+      </div>
+
+      <!-- Image -->
+      <div class="order-1 lg:order-2 relative min-h-[46vh] lg:min-h-full">
+        <picture>
+          <source type="image/webp" srcset="/camil-800.webp 800w, /camil-1200.webp 1200w, /camil-1600.webp 1600w" sizes="(min-width:1024px) 50vw, 100vw" />
+          <img
+            src="/camil-1200.jpg"
+            srcset="/camil-800.jpg 800w, /camil-1200.jpg 1200w, /camil-1600.jpg 1600w"
+            sizes="(min-width:1024px) 50vw, 100vw"
+            alt="Camil Czajkowski, founder of Le Chêne Patrimonial, running"
+            width="1069" height="1471"
+            fetchpriority="high" decoding="async"
+            class="parcours-hd-img absolute inset-0 h-full w-full object-cover object-top lg:object-[50%_22%]"
+          />
+        </picture>
+        <!-- Étalonnage navy pour fondre vers le texte -->
+        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-navy-darker/70 via-transparent to-navy-darker/30 lg:bg-gradient-to-r lg:from-navy-darker lg:via-navy-darker/10 lg:to-transparent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toujours en mouvement (éditorial, sans image) -->
+  <section class="pt-16 md:pt-24 pb-8 md:pb-16">
+    <div class="shell grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+      <div class="lg:col-span-4 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Always in motion
+        </p>
+        <h2 class="font-serif text-ink leading-tight text-[clamp(1.9rem,3.4vw,2.9rem)]">
+          Sport is not behind me.
+        </h2>
+      </div>
+      <div class="lg:col-span-7 lg:col-start-6 reveal space-y-5 text-ink/80 leading-relaxed max-w-prose-wide text-lg" style="animation-delay:120ms">
+        <p>
+          I left the court, not the discipline. Trail running took over: the
+          same training blocks, the same management of effort, the same
+          patience for a goal that only comes after months of work, but this
+          time in the mountains, facing the terrain and the weather.
+        </p>
+        <p>
+          I don't leave that consistency at the office door. It shapes the
+          way I build a wealth plan: step by step, with a clear direction
+          and measurable milestones, because wealth, like a trail run, is
+          won above all in the kilometres where you doubt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="border-y border-ink/10 bg-cream-soft py-16 md:py-20">
+    <div class="shell max-w-4xl">
+      <blockquote class="font-serif text-2xl md:text-4xl leading-snug text-ink reveal">
+        "In sport, the hardest discipline is not the effort, it's <span class="italic text-chene">the patience of a plan held over time.</span> For wealth, it's exactly the same."
+      </blockquote>
+      <p class="mt-8 text-sm uppercase tracking-micro text-stone reveal">Camil Czajkowski</p>
+    </div>
+  </section>
+
+  <!-- Chapters -->
+  <section class="py-24 md:py-32">
+    <div class="shell">
+      <div class="max-w-2xl mb-20 reveal">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          The story, in five chapters
+        </p>
+        <h2 class="font-serif text-display text-ink">
+          Founding <span class="italic text-chene">chapters.</span>
+        </h2>
+      </div>
+
+      <div class="relative max-w-4xl mx-auto">
+        <span aria-hidden="true" class="absolute left-4 md:left-5 top-2 bottom-2 w-px bg-ink/15"></span>
+        {chapters.map((c, i) => (
+          <article class="relative pl-14 md:pl-20 pb-16 md:pb-20 last:pb-0 reveal" style={`animation-delay:${i * 60}ms`}>
+            <span class="absolute left-0 top-1 flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full bg-cream border border-chene text-chene font-serif italic text-sm">0{i + 1}</span>
+            <p class="text-xs uppercase tracking-micro text-or mb-2">{c.year}</p>
+            <h3 class="font-serif text-2xl md:text-3xl text-ink mb-4">{c.title}</h3>
+            <p class="text-ink/80 leading-relaxed max-w-prose-wide text-[1.05rem]">{c.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values carry-over -->
+  <section class="py-24 md:py-32 bg-cream-deep">
+    <div class="shell grid lg:grid-cols-2 gap-16 items-start">
+      <div class="reveal">
+        <p class="eyebrow mb-5">What sport taught me</p>
+        <h2 class="font-serif text-display-sm text-ink mb-8">
+          Four lessons that <span class="italic text-chene">shape my work.</span>
+        </h2>
+      </div>
+      <div class="space-y-8 reveal" style="animation-delay:100ms">
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">Performance is a process, not a flash of brilliance.</h3>
+          <p class="text-ink/70 leading-relaxed">Wealth results come from repeated, consistent decisions, not a single brilliant bet.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">Data doesn't lie.</h3>
+          <p class="text-ink/70 leading-relaxed">We measure, we project, we compare. Every recommendation is backed by figures the client can read clearly.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">A good coach also says "no."</h3>
+          <p class="text-ink/70 leading-relaxed">Sometimes my role is to hold you back from a fashionable move or a product that doesn't serve you.</p>
+        </div>
+        <div>
+          <h3 class="font-serif text-xl mb-2 text-ink">True level comes from consistency.</h3>
+          <p class="text-ink/70 leading-relaxed">I commit for the long term. Wealth is judged over ten years, not one quarter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Ready to build a serious wealth-management season?" />
+</Base>
+
+<style>
+  .parcours-hd-img {
+    filter: saturate(1.05) contrast(1.05) brightness(0.9) sepia(0.12);
+  }
+</style>

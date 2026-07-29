@@ -1,0 +1,95 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "LMNP Real-Regime Simulator: Rental Income Net of Tax | Le Chêne Patrimonial";
+const description = "Under the furnished-rental LMNP actual-expenses regime, depreciation of the property often wipes out tax on your rent. Estimate your taxable rental income under LMNP. Free and instant.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">LMNP</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Real estate
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Your rental income under LMNP</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Furnished rental under the actual-expenses regime (régime réel) has a powerful advantage: depreciation of the property is deducted from your rent, and often wipes out tax for years. See what it looks like for you.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Property price <b id="lm-prix-val">200 000 €</b></label>
+            <input class="tool-range" type="range" id="lm-prix" min="40000" max="1000000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Monthly rent (furnished) <b id="lm-loy-val">800 €</b></label>
+            <input class="tool-range" type="range" id="lm-loy" min="200" max="4000" step="25" value="800" />
+          </div>
+          <div class="tool-field">
+            <label>Deductible annual expenses <b id="lm-chg-val">2 000 €</b></label>
+            <input class="tool-range" type="range" id="lm-chg" min="0" max="15000" step="250" value="2000" />
+          </div>
+          <p class="tool-note">Simplified estimate of the LMNP actual-expenses regime. Depreciation of the building estimated at 85% of the price over 30 years (land is not depreciable; furniture and works are not itemised). Deductible expenses: property tax, condominium charges, insurance, management fees, loan interest. Depreciation cannot create a deficit: any surplus is carried forward.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Taxable rental income / year</p>
+          <p class="big" id="lm-impo">N/A</p>
+          <div class="tool-brk"><span class="k">Rent collected / year</span><span class="v" id="lm-loyan">N/A</span></div>
+          <div class="tool-brk"><span class="k">Expenses deducted</span><span class="v" id="lm-chgan">N/A</span></div>
+          <div class="tool-brk"><span class="k">Depreciation of the property / year</span><span class="v" id="lm-amort">N/A</span></div>
+          <div class="tool-brk"><span class="k">Gross yield</span><span class="v" id="lm-rdt">N/A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Why furnished rental is so effective</h2>
+      <p>With unfurnished rental, your rent is fully taxed. With furnished rental under the actual-expenses regime, you deduct your expenses <strong>and the depreciation of the property</strong>, an accounting charge that costs you nothing in cash. The result: taxable income often close to zero for many years, so rent collected with almost no tax.</p>
+      <p>That said, it takes proper bookkeeping, the right depreciation schedule, and planning ahead for resale. It's a formidable regime, provided you're well advised.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const prix=+document.getElementById('lm-prix').value, loy=+document.getElementById('lm-loy').value, chg=+document.getElementById('lm-chg').value;
+      document.getElementById('lm-prix-val').textContent=eur(prix);
+      document.getElementById('lm-loy-val').textContent=eur(loy);
+      document.getElementById('lm-chg-val').textContent=eur(chg);
+      const loyAn=loy*12;
+      const amort=prix*0.85/30;
+      const imposable=Math.max(0, loyAn - chg - amort);
+      document.getElementById('lm-loyan').textContent=eur(loyAn);
+      document.getElementById('lm-chgan').textContent=eur(chg);
+      document.getElementById('lm-amort').textContent=eur(amort);
+      document.getElementById('lm-rdt').textContent=(prix>0?(loyAn/prix*100):0).toFixed(1).replace('.',',')+' %';
+      document.getElementById('lm-impo').textContent=eur(imposable);
+    }
+    function init(){
+      const r=document.getElementById('lm-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['lm-prix','lm-loy','lm-chg'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_lm-prix']){window['__hk_lm-prix']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

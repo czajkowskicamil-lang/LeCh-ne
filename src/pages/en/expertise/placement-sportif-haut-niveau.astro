@@ -1,0 +1,146 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "Investing as an elite athlete: what to do with your money? | Le Chêne Patrimonial";
+const description =
+  "Elite athlete: how do you manage and grow high income concentrated into a short period? The wealth-building levers suited to your career, explained by an advisor and former elite athlete.";
+
+const heroIntro =
+  "Earning a lot, over few years: that is the distinctive feature of an athletic career. The real question is not investing for its own sake, but organizing concentrated income so it supports you well beyond the career. Here are the wealth-building levers best suited to this reality, and how to combine them.";
+
+const leviers = [
+  {
+    titre: "Building a property portfolio (LMNP)",
+    desc: "Use your high-income years to build a property portfolio whose rental income, lightly taxed or untaxed thanks to depreciation, will become supplementary income after your career.",
+    href: "/expertise/lmnp-sportif-haut-niveau",
+    cta: "The LMNP for athletes page",
+  },
+  {
+    titre: "Life insurance (assurance-vie), a long-term foundation",
+    desc: "The most flexible wrapper in French wealth management: capitalization, access to your savings, and favorable taxation over time. A foundation to put your cash to work without locking it away.",
+    href: "/expertise/assurance-vie",
+    cta: "Learn more",
+  },
+  {
+    titre: "The PER, to smooth out taxation",
+    desc: "During the years when you are heavily taxed, the PER (plan épargne retraite, France's retirement savings plan) lets you deduct your contributions and prepare for what comes after. A powerful lever, provided you master how withdrawals work.",
+    href: "/expertise/plan-epargne-retraite",
+    cta: "Learn more",
+  },
+  {
+    titre: "Anticipating the end-of-career cliff",
+    desc: "The moment income from sport stops is prepared for while that income is still high. A simulator to see at what age you can be financially free.",
+    href: "/outils/apres-carriere",
+    cta: "The after-career simulator",
+  },
+];
+
+const faq = [
+  {
+    q: "Where to start as a young athlete with high income?",
+    a: "Before any product: with the full picture. How much you earn, for how long, and what your plans are. The right strategy follows from your situation, not from a trending investment. That is the purpose of the first conversation.",
+  },
+  {
+    q: "Should everything be invested at once?",
+    a: "No. An athletic career comes with uncertainties, injuries and transfers included. We keep a safety cash reserve available, then deploy progressively into solutions suited to your time horizon.",
+  },
+  {
+    q: "Why does a former athlete understand these issues better?",
+    a: "Because I have lived through the end-of-career cliff myself. I know what it means to move from high income to a new professional life, and I build strategies with that reality in mind.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Breadcrumb">
+        <a href="/en/" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/expertise" class="hover:text-chene">Expertise</a>
+        <span>/</span>
+        <span class="text-ink">Investing as an elite athlete</span>
+      </nav>
+
+      <div class="max-w-prose-wide">
+        <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Elite athletes
+        </p>
+        <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+          What to do with your money as an elite athlete?
+        </h1>
+        <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+          Organizing concentrated income so it lasts
+        </p>
+        <p class="text-lg text-ink/80 leading-relaxed reveal" style="animation-delay:240ms">
+          {heroIntro}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leviers -->
+  <section class="py-16 md:py-24 bg-cream-soft border-y border-ink/10">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">The right levers</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Four ways to put your income to work.</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {leviers.map((l, i) => (
+          <a href={l.href} class="group block bg-cream p-8 md:p-10 border border-ink/10 hover:border-chene transition reveal" style={`transition-delay:${i * 80}ms`}>
+            <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Lever {String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-chene transition">{l.titre}</h3>
+            <p class="text-ink/75 leading-relaxed mb-6">{l.desc}</p>
+            <span class="text-chene font-medium inline-flex items-center gap-2">
+              {l.cta}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="text-sm text-stone mt-8 max-w-prose-wide reveal">
+        Le Chêne Patrimonial operates in insurance, insurance-based retirement savings and real estate, within the scope of its broker registration. This page is for information only and does not constitute personalized investment advice.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 md:py-28">
+    <div class="shell max-w-prose-wide">
+      <p class="eyebrow mb-4 reveal">Frequently asked questions</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-10 reveal">What I am asked most.</h2>
+      <div class="divide-y divide-ink/10 border-t border-ink/10">
+        {faq.map((f) => (
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+              <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+              <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-ink/75 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="An athlete's wealth is built early."
+    body="First conversation offered, no commitment. We start from your career and your goals, not from a product decided in advance."
+  />
+</Base>

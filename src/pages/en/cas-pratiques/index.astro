@@ -1,0 +1,48 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import CTA from '../../../components/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const cases = (await getCollection('casEn')).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
+);
+---
+
+<Base
+  heroDark
+  title="Case studies, Le Chêne Patrimonial"
+  description="Three concrete examples of wealth advice: SaaS director, athlete in career transition, couple planning estate transfer. Strategy, figures, results."
+>
+  <PageHeader
+    image="/cas-pratiques-header.jpg"
+    alt="Golden light in an autumn forest"
+    eyebrow="Case studies"
+    title={`Profiles,<br/><span class="italic text-or-light">results.</span>`}
+    intro="Three real cases, anonymised with the clients' consent. The same method, three very different situations, figures to back it up."
+  />
+
+  <section class="py-12 md:py-16">
+    <div class="shell">
+      <div class="grid gap-px bg-ink/10 border-y border-ink/10">
+        {cases.map((c, i) => (
+          <a href={`/en/cas-pratiques/${c.slug}`} class="group bg-cream hover:bg-cream-soft transition p-8 md:p-12 grid lg:grid-cols-12 gap-8 items-center reveal" style={`animation-delay:${i * 80}ms`}>
+            <div class="lg:col-span-1">
+              <span class="font-serif italic text-4xl text-or">0{i + 1}</span>
+            </div>
+            <div class="lg:col-span-6">
+              <p class="text-xs uppercase tracking-micro text-chene mb-3 font-medium">{c.data.profil}</p>
+              <h2 class="font-serif text-2xl md:text-3xl text-ink mb-3 leading-tight group-hover:text-chene transition">{c.data.title}</h2>
+              <p class="text-ink/70 leading-relaxed">{c.data.problematique}</p>
+            </div>
+            <div class="lg:col-span-5 flex lg:justify-end">
+              <span class="link-underline text-chene font-medium">Read the case →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Does your situation look like one of these?" body="A first introductory meeting is often enough to see immediately whether there is something to act on. Let's plan one, with no commitment." />
+</Base>

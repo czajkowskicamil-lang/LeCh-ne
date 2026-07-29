@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+---
+
+<Base title="Legal Notice, Le Chêne Patrimonial" description="Legal notice and regulatory information for the Le Chêne Patrimonial firm." noIndex={false}>
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell max-w-3xl">
+      <p class="eyebrow mb-6">Legal Notice</p>
+      <h1 class="font-serif text-display text-ink mb-10">Legal Information</h1>
+
+      <div class="prose-editorial">
+        <h2>Site Publisher</h2>
+        <p>
+          The <strong>{site.name}</strong> website is published by Camil Czajkowski, independent wealth management advisor.
+        </p>
+        <p>
+          <strong>Address:</strong> {site.city}<br/>
+          <strong>Phone:</strong> <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a><br/>
+          <strong>Email:</strong> <a href={`mailto:${site.email}`}>{site.email}</a><br/>
+          <strong>Publication Director:</strong> Camil Czajkowski
+        </p>
+
+        <h2>Regulatory Status</h2>
+        <ul>
+          <li><strong>Courtier en Opérations d'Assurance (COA)</strong>, ORIAS registration no. 25 00 00 16, the single register of insurance, banking and finance intermediaries, available at <a href="https://www.orias.fr" target="_blank" rel="noopener">www.orias.fr</a>.</li>
+          <li><strong>Carte Professionnelle Transaction Immobilière (Carte T)</strong> no. CPI 3402 2024 000 000 049, for transactions involving real property and business assets.</li>
+        </ul>
+
+        <h2>Professional Indemnity Insurance</h2>
+        <p>
+          Professional indemnity insurance (RCP) taken out with <strong>AssurUp</strong>, policy no. RCP241209141205, covering all regulated activities.
+        </p>
+
+        <h2>Supervisory Authority</h2>
+        <p>
+          Autorité de Contrôle Prudentiel et de Résolution (ACPR), 4 place de Budapest, 75436 Paris Cedex 09, France, <a href="https://acpr.banque-france.fr" target="_blank" rel="noopener">acpr.banque-france.fr</a>.
+        </p>
+
+        <h2>Hosting</h2>
+        <p>
+          Site hosted by <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, United States.
+        </p>
+
+        <h2>Intellectual Property</h2>
+        <p>
+          All content on this site (text, images, logos, design) is protected by copyright. Any reproduction, even partial, requires prior written authorisation.
+        </p>
+
+        <h2>Mediation</h2>
+        <p>
+          In the event of a dispute, and after first contacting the firm, the client may refer the matter free of charge to the competent mediator:
+        </p>
+        <ul>
+          <li>Insurance Mediator (for insurance products)</li>
+          <li>Consumer Mediator (for other disputes)</li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+</Base>

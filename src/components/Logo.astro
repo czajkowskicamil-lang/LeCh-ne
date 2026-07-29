@@ -1,4 +1,6 @@
 ---
+import { getLangFromUrl, localizePath } from '../i18n/utils';
+
 interface Props {
   variant?: 'ink' | 'cream';
   compact?: boolean; // compact = smaller, for mobile
@@ -9,10 +11,12 @@ const sizeClasses = compact ? 'h-10' : 'h-12 md:h-14';
 // Cream variant: invert-ish filter for display on navy background.
 // The source logo is gold on transparent, that works on ANY background natively,
 // so we don't actually need filters. Variant is kept for API compatibility.
+const lang = getLangFromUrl(Astro.url);
+const home = localizePath('/', lang);
 ---
 
 <a
-  href="/"
+  href={home}
   class={`inline-flex items-center group ${className}`}
   aria-label="Le Chêne Patrimonial, accueil"
   transition:name="site-logo"

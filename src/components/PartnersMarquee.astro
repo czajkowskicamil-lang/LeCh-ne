@@ -13,13 +13,16 @@ const partners = [
 
 // Duplicate for a seamless CSS loop, no flex gap (causes drift with %-based translate)
 const track = [...partners, ...partners];
+
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+const t = useTranslations(getLangFromUrl(Astro.url));
 ---
 
 <section class="partners-section border-y border-ink/10 bg-cream-soft overflow-hidden">
   <div class="shell py-6">
     <p class="eyebrow text-center text-ink/50 mb-5 flex items-center justify-center gap-3">
       <span class="inline-block h-px w-8 bg-chene/60"></span>
-      Ils nous accompagnent au quotidien
+      {t('partners.eyebrow')}
       <span class="inline-block h-px w-8 bg-chene/60"></span>
     </p>
   </div>

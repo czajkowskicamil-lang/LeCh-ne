@@ -1,0 +1,145 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "Free Wealth Planning Tools: Real Estate, Loan and Wealth-Transfer Simulators | Le Chêne Patrimonial";
+const description = "Simple, free simulators to help you see clearly: notary fees, borrowing capacity, rental yield, wealth transfer. Calculate, understand, decide.";
+
+const outils = [
+  { titre: "Rental yield", desc: "Price, rent, loan, insurance: your real cash flow, month by month.", href: "/en/calculatrice-rentabilite-credit", tag: "Real estate", live: true },
+  { titre: "Notary fees", desc: "How much will you really pay in notary fees, for an existing property or a new build.", href: "/en/outils/frais-de-notaire", tag: "Purchase", live: true },
+  { titre: "Borrowing capacity", desc: "How much you can borrow based on your income and the loan term.", href: "/en/outils/capacite-emprunt", tag: "Home loan", live: true },
+  { titre: "PTZ simulator", desc: "The amount of your Prêt à Taux Zéro (zero-interest loan) based on your zone, household and income.", href: "/en/outils/simulateur-ptz", tag: "First-time buyer", live: true },
+  { titre: "Inheritance tax", desc: "What your heirs would pay, and how much planning ahead can save.", href: "/en/outils/droits-succession", tag: "Wealth transfer", live: true },
+  { titre: "Real estate capital gains", desc: "The tax due on selling a rental property or a second home.", href: "/en/outils/plus-value-immobiliere", tag: "Real estate", live: true },
+  { titre: "LMNP investment", desc: "Your net rental income after depreciation, under furnished rental.", href: "/en/outils/lmnp", tag: "Real estate", live: true },
+  { titre: "Tax savings (PER)", desc: "How much a payment into your PER reduces your income tax.", href: "/en/outils/economie-impot-per", tag: "Taxation", live: true },
+  { titre: "Rent or buy?", desc: "The numbers, compared: staying a tenant versus becoming an owner.", href: "/en/outils/louer-ou-acheter", tag: "Real estate", live: true },
+  { titre: "Compound interest", desc: "What your savings could become in 10, 20 or 30 years.", href: "/en/outils/interets-composes", tag: "Savings", live: true },
+];
+---
+
+<Base heroDark title={title} description={description}>
+  <PageHeader
+    image="/outils-header.jpg"
+    alt="Path through a forest towards the light"
+    eyebrow="Free diagnostic & tools"
+    title="Calculate, understand, decide."
+    intro="Start with your free wealth diagnostic, then refine the picture with our simulators. No sign-up, and if you want to go further, let's talk it through together."
+  />
+
+  <!-- ================= Free entry point: Wealth diagnostic ================= -->
+  <section class="shell max-w-5xl pb-6">
+    <a href="/en/outils/diagnostic-patrimonial" class="group block relative overflow-hidden rounded-none bg-cream-soft border border-chene/25 p-8 md:p-10 transition-all duration-300 hover:border-chene/50 hover:-translate-y-1">
+      <div class="md:flex md:items-center md:gap-10">
+        <div class="md:flex-1">
+          <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-4 flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Start here · Free · 3 minutes
+          </p>
+          <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Your Intelligent Wealth Diagnostic</h2>
+          <p class="text-ink/70 leading-relaxed mb-6 max-w-prose-wide">
+            A few guided questions, one at a time, and you get your Wealth Health Index out of 100: strengths, blind spots, optimisation opportunities and a 12-month action plan. The ideal starting point, before going further.
+          </p>
+          <span class="inline-flex items-center gap-2 bg-ink text-cream font-semibold rounded-none px-6 py-3.5 group-hover:bg-chene transition">
+            Start my diagnostic
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
+        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-chene/20 pl-8">
+          <div class="font-serif text-6xl text-chene leading-none">/100</div>
+          <p class="text-stone text-xs mt-3 leading-relaxed">Your Wealth Health Index, calculated live</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <!-- ================= Signature tool: post-career countdown for athletes ================= -->
+  <section class="shell max-w-5xl pt-6 pb-2">
+    <a href="/en/outils/apres-carriere" class="group block relative overflow-hidden rounded-none bg-navy-deep text-cream p-8 md:p-10 transition-all duration-300 hover:-translate-y-1">
+      <div class="md:flex md:items-center md:gap-10">
+        <div class="md:flex-1">
+          <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-4 flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-or"></span>
+            High-level athletes · Free
+          </p>
+          <h2 class="font-serif text-display-sm text-cream mb-3 leading-tight">The post-career countdown</h2>
+          <p class="text-cream/75 leading-relaxed mb-6 max-w-prose-wide">
+            One day, income from sport stops. Visualise the cliff, discover your freedom capital and the plan to prepare for what comes next, while you're still earning well. The tool I wish I'd had.
+          </p>
+          <span class="inline-flex items-center gap-2 bg-or text-ink font-semibold rounded-none px-6 py-3.5 group-hover:bg-or-light transition">
+            Start the countdown
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
+        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-or/25 pl-8">
+          <div class="font-serif text-5xl text-or-light leading-none">Age</div>
+          <p class="text-cream/60 text-xs mt-3 leading-relaxed">of your financial freedom, estimated live</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <!-- ================= General-audience tool: financial independence ================= -->
+  <section class="shell max-w-5xl pt-6 pb-2">
+    <a href="/en/outils/liberte-financiere" class="group block relative overflow-hidden rounded-none bg-cream-soft border border-chene/25 p-8 md:p-10 transition-all duration-300 hover:border-chene/50 hover:-translate-y-1">
+      <div class="md:flex md:items-center md:gap-10">
+        <div class="md:flex-1">
+          <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-4 flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Financial independence · For everyone · Free
+          </p>
+          <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">At what age will you be free?</h2>
+          <p class="text-ink/70 leading-relaxed mb-6 max-w-prose-wide">
+            Being free is the day your wealth lets you live without a salary. Discover your freedom number, the age at which you'll reach it at your current pace, and the path to get there sooner.
+          </p>
+          <span class="inline-flex items-center gap-2 bg-ink text-cream font-semibold rounded-none px-6 py-3.5 group-hover:bg-chene transition">
+            Calculate my age of freedom
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
+        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-chene/20 pl-8">
+          <div class="font-serif text-5xl text-chene leading-none">Free</div>
+          <p class="text-stone text-xs mt-3 leading-relaxed">at what age, and how to get there sooner</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <div class="shell max-w-5xl pt-8 pb-20 md:pb-28">
+    <p class="eyebrow mb-8 flex items-center gap-3">
+      <span class="inline-block h-px w-8 bg-chene"></span>
+      And our free simulators
+    </p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {outils.map((o) => (
+        o.live ? (
+          <a href={o.href} class="group bg-cream-soft border border-ink/10 rounded-none p-7 transition-all duration-300 hover:border-chene/40 hover:-translate-y-1 flex flex-col">
+            <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-3">{o.tag}</p>
+            <h2 class="font-serif text-2xl text-ink mb-2 group-hover:text-chene transition">{o.titre}</h2>
+            <p class="text-ink/70 text-sm leading-relaxed mb-5 flex-1">{o.desc}</p>
+            <span class="text-sm font-medium text-or-dark inline-flex items-center gap-2">Open the tool
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ) : (
+          <div class="bg-cream-soft/50 border border-ink/8 rounded-none p-7 flex flex-col opacity-80">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs uppercase tracking-micro text-stone font-semibold">{o.tag}</p>
+              <span class="text-[0.65rem] uppercase tracking-wide font-bold text-or-dark bg-or/12 rounded-full px-2.5 py-1">Coming soon</span>
+            </div>
+            <h2 class="font-serif text-2xl text-ink/70 mb-2">{o.titre}</h2>
+            <p class="text-ink/55 text-sm leading-relaxed flex-1">{o.desc}</p>
+          </div>
+        )
+      ))}
+    </div>
+
+    <p class="text-sm text-stone mt-10 max-w-prose-wide">
+      These tools give order-of-magnitude, educational estimates. They do not replace a study tailored to your own situation.
+    </p>
+  </div>
+
+  <CTA />
+</Base>

@@ -1,0 +1,131 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "Rent or Buy? The Numbers, Compared | Le Chêne Patrimonial";
+const description = "Should you buy your home or stay a tenant and invest instead? Compare the final wealth of both scenarios based on your own assumptions. Free simulator.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Rent or buy</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Real estate
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Rent or buy?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Buying isn't always the winning move, and neither is renting. It all depends on the time horizon, prices, and what you'd do with your savings instead. Here is the comparison, in numbers, honestly.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Property price <b id="la-prix-val">300 000 €</b></label>
+            <input class="tool-range" type="range" id="la-prix" min="80000" max="1200000" step="10000" value="300000" />
+          </div>
+          <div class="tool-field">
+            <label>Personal down payment <b id="la-app-val">30 000 €</b></label>
+            <input class="tool-range" type="range" id="la-app" min="0" max="400000" step="5000" value="30000" />
+          </div>
+          <div class="tool-field">
+            <label>Rent for the same home / month <b id="la-loy-val">1 000 €</b></label>
+            <input class="tool-range" type="range" id="la-loy" min="300" max="4000" step="50" value="1000" />
+          </div>
+          <div class="tool-field">
+            <label>Project duration <b id="la-dur-val">20 years</b></label>
+            <input class="tool-range" type="range" id="la-dur" min="3" max="30" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Loan rate <b id="la-tx-val">3,50 %</b></label>
+            <input class="tool-range" type="range" id="la-tx" min="1" max="6" step="0.05" value="3.5" />
+          </div>
+          <div class="tool-field">
+            <label>Property appreciation / year <b id="la-rev-val">2,0 %</b></label>
+            <input class="tool-range" type="range" id="la-rev" min="-2" max="6" step="0.5" value="2" />
+          </div>
+          <div class="tool-field">
+            <label>Return on your savings / year <b id="la-epg-val">4,0 %</b></label>
+            <input class="tool-range" type="range" id="la-epg" min="0" max="10" step="0.5" value="4" />
+          </div>
+          <p class="tool-note">Fixed assumptions: notary fees 7.5%, owner charges 1.5%/year of the price (property tax, condominium fees, upkeep), loan repaid over the project's duration. This compares final wealth under the assumptions given; it is not a prediction.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">The more advantageous option over time</p>
+          <p class="big" id="la-verdict">N/A</p>
+          <div class="tool-brk"><span class="k">Final wealth if you buy</span><span class="v" id="la-pat-a">N/A</span></div>
+          <div class="tool-brk"><span class="k">Final wealth if you rent and invest</span><span class="v" id="la-pat-l">N/A</span></div>
+          <div class="tool-brk"><span class="k">Gap in your favour</span><span class="v" id="la-ecart">N/A</span></div>
+          <div class="tool-brk"><span class="k">Monthly cost as an owner</span><span class="v" id="la-cout">N/A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>How to read this result</h2>
+      <p>The owner ends up with a property that's paid off, whose value has changed over time. The tenant, meanwhile, invests the down payment and the monthly saving they make (whenever renting costs less than owning), and lets that sum grow. We compare the two final wealth figures at the end.</p>
+      <p>The tipping point mainly depends on <strong>the duration</strong> (the longer you stay, the more buying pays off) and on <strong>the return on your savings</strong>. There is no universal right answer, only your own. This is exactly where an outside perspective helps you decide with confidence.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const prix=+document.getElementById('la-prix').value, app=+document.getElementById('la-app').value,
+        loy=+document.getElementById('la-loy').value, dur=+document.getElementById('la-dur').value,
+        tx=+document.getElementById('la-tx').value, rev=+document.getElementById('la-rev').value, epg=+document.getElementById('la-epg').value;
+      document.getElementById('la-prix-val').textContent=eur(prix);
+      document.getElementById('la-app-val').textContent=eur(app);
+      document.getElementById('la-loy-val').textContent=eur(loy);
+      document.getElementById('la-dur-val').textContent=dur+' years';
+      document.getElementById('la-tx-val').textContent=tx.toFixed(2).replace('.',',')+' %';
+      document.getElementById('la-rev-val').textContent=rev.toFixed(1).replace('.',',')+' %';
+      document.getElementById('la-epg-val').textContent=epg.toFixed(1).replace('.',',')+' %';
+
+      const n=dur*12;
+      // Acheter
+      const cout=prix*1.075, emprunt=Math.max(0,cout-app), r=tx/1200;
+      const mens = emprunt>0 ? (r>0 ? emprunt*r/(1-Math.pow(1+r,-n)) : emprunt/n) : 0;
+      const chargesM = prix*0.015/12;
+      const coutProprio = mens + chargesM;
+      const valeurBien = prix*Math.pow(1+rev/100,dur);
+      const patA = valeurBien;
+      // Louer et investir
+      const s=epg/1200, g=s>0?Math.pow(1+s,n):1;
+      const diff=Math.max(0, coutProprio - loy);
+      const patL = s>0 ? app*g + diff*(g-1)/s : app + diff*n;
+
+      const delta = patA - patL;
+      const vEl=document.getElementById('la-verdict');
+      if (delta>=0){ vEl.textContent='Buy'; vEl.style.color='#7bbd90'; }
+      else { vEl.textContent='Rent and invest'; vEl.style.color='#E6C259'; }
+      document.getElementById('la-pat-a').textContent=eur(patA);
+      document.getElementById('la-pat-l').textContent=eur(patL);
+      document.getElementById('la-ecart').textContent='+ '+eur(Math.abs(delta));
+      document.getElementById('la-cout').textContent=eur(coutProprio);
+    }
+    function init(){
+      const r=document.getElementById('la-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['la-prix','la-app','la-loy','la-dur','la-tx','la-rev','la-epg'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_la-prix']){window['__hk_la-prix']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

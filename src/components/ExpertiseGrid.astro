@@ -1,13 +1,22 @@
 ---
-import { expertises } from '../data/site';
+import { expertises as expertisesFr } from '../data/site';
+import { expertises as expertisesEn } from '../data/expertises.en';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 
 interface Props {
   limit?: number;
   title?: string;
   eyebrow?: string;
 }
-const { limit = 10, title = "Expertise patrimoniale", eyebrow = "Dix piliers, une méthode" } = Astro.props;
-const items = expertises.slice(0, limit);
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const {
+  limit = 10,
+  title = lang === 'en' ? 'Wealth expertise' : 'Expertise patrimoniale',
+  eyebrow = lang === 'en' ? 'Ten pillars, one method' : 'Dix piliers, une méthode',
+} = Astro.props;
+const source = lang === 'en' ? expertisesEn : expertisesFr;
+const items = source.slice(0, limit);
 ---
 
 <section class="py-24 md:py-32">
@@ -25,16 +34,14 @@ const items = expertises.slice(0, limit);
       </div>
       <div class="lg:col-span-5 reveal">
         <p class="text-ink/70 leading-relaxed">
-          Chaque thématique est traitée avec la même rigueur : comprendre votre
-          situation, modéliser les scénarios, choisir les enveloppes, piloter dans
-          le temps. Cliquez sur un pilier pour en explorer la logique.
+          {t('egrid.intro')}
         </p>
       </div>
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
       {items.map((e, i) => (
-        <a href={`/expertise/${e.slug}`} class="group bg-cream-soft border border-ink/10 p-8 md:p-10 flex flex-col justify-between min-h-[320px] transition-all duration-500 ease-out-expo hover:bg-chene hover:text-cream hover:border-chene reveal" style={`animation-delay:${i * 40}ms`}>
+        <a href={localizePath(`/expertise/${e.slug}`, lang)} class="group bg-cream-soft border border-ink/10 p-8 md:p-10 flex flex-col justify-between min-h-[320px] transition-all duration-500 ease-out-expo hover:bg-chene hover:text-cream hover:border-chene reveal" style={`animation-delay:${i * 40}ms`}>
           <div>
             <div class="flex items-center justify-between mb-6">
               <span class="text-[0.65rem] uppercase tracking-micro text-chene group-hover:text-or-light transition">{e.short}</span>
@@ -44,7 +51,7 @@ const items = expertises.slice(0, limit);
             <p class="text-sm text-ink/60 group-hover:text-cream/70 transition mb-6">{e.tagline}</p>
           </div>
           <div class="flex items-center gap-2 text-sm font-medium">
-            <span>Explorer</span>
+            <span>{t('egrid.explore')}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="transition-transform duration-500 ease-out-expo group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </div>
         </a>

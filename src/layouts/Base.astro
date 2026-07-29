@@ -8,6 +8,7 @@ import SmoothScroll from '../components/SmoothScroll.astro';
 import ReadingProgress from '../components/ReadingProgress.astro';
 import { ViewTransitions } from 'astro:transitions';
 import { site } from '../data/site';
+import { getLangFromUrl, localizePath, stripLangPrefix } from '../i18n/utils';
 
 interface Props {
   title?: string;
@@ -25,11 +26,19 @@ const {
   heroDark = false,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechenepatrimonial.com').href;
+const lang = getLangFromUrl(Astro.url);
+const origin = Astro.site ?? new URL('https://www.lechenepatrimonial.com');
+const canonical = new URL(Astro.url.pathname, origin).href;
+
+// Alternates hreflang : version FR et EN du même chemin, pour Google.
+const basePath = stripLangPrefix(Astro.url.pathname);
+const altFr = new URL(localizePath(basePath, 'fr'), origin).href;
+const altEn = new URL(localizePath(basePath, 'en'), origin).href;
+const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,6 +46,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechene
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="fr" href={altFr} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="x-default" href={altFr} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
     {!noIndex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />}
 
@@ -54,7 +66,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.lechene
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, Astro.site ?? 'https://www.lechenepatrimonial.com').href} />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={ogLocale} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />

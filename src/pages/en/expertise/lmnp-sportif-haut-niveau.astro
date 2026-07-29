@@ -1,0 +1,210 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+import { site } from '../../../data/site';
+
+const title = 'LMNP for elite athletes: lightly taxed rental income | Le Chêne Patrimonial';
+const description =
+  "Elite athlete: the LMNP status lets you build, during your high-income years, a property portfolio whose rental income is lightly taxed or untaxed. Analysis by a wealth management advisor and former elite athlete.";
+
+const heroIntro =
+  "An athletic career concentrates high income into a short period, often heavily taxed. The Loueur en Meublé Non Professionnel (LMNP) status, France's non-professional furnished-rental regime, lets you use this period to build a property portfolio whose rental income, thanks to the depreciation mechanism, stays lightly taxed or untaxed. It is one of the rare schemes whose time horizon matches an athlete's exactly: building a supplementary income today for life after the career.";
+
+const pourQui = [
+  "Active professional athletes with high, heavily taxed income",
+  "Athletes anticipating a drop in income at the end of their career",
+  "Athletes looking to structure a first real estate investment",
+  "Expatriate players considering a wealth anchor in France",
+];
+
+const chiffresCles = [
+  { label: 'Tax on rental income', value: 'Often zero for several years' },
+  { label: 'Recommended regime', value: 'Actual expenses (réel)' },
+  { label: 'Useful horizon', value: 'From day one of the career' },
+  { label: 'Depreciation', value: 'Property and furnishings' },
+];
+
+const sections = [
+  {
+    title: "Why LMNP fits an athlete's situation",
+    body: "Three realities define your profession: income concentrated over ten to fifteen years, heavy taxation during the career, and a post-career period to fund very early. LMNP addresses all three. While you are heavily taxed, depreciation offsets the tax on rental income. Once the career ends, that rental income becomes a regular supplementary income, right when income from sport stops.",
+  },
+  {
+    title: "The depreciation mechanism, explained simply",
+    body: "Under the actual-expenses regime (régime réel), you deduct a portion of the property's and furnishings' value from your rental income each year. This accounting charge, which involves no actual cash outflow, offsets all or part of the taxable rent. The concrete result: for many years, rent is collected but little or no tax is owed on it.",
+  },
+  {
+    title: "Actual-expenses regime rather than micro-BIC",
+    body: "The micro-BIC regime applies a simple flat-rate allowance but rules out depreciation. For an investor aiming to optimize over the long term, the actual-expenses regime (régime réel) is almost always more favorable. In exchange, it requires bookkeeping every year, generally entrusted to a specialized accountant.",
+  },
+  {
+    title: "Unfurnished rental versus LMNP: the difference on your rental income",
+    body: "With unfurnished rental, rent is added to your income and taxed at your marginal rate, often high during the career. With LMNP under the actual-expenses regime, depreciation brings the taxable base close to zero for years. On the same property, the tax difference can amount to thousands of euros a year.",
+  },
+  {
+    title: "The case of athletes who are not French tax residents",
+    body: "Many athletes spend part of their career abroad. Access to LMNP and its tax treatment then depend on your country of residence and the applicable tax treaty. This should be examined case by case, before any commitment, to avoid unpleasant surprises.",
+  },
+];
+
+const piegesClassiques = [
+  "Buying out of geographic affinity, close to the club, rather than for the location's real quality",
+  "Choosing micro-BIC for simplicity and losing the entire benefit of depreciation",
+  "Underestimating the bookkeeping required by the actual-expenses regime",
+  "Confusing a headline tax reduction with the property's actual economic merit",
+];
+
+const faq = [
+  {
+    q: "Can you start an LMNP investment mid-career?",
+    a: "Yes, and it is even the ideal time. The high-income years are when the effect of depreciation and your borrowing capacity are most useful. Starting early also gives the property time to appreciate before the post-career period.",
+  },
+  {
+    q: "Does LMNP work for an athlete who is not a French tax resident?",
+    a: "It is possible, but the treatment depends on your country of residence and the tax treaty between that country and France. Each situation must be analyzed individually before deciding.",
+  },
+  {
+    q: "What budget is needed to get started?",
+    a: "There is no single figure. The investment is often partly financed with a loan, which preserves cash on hand. The right starting point is your overall situation, not a product decided in advance.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Breadcrumb">
+        <a href="/en/" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/expertise" class="hover:text-chene">Expertise</a>
+        <span>/</span>
+        <span class="text-ink">LMNP for elite athletes</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            Elite athletes
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            LMNP for elite athletes
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            Turning concentrated income into lasting wealth
+          </p>
+          <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+            {heroIntro}
+          </p>
+        </div>
+
+        <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+          <div class="bg-ink text-cream p-8">
+            <p class="eyebrow-cream mb-5">Who is this for?</p>
+            <ul class="space-y-3 text-sm">
+              {pourQui.map((p) => (
+                <li class="flex gap-3">
+                  <span class="text-or mt-1">,</span>
+                  <span class="text-cream/85">{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key numbers -->
+  <section class="border-y border-ink/10 bg-cream-soft py-12">
+    <div class="shell">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+        {chiffresCles.map((c, i) => (
+          <div class="md:p-6 md:bg-cream reveal" style={`transition-delay:${i * 80}ms`}>
+            <p class="text-xs uppercase tracking-micro text-stone mb-2">{c.label}</p>
+            <p class="font-serif text-2xl md:text-3xl text-ink">{c.value}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Body sections -->
+  <section class="py-20 md:py-28">
+    <div class="shell grid lg:grid-cols-12 gap-12">
+      <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-28">
+          <p class="eyebrow mb-4">Contents</p>
+          <ul class="space-y-3 text-sm">
+            {sections.map((s, i) => (
+              <li><a href={`#section-${i}`} class="text-ink/70 hover:text-chene transition">{s.title}</a></li>
+            ))}
+            <li><a href="#pieges" class="text-ink/70 hover:text-chene transition">Common pitfalls</a></li>
+            <li><a href="#faq" class="text-ink/70 hover:text-chene transition">Frequently asked questions</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="lg:col-span-9">
+        <div class="prose-editorial">
+          {sections.map((s, i) => (
+            <article id={`section-${i}`} class="reveal mb-14">
+              <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">§ {String(i + 1).padStart(2, '0')}</p>
+              <h2 class="font-serif text-3xl md:text-[2.25rem] text-ink mb-5 leading-tight">{s.title}</h2>
+              <p>{s.body}</p>
+            </article>
+          ))}
+
+          <aside id="pieges" class="my-16 p-8 md:p-10 bg-ink text-cream reveal">
+            <p class="eyebrow-cream mb-5">Common pitfalls to avoid</p>
+            <h3 class="font-serif text-2xl md:text-3xl text-cream mb-6">What I see, and what it costs.</h3>
+            <ul class="space-y-4 text-cream/85">
+              {piegesClassiques.map((p) => (
+                <li class="flex gap-4">
+                  <span class="text-or-light mt-0.5">✕</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <section id="faq" class="mt-16 reveal">
+            <p class="eyebrow mb-4">Frequently asked questions</p>
+            <h3 class="font-serif text-3xl md:text-4xl text-ink mb-10">What I am asked most.</h3>
+            <div class="divide-y divide-ink/10 border-t border-ink/10">
+              {faq.map((f) => (
+                <details class="group py-6">
+                  <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                    <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+                    <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                    </span>
+                  </summary>
+                  <p class="mt-4 text-ink/75 leading-relaxed max-w-3xl">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="A real estate project to structure intelligently?"
+    body="First conversation offered, no commitment. We start from your actual situation, not from a product decided in advance."
+  />
+</Base>

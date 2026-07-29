@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { expertises } from '../data/site';
+import { translatedRoutes } from '../i18n/ui';
 
 const SITE = 'https://www.lechenepatrimonial.com';
 
@@ -41,68 +42,112 @@ const staticPages = [
   { path: '/confidentialite',  priority: 0.3, changefreq: 'yearly' },
 ];
 
+// Chemin FR canonique -> chemin EN équivalent (/en/…), '/' devenant '/en/'.
+const enPath = (path: string) => (path === '/' ? '/en/' : `/en${path}`);
+
+type Entry = {
+  path: string;
+  lastmod: string;
+  changefreq: string;
+  priority: number;
+  hasEn: boolean;
+};
+
+// Construit un ou deux blocs <url> : la version FR (avec alternates hreflang si
+// une version EN existe) et, le cas échéant, la version EN.
+function renderEntry(e: Entry): string {
+  const meta = `    <lastmod>${e.lastmod}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority.toFixed(1)}</priority>`;
+
+  if (!e.hasEn) {
+    return `  <url>
+    <loc>${SITE}${e.path}</loc>
+${meta}
+  </url>`;
+  }
+
+  const alt = `    <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${e.path}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${SITE}${enPath(e.path)}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${e.path}" />`;
+
+  return `  <url>
+    <loc>${SITE}${e.path}</loc>
+${alt}
+${meta}
+  </url>
+  <url>
+    <loc>${SITE}${enPath(e.path)}</loc>
+${alt}
+${meta}
+  </url>`;
+}
+
 export const GET: APIRoute = async () => {
   const articles = await getCollection('articles');
   const cas = await getCollection('cas');
   const news = await getCollection('news');
   const opportunites = await getCollection('opportunites');
+  const articlesEn = await getCollection('articlesEn');
+  const casEn = await getCollection('casEn');
   const today = new Date().toISOString().split('T')[0];
 
-  const urls = [
+  // Slugs disposant d'une version anglaise (contenu dynamique).
+  const articlesEnSlugs = new Set(articlesEn.map((a) => a.slug));
+  const casEnSlugs = new Set(casEn.map((c) => c.slug));
+
+  const entries: Entry[] = [
     ...staticPages.map((p) => ({
-      loc: `${SITE}${p.path}`,
+      path: p.path,
       lastmod: today,
       changefreq: p.changefreq,
       priority: p.priority,
+      hasEn: translatedRoutes.has(p.path),
     })),
-    ...expertises.map((e) => ({
-      loc: `${SITE}/expertise/${e.slug}`,
+    ...expertises.map((x) => ({
+      path: `/expertise/${x.slug}`,
       lastmod: today,
       changefreq: 'monthly',
       priority: 0.8,
+      hasEn: translatedRoutes.has(`/expertise/${x.slug}`),
     })),
     ...articles.map((a) => ({
-      loc: `${SITE}/magazine/${a.slug}`,
+      path: `/magazine/${a.slug}`,
       lastmod: (a.data.updatedAt ?? a.data.publishedAt).toISOString().split('T')[0],
       changefreq: 'monthly',
       priority: 0.7,
+      hasEn: articlesEnSlugs.has(a.slug),
     })),
     ...cas.map((c) => ({
-      loc: `${SITE}/cas-pratiques/${c.slug}`,
+      path: `/cas-pratiques/${c.slug}`,
       lastmod: c.data.publishedAt.toISOString().split('T')[0],
       changefreq: 'monthly',
       priority: 0.7,
+      hasEn: casEnSlugs.has(c.slug),
     })),
     ...news
       .filter((n) => !n.data.external)
       .map((n) => ({
-        loc: `${SITE}/actualites/${n.slug}`,
+        path: `/actualites/${n.slug}`,
         lastmod: n.data.publishedAt.toISOString().split('T')[0],
         changefreq: 'monthly',
         priority: 0.6,
+        hasEn: false,
       })),
     ...opportunites
       .filter((o) => !o.data.external)
       .map((o) => ({
-        loc: `${SITE}/opportunites/${o.slug}`,
+        path: `/opportunites/${o.slug}`,
         lastmod: o.data.publishedAt.toISOString().split('T')[0],
         changefreq: 'weekly',
         priority: 0.7,
+        hasEn: false,
       })),
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
-  .map(
-    (u) => `  <url>
-    <loc>${u.loc}</loc>
-    <lastmod>${u.lastmod}</lastmod>
-    <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority.toFixed(1)}</priority>
-  </url>`
-  )
-  .join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${entries.map(renderEntry).join('\n')}
 </urlset>`;
 
   return new Response(xml, {

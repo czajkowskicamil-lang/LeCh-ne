@@ -1,6 +1,11 @@
 ---
 import { site } from '../data/site';
 import Magnetic from './Magnetic.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
 ---
 
 <!-- Hero cinématique plein écran — forêt à l'aube, étalonnée navy/or -->
@@ -31,27 +36,27 @@ import Magnetic from './Magnetic.astro';
       <p class="hero-eyebrow mb-7 flex items-center gap-4 text-or-light">
         <span class="hero-index font-serif">01</span>
         <span class="inline-block h-px w-10 bg-or/70"></span>
-        Conseil en gestion de patrimoine · Indépendant
+        {t('hero.eyebrow')}
       </p>
 
       <h1 class="hero-title mb-7 font-serif text-cream">
-        <span class="hero-line block"><span>Faire fructifier</span></span>
-        <span class="hero-line block" style="transition-delay:120ms"><span class="italic text-or-light">ce qui compte.</span></span>
+        <span class="hero-line block"><span>{t('hero.title1')}</span></span>
+        <span class="hero-line block" style="transition-delay:120ms"><span class="italic text-or-light">{t('hero.title2')}</span></span>
       </h1>
 
       <p class="hero-sub mb-10 max-w-xl text-lg leading-relaxed text-cream md:text-xl">
-        J'accompagne <span class="font-medium text-cream">dirigeants, professions libérales, cadres et sportifs</span> dans les décisions qui engagent leur patrimoine, avec pour seul horizon le temps long.
+        {t('hero.subLead')} <span class="font-medium text-cream">{t('hero.subBold')}</span> {t('hero.subTail')}
       </p>
     </div>
 
     <div class="hero-cta flex flex-wrap gap-4">
       <Magnetic>
-        <a href="/outils/diagnostic-patrimonial" class="btn-or">
-          Faire mon diagnostic gratuit
+        <a href={diagnosticHref} class="btn-or">
+          {t('hero.cta1')}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </Magnetic>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost-cream">Planifier un rendez-vous découverte</a>
+      <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost-cream">{t('hero.cta2')}</a>
     </div>
 
     <!-- Références : grille libellée, sobre -->
@@ -59,15 +64,15 @@ import Magnetic from './Magnetic.astro';
       <div class="hero-meta-rule mb-6"></div>
       <dl class="grid grid-cols-2 gap-x-10 gap-y-6 sm:grid-cols-3">
         <div>
-          <dt class="hero-meta-label">Cabinet</dt>
-          <dd class="hero-meta-value">Indépendant</dd>
+          <dt class="hero-meta-label">{t('hero.trust.cabinetLabel')}</dt>
+          <dd class="hero-meta-value">{t('hero.trust.cabinetValue')}</dd>
         </div>
         <div>
-          <dt class="hero-meta-label">Immatriculation</dt>
+          <dt class="hero-meta-label">{t('hero.trust.registrationLabel')}</dt>
           <dd class="hero-meta-value">ORIAS 25&nbsp;000&nbsp;016</dd>
         </div>
         <div>
-          <dt class="hero-meta-label">Présence</dt>
+          <dt class="hero-meta-label">{t('hero.trust.presenceLabel')}</dt>
           <dd class="hero-meta-value">Paris · Montpellier · Marseille</dd>
         </div>
       </dl>
@@ -76,7 +81,7 @@ import Magnetic from './Magnetic.astro';
 
   <!-- Indicateur de scroll -->
   <div class="hero-scroll absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-xs uppercase tracking-micro text-cream/50 md:flex">
-    <span>Découvrir</span>
+    <span>{t('hero.scroll')}</span>
     <span class="block h-12 w-px bg-cream/30 hero-scroll-line"></span>
   </div>
 </section>

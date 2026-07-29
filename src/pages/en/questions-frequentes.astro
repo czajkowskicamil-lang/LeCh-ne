@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const faq = [
+  {
+    q: "What's the difference with a private bank?",
+    a: "A private bank recommends, first and foremost, its own in-house products. Le Chêne Patrimonial is fully independent: no banking network behind it, no sales targets imposed. I can therefore build your allocation from the full range of what the market offers, and justify it solely by your situation, not mine.",
+  },
+  {
+    q: "How are you compensated?",
+    a: "Three possible mechanisms: advisory fees billed to the client, commissions paid by partners upon subscription, or a combination of the two. Before every transaction, you know precisely who is paying me, how, and how much. That is a non-negotiable condition of the practice.",
+  },
+  {
+    q: "Is there a minimum level of assets to consult you?",
+    a: "No. The first 30-minute conversation is open to everyone, and many of my clients aren't high-net-worth individuals in the classic sense. What matters is having income to structure, plans to prepare for, or a tax situation to optimise. The average case size and its complexity then determine whether ongoing support makes sense, for you as much as for me.",
+  },
+  {
+    q: "Remote or in person?",
+    a: "Both work equally well. The practice is based in Montpellier, where I meet clients in person. I work with clients across France by video call, under the same conditions. The quality of a wealth plan doesn't depend on where the conversation takes place, but on the rigour of the follow-up.",
+  },
+  {
+    q: "What if I'm not satisfied with the first conversation?",
+    a: "You walk away owing me nothing. That's the core commitment of the first meeting: 30 minutes offered, no obligation, no sales follow-up afterwards. If the fit doesn't feel right, or if your situation goes beyond what my practice can handle, I'll tell you directly, and point you elsewhere when it's relevant.",
+  },
+  {
+    q: "And after the first meeting?",
+    a: "If we decide to work together, I provide you with an engagement letter that formalises the scope, timeline and compensation. Then comes: a full wealth audit, costed recommendations, implementation of the chosen strategies, and ongoing follow-up (at least one annual review, more often if the situation requires it).",
+  },
+];
+---
+
+<Base
+  title="Frequently asked questions, Le Chêne Patrimonial"
+  description="Independence, compensation, minimum investment, in person or remote: the essential questions before a first conversation with a wealth management firm."
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  })} />
+
+  <!-- Hero éditorial -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-9">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Frequently asked questions
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Six questions,<br/>
+          <span class="italic text-chene">six clear answers.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          The questions my clients ask at our first meeting. Here they are, addressed calmly, before we've even met.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ list -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mx-auto space-y-2">
+        {faq.map((item, i) => (
+          <details class="faq-item group border-t border-ink/10 last:border-b reveal" style={`animation-delay:${i * 60}ms`}>
+            <summary class="cursor-pointer list-none py-6 md:py-8 flex items-start justify-between gap-6 group-open:pb-3">
+              <span class="flex items-start gap-5 flex-1">
+                <span class="font-serif italic text-or text-2xl shrink-0 leading-tight">0{i + 1}</span>
+                <span class="font-serif text-xl md:text-2xl text-ink leading-tight">{item.q}</span>
+              </span>
+              <span class="faq-chevron shrink-0 mt-2 text-ink/40 group-open:rotate-45 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </summary>
+            <div class="pl-12 pr-4 pb-8 text-ink/80 leading-relaxed">
+              {item.a}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="max-w-prose-wide mx-auto mt-20 text-center reveal">
+        <p class="text-ink/60 text-sm mb-6">A question not covered here?</p>
+        <a href="/en/contact" class="btn-primary inline-flex">
+          Ask my question
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<style>
+  details summary::-webkit-details-marker { display: none; }
+  details > summary { list-style: none; }
+  details[open] .faq-chevron { color: rgb(45 74 51); }
+</style>

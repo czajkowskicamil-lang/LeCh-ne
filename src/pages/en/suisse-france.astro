@@ -1,0 +1,191 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CTA from '../../components/CTA.astro';
+
+const profils = [
+  {
+    tag: 'High-level athlete',
+    title: 'A career between two countries',
+    body:
+      "You play for a Swiss club, or you have settled on the other side of the border. Pay in Swiss francs, a second pillar pension, a short and intense window of earnings: your situation combines the challenges of elite sport with those of being French-Swiss. Founded by a former professional athlete, Le Chêne structures your wealth on the French side and prepares your life after sport, with method and without jargon.",
+  },
+  {
+    tag: 'You live in France',
+    title: 'Swiss national or expatriate, settled in France',
+    body:
+      "You are a French tax resident, but part of your financial history remains in Switzerland: a second pillar (LPP), a third pillar, assets and accounts in francs, and sometimes a property kept on the other side of the border. Le Chêne bridges these two worlds and organizes your wealth on the French side: life insurance (assurance-vie), real estate, retirement planning and French-Swiss estate transmission.",
+  },
+  {
+    tag: 'You are investing in France',
+    title: 'Swiss resident, a project in France',
+    body:
+      "You live in Switzerland and wish to place part of your wealth in French real estate. Le Chêne handles the French side of your project: selecting the property, a tax framework suited to your non-resident status, financing and long-term support. A single, clear point of contact for investing in France, without having to navigate its administration alone.",
+  },
+];
+
+const regions = [
+  {
+    nom: 'Paris',
+    note: 'The ultimate safe-haven market. A deep and liquid market that weathers economic cycles.',
+  },
+  {
+    nom: 'Lyon & Rhône-Alpes',
+    note: 'France’s second city, a solid heritage market, from the Presqu’île to the Croix-Rousse.',
+  },
+  {
+    nom: 'Annecy',
+    note: 'Lake, mountains and a way of life: one of the most sought-after towns in France.',
+  },
+  {
+    nom: 'Alps & premium resorts',
+    note: 'Megève, Courchevel, Chamonix: the most coveted mountain real estate in Europe.',
+  },
+  {
+    nom: 'Bordeaux',
+    note: 'A UNESCO World Heritage city, a dynamic market and a safe bet in the South-West.',
+  },
+  {
+    nom: 'Cap Ferret & Arcachon',
+    note: 'The Arcachon basin, a rare and highly sought-after market between ocean and pine forest.',
+  },
+  {
+    nom: 'Biarritz & the Basque Country',
+    note: 'The Basque coast, between ocean and elegance, a highly sought-after upscale market.',
+  },
+  {
+    nom: 'Côte d’Azur',
+    note: 'Character properties and premium rentals, from the coastline to the hinterland.',
+  },
+  {
+    nom: 'Aix-en-Provence',
+    note: 'Provençal elegance, an upscale market that is stable and sought-after.',
+  },
+  {
+    nom: 'Le Touquet',
+    note: 'The chic resort of the Opal Coast, prized and holding strong long-term value.',
+  },
+  {
+    nom: 'Normandy',
+    note: 'Deauville and the Côte Fleurie, seaside elegance two hours from Paris.',
+  },
+  {
+    nom: 'Brittany',
+    note: 'A solid and sought-after property market, between thriving towns and the coastline.',
+  },
+  {
+    nom: 'Occitanie',
+    note: 'Montpellier, Toulouse, the coast: dynamic and accessible markets.',
+  },
+];
+
+const approches = [
+  {
+    nom: 'New-build',
+    note: 'Recent developments, builder warranties and dedicated tax frameworks (LMNP, tax-reduction schemes).',
+  },
+  {
+    nom: 'Existing',
+    note: 'Established locations and period charm, with real potential for value creation and renovation.',
+  },
+  {
+    nom: 'Heritage luxury',
+    note: 'Exceptional properties, private mansions and prestige estates, built to last for generations.',
+  },
+];
+---
+
+<Base
+  heroDark
+  title="Switzerland & France, Le Chêne Patrimonial"
+  description="You are Swiss or a resident of Switzerland, and your wealth touches France. Le Chêne handles the French side of your situation: real estate investment, retirement and French-Swiss estate transmission."
+>
+  <PageHeader
+    image="/suisse-header.jpg"
+    alt="Swiss peaks above the clouds"
+    eyebrow="Switzerland · France"
+    title={`Your wealth,<br/><span class="italic text-or-light">between two countries.</span>`}
+    intro="When a life is built on both sides of the border, wealth needs an advisor who speaks both languages. Le Chêne takes care of the French side."
+  />
+
+  <!-- Two profiles -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="grid md:grid-cols-3 gap-8">
+        {profils.map((p, i) => (
+          <div class="rounded-none border border-ink/10 bg-white/40 p-8 md:p-10 reveal" style={`animation-delay:${i * 100}ms`}>
+            <p class="eyebrow mb-5">{p.tag}</p>
+            <h2 class="font-serif text-2xl md:text-3xl text-ink mb-5 leading-snug">{p.title}</h2>
+            <p class="text-ink/75 leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Regions -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mb-12 reveal">
+        <p class="eyebrow mb-5">Invest in France</p>
+        <h2 class="font-serif text-display text-ink mb-6">Carefully selected locations, built to last</h2>
+        <p class="text-ink/75 leading-relaxed text-lg">
+          Le Chêne supports heritage real estate investment in French markets recognized for their stability and quality of life. Every project is assessed according to your situation, never off a catalogue.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {regions.map((r, i) => (
+          <div class="rounded-none border border-ink/10 p-8 reveal" style={`animation-delay:${i * 100}ms`}>
+            <span class="block w-10 h-px bg-or mb-6"></span>
+            <h3 class="font-serif text-2xl text-chene mb-4">{r.nom}</h3>
+            <p class="text-ink/70 leading-relaxed text-base">{r.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Investment approaches -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mb-12 reveal">
+        <p class="eyebrow mb-5">New-build · Existing · Heritage luxury</p>
+        <h2 class="font-serif text-display text-ink mb-6">Three ways to invest, the same standard</h2>
+        <p class="text-ink/75 leading-relaxed text-lg">
+          Depending on your horizon and objectives, we guide your project toward new-build, existing properties or prestige real estate. The choice follows from your situation, never the other way around.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {approches.map((a, i) => (
+          <div class="rounded-none border border-ink/10 bg-white/40 p-8 reveal" style={`animation-delay:${i * 100}ms`}>
+            <span class="block w-10 h-px bg-or mb-6"></span>
+            <h3 class="font-serif text-2xl text-chene mb-4">{a.nom}</h3>
+            <p class="text-ink/70 leading-relaxed text-base">{a.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach note -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <div class="max-w-prose-wide mx-auto border-t border-ink/15 pt-10 reveal">
+        <p class="text-ink/85 leading-relaxed text-lg">
+          Our role is not to sell you a product, but to secure the French side of your wealth. We operate within our French advisory scope, in full transparency, and we direct you to the right contacts for anything that falls under Swiss law.
+        </p>
+        <p class="font-serif italic text-3xl text-chene mt-8">Camil</p>
+        <p class="text-sm text-ink/55 mt-2 tracking-micro uppercase">
+          Camil Czajkowski · Wealth management advisor · Le Chêne Patrimonial
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="A project between Switzerland and France?"
+    body="Let's schedule a first 30-minute conversation. Together we'll see what falls under the French side and how to organize it, with no commitment and no jargon."
+  />
+</Base>

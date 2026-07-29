@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+---
+
+<Base title="Privacy Policy, Le Chêne Patrimonial" description="Personal data processing on lechenepatrimonial.com.">
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell max-w-3xl">
+      <p class="eyebrow mb-6">Privacy</p>
+      <h1 class="font-serif text-display text-ink mb-4">Privacy Policy</h1>
+      <p class="text-sm text-ink/50 mb-10">Last updated: 28 July 2026.</p>
+
+      <div class="prose-editorial">
+        <h2>Data Controller</h2>
+        <p>
+          Personal data collected on this site is processed by Camil Czajkowski, publisher of the {site.name} website,
+          Courtier en Opérations d'Assurance (COA, ORIAS no. 25 00 00 16) and holder of the Carte Professionnelle
+          Transaction Immobilière (Carte T). The firm's full details appear in the
+          <a href="/en/mentions-legales">legal notice</a>.
+          Contact: <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Data Collected</h2>
+        <ul>
+          <li><strong>Contact form</strong>: name, email address, message content.</li>
+          <li><strong>Appointment booking (Calendly)</strong>: name, email address, chosen time slot.</li>
+          <li>
+            <strong>Online wealth diagnostic</strong>: first name, last name, email address, phone number,
+            along with the personal wealth information you enter yourself (age, family situation,
+            dependents, professional status, income, marginal tax bracket, estimated assets,
+            savings, debt, objectives). This information is self-declared and used solely to generate
+            your indicative report.
+          </li>
+          <li><strong>The Oak Letter</strong>: email address, if you voluntarily subscribe.</li>
+          <li><strong>Browsing data</strong>: aggregated and anonymised audience measurement, with no advertising cookies.</li>
+        </ul>
+
+        <h2>Purposes</h2>
+        <ul>
+          <li>Responding to your contact requests and organising your appointments.</li>
+          <li>Producing your wealth diagnostic and sending you the report you requested.</li>
+          <li>
+            Maintaining the relationship and contacting you again about your request, in connection with
+            insurance and real estate intermediation, where you have consented to this.
+          </li>
+          <li>Sending you The Oak Letter, if you are subscribed.</li>
+          <li>Measuring site audience to improve its quality.</li>
+        </ul>
+        <p>Your data is never sold or transferred to third parties for commercial purposes.</p>
+
+        <h2>Legal Basis</h2>
+        <ul>
+          <li>
+            <strong>Consent</strong> (Article 6.1.a of the GDPR) for carrying out the diagnostic, commercial
+            follow-up contact and newsletter subscription. This consent is freely given, separate for each
+            purpose, and can be withdrawn at any time.
+          </li>
+          <li>
+            <strong>Performance of your request</strong> (Article 6.1.b) for delivering the diagnostic report
+            you have requested.
+          </li>
+          <li>
+            <strong>Legitimate interest</strong> (Article 6.1.f) for relationship follow-up and aggregated
+            audience measurement.
+          </li>
+        </ul>
+
+        <h2>Recipients and Processors</h2>
+        <p>
+          Your data is processed by Camil Czajkowski and by technical service providers acting as
+          processors, solely for the purposes set out above:
+        </p>
+        <ul>
+          <li><strong>Brevo</strong> (Sendinblue SAS, France): sending emails and managing contacts. Data hosted within the European Union.</li>
+          <li><strong>Vercel</strong>: site hosting. Any transfers outside the EU are governed by the European Commission's standard contractual clauses.</li>
+          <li><strong>Supabase</strong>: internal relationship-management tool (CRM), hosted in a European region, with restricted, authenticated access.</li>
+          <li><strong>Calendly</strong>: appointment booking. A company based in the United States; transfers are governed by the standard contractual clauses and the Data Privacy Framework.</li>
+        </ul>
+
+        <h2>Transfers Outside the European Union</h2>
+        <p>
+          Certain providers (Calendly, Vercel) may process data outside the European Union. These
+          transfers are governed by appropriate safeguards: the European Commission's standard
+          contractual clauses and, where applicable, adherence to the Data Privacy Framework.
+        </p>
+
+        <h2>Retention Period</h2>
+        <ul>
+          <li>Prospect data (contact and diagnostic outside a contractual relationship): 3 years from your last contact.</li>
+          <li>Newsletter subscription: until you unsubscribe.</li>
+          <li>Browsing data: 13 months maximum.</li>
+          <li>
+            Client data within a contractual relationship: in accordance with the legal obligations
+            specific to insurance brokerage and real estate transactions, as well as anti-money-laundering
+            obligations (retained for 5 years after the end of the relationship).
+          </li>
+        </ul>
+
+        <h2>Your Rights</h2>
+        <p>
+          You have the right to access, rectify, erase, restrict and port your data, and to object to
+          its processing, as well as the right to withdraw your consent at any time. To exercise these
+          rights: <a href={`mailto:${site.email}`}>{site.email}</a>. You may also lodge a complaint with the
+          CNIL, the French data protection authority (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).
+        </p>
+
+        <h2>Cookies and Audience Measurement</h2>
+        <p>
+          This site does not use advertising tracking cookies. Audience measurement is carried out in
+          an aggregated form, without cookies. Only strictly necessary technical cookies may be set,
+          including those from the Calendly widget when you book an appointment.
+        </p>
+
+        <h2>Security</h2>
+        <p>
+          Data is hosted within the European Union (except for the providers listed above), transmitted
+          in encrypted form, and accessible only by the firm, through authenticated access.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

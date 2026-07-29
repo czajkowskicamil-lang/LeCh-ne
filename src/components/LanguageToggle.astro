@@ -1,0 +1,59 @@
+---
+import { getLangFromUrl, alternatePath, stripLangPrefix } from '../i18n/utils';
+import { ui, isTranslated } from '../i18n/ui';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const basePath = stripLangPrefix(Astro.url.pathname);
+// On n'affiche le bouton EN (depuis une page FR) que si la page a une version anglaise.
+// Depuis une page EN, on renvoie toujours vers le FR (qui existe toujours).
+const show = lang === 'en' || isTranslated(basePath);
+
+const target = alternatePath(Astro.url.pathname, lang);
+const label = ui[lang]['lang.switchTo'];       // libellé de la langue vers laquelle on bascule
+const aria = ui[lang]['lang.ariaSwitch'];
+// Langue vers laquelle on bascule : FR affiche le drapeau britannique, EN le drapeau français.
+const targetLang = lang === 'fr' ? 'en' : 'fr';
+---
+
+{show && (
+<a
+  href={target}
+  hreflang={targetLang}
+  aria-label={aria}
+  title={label}
+  data-astro-reload
+  class:list={[
+    'lang-toggle inline-flex items-center text-current hover:opacity-80 transition-opacity',
+    className,
+  ]}
+>
+  {targetLang === 'en' ? (
+    <svg class="lang-flag" viewBox="0 0 60 30" width="24" height="16" role="img" aria-hidden="true">
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2.5" />
+      <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10" />
+      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6" />
+    </svg>
+  ) : (
+    <svg class="lang-flag" viewBox="0 0 3 2" width="24" height="16" role="img" aria-hidden="true">
+      <rect width="1" height="2" x="0" fill="#0055A4" />
+      <rect width="1" height="2" x="1" fill="#fff" />
+      <rect width="1" height="2" x="2" fill="#EF4135" />
+    </svg>
+  )}
+</a>
+)}
+
+<style>
+  .lang-flag {
+    display: block;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+</style>

@@ -1,0 +1,960 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+import { site } from '../../../data/site';
+
+const title = 'Wealth Diagnostic | Le Chêne Patrimonial';
+const description =
+  "Get your Wealth Health Index out of 100 in 3 minutes: a personalised analysis, the breakdown of your assets, optimisation opportunities and a 12-month action plan. Free, confidential, no obligation.";
+---
+
+<Base title={title} description={description}>
+  <article>
+    <!-- ============================= HERO ============================= -->
+    <header class="pt-16 pb-6 md:pt-24 md:pb-8">
+      <div class="shell max-w-4xl">
+        <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+          <a href="/en" class="hover:text-chene">Home</a>
+          <span>/</span>
+          <a href="/en/outils" class="hover:text-chene">Tools</a>
+          <span>/</span>
+          <span class="text-ink">Wealth diagnostic</span>
+        </nav>
+
+        <p class="eyebrow mb-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Diagnostic · Free · 3 minutes
+        </p>
+
+        <h1 class="font-serif text-display text-ink mb-6 leading-tight">
+          Where does your wealth really stand?
+        </h1>
+
+        <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+          Answer a few simple questions and discover your
+          <span class="text-ink font-medium">Wealth Health Index</span>. A clear reading of your strengths,
+          your blind spots and the levers to activate, before we talk it through together.
+        </p>
+      </div>
+    </header>
+
+    <!-- ============================= APPLICATION ============================= -->
+    <div class="shell max-w-3xl pb-8">
+      <div
+        id="diag-app"
+        class="reveal"
+        data-calendly={site.calendly}
+        data-contact="/en/contact"
+      >
+        <!-- Barre de progression -->
+        <div id="diag-progress" class="hidden mb-8">
+          <div class="flex items-center justify-between mb-3">
+            <span id="diag-section-label" class="eyebrow"></span>
+            <span id="diag-step-count" class="text-xs text-stone tabular-nums"></span>
+          </div>
+          <div class="h-1.5 rounded-full bg-cream-deep overflow-hidden">
+            <div id="diag-bar" class="h-full bg-or rounded-full transition-all duration-500 ease-out-expo" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Zone dynamique -->
+        <div id="diag-stage" aria-live="polite"></div>
+      </div>
+
+      <noscript>
+        <div class="bg-cream-soft border border-ink/10 rounded-none p-8 text-center">
+          <p class="text-ink/80">This interactive diagnostic requires JavaScript. You can also
+            <a href={site.calendly} class="text-chene underline" target="_blank" rel="noopener">book an appointment directly</a>.</p>
+        </div>
+      </noscript>
+    </div>
+
+    <!-- Avertissement réglementaire -->
+    <div class="shell max-w-3xl pb-16">
+      <p class="text-xs text-stone leading-relaxed border-t border-ink/10 pt-6">
+        <strong class="text-ink/80">Important notice.</strong> This diagnostic provides an indicative, automated estimate,
+        for educational purposes, based solely on the information you enter. It does not constitute personalised advice
+        on investment, taxation or wealth management within the regulatory meaning of the term, nor a recommendation to purchase.
+        Benchmarks such as CFE (French business property tax) or social contributions are given as points of vigilance and
+        do not replace the advice of your chartered accountant. Le Chêne Patrimonial acts within the scope of its authorisations
+        (insurance brokerage and real estate intermediation) and does not provide advice on financial instruments. Only a
+        personalised study, carried out with an advisor, takes your complete situation into account.
+      </p>
+    </div>
+
+    <CTA
+      title="Your score is only a starting point."
+      body="Let's turn this snapshot into a strategy. A first 30-minute conversation, with no obligation, to build your complete wealth study."
+    />
+  </article>
+</Base>
+
+<style is:global>
+  /* Diagnostic styles. Kept `is:global` because the screens are generated in JS
+     (createElement): Astro's default scoping would not apply to dynamically
+     injected elements. All classes are prefixed `diag-`. */
+  /* ---------- Screen transitions ---------- */
+  #diag-stage { min-height: 380px; }
+  .diag-screen { animation: diagIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .diag-out { animation: diagOut 0.28s ease-in both; }
+  @keyframes diagIn {
+    0% { opacity: 0; transform: translateY(22px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes diagOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-14px); }
+  }
+
+  .diag-question { line-height: 1.15; }
+
+  /* ---------- Option cards ---------- */
+  .diag-opt {
+    display: flex; align-items: center; gap: 0.9rem;
+    width: 100%; text-align: left;
+    padding: 1.05rem 1.2rem;
+    background: #FAF7EF;
+    border: 1.5px solid rgba(3, 16, 46, 0.1);
+    border-radius: 1rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+  .diag-opt:hover {
+    border-color: rgba(45, 74, 51, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(3, 16, 46, 0.06);
+  }
+  .diag-opt.is-selected {
+    border-color: #2D4A33;
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(3, 16, 46, 0.1);
+  }
+  .diag-opt-ico {
+    flex: 0 0 auto;
+    width: 2.6rem; height: 2.6rem;
+    display: grid; place-items: center;
+    border-radius: 0.7rem;
+    background: rgba(3, 16, 46, 0.05);
+    color: #2D4A33;
+    transition: all 0.3s var(--ease-apple);
+  }
+  .diag-opt.is-selected .diag-opt-ico { background: #2D4A33; color: #F5F1E8; }
+  .diag-opt-lbl { font-weight: 500; color: #03102E; }
+  .diag-opt-hint { font-size: 0.8rem; color: #7A7566; margin-top: 1px; }
+  .diag-opt-check {
+    margin-left: auto; flex: 0 0 auto;
+    width: 1.4rem; height: 1.4rem; border-radius: 999px;
+    border: 1.5px solid rgba(3, 16, 46, 0.2);
+    display: grid; place-items: center;
+    opacity: 0; transform: scale(0.6);
+    transition: all 0.25s var(--ease-apple);
+  }
+  .diag-opt.is-selected .diag-opt-check {
+    opacity: 1; transform: scale(1); background: #2D4A33; border-color: #2D4A33; color: #fff;
+  }
+
+  /* ---------- Slider ---------- */
+  .diag-range { -webkit-appearance: none; appearance: none; width: 100%; background: transparent; cursor: pointer; height: 30px; }
+  .diag-range::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(to right, #D4A82D var(--fill, 30%), #EDE6D3 var(--fill, 30%)); }
+  .diag-range::-moz-range-track { height: 6px; border-radius: 999px; background: #EDE6D3; }
+  .diag-range::-moz-range-progress { height: 6px; border-radius: 999px; background: #D4A82D; }
+  .diag-range::-webkit-slider-thumb { -webkit-appearance: none; height: 26px; width: 26px; margin-top: -10px; border-radius: 999px; background: #03102E; border: 3px solid #D4A82D; box-shadow: 0 3px 10px rgba(3, 16, 46, 0.28); transition: transform 0.15s var(--ease-apple); }
+  .diag-range::-webkit-slider-thumb:hover { transform: scale(1.14); }
+  .diag-range::-moz-range-thumb { height: 26px; width: 26px; border-radius: 999px; background: #03102E; border: 3px solid #D4A82D; box-shadow: 0 3px 10px rgba(3, 16, 46, 0.28); }
+
+  /* ---------- Number field ---------- */
+  .diag-num-wrap { position: relative; display: flex; align-items: baseline; justify-content: center; gap: 0.4rem; }
+  .diag-num {
+    font-family: '"Fraunces Variable"', Fraunces, serif;
+    font-size: clamp(2.4rem, 8vw, 3.6rem); font-weight: 500; color: #03102E;
+    background: transparent; border: none; text-align: right;
+    width: auto; max-width: 100%; outline: none; letter-spacing: -0.02em;
+    -moz-appearance: textfield;
+  }
+  .diag-num::-webkit-outer-spin-button, .diag-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .diag-num::placeholder { color: rgba(3, 16, 46, 0.2); }
+  .diag-num-suffix { font-family: '"Fraunces Variable"', Fraunces, serif; font-size: clamp(1.4rem, 4vw, 2rem); color: #A7801F; }
+  .diag-num-underline { height: 2px; background: #D4A82D; margin: 0.4rem auto 0; transition: width 0.3s var(--ease-apple); }
+
+  /* ---------- Score & donut ---------- */
+  .diag-ring-track { stroke: #EDE6D3; }
+  .diag-ring-fill { stroke: url(#diag-grad); stroke-linecap: round; transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .diag-pillar-bar { transition: width 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+  .diag-donut-seg { transition: stroke-dasharray 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  .diag-analyse-dot { animation: diagPulse 1.2s ease-in-out infinite; }
+  @keyframes diagPulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .diag-screen, .diag-out { animation: none !important; }
+    .diag-ring-fill, .diag-pillar-bar, .diag-donut-seg { transition: none !important; }
+  }
+</style>
+
+<script>
+  import { STEPS, SECTIONS } from '../../../lib/diagnostic/questions.en';
+  import type { Step } from '../../../lib/diagnostic/questions';
+  import { analyse } from '../../../lib/diagnostic/engine.en';
+  import type { Answers, Diagnostic, Objectif } from '../../../lib/diagnostic/types';
+
+  const STORE_KEY = 'lechene_diag_v1';
+
+  // ---------- Icons (Lucide-like, stroke) ----------
+  const ICONS: Record<string, string> = {
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/>',
+    users: '<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20v-.5a6.5 6.5 0 0 1 13 0v.5"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M18 20v-.5a6 6 0 0 0-2-4.4"/>',
+    rings: '<circle cx="8" cy="14" r="5"/><circle cx="16" cy="14" r="5"/><path d="M8 4l2 3M16 4l-2 3M12 3v3"/>',
+    split: '<path d="M12 3v7"/><path d="M12 10 7 21"/><path d="M12 10l5 11"/>',
+    briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+    building: '<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/>',
+    tools: '<path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2 2-2.3-2.3 2-2z"/>',
+    scale: '<path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="M5 7l-2.5 6a3 3 0 0 0 5 0z"/><path d="M19 7l2.5 6a3 3 0 0 1-5 0z"/>',
+    landmark: '<path d="M3 21h18"/><path d="M5 21V10M9 21V10M15 21V10M19 21V10"/><path d="M12 3 3 8h18z"/>',
+    medal: '<circle cx="12" cy="14" r="5"/><path d="M12 12v4M10.5 14h3"/><path d="M9 3l1.5 5M15 3l-1.5 5"/>',
+    leaf: '<path d="M4 20c0-8 6-14 16-14 0 10-6 16-16 14z"/><path d="M4 20c4-6 8-8 12-9"/>',
+    key: '<circle cx="8" cy="8" r="4"/><path d="M11 11l9 9M17 17l2-2M15 19l2-2"/>',
+    home: '<path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/>',
+    shield: '<path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="M9.5 12l1.8 1.8 3.2-3.4"/>',
+    alert: '<path d="M12 3 2 20h20z"/><path d="M12 10v5M12 17.5v.5"/>',
+    help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.2 2.4c-.8.3-1.2.9-1.2 1.6"/><path d="M11.5 16.5v.5"/>',
+    coins: '<circle cx="9" cy="9" r="5"/><path d="M14.5 5.3a5 5 0 0 1 0 9.4"/><path d="M17 19c2.8 0 5-1 5-2.2"/>',
+    trending: '<path d="M3 17 10 10l4 4 7-7"/><path d="M15 7h6v6"/>',
+    gift: '<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 13h16M12 9v11"/><path d="M12 9S10 3 7.5 4.5 12 9 12 9zM12 9s2-6 4.5-4.5S12 9 12 9z"/>',
+    piggy: '<path d="M4 12a6 6 0 0 1 6-6h3a6 6 0 0 1 6 6v3a2 2 0 0 1-2 2h-1l-1 2h-3l-1-2H8a4 4 0 0 1-4-4z"/><path d="M15 10h.01M4 12H2.5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/>',
+  };
+  const icon = (k?: string, cls = '') =>
+    `<svg class="${cls}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONS[k || ''] || ICONS.target}</svg>`;
+
+  // ---------- Format helpers ----------
+  const nf = new Intl.NumberFormat('en-GB');
+  const eur = (v: number) => '€' + nf.format(Math.round(v || 0));
+  const clean = (v: string) => (v || '').replace(/[^\d]/g, '');
+
+  // ---------- State ----------
+  // Encapsulated startup: this script is a module (import), so Astro does NOT
+  // replay it on View Transitions navigation. We call boot() again on
+  // astro:page-load; the dataset.diagReady guard prevents a double init.
+  function boot() {
+    const app = document.getElementById('diag-app') as HTMLElement | null;
+    if (!app || app.dataset.diagReady) return;
+    app.dataset.diagReady = '1';
+    const stage = document.getElementById('diag-stage') as HTMLElement;
+    const progress = document.getElementById('diag-progress') as HTMLElement;
+    const bar = document.getElementById('diag-bar') as HTMLElement;
+    const sectionLabel = document.getElementById('diag-section-label') as HTMLElement;
+    const stepCount = document.getElementById('diag-step-count') as HTMLElement;
+    const CALENDLY = app.dataset.calendly || '#';
+
+    let answers: Answers = {};
+    let currentId: string | null = null;
+    let introRAF = 0;
+    const stopIntroAnim = () => { if (introRAF) cancelAnimationFrame(introRAF); introRAF = 0; };
+
+    // ---------- Persistence ----------
+    function load(): boolean {
+      try {
+        const raw = localStorage.getItem(STORE_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.answers && Object.keys(parsed.answers).length > 0) {
+          answers = parsed.answers;
+          currentId = parsed.currentId || null;
+          return true;
+        }
+      } catch { /* ignore */ }
+      return false;
+    }
+    function save() {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify({ answers, currentId, ts: Date.now() })); } catch { /* ignore */ }
+    }
+    function reset() {
+      answers = {}; currentId = null;
+      try { localStorage.removeItem(STORE_KEY); } catch { /* ignore */ }
+    }
+
+    // ---------- Navigation ----------
+    const visible = (): Step[] => STEPS.filter((s) => !s.condition || s.condition(answers));
+    const idxOf = (id: string | null) => visible().findIndex((s) => s.id === id);
+
+    function transition(render: () => void) {
+      const cur = stage.firstElementChild as HTMLElement | null;
+      if (cur) {
+        cur.classList.add('diag-out');
+        setTimeout(() => { stage.innerHTML = ''; render(); }, 240);
+      } else {
+        render();
+      }
+    }
+
+    // ---------- Welcome screen ----------
+    function renderIntro(resume = false) {
+      progress.classList.add('hidden');
+      const facts = [
+        { k: '3 min', v: 'sharp, no more' },
+        { k: '/100', v: 'your health index' },
+        { k: '100%', v: 'free and confidential' },
+      ];
+      transition(() => {
+        stage.innerHTML = `
+          <div class="diag-screen">
+            <div class="relative mx-auto max-w-lg text-center bg-cream-soft border border-ink/12 px-6 py-9 md:px-12 md:py-11 overflow-hidden">
+              <div class="relative">
+                <div class="mx-auto w-full max-w-[250px]">
+                  <svg viewBox="0 0 220 126" class="w-full" role="img" aria-label="Gauge from 0 to 100">
+                    <defs>
+                      <linearGradient id="diag-gauge-grad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#c2543a"/>
+                        <stop offset="45%" stop-color="#D4A82D"/>
+                        <stop offset="100%" stop-color="#2f6b40"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M18 112 A92 92 0 0 1 202 112" fill="none" stroke="#EDE6D3" stroke-width="14" stroke-linecap="round"/>
+                    <path d="M18 112 A92 92 0 0 1 202 112" fill="none" stroke="url(#diag-gauge-grad)" stroke-width="14" stroke-linecap="round"/>
+                    <text x="20" y="126" text-anchor="middle" font-size="11" fill="#A8A395" font-family="Inter, sans-serif">0</text>
+                    <text x="200" y="126" text-anchor="middle" font-size="11" fill="#A8A395" font-family="Inter, sans-serif">100</text>
+                    <g id="diag-needle" transform="rotate(-90 110 112)">
+                      <path d="M110 44 L114.5 111 L105.5 111 Z" fill="#03102E"/>
+                    </g>
+                    <circle cx="110" cy="112" r="7.5" fill="#03102E"/>
+                    <circle cx="110" cy="112" r="3.2" fill="#E6C259"/>
+                  </svg>
+                </div>
+                <div class="font-serif text-4xl md:text-5xl tabular-nums leading-none mt-1 mb-4"><span id="diag-intro-num" style="color:#b4472e">0</span><span class="text-2xl text-stone">/100</span></div>
+                <p class="text-xs uppercase tracking-micro text-chene font-medium mb-2">Wealth health index</p>
+                <h2 class="font-serif text-3xl md:text-[2.4rem] leading-tight text-ink mb-4">Ready to discover yours?</h2>
+                <p class="text-ink/65 max-w-md mx-auto mb-8 leading-relaxed">
+                  A few guided questions, one at a time. At the end: your score out of 100, a personalised analysis and a clear action plan.
+                </p>
+                <div class="flex items-stretch justify-center divide-x divide-ink/10 max-w-sm mx-auto mb-8">
+                  ${facts.map((f) => `
+                    <div class="px-5">
+                      <div class="font-serif text-2xl text-ink leading-none">${f.k}</div>
+                      <div class="text-xs text-stone mt-1.5 leading-tight">${f.v}</div>
+                    </div>`).join('')}
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                  <button id="diag-start" class="btn-primary text-base px-8 py-3.5">
+                    ${resume ? 'Start' : 'Start the diagnostic'}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                  ${resume ? `<button id="diag-resume" class="text-sm text-chene underline underline-offset-4 hover:text-ink">Resume where I left off</button>` : ''}
+                </div>
+                <p class="text-xs text-stone mt-7 flex items-center justify-center gap-2">
+                  ${icon('shield', 'w-4 h-4')} Confidential. Your answers stay on your device.
+                </p>
+              </div>
+            </div>
+          </div>`;
+        (document.getElementById('diag-start') as HTMLButtonElement).onclick = () => {
+          if (resume) reset();
+          const first = visible()[0];
+          goTo(first.id);
+        };
+        const rb = document.getElementById('diag-resume');
+        if (rb) rb.onclick = () => { const id = currentId && idxOf(currentId) >= 0 ? currentId : visible()[0].id; goTo(id); };
+
+        // Live gauge: the needle sweeps 0 -> 100 and the number counts along, in a gentle loop.
+        const needle = document.getElementById('diag-needle');
+        const numEl = document.getElementById('diag-intro-num');
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (needle && numEl) {
+          const zone = (v: number) => (v >= 62 ? '#2f6b40' : v >= 42 ? '#A7801F' : '#b4472e');
+          const setTo = (v: number) => {
+            needle.setAttribute('transform', `rotate(${(1.8 * v - 90).toFixed(2)} 110 112)`);
+            numEl.textContent = String(Math.round(v));
+            numEl.style.color = zone(v);
+          };
+          if (reduce) {
+            setTo(72); // pleasant static state if the user limits animations
+          } else {
+            stopIntroAnim();
+            const period = 5200;
+            const start = performance.now();
+            const loop = (now: number) => {
+              if (!document.body.contains(needle)) { introRAF = 0; return; }
+              const v = 50 - 50 * Math.cos((2 * Math.PI * (now - start)) / period);
+              setTo(v);
+              introRAF = requestAnimationFrame(loop);
+            };
+            introRAF = requestAnimationFrame(loop);
+          }
+        }
+      });
+    }
+
+    // ---------- Rendering a question ----------
+    function goTo(id: string) {
+      stopIntroAnim();
+      currentId = id; save();
+      const steps = visible();
+      const step = steps.find((s) => s.id === id)!;
+      const pos = steps.findIndex((s) => s.id === id);
+      renderProgress(step, pos, steps.length);
+      transition(() => renderStep(step, pos, steps.length));
+    }
+
+    function renderProgress(step: Step, pos: number, total: number) {
+      progress.classList.remove('hidden');
+      const sec = SECTIONS.find((s) => s.key === step.section);
+      sectionLabel.textContent = sec ? sec.label : '';
+      stepCount.textContent = `Step ${pos + 1} of ${total}`;
+      bar.style.width = `${Math.round(((pos + 1) / total) * 100)}%`;
+    }
+
+    function renderStep(step: Step, pos: number, total: number) {
+      const wrap = document.createElement('div');
+      wrap.className = 'diag-screen';
+      wrap.innerHTML = `
+        <div class="mb-1.5 text-xs uppercase tracking-micro text-chene font-medium">${step.eyebrow || ''}</div>
+        <h2 class="diag-question font-serif text-2xl md:text-[2rem] text-ink mb-2">${step.question}</h2>
+        ${step.help ? `<p class="text-sm text-ink/55 mb-7 leading-relaxed max-w-xl">${step.help}</p>` : '<div class="mb-7"></div>'}
+        <div id="diag-input"></div>
+        <div class="mt-9 flex items-center justify-between gap-4">
+          <button id="diag-back" class="text-sm text-stone hover:text-ink flex items-center gap-1.5 ${pos === 0 ? 'invisible' : ''}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m14 6-6 6 6 6"/></svg>
+            Back
+          </button>
+          <button id="diag-next" class="btn-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0">
+            ${pos === total - 1 ? 'See my result' : 'Continue'}
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>`;
+      stage.appendChild(wrap);
+
+      const inputHost = wrap.querySelector('#diag-input') as HTMLElement;
+      const nextBtn = wrap.querySelector('#diag-next') as HTMLButtonElement;
+      const backBtn = wrap.querySelector('#diag-back') as HTMLButtonElement;
+
+      const setValid = (ok: boolean) => { nextBtn.disabled = !ok; };
+      const advance = () => {
+        const steps = visible();
+        const i = steps.findIndex((s) => s.id === step.id);
+        if (i >= steps.length - 1) { renderAnalyse(); }
+        else { goTo(steps[i + 1].id); }
+      };
+      backBtn.onclick = () => {
+        const steps = visible();
+        const i = steps.findIndex((s) => s.id === step.id);
+        if (i <= 0) renderIntro(true);
+        else goTo(steps[i - 1].id);
+      };
+      nextBtn.onclick = () => { if (!nextBtn.disabled) advance(); };
+
+      if (step.kind === 'single') buildSingle(step, inputHost, setValid, advance);
+      else if (step.kind === 'multi') buildMulti(step, inputHost, setValid);
+      else if (step.kind === 'slider') buildSlider(step, inputHost, setValid);
+      else buildNumber(step, inputHost, setValid, advance);
+    }
+
+    // ----- single -----
+    function buildSingle(step: Step, host: HTMLElement, setValid: (b: boolean) => void, advance: () => void) {
+      const field = step.field as keyof Answers;
+      const current = answers[field];
+      host.className = 'grid gap-2.5 sm:grid-cols-2';
+      (step.options || []).forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'diag-opt' + (String(current) === opt.value ? ' is-selected' : '');
+        btn.innerHTML = `
+          ${opt.icon ? `<span class="diag-opt-ico">${icon(opt.icon)}</span>` : ''}
+          <span><span class="diag-opt-lbl block">${opt.label}</span>${opt.hint ? `<span class="diag-opt-hint">${opt.hint}</span>` : ''}</span>
+          <span class="diag-opt-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></span>`;
+        btn.onclick = () => {
+          host.querySelectorAll('.diag-opt').forEach((e) => e.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          (answers as any)[field] = coerce(field, opt.value);
+          save(); setValid(true);
+          setTimeout(advance, 260);
+        };
+        host.appendChild(btn);
+      });
+      setValid(current !== undefined && current !== null);
+    }
+
+    // ----- multi -----
+    function buildMulti(step: Step, host: HTMLElement, setValid: (b: boolean) => void) {
+      const field = step.field as keyof Answers;
+      const MAX = 3;
+      let sel: string[] = Array.isArray(answers[field]) ? [...(answers[field] as string[])] : [];
+      host.className = 'grid gap-2.5 sm:grid-cols-2';
+      const sync = () => {
+        (answers as any)[field] = sel as Objectif[];
+        save(); setValid(sel.length >= 1);
+      };
+      (step.options || []).forEach((opt) => {
+        const btn = document.createElement('button');
+        const on = () => sel.includes(opt.value);
+        const paint = () => { btn.className = 'diag-opt' + (on() ? ' is-selected' : ''); };
+        btn.innerHTML = `
+          ${opt.icon ? `<span class="diag-opt-ico">${icon(opt.icon)}</span>` : ''}
+          <span class="diag-opt-lbl">${opt.label}</span>
+          <span class="diag-opt-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></span>`;
+        paint();
+        btn.onclick = () => {
+          if (on()) sel = sel.filter((v) => v !== opt.value);
+          else { if (sel.length >= MAX) return; sel.push(opt.value); }
+          paint(); sync();
+        };
+        host.appendChild(btn);
+      });
+      sync();
+    }
+
+    // ----- slider -----
+    function buildSlider(step: Step, host: HTMLElement, setValid: (b: boolean) => void) {
+      const field = step.field as keyof Answers;
+      const min = step.min ?? 0, max = step.max ?? 100, st = step.step ?? 1;
+      const cur = (answers[field] as number) ?? (step.defaultValue as number) ?? min;
+      const suffix = step.suffix ?? '';
+      host.innerHTML = `
+        <div class="text-center mb-8">
+          <div class="font-serif text-5xl md:text-6xl text-ink tabular-nums"><span id="diag-slider-out">${cur}</span><span class="text-or">${suffix}</span></div>
+        </div>
+        <input type="range" class="diag-range" id="diag-slider" min="${min}" max="${max}" step="${st}" value="${cur}" />
+        <div class="flex justify-between text-xs text-stone mt-2"><span>${min}${suffix}</span><span>${max}${suffix}</span></div>`;
+      const input = host.querySelector('#diag-slider') as HTMLInputElement;
+      const out = host.querySelector('#diag-slider-out') as HTMLElement;
+      const paint = () => {
+        const v = Number(input.value);
+        out.textContent = String(v);
+        input.style.setProperty('--fill', `${((v - min) / (max - min)) * 100}%`);
+        (answers as any)[field] = v; save();
+      };
+      input.addEventListener('input', paint);
+      paint(); setValid(true);
+    }
+
+    // ----- number -----
+    function buildNumber(step: Step, host: HTMLElement, setValid: (b: boolean) => void, advance: () => void) {
+      const field = step.field as keyof Answers;
+      const cur = answers[field] as number | undefined;
+      const suffix = step.suffix ?? '';
+      host.innerHTML = `
+        <div class="text-center py-4">
+          <div class="diag-num-wrap">
+            <input inputmode="numeric" autocomplete="off" class="diag-num" id="diag-numin"
+              placeholder="${step.placeholder ?? '0'}" value="${cur != null ? nf.format(cur) : ''}" />
+            <span class="diag-num-suffix">${suffix.trim()}</span>
+          </div>
+          <div class="diag-num-underline" id="diag-underline" style="width:120px"></div>
+          ${step.unit ? `<div class="text-sm text-stone mt-4">${step.unit}</div>` : ''}
+          ${step.optional ? `<button id="diag-skip" class="text-xs text-stone underline underline-offset-4 hover:text-ink mt-5">I don't have one / skip</button>` : ''}
+        </div>`;
+      const input = host.querySelector('#diag-numin') as HTMLInputElement;
+      const underline = host.querySelector('#diag-underline') as HTMLElement;
+      const validate = () => {
+        const raw = clean(input.value);
+        const has = raw.length > 0;
+        if (has) { (answers as any)[field] = Number(raw); }
+        else if (step.optional) { (answers as any)[field] = step.defaultValue ?? 0; }
+        else { delete (answers as any)[field]; }
+        save();
+        setValid(step.optional ? true : has);
+        underline.style.width = has ? '220px' : '120px';
+      };
+      input.addEventListener('input', () => {
+        const raw = clean(input.value);
+        input.value = raw ? nf.format(Number(raw)) : '';
+        validate();
+      });
+      input.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') { e.preventDefault(); if (clean(input.value) || step.optional) advance(); } });
+      const skip = host.querySelector('#diag-skip') as HTMLButtonElement | null;
+      if (skip) skip.onclick = () => { (answers as any)[field] = step.defaultValue ?? 0; save(); advance(); };
+      validate();
+      setTimeout(() => input.focus(), 120);
+    }
+
+    function coerce(field: keyof Answers, value: string): any {
+      if (field === 'tmi') return Number(value);
+      return value;
+    }
+
+    // ---------- Analysis screen ----------
+    function renderAnalyse() {
+      progress.classList.add('hidden');
+      currentId = null; save();
+      transition(() => {
+        stage.innerHTML = `
+          <div class="diag-screen text-center py-16">
+            <div class="flex justify-center gap-2 mb-8">
+              <span class="diag-analyse-dot w-3 h-3 rounded-full bg-or" style="animation-delay:0s"></span>
+              <span class="diag-analyse-dot w-3 h-3 rounded-full bg-chene" style="animation-delay:.2s"></span>
+              <span class="diag-analyse-dot w-3 h-3 rounded-full bg-navy" style="animation-delay:.4s"></span>
+            </div>
+            <h2 class="font-serif text-2xl md:text-3xl text-ink mb-3">We're analysing your situation</h2>
+            <p id="diag-analyse-step" class="text-ink/60">Reading your answers...</p>
+          </div>`;
+        const label = document.getElementById('diag-analyse-step') as HTMLElement;
+        const phases = ['Calculating your health index...', 'Breaking down your assets...', 'Identifying optimisation levers...', 'Building your action plan...'];
+        let i = 0;
+        const t = setInterval(() => { if (label && phases[i]) label.textContent = phases[i]; i++; }, 420);
+        setTimeout(() => { clearInterval(t); renderResults(analyse(answers)); }, 1900);
+      });
+    }
+
+    // ---------- Results ----------
+    function renderResults(d: Diagnostic) {
+      progress.classList.add('hidden');
+      window.scrollTo({ top: (app.getBoundingClientRect().top + window.scrollY - 90), behavior: 'smooth' });
+      const wrap = document.createElement('div');
+      wrap.className = 'diag-screen';
+      wrap.innerHTML = resultsHTML(d);
+      stage.innerHTML = '';
+      stage.appendChild(wrap);
+      animateResults(d, wrap);
+      wireResults(d, wrap);
+    }
+
+    const cardList = (title: string, items: { titre: string; detail: string }[], tone: 'green' | 'gold' | 'red' | 'navy') => {
+      if (!items.length) return '';
+      const dot = { green: '#2D4A33', gold: '#A7801F', red: '#b4472e', navy: '#0A1F4F' }[tone];
+      return `
+        <div>
+          <h3 class="font-serif text-xl text-ink mb-4">${title}</h3>
+          <div class="space-y-3">
+            ${items.map((it) => `
+              <div class="flex gap-3.5 bg-cream-soft border border-ink/8 rounded-none p-4">
+                <span class="mt-1.5 flex-none w-2 h-2 rounded-full" style="background:${dot}"></span>
+                <div>
+                  <div class="font-medium text-ink text-[0.95rem]">${it.titre}</div>
+                  <div class="text-sm text-ink/65 leading-relaxed mt-0.5">${it.detail}</div>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    };
+
+    function resultsHTML(d: Diagnostic): string {
+      const C = 326.726; // circumference r=52
+      const kpis = [
+        { v: eur(d.patrimoineNet), l: 'Estimated net worth' },
+        { v: d.moisPrecaution.toFixed(1) + ' months', l: 'Precautionary savings' },
+        { v: d.tauxEndettement + '%', l: 'Debt ratio' },
+        { v: d.poidsImmo + '%', l: 'Share of real estate' },
+      ];
+      const donut = donutHTML(d);
+      const eco = d.economieFiscaleEstimee > 0 ? `
+        <div class="rounded-none bg-navy text-cream p-6 md:p-8 my-10 relative overflow-hidden">
+          <p class="eyebrow-cream mb-3">Tax optimisation opportunity</p>
+          <div class="flex flex-wrap items-end gap-x-4 gap-y-1">
+            <span class="font-serif text-4xl md:text-5xl text-or-light">${eur(d.economieFiscaleEstimee)}</span>
+            <span class="text-cream/70 pb-1.5">in potential tax savings / year</span>
+          </div>
+          <p class="text-sm text-cream/70 mt-3 max-w-xl leading-relaxed">
+            Estimate based on a payment of around ${eur(d.perVersementSuggere)} into a PER (French personal pension plan), to be confirmed according to your actual cap and situation. A lever that is both tax-related and retirement-focused.
+          </p>
+        </div>` : '';
+
+      return `
+        <!-- Score -->
+        <div class="text-center mb-4">
+          <p class="eyebrow mb-6">Your wealth health index</p>
+          <div class="relative inline-grid place-items-center">
+            <svg width="200" height="200" viewBox="0 0 120 120" class="-rotate-90">
+              <defs><linearGradient id="diag-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#D4A82D"/><stop offset="100%" stop-color="#2D4A33"/>
+              </linearGradient></defs>
+              <circle class="diag-ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="9"/>
+              <circle class="diag-ring-fill" id="diag-ring" cx="60" cy="60" r="52" fill="none" stroke-width="9"
+                stroke-dasharray="${C}" stroke-dashoffset="${C}"/>
+            </svg>
+            <div class="absolute inset-0 grid place-items-center">
+              <div class="text-center">
+                <div class="font-serif text-5xl text-ink tabular-nums"><span id="diag-score">0</span><span class="text-2xl text-stone">/100</span></div>
+                <div class="mt-1 text-sm font-medium tracking-wide" style="color:#A7801F">${d.niveauLabel}</div>
+              </div>
+            </div>
+          </div>
+          <p class="text-ink/75 max-w-lg mx-auto mt-6 leading-relaxed">${d.resume}</p>
+          ${d.statutNote ? `<p class="text-sm text-ink/55 max-w-lg mx-auto mt-3 italic">${d.statutNote}</p>` : ''}
+        </div>
+
+        <!-- KPIs -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 my-9">
+          ${kpis.map((k) => `
+            <div class="bg-cream-soft border border-ink/8 rounded-none p-4 text-center">
+              <div class="font-serif text-xl md:text-2xl text-ink tabular-nums">${k.v}</div>
+              <div class="text-xs text-stone mt-1 leading-tight">${k.l}</div>
+            </div>`).join('')}
+        </div>
+
+        <!-- Piliers + répartition -->
+        <div class="grid lg:grid-cols-2 gap-8 my-10 items-start">
+          <div>
+            <h3 class="font-serif text-xl text-ink mb-5">The detail, pillar by pillar</h3>
+            <div class="space-y-4">
+              ${d.piliers.map((p) => `
+                <div>
+                  <div class="flex justify-between items-baseline mb-1.5">
+                    <span class="text-sm text-ink/80">${p.label}</span>
+                    <span class="text-sm font-medium text-ink tabular-nums">${p.score}<span class="text-stone text-xs">/100</span></span>
+                  </div>
+                  <div class="h-2 rounded-full bg-cream-deep overflow-hidden">
+                    <div class="diag-pillar-bar h-full rounded-full" data-score="${p.score}" style="width:0%;background:${p.score >= 66 ? '#2D4A33' : p.score >= 40 ? '#D4A82D' : '#b4472e'}"></div>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl text-ink mb-5">Breakdown of your assets</h3>
+            ${donut}
+          </div>
+        </div>
+
+        ${eco}
+
+        <!-- Analyse -->
+        <div class="grid md:grid-cols-2 gap-8 my-10">
+          ${cardList('Your strengths', d.forces, 'green')}
+          ${cardList('Points to watch', d.faiblesses, 'gold')}
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 my-10">
+          ${cardList('Your opportunities', d.opportunites, 'navy')}
+          ${cardList('Risks to cover', d.risques, 'red')}
+        </div>
+
+        <!-- Priorités -->
+        ${d.priorites.length ? `
+        <div class="my-12">
+          <h3 class="font-serif text-2xl text-ink mb-6">Your priorities</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            ${d.priorites.map((p, i) => `
+              <div class="bg-cream-soft border border-ink/8 rounded-none p-5">
+                <div class="w-8 h-8 rounded-full bg-navy text-or grid place-items-center font-serif text-sm mb-3">${i + 1}</div>
+                <div class="font-medium text-ink mb-1">${p.titre}</div>
+                <div class="text-sm text-ink/60 leading-relaxed">${p.detail}</div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- Plan 12 mois -->
+        <div class="my-12">
+          <h3 class="font-serif text-2xl text-ink mb-6">Your 12-month action plan</h3>
+          <div class="relative pl-8 space-y-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-px before:bg-ink/15">
+            ${d.plan.map((a) => `
+              <div class="relative">
+                <span class="absolute -left-8 top-1 w-3.5 h-3.5 rounded-full bg-or border-2 border-cream"></span>
+                <div class="text-xs uppercase tracking-micro text-chene font-medium mb-1">${a.periode}</div>
+                <div class="font-medium text-ink">${a.titre}</div>
+                <div class="text-sm text-ink/60 leading-relaxed">${a.detail}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Conversion -->
+        <div class="rounded-none bg-navy-deep text-cream p-8 md:p-12 my-10 text-center relative overflow-hidden">
+          <p class="eyebrow-cream mb-4">The next step</p>
+          <h3 class="font-serif text-2xl md:text-3xl text-cream mb-4 max-w-xl mx-auto">Book an appointment with a Le Chêne Patrimonial advisor to get a complete wealth study.</h3>
+          <p class="text-cream/70 max-w-lg mx-auto mb-8 leading-relaxed">This diagnostic sets the scene. Together, we turn it into a bespoke strategy, costed and actionable.</p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-or text-base px-8 py-3.5">
+              Book an appointment
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <button id="diag-pdf" class="btn-ghost-cream text-base px-6 py-3.5">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <span id="diag-pdf-label">Download my report (PDF)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recevoir / être recontacté -->
+        <div id="diag-lead" class="rounded-none border border-ink/10 bg-cream-soft p-6 md:p-8 my-8">
+          ${leadFormHTML()}
+        </div>
+
+        <div class="text-center my-8">
+          <button id="diag-restart" class="text-sm text-stone hover:text-ink underline underline-offset-4">Restart the diagnostic</button>
+        </div>`;
+    }
+
+    function donutHTML(d: Diagnostic): string {
+      const R = 54, CIRC = 2 * Math.PI * R;
+      if (!d.repartition.length) {
+        return `<p class="text-sm text-stone bg-cream-soft border border-ink/8 rounded-none p-5">Enter your assets to see the breakdown of your wealth.</p>`;
+      }
+      let acc = 0;
+      const segs = d.repartition.map((r) => {
+        const len = (r.part / 100) * CIRC;
+        const seg = `<circle class="diag-donut-seg" cx="70" cy="70" r="${R}" fill="none" stroke="${r.color}" stroke-width="16"
+          stroke-dasharray="0 ${CIRC}" data-len="${len.toFixed(2)}" data-gap="${(CIRC - len).toFixed(2)}"
+          stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 70 70)"/>`;
+        acc += len;
+        return seg;
+      }).join('');
+      const legend = d.repartition.map((r) => `
+        <div class="flex items-center gap-2.5 text-sm">
+          <span class="w-3 h-3 rounded-sm flex-none" style="background:${r.color}"></span>
+          <span class="text-ink/75 flex-1">${r.label}</span>
+          <span class="text-ink/55 tabular-nums">${Math.round(r.part)}%</span>
+        </div>`).join('');
+      return `
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <svg width="140" height="140" viewBox="0 0 140 140" class="flex-none">${segs}</svg>
+          <div class="flex-1 w-full space-y-2.5">${legend}</div>
+        </div>`;
+    }
+
+    function leadFormHTML(): string {
+      return `
+        <h3 class="font-serif text-xl text-ink mb-1.5">Receive your full report as a PDF</h3>
+        <p class="text-sm text-ink/60 mb-5 leading-relaxed">Enter your details to download your detailed diagnostic. Camil Czajkowski will call you back to discuss it, with no obligation. Your data is never sold on.</p>
+        <form id="diag-lead-form" class="space-y-3.5" novalidate>
+          <div class="grid sm:grid-cols-2 gap-3.5">
+            <input name="prenom" required placeholder="First name" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+            <input name="nom" required placeholder="Last name" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          </div>
+          <input name="email" type="email" required placeholder="Email address" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input name="telephone" type="tel" required placeholder="Phone number" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+            <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
+            <span>I agree that Le Chêne Patrimonial may collect and process this information (name, email, phone, diagnostic answers) in order to send me my report and follow up with me about it. I can exercise my rights of access, rectification and erasure at any time. <a href="/en/confidentialite" class="underline hover:text-ink" target="_blank">Privacy policy</a>.</span>
+          </label>
+          <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+            <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
+            <span>I would also like to receive The Oak Letter (optional, unsubscribe at any time).</span>
+          </label>
+          <button type="submit" class="btn-primary w-full justify-center py-3">
+            <span class="diag-lead-btn-label">Receive my report (PDF)</span>
+          </button>
+          <p class="text-[11px] text-ink/45 text-center leading-relaxed">Data controller: Le Chêne Patrimonial. Data retained for the duration of the business relationship, never sold on.</p>
+          <p id="diag-lead-msg" class="text-sm text-center hidden"></p>
+        </form>`;
+    }
+
+    function animateResults(d: Diagnostic, wrap: HTMLElement) {
+      const C = 326.726;
+      requestAnimationFrame(() => setTimeout(() => {
+        const ring = wrap.querySelector('#diag-ring') as SVGCircleElement | null;
+        if (ring) ring.style.strokeDashoffset = String(C * (1 - d.score / 100));
+        const scoreEl = wrap.querySelector('#diag-score') as HTMLElement | null;
+        if (scoreEl) {
+          const dur = 1400; const start = performance.now();
+          const tick = (now: number) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            scoreEl.textContent = String(Math.round(eased * d.score));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+        wrap.querySelectorAll<HTMLElement>('.diag-pillar-bar').forEach((b) => { b.style.width = (b.dataset.score || '0') + '%'; });
+        wrap.querySelectorAll<SVGCircleElement>('.diag-donut-seg').forEach((s) => {
+          s.setAttribute('stroke-dasharray', `${s.dataset.len} ${s.dataset.gap}`);
+        });
+      }, 120));
+    }
+
+    function wireResults(d: Diagnostic, wrap: HTMLElement) {
+      (wrap.querySelector('#diag-restart') as HTMLButtonElement).onclick = () => { reset(); renderIntro(false); };
+
+      // Generates and downloads the PDF report (called after form validation).
+      async function downloadPdf(): Promise<boolean> {
+        try {
+          const res = await fetch('/api/diagnostic-pdf', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ answers, diagnostic: d }),
+          });
+          if (!res.ok) throw new Error('pdf');
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'wealth-diagnostic-le-chene.pdf';
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+          return true;
+        } catch { return false; }
+      }
+
+      // The "Download" button in the conversion block points to the form:
+      // the PDF is only delivered after contact details + consent are entered.
+      const pdfBtn = wrap.querySelector('#diag-pdf') as HTMLButtonElement;
+      pdfBtn.onclick = () => {
+        const lead = wrap.querySelector('#diag-lead') as HTMLElement;
+        lead.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        lead.classList.add('ring-2', 'ring-or', 'ring-offset-2', 'ring-offset-cream');
+        setTimeout(() => lead.classList.remove('ring-2', 'ring-or', 'ring-offset-2', 'ring-offset-cream'), 1800);
+        const first = wrap.querySelector('#diag-lead-form input[name="prenom"]') as HTMLInputElement | null;
+        if (first) setTimeout(() => first.focus(), 500);
+      };
+
+      // Lead: notifies Camil + delivers the PDF
+      const form = wrap.querySelector('#diag-lead-form') as HTMLFormElement;
+      const msg = wrap.querySelector('#diag-lead-msg') as HTMLElement;
+      const btnLabel = wrap.querySelector('.diag-lead-btn-label') as HTMLElement;
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        if (!fd.get('prenom') || !fd.get('nom') || !fd.get('email')) { showMsg('Please enter your details.', false); return; }
+        if (!fd.get('telephone')) { showMsg('Please provide a phone number.', false); return; }
+        if (!fd.get('consent')) { showMsg('Your consent is required to receive the report.', false); return; }
+        btnLabel.textContent = 'Sending...';
+        const payload = {
+          prenom: fd.get('prenom'), nom: fd.get('nom'), email: fd.get('email'),
+          telephone: fd.get('telephone'), consent: !!fd.get('consent'), optin: !!fd.get('optin'),
+          website: fd.get('website'),
+          diagnostic: summaryFor(d),
+          diagnosticFull: d,
+        };
+        try {
+          const res = await fetch('/api/diagnostic-lead', {
+            method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.ok) {
+            downloadPdf();
+            const email = String(fd.get('email') || '');
+            form.innerHTML = `<div class="text-center py-4">
+              <div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>
+              </div>
+              <p class="font-serif text-xl text-ink mb-1">Your report has been sent to you by email</p>
+              <p class="text-sm text-ink/60 mb-4">It has just been sent to <strong class="text-ink">${email}</strong> (do check your spam folder). Camil will get back to you very soon to discuss it.</p>
+              <button id="diag-pdf-again" class="btn-ghost text-sm">Also download now</button>
+              <div class="mt-5"><a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-primary">Choose a time with Camil</a></div>
+            </div>`;
+            const again = form.querySelector('#diag-pdf-again') as HTMLButtonElement | null;
+            if (again) again.onclick = () => downloadPdf();
+          } else {
+            showMsg('Something went wrong. Please try again or write to us directly.', false);
+            btnLabel.textContent = 'Receive my report (PDF)';
+          }
+        } catch {
+          showMsg('Connection failed. Please try again in a moment.', false);
+          btnLabel.textContent = 'Receive my report (PDF)';
+        }
+      };
+      function showMsg(text: string, ok: boolean) {
+        msg.textContent = text;
+        msg.className = 'text-sm text-center ' + (ok ? 'text-chene' : 'text-[#b4472e]');
+        msg.classList.remove('hidden');
+      }
+    }
+
+    // Compact summary sent to Camil (key figures + profile).
+    function summaryFor(d: Diagnostic) {
+      const objs = (answers.objectifs || []) as string[];
+      return {
+        score: d.score, niveau: d.niveauLabel,
+        age: answers.age, situation: answers.situation, statut: answers.statut, enfants: answers.enfants,
+        revenuMensuel: answers.revenuMensuel, tmi: answers.tmi,
+        patrimoineNet: d.patrimoineNet, patrimoineBrut: d.patrimoineBrut,
+        moisPrecaution: d.moisPrecaution, tauxEndettement: d.tauxEndettement,
+        tauxEpargne: d.tauxEpargne, poidsImmo: d.poidsImmo,
+        perVersement: d.perVersementSuggere, perEconomie: d.economieFiscaleEstimee,
+        objectifs: objs.join(', '), horizon: answers.horizon, risque: answers.risque,
+        prevoyance: answers.prevoyance,
+        priorites: d.priorites.map((p) => p.titre).join(' · '),
+      };
+    }
+
+    // ---------- Startup ----------
+    const resumable = load();
+    renderIntro(resumable);
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>

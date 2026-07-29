@@ -1,0 +1,105 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "2026 Borrowing Capacity Simulator | Le Chêne Patrimonial";
+const description = "How much can you borrow? Estimate your borrowing capacity and monthly payment based on your income, expenses, loan term and rate. Free and instant.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en/" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Borrowing capacity</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Home loan
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">How much can you borrow?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Before you start viewing properties, know your real budget. Adjust your income, the term and the rate, and watch your borrowing capacity recalculate live.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Household net income / month <b id="ce-rev-val">3 500 €</b></label>
+            <input class="tool-range" type="range" id="ce-rev" min="1000" max="15000" step="100" value="3500" />
+          </div>
+          <div class="tool-field">
+            <label>Ongoing expenses and loan repayments / month <b id="ce-chg-val">0 €</b></label>
+            <input class="tool-range" type="range" id="ce-chg" min="0" max="4000" step="50" value="0" />
+          </div>
+          <div class="tool-field">
+            <label>Personal down payment <b id="ce-app-val">20 000 €</b></label>
+            <input class="tool-range" type="range" id="ce-app" min="0" max="300000" step="5000" value="20000" />
+          </div>
+          <div class="tool-field">
+            <label>Loan term <b id="ce-dur-val">20 years</b></label>
+            <input class="tool-range" type="range" id="ce-dur" min="5" max="25" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Interest rate (excluding insurance) <b id="ce-tx-val">3,50 %</b></label>
+            <input class="tool-range" type="range" id="ce-tx" min="1" max="6" step="0.05" value="3.5" />
+          </div>
+          <p class="tool-note">Debt-to-income ratio capped at 35% (HCSF standard), borrower insurance not included. Indicative estimate: your bank remains the sole decision-maker.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Amount you can borrow</p>
+          <p class="big" id="ce-capital">N/A</p>
+          <div class="tool-brk"><span class="k">Maximum monthly payment</span><span class="v" id="ce-mens">N/A</span></div>
+          <div class="tool-brk"><span class="k">Total interest cost</span><span class="v" id="ce-cout">N/A</span></div>
+          <div class="tool-brk"><span class="k">Purchasing power (including down payment)</span><span class="v" id="ce-achat">N/A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>How is your capacity calculated?</h2>
+      <p>The bank starts from a simple principle: your loan repayments should not exceed <strong>35% of your net income</strong>, insurance included. This maximum monthly payment, applied to the term and rate, determines the capital you can borrow. The longer the term, the more you can borrow, but the higher the interest cost.</p>
+      <p>This is a starting point, not a decision. Your residual living income, the stability of your earnings and your overall profile matter just as much. That's where personal guidance makes the difference.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const rev=+document.getElementById('ce-rev').value, chg=+document.getElementById('ce-chg').value,
+        app=+document.getElementById('ce-app').value, dur=+document.getElementById('ce-dur').value, tx=+document.getElementById('ce-tx').value;
+      document.getElementById('ce-rev-val').textContent=eur(rev);
+      document.getElementById('ce-chg-val').textContent=eur(chg);
+      document.getElementById('ce-app-val').textContent=eur(app);
+      document.getElementById('ce-dur-val').textContent=dur+' years';
+      document.getElementById('ce-tx-val').textContent=tx.toFixed(2).replace('.',',')+' %';
+      const mens=Math.max(0, rev*0.35 - chg);
+      const i=tx/1200, n=dur*12;
+      const capital = i>0 ? mens*(1-Math.pow(1+i,-n))/i : mens*n;
+      const cout = mens*n - capital;
+      document.getElementById('ce-capital').textContent=eur(capital);
+      document.getElementById('ce-mens').textContent=eur(mens);
+      document.getElementById('ce-cout').textContent=eur(cout);
+      document.getElementById('ce-achat').textContent=eur(capital+app);
+    }
+    function init(){
+      const r=document.getElementById('ce-rev'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['ce-rev','ce-chg','ce-app','ce-dur','ce-tx'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_ce-rev']){window['__hk_ce-rev']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

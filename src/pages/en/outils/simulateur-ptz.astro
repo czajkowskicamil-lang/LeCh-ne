@@ -1,0 +1,228 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "2026 PTZ Simulator: Zero-Interest Loan (Prêt à Taux Zéro, PTZ) amount by zone and income | Le Chêne Patrimonial";
+const description = "How much Zero-Interest Loan (PTZ) can you get? Estimate your 2026 PTZ based on your zone (A, B1, B2, C), household size and income. Official scale.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en/" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">PTZ Simulator</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Buying your primary residence
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">How much PTZ for your purchase?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        The Zero-Interest Loan (Prêt à Taux Zéro, PTZ) finances part of your primary residence with no interest. Its amount depends on your zone, your household size and your income. Estimate yours using the official 2026 scale.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field pz-ac-wrap">
+            <label>Your city <b id="pz-ville-zone"></b></label>
+            <input class="tool-input" id="pz-ville" placeholder="Type your city (200 largest)" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pz-ac-list" />
+            <ul id="pz-ac-list" class="pz-ac" role="listbox" hidden></ul>
+          </div>
+          <div class="tool-field">
+            <label>Municipality zone</label>
+            <div class="tool-seg" id="pz-zone">
+              <button class="on" data-z="A">A / A bis</button>
+              <button data-z="B1">B1</button>
+              <button data-z="B2">B2</button>
+              <button data-z="C">C</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>New-build property type</label>
+            <div class="tool-seg" id="pz-type">
+              <button class="on" data-t="appart">Apartment</button>
+              <button data-t="maison">House</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>People in the household</label>
+            <div class="tool-seg" id="pz-pers">
+              <button data-n="1">1</button>
+              <button class="on" data-n="2">2</button>
+              <button data-n="3">3</button>
+              <button data-n="4">4</button>
+              <button data-n="5">5</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>Reference taxable income (RFR), year N-2 (in €)</label>
+            <input class="tool-input" type="number" id="pz-rfr" min="0" step="1" value="40000" inputmode="numeric" />
+          </div>
+          <div class="tool-field">
+            <label>Total cost of the operation (in €)</label>
+            <input class="tool-input" type="number" id="pz-prix" min="0" step="1" value="250000" inputmode="numeric" />
+          </div>
+          <p class="tool-note">Reserved for first-time buyers (who have not owned their primary residence in the past 2 years) purchasing a new-build primary residence. Scale set by décret n° 2025-299. The income used is the higher of your RFR (year N-2) and the operation cost divided by 9. Households of more than 5 people and older properties with renovation work are not covered here.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Estimated PTZ amount</p>
+          <p class="big" id="pz-montant">N/A</p>
+          <div class="tool-brk"><span class="k" id="pz-elig-k">Eligibility</span><span class="v" id="pz-elig">N/A</span></div>
+          <div class="tool-brk"><span class="k">Income used (higher of RFR / cost ÷ 9)</span><span class="v" id="pz-revenu">N/A</span></div>
+          <div class="tool-brk"><span class="k">Income bracket</span><span class="v" id="pz-tranche">N/A</span></div>
+          <div class="tool-brk"><span class="k">Share financed</span><span class="v" id="pz-quot">N/A</span></div>
+          <div class="tool-brk"><span class="k">Operation cost used</span><span class="v" id="pz-plaf">N/A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>How to read your PTZ</h2>
+      <p>Your income, weighted for household size, places you in a bracket (1 to 4). The lower the bracket, the higher the share financed: up to <strong>50% of the price</strong> for a new apartment in bracket 1, versus 20% in bracket 4. The amount is then capped according to your zone.</p>
+      <p>The PTZ is not simply added on top of your main loan: well structured alongside your deposit and the term, it can meaningfully lower your monthly payment. It's a lever we build into the overall structure of your financing.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const ZONES = {
+      A:  { thr:[25000,31000,37000,49000], base:150000 },
+      B1: { thr:[21500,26000,30000,34500], base:135000 },
+      B2: { thr:[18000,22500,27000,31500], base:110000 },
+      C:  { thr:[15000,19500,24000,28500], base:100000 },
+    };
+    const incomeCoeff=[1,1.5,1.8,2.1,2.4], opCoeff=[1,1.5,1.8,2.1,2.4];
+    const quot={ appart:[50,40,40,20], maison:[30,20,20,10] };
+    const VILLES=[
+      {v:"Aix-en-Provence",z:"A"},{v:"Ajaccio",z:"A"},{v:"Albi",z:"B1"},{v:"Alès",z:"B2"},{v:"Alfortville",z:"Abis"},{v:"Amiens",z:"B1"},{v:"Angers",z:"B1"},{v:"Anglet",z:"A"},{v:"Angoulême",z:"B1"},{v:"Annecy",z:"A"},
+      {v:"Antibes",z:"A"},{v:"Antony",z:"Abis"},{v:"Argenteuil",z:"A"},{v:"Arles",z:"B1"},{v:"Arras",z:"B1"},{v:"Asnières-sur-Seine",z:"Abis"},{v:"Aubagne",z:"A"},{v:"Aubervilliers",z:"Abis"},{v:"Aulnay-sous-Bois",z:"A"},{v:"Avignon",z:"B1"},
+      {v:"Bagneux",z:"Abis"},{v:"Bagnolet",z:"Abis"},{v:"Bastia",z:"B1"},{v:"Bayonne",z:"B1"},{v:"Beauvais",z:"B1"},{v:"Belfort",z:"B2"},{v:"Besançon",z:"B1"},{v:"Béziers",z:"B1"},{v:"Blois",z:"B2"},{v:"Bobigny",z:"A"},
+      {v:"Bondy",z:"A"},{v:"Bordeaux",z:"A"},{v:"Boulogne-Billancourt",z:"Abis"},{v:"Boulogne-sur-Mer",z:"B1"},{v:"Bourg-en-Bresse",z:"B1"},{v:"Bourges",z:"B2"},{v:"Brest",z:"B1"},{v:"Brive-la-Gaillarde",z:"B1"},{v:"Bron",z:"B1"},{v:"Caen",z:"B1"},
+      {v:"Cagnes-sur-Mer",z:"A"},{v:"Calais",z:"B1"},{v:"Caluire-et-Cuire",z:"A"},{v:"Cannes",z:"A"},{v:"Carcassonne",z:"B2"},{v:"Castres",z:"B2"},{v:"Cayenne",z:"B1"},{v:"Cergy",z:"A"},{v:"Chalon-sur-Saône",z:"B2"},{v:"Châlons-en-Champagne",z:"B2"},
+      {v:"Chambéry",z:"B1"},{v:"Champigny-sur-Marne",z:"A"},{v:"Charleville-Mézières",z:"B1"},{v:"Châteauroux",z:"B2"},{v:"Chelles",z:"A"},{v:"Cherbourg-en-Cotentin",z:"B1"},{v:"Choisy-le-Roi",z:"A"},{v:"Cholet",z:"B1"},{v:"Clamart",z:"Abis"},{v:"Clermont-Ferrand",z:"B1"},
+      {v:"Clichy",z:"Abis"},{v:"Colmar",z:"B1"},{v:"Colombes",z:"Abis"},{v:"Colomiers",z:"A"},{v:"Compiègne",z:"B1"},{v:"Corbeil-Essonnes",z:"A"},{v:"Courbevoie",z:"Abis"},{v:"Créteil",z:"A"},{v:"Dijon",z:"B1"},{v:"Douai",z:"B1"},
+      {v:"Draguignan",z:"B1"},{v:"Drancy",z:"A"},{v:"Dunkerque",z:"B1"},{v:"Épinay-sur-Seine",z:"A"},{v:"Évreux",z:"B1"},{v:"Évry-Courcouronnes",z:"A"},{v:"Fontenay-sous-Bois",z:"Abis"},{v:"Fort-de-France",z:"B1"},{v:"Fréjus",z:"A"},{v:"Gagny",z:"A"},
+      {v:"Gap",z:"B1"},{v:"Garges-lès-Gonesse",z:"A"},{v:"Gennevilliers",z:"Abis"},{v:"Grasse",z:"A"},{v:"Grenoble",z:"A"},{v:"Hyères",z:"A"},{v:"Issy-les-Moulineaux",z:"Abis"},{v:"Istres",z:"A"},{v:"Ivry-sur-Seine",z:"Abis"},{v:"La Courneuve",z:"A"},
+      {v:"La Roche-sur-Yon",z:"B1"},{v:"La Rochelle",z:"A"},{v:"La Seyne-sur-Mer",z:"A"},{v:"Laval",z:"B1"},{v:"Le Blanc-Mesnil",z:"A"},{v:"Le Cannet",z:"A"},{v:"Le Havre",z:"B1"},{v:"Le Mans",z:"B1"},{v:"Le Tampon",z:"B1"},{v:"Les Abymes",z:"B1"},
+      {v:"Les Sables-d'Olonne",z:"B1"},{v:"Levallois-Perret",z:"Abis"},{v:"Lille",z:"A"},{v:"Limoges",z:"B1"},{v:"Livry-Gargan",z:"A"},{v:"Lorient",z:"B1"},{v:"Lyon",z:"A"},{v:"Maisons-Alfort",z:"Abis"},{v:"Mantes-la-Jolie",z:"A"},{v:"Marcq-en-Barœul",z:"A"},
+      {v:"Marseille",z:"A"},{v:"Martigues",z:"A"},{v:"Massy",z:"A"},{v:"Meaux",z:"A"},{v:"Melun",z:"A"},{v:"Mérignac",z:"A"},{v:"Metz",z:"B1"},{v:"Meudon",z:"Abis"},{v:"Montauban",z:"B1"},{v:"Montélimar",z:"B1"},
+      {v:"Montpellier",z:"A"},{v:"Montreuil",z:"Abis"},{v:"Montrouge",z:"Abis"},{v:"Mulhouse",z:"B1"},{v:"Nancy",z:"B1"},{v:"Nanterre",z:"Abis"},{v:"Nantes",z:"A"},{v:"Narbonne",z:"B1"},{v:"Neuilly-sur-Marne",z:"A"},{v:"Neuilly-sur-Seine",z:"Abis"},
+      {v:"Nice",z:"A"},{v:"Nîmes",z:"B1"},{v:"Niort",z:"B2"},{v:"Noisy-le-Grand",z:"A"},{v:"Noisy-le-Sec",z:"A"},{v:"Orléans",z:"B1"},{v:"Pantin",z:"Abis"},{v:"Paris",z:"Abis"},{v:"Pau",z:"B1"},{v:"Périgueux",z:"B2"},
+      {v:"Perpignan",z:"B1"},{v:"Pessac",z:"A"},{v:"Poissy",z:"A"},{v:"Poitiers",z:"B1"},{v:"Puteaux",z:"Abis"},{v:"Quimper",z:"B1"},{v:"Reims",z:"B1"},{v:"Rennes",z:"A"},{v:"Rezé",z:"B1"},{v:"Rosny-sous-Bois",z:"A"},
+      {v:"Roubaix",z:"B1"},{v:"Rouen",z:"B1"},{v:"Rueil-Malmaison",z:"Abis"},{v:"Saint-André (La Réunion)",z:"B1"},{v:"Saint-Brieuc",z:"B1"},{v:"Saint-Denis (93)",z:"Abis"},{v:"Saint-Denis (La Réunion)",z:"B1"},{v:"Saint-Étienne",z:"B2"},{v:"Saint-Germain-en-Laye",z:"Abis"},{v:"Saint-Herblain",z:"B1"},
+      {v:"Saint-Laurent-du-Maroni",z:"B1"},{v:"Saint-Louis (La Réunion)",z:"B1"},{v:"Saint-Malo",z:"B1"},{v:"Saint-Maur-des-Fossés",z:"Abis"},{v:"Saint-Nazaire",z:"B1"},{v:"Saint-Ouen-sur-Seine",z:"Abis"},{v:"Saint-Paul (La Réunion)",z:"A"},{v:"Saint-Pierre (La Réunion)",z:"B1"},{v:"Saint-Priest",z:"B1"},{v:"Saint-Quentin",z:"B1"},
+      {v:"Salon-de-Provence",z:"B1"},{v:"Sarcelles",z:"A"},{v:"Sartrouville",z:"A"},{v:"Sète",z:"B1"},{v:"Sevran",z:"A"},{v:"Stains",z:"A"},{v:"Strasbourg",z:"A"},{v:"Suresnes",z:"Abis"},{v:"Talence",z:"A"},{v:"Tarbes",z:"B2"},
+      {v:"Thionville",z:"B1"},{v:"Thonon-les-Bains",z:"A"},{v:"Toulon",z:"A"},{v:"Toulouse",z:"A"},{v:"Tourcoing",z:"B1"},{v:"Tours",z:"B1"},{v:"Troyes",z:"B1"},{v:"Valence",z:"B1"},{v:"Valenciennes",z:"B1"},{v:"Vannes",z:"B1"},
+      {v:"Vaulx-en-Velin",z:"B1"},{v:"Vénissieux",z:"B1"},{v:"Versailles",z:"Abis"},{v:"Villejuif",z:"Abis"},{v:"Villenave-d'Ornon",z:"B1"},{v:"Villeneuve-d'Ascq",z:"B1"},{v:"Villepinte",z:"A"},{v:"Villeurbanne",z:"A"},{v:"Vincennes",z:"Abis"},{v:"Vitry-sur-Seine",z:"A"},
+      {v:"Wattrelos",z:"B1"}
+    ];
+    let zone='A', type='appart', pers=2;
+    function calc(){
+      const rfr=+document.getElementById('pz-rfr').value||0, prix=+document.getElementById('pz-prix').value||0;
+      const z=ZONES[zone], revenu=Math.max(rfr, prix/9), q=revenu/incomeCoeff[pers-1];
+      document.getElementById('pz-revenu').textContent=eur(revenu);
+      let tranche = q<=z.thr[0]?1 : q<=z.thr[1]?2 : q<=z.thr[2]?3 : q<=z.thr[3]?4 : 0;
+      const eligEl=document.getElementById('pz-elig');
+      if(tranche===0){
+        document.getElementById('pz-montant').textContent='0 €';
+        eligEl.textContent='Income too high'; eligEl.style.color='#e08a70';
+        document.getElementById('pz-tranche').textContent='N/A';
+        document.getElementById('pz-quot').textContent='N/A';
+        document.getElementById('pz-plaf').textContent='N/A';
+        return;
+      }
+      const quotite=quot[type][tranche-1];
+      const plafond=z.base*opCoeff[pers-1];
+      const retenu=Math.min(prix,plafond);
+      const montant=retenu*quotite/100;
+      document.getElementById('pz-montant').textContent=eur(montant);
+      eligEl.textContent='Eligible'; eligEl.style.color='#7bbd90';
+      document.getElementById('pz-tranche').textContent='Bracket '+tranche;
+      document.getElementById('pz-quot').textContent=quotite+' %';
+      document.getElementById('pz-plaf').textContent=eur(retenu);
+    }
+    function seg(id,set){document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));b.classList.add('on');set(b);calc();}));}
+    function init(){
+      const r=document.getElementById('pz-rfr'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['pz-rfr','pz-prix'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      seg('pz-zone',b=>{zone=b.dataset.z;const vi=document.getElementById('pz-ville');if(vi){vi.value='';document.getElementById('pz-ville-zone').textContent='';}});
+      seg('pz-type',b=>type=b.dataset.t);
+      seg('pz-pers',b=>pers=+b.dataset.n);
+      // City autocomplete (the HTML <datalist> doesn't render on mobile).
+      const SORTED=[...VILLES].sort((a,b)=>a.v.localeCompare(b.v,'fr'));
+      const norm=s=>s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g,'');
+      const vi=document.getElementById('pz-ville');
+      const list=document.getElementById('pz-ac-list');
+      let acItems=[], acIdx=-1;
+      function selectCity(c){
+        if(!c) return;
+        vi.value=c.v;
+        zone=(c.z==='Abis'||c.z==='A')?'A':c.z;
+        document.querySelectorAll('#pz-zone button').forEach(x=>x.classList.toggle('on',x.dataset.z===zone));
+        document.getElementById('pz-ville-zone').textContent='· Zone '+c.z;
+        hideAC(); calc();
+      }
+      function hideAC(){ list.hidden=true; list.innerHTML=''; acItems=[]; acIdx=-1; vi.setAttribute('aria-expanded','false'); }
+      function paintActive(){ [...list.children].forEach((li,i)=>li.classList.toggle('active',i===acIdx)); }
+      function renderAC(){
+        const q=norm(vi.value.trim());
+        if(!q){ hideAC(); return; }
+        acItems=SORTED.filter(c=>norm(c.v).includes(q)).slice(0,8);
+        if(!acItems.length){ hideAC(); return; }
+        list.innerHTML=acItems.map((c,i)=>'<li class="pz-ac-item" role="option" data-i="'+i+'"><span>'+c.v+'</span><em>Zone '+c.z+'</em></li>').join('');
+        list.hidden=false; acIdx=-1; vi.setAttribute('aria-expanded','true');
+      }
+      vi.addEventListener('input',renderAC);
+      vi.addEventListener('focus',()=>{ if(vi.value.trim()) renderAC(); });
+      list.addEventListener('click',e=>{ const li=e.target.closest('.pz-ac-item'); if(li) selectCity(acItems[+li.dataset.i]); });
+      vi.addEventListener('keydown',e=>{
+        if(list.hidden) return;
+        if(e.key==='ArrowDown'){ e.preventDefault(); acIdx=Math.min(acIdx+1,acItems.length-1); paintActive(); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); acIdx=Math.max(acIdx-1,0); paintActive(); }
+        else if(e.key==='Enter' && acIdx>=0){ e.preventDefault(); selectCity(acItems[acIdx]); }
+        else if(e.key==='Escape'){ hideAC(); }
+      });
+      vi.addEventListener('blur',()=>setTimeout(()=>{
+        const exact=SORTED.find(c=>norm(c.v)===norm(vi.value.trim()));
+        if(exact) selectCity(exact); else hideAC();
+      },150));
+      calc();
+    }
+    init();
+    if(!window['__hk_pz-rfr']){window['__hk_pz-rfr']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>
+
+<style is:global>
+  /* PTZ simulator city autocomplete (replaces the <datalist>, broken on mobile). */
+  .pz-ac-wrap { position: relative; }
+  .pz-ac {
+    position: absolute; left: 0; right: 0; top: 100%; z-index: 40;
+    margin: 6px 0 0; padding: 6px; list-style: none;
+    background: #fff; border: 1px solid rgba(3, 16, 46, 0.12); border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(3, 16, 46, 0.14);
+    max-height: 280px; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .pz-ac[hidden] { display: none; }
+  .pz-ac-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 14px; border-radius: 9px; cursor: pointer;
+    font-size: 0.95rem; color: #03102E;
+  }
+  .pz-ac-item:hover, .pz-ac-item.active { background: #F5F1E8; }
+  .pz-ac-item em { font-style: normal; font-size: 0.78rem; color: #7A7566; white-space: nowrap; }
+</style>

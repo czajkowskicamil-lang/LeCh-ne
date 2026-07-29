@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+---
+
+<Base
+  title="Manifesto, Le Chêne Patrimonial"
+  description="Why Le Chêne. From the basketball court to wealth advice: an independent wealth management firm that believes in patience, method and keeping its word."
+>
+  <!-- Hero éditorial -->
+  <section class="pt-16 pb-12 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-9">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Manifesto
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          Why<br/>
+          <span class="italic text-chene">Le Chêne?</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          Because good wealth decisions are measured in years, not seasons.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Texte éditorial principal -->
+  <section class="py-12 md:py-20">
+    <div class="shell">
+      <article class="max-w-prose-wide mx-auto space-y-8 text-ink/85 leading-relaxed text-lg">
+
+        <p class="reveal">
+          Before becoming a wealth management advisor, I was a professional basketball player. Six clubs in six seasons, in France and then in Poland. That is where I learned what separates a good move from a career: method, patience, and the ability to hold a course when everything around you is shaking.
+        </p>
+
+        <p class="reveal" style="animation-delay:80ms">
+          I also saw, around me, what happened when an athlete turned the page without having prepared for what came next. Brilliant trajectories that landed badly. Not for lack of talent, but for lack of financial structure: no planning during the full years, no wealth strategy, no safety net for the rest.
+        </p>
+
+        <p class="reveal" style="animation-delay:160ms">
+          It is that gap I set out to fill. For athletes first. For everyone who builds something afterwards, directors, entrepreneurs, professionals, private individuals. With the same rigour as elite locker rooms.
+        </p>
+
+        <!-- Filet doré comme respiration -->
+        <div class="py-6 reveal" style="animation-delay:200ms">
+          <span class="block w-12 h-px bg-or"></span>
+        </div>
+
+        <p class="reveal" style="animation-delay:240ms">
+          I chose the oak as a symbol because it says everything I want this firm to be. The oak does not race. It takes years to settle, decades to grow, centuries to stand. It does not dazzle. It endures.
+        </p>
+
+        <p class="reveal" style="animation-delay:300ms">
+          Wealth is built the same way. Not in one season. Not with a fashionable investment. Not by giving in to the urgency of the moment. <strong class="text-ink">With patience, method and consistency.</strong> With a course you hold when markets get restless, and adjust when life changes.
+        </p>
+      </article>
+
+      <!-- Ce que je refuse / Ce que je tiens -->
+      <div class="max-w-prose-wide mx-auto mt-24 grid sm:grid-cols-2 gap-y-10 gap-x-12">
+        <div class="reveal">
+          <p class="eyebrow mb-6">What I refuse</p>
+          <ul class="space-y-3 text-ink/75 text-base leading-relaxed">
+            <li class="flex gap-3"><span class="text-or shrink-0">×</span><span>Recommendations dictated by a banking network's targets.</span></li>
+            <li class="flex gap-3"><span class="text-or shrink-0">×</span><span>Commissions hidden in a product's margin.</span></li>
+            <li class="flex gap-3"><span class="text-or shrink-0">×</span><span>Jargon that turns finance into a barrier.</span></li>
+            <li class="flex gap-3"><span class="text-or shrink-0">×</span><span>Manufactured urgency to get a signature.</span></li>
+          </ul>
+        </div>
+        <div class="reveal" style="animation-delay:120ms">
+          <p class="eyebrow mb-6">What I stand by</p>
+          <ul class="space-y-3 text-ink/75 text-base leading-relaxed">
+            <li class="flex gap-3"><span class="text-chene shrink-0">→</span><span>Total independence. No banking network behind me.</span></li>
+            <li class="flex gap-3"><span class="text-chene shrink-0">→</span><span>Transparency on how I'm paid, before every transaction.</span></li>
+            <li class="flex gap-3"><span class="text-chene shrink-0">→</span><span>Language you understand on first reading.</span></li>
+            <li class="flex gap-3"><span class="text-chene shrink-0">→</span><span>A word kept over time, not only at signing.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Signature de Camil -->
+      <div class="max-w-prose-wide mx-auto mt-24 reveal">
+        <div class="border-t border-ink/15 pt-10">
+          <p class="text-ink/85 leading-relaxed text-lg">
+            That is Le Chêne Patrimonial. Slowly. Deeply. Lastingly.
+          </p>
+          <p class="font-serif italic text-3xl text-chene mt-8">Camil</p>
+          <p class="text-sm text-ink/55 mt-2 tracking-micro uppercase">
+            Camil Czajkowski · Wealth management advisor · Le Chêne Patrimonial
+          </p>
+        </div>
+      </div>
+
+      <!-- Lien vers FAQ -->
+      <div class="max-w-prose-wide mx-auto mt-16 text-center reveal">
+        <a href="/en/questions-frequentes" class="link-underline text-chene font-medium">
+          Read the frequently asked questions →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>

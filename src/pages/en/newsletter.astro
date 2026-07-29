@@ -1,0 +1,161 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+---
+
+<Base
+  title="The Oak Letter, a monthly newsletter"
+  description="A sober, data-driven monthly publication. Real cases, opportunities, studies and tax news, decoded."
+>
+  <section class="pt-16 pb-16 md:pt-24">
+    <div class="shell grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          The Oak Letter
+        </p>
+        <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+          A newsletter,<br/>
+          <span class="italic text-chene">once a month.</span>
+        </h1>
+        <p class="text-xl text-ink/75 max-w-2xl leading-relaxed reveal" style="animation-delay:160ms">
+          A sober, data-driven publication. The goal: make the wealth-planning decisions I see in my practice clear and readable, with the rigour my clients expect.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: programme + inscription -->
+  <section class="py-12 md:py-16">
+    <div class="shell grid lg:grid-cols-12 gap-10 items-stretch">
+      <!-- Programme -->
+      <div class="lg:col-span-7 reveal">
+        <div class="bg-cream-soft border border-ink/10 p-6 md:p-10">
+          <p class="eyebrow mb-2">In each issue</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-ink mb-8">Real cases, a measured approach, sources cited</h2>
+
+          <ul class="space-y-6">
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">01</span>
+              <div>
+                <p class="text-ink font-medium">Anonymised real-life cases</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Actual client situations, broken down with supporting figures.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">02</span>
+              <div>
+                <p class="text-ink font-medium">Opportunities identified</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Wealth strategies, tax schemes, windows you shouldn't miss.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">03</span>
+              <div>
+                <p class="text-ink font-medium">Studies and news, decoded</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Market analysis, tax reforms, mechanics explained step by step.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-2xl text-or italic w-10 shrink-0">04</span>
+              <div>
+                <p class="text-ink font-medium">Wealth planning for professional athletes</p>
+                <p class="text-ink/70 text-sm leading-relaxed mt-1">Short careers, transfer bonuses, expatriation, career transition. Ground I know from the inside.</p>
+              </div>
+            </li>
+          </ul>
+
+          <p class="mt-10 pt-6 border-t border-ink/10 text-sm text-ink/60 italic">
+            One case. One figure. One piece of news. Short. Concrete. Useful.
+          </p>
+        </div>
+      </div>
+
+      <!-- Inscription par email -->
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="bg-ink text-cream p-8 md:p-10 h-full flex flex-col">
+          <p class="eyebrow-cream mb-2">Subscribe</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-cream mb-6">Receive The Oak Letter</h2>
+          <p class="text-sm text-cream/70 mb-8 leading-relaxed">
+            One edition a month, short and to the point. Enter your first name and email, and you'll receive the next edition.
+          </p>
+
+          <form id="nl-form" class="space-y-5 flex-1 flex flex-col">
+            <div>
+              <label for="nl-prenom" class="block text-xs uppercase tracking-micro text-or-light mb-2">First name <span class="text-cream/40 normal-case">(optional)</span></label>
+              <input type="text" id="nl-prenom" name="prenom" autocomplete="given-name" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="John" />
+            </div>
+
+            <div>
+              <label for="nl-email" class="block text-xs uppercase tracking-micro text-or-light mb-2">Your email</label>
+              <input type="email" id="nl-email" name="email" required autocomplete="email" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="john@example.com" />
+            </div>
+
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+
+            <p class="text-xs text-cream/60 leading-relaxed pt-2">
+              You'll receive a confirmation email. One click to confirm, and you're subscribed. Unsubscribe with one click at any time.
+              <a href="/en/confidentialite" class="text-or-light underline underline-offset-2 hover:text-or">Privacy policy</a>.
+            </p>
+
+            <div class="flex-1"></div>
+
+            <button type="submit" id="nl-btn" class="bg-or text-ink font-medium px-6 py-3 hover:bg-or-light transition-colors disabled:opacity-60">
+              Subscribe to The Oak Letter
+            </button>
+
+            <p id="nl-msg" role="status" class="text-xs text-cream/50 mt-2">
+              Or write directly to <a href={`mailto:${site.email}?subject=Subscribe%20to%20the%20Oak%20Letter`} class="text-or-light underline underline-offset-2">{site.email}</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('nl-form') as HTMLFormElement | null;
+
+    if (form) {
+      const msg = document.getElementById('nl-msg') as HTMLElement;
+      const btn = document.getElementById('nl-btn') as HTMLButtonElement;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const prenom = (document.getElementById('nl-prenom') as HTMLInputElement)?.value.trim() || '';
+        const email = (document.getElementById('nl-email') as HTMLInputElement)?.value.trim() || '';
+        const website = (form.querySelector('input[name="website"]') as HTMLInputElement)?.value || '';
+
+        if (!email) {
+          msg.textContent = 'Please enter your email.';
+          msg.className = 'text-xs text-or-light mt-2';
+          return;
+        }
+
+        btn.disabled = true;
+        const label = btn.textContent;
+        btn.textContent = 'Sending…';
+        try {
+          const r = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ prenom, email, website }),
+          });
+          const data = await r.json().catch(() => ({}));
+          if (r.ok && data.ok) {
+            form.querySelectorAll('div, button').forEach((el) => el.remove());
+            msg.innerHTML = 'Almost done! A confirmation email has just been sent to <strong>' + email.replace(/</g, '') + '</strong>. Click the link inside it to confirm your subscription.';
+            msg.className = 'text-sm text-cream leading-relaxed';
+          } else {
+            msg.textContent = data.error === 'email_invalide' ? 'This email doesn\'t look valid.' : 'Something went wrong. Please try again, or write to camil.cz@lechenepatrimonial.com.';
+            msg.className = 'text-xs text-or-light mt-2';
+            btn.disabled = false; btn.textContent = label;
+          }
+        } catch {
+          msg.textContent = 'Connection failed. Please try again in a moment.';
+          msg.className = 'text-xs text-or-light mt-2';
+          btn.disabled = false; btn.textContent = label;
+        }
+      });
+    }
+  </script>
+</Base>

@@ -1,15 +1,28 @@
 ---
 import Logo from './Logo.astro';
+import LanguageToggle from './LanguageToggle.astro';
 import { nav, site } from '../data/site';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 
 interface Props {
   heroDark?: boolean;
 }
 const { heroDark = false } = Astro.props;
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 const pad = (n: number) => String(n + 1).padStart(2, '0');
+
+// Menu localisé : libellé traduit + href préfixé selon la langue.
+const menu = nav.map((item) => ({
+  ...item,
+  href: localizePath(item.href, lang),
+  label: t(item.key),
+}));
+const avisHref = localizePath('/avis', lang);
 ---
 
 <header
@@ -24,17 +37,18 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
     <Logo />
 
     <div class="flex items-center gap-4 sm:gap-5 md:gap-7">
-      <a href="/avis" class="nav-avis inline-flex items-center gap-1.5 text-sm font-medium text-current hover:text-or transition-colors" aria-label="Avis clients">
+      <a href={avisHref} class="nav-avis inline-flex items-center gap-1.5 text-sm font-medium text-current hover:text-or transition-colors" aria-label={t('nav.ariaAvis')}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-        <span>Avis</span>
+        <span>{t('nav.avisShort')}</span>
       </a>
+      <LanguageToggle />
       <a href={site.calendly} target="_blank" rel="noopener" class="nav-cta hidden sm:inline-flex btn-primary text-sm">
-        Prendre rendez-vous
+        {t('nav.rdv')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
       </a>
 
-      <button id="menu-toggle" class="group flex items-center gap-3 text-current" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-overlay">
-        <span class="hidden sm:inline text-xs uppercase tracking-micro font-medium">Menu</span>
+      <button id="menu-toggle" class="group flex items-center gap-3 text-current" aria-label={t('nav.ariaMenu')} aria-expanded="false" aria-controls="menu-overlay">
+        <span class="hidden sm:inline text-xs uppercase tracking-micro font-medium">{t('nav.menu')}</span>
         <span class="flex flex-col items-end gap-[5px] w-6">
           <span class="block h-px w-6 bg-current transition-all duration-500 ease-out-expo"></span>
           <span class="block h-px w-4 bg-current transition-all duration-500 ease-out-expo group-hover:w-6"></span>
@@ -58,8 +72,8 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
     <!-- Barre haute du menu -->
     <div class="shell flex items-center justify-between h-20 shrink-0">
       <span class="font-serif text-cream text-lg tracking-tight">{site.name}</span>
-      <button id="menu-close" class="group flex items-center gap-3 text-cream" aria-label="Fermer le menu">
-        <span class="hidden sm:inline text-xs uppercase tracking-micro font-medium">Fermer</span>
+      <button id="menu-close" class="group flex items-center gap-3 text-cream" aria-label={t('nav.fermer')}>
+        <span class="hidden sm:inline text-xs uppercase tracking-micro font-medium">{t('nav.fermer')}</span>
         <span class="relative block w-6 h-6">
           <span class="absolute top-1/2 left-0 block h-px w-6 bg-cream rotate-45 transition-transform duration-500 group-hover:rotate-[135deg]"></span>
           <span class="absolute top-1/2 left-0 block h-px w-6 bg-cream -rotate-45 transition-transform duration-500 group-hover:rotate-[45deg]"></span>
@@ -70,7 +84,7 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
     <!-- Liens -->
     <div class="shell flex-1 min-h-0 overflow-y-auto flex flex-col justify-center py-8">
       <nav aria-label="Navigation principale" class="grid sm:grid-cols-2 gap-x-16 gap-y-1 max-w-4xl">
-        {nav.map((item, i) => {
+        {menu.map((item, i) => {
           const active = isActive(item.href);
           const isTool = item.href === '/calculatrice-rentabilite-credit';
           return (
@@ -81,7 +95,7 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
                 active ? 'text-or-light' : 'text-cream group-hover:text-or-light',
               ]}>
                 {item.label}
-                {isTool && <span class="align-middle ml-3 text-[0.6rem] uppercase tracking-micro font-sans text-ink bg-or rounded-full px-2 py-0.5">Outil</span>}
+                {isTool && <span class="align-middle ml-3 text-[0.6rem] uppercase tracking-micro font-sans text-ink bg-or rounded-full px-2 py-0.5">{t('nav.toolBadge')}</span>}
               </span>
               <svg class="ml-auto self-center w-5 h-5 text-or opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -98,7 +112,7 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
         <a href={site.linkedin} target="_blank" rel="noopener" class="text-cream/70 hover:text-or-light transition-colors">LinkedIn</a>
       </div>
       <a href={site.calendly} target="_blank" rel="noopener" class="btn-or self-start md:self-auto">
-        Prendre rendez-vous
+        {t('nav.rdv')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>

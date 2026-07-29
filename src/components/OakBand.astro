@@ -1,5 +1,7 @@
 ---
 // Bande cinématique "chêne" — respiration + signature de marque, avant le CTA final.
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+const t = useTranslations(getLangFromUrl(Astro.url));
 ---
 
 <section class="oak-band relative flex items-center overflow-hidden bg-navy-darker">
@@ -23,16 +25,15 @@
     <div class="reveal mx-auto max-w-3xl text-center">
       <p class="mb-6 flex items-center justify-center gap-3 text-or-light" style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;">
         <span class="inline-block h-px w-8 bg-or/70"></span>
-        La philosophie du Chêne
+        {t('oak.eyebrow')}
         <span class="inline-block h-px w-8 bg-or/70"></span>
       </p>
       <p class="oak-quote font-serif text-cream">
-        Des racines profondes, une croissance qui traverse
-        <span class="italic text-or-light"> les générations.</span>
+        {t('oak.quote')}
+        <span class="italic text-or-light">{t('oak.quoteItalic')}</span>
       </p>
       <p class="mx-auto mt-7 max-w-xl text-base leading-relaxed text-cream/75 md:text-lg">
-        C'est ainsi que se construit un patrimoine : lentement, solidement,
-        pensé pour ceux qui viennent après vous.
+        {t('oak.body')}
       </p>
     </div>
   </div>

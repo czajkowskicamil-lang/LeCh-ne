@@ -1,0 +1,120 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { site } from '../../data/site';
+---
+
+<Base
+  heroDark
+  title="Contact, Le Chêne Patrimonial"
+  description="Book a meeting or send a message. First 30-minute conversation offered, with no commitment."
+>
+  <PageHeader
+    image="/contact-header.jpg"
+    alt="Rays of light through a forest"
+    eyebrow="Contact"
+    title={`A first<br/><span class="italic text-or-light">conversation.</span>`}
+    intro="30 minutes, by video or at the office. You ask your questions, I get to know your situation. No commitment."
+  />
+
+  <!-- Two-column: Calendly + contact form -->
+  <section class="py-12 md:py-16">
+    <div class="shell grid lg:grid-cols-12 gap-10 items-stretch">
+      <!-- Calendly embed (iframe) -->
+      <div class="lg:col-span-7 reveal">
+        <div class="bg-cream-soft border border-ink/10 p-6 md:p-8">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <p class="eyebrow mb-2">Option 1 · Quick</p>
+              <h2 class="font-serif text-2xl md:text-3xl text-ink">Book a slot</h2>
+            </div>
+            <span class="inline-flex items-center gap-2 text-xs uppercase tracking-micro bg-ink text-cream px-3 py-1">
+              <span class="w-2 h-2 rounded-full bg-or-light"></span>
+              30 min · free
+            </span>
+          </div>
+          <!-- Inline Calendly -->
+          <div
+            class="calendly-inline-widget bg-cream"
+            data-url={`${site.calendly}?hide_gdpr_banner=1&primary_color=2d4a33`}
+            style="min-width:320px;height:680px;"
+          ></div>
+          <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+          <noscript>
+            <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary mt-6">Open Calendly</a>
+          </noscript>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-5 reveal" style="animation-delay:120ms">
+        <div class="bg-ink text-cream p-8 md:p-10 h-full flex flex-col">
+          <p class="eyebrow-cream mb-2">Option 2 · By message</p>
+          <h2 class="font-serif text-2xl md:text-3xl text-cream mb-6">Write to me</h2>
+          <p class="text-sm text-cream/70 mb-8 leading-relaxed">
+            A particular situation? A complex case? A few words here and I'll get back to you within 24 hours.
+          </p>
+
+          <!-- Formspree-compatible form. Remplacer l'action par votre endpoint. -->
+          <form
+            action="https://formspree.io/f/REPLACE_ME"
+            method="POST"
+            class="space-y-5 flex-1 flex flex-col"
+          >
+            <div>
+              <label for="name" class="block text-xs uppercase tracking-micro text-or-light mb-2">Full name</label>
+              <input type="text" id="name" name="name" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="John Smith" />
+            </div>
+            <div>
+              <label for="email" class="block text-xs uppercase tracking-micro text-or-light mb-2">Email</label>
+              <input type="email" id="email" name="email" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" placeholder="john@smith.com" />
+            </div>
+            <div>
+              <label for="profile" class="block text-xs uppercase tracking-micro text-or-light mb-2">Your profile</label>
+              <select id="profile" name="profile" class="w-full bg-transparent border-b border-cream/20 py-2 text-cream focus:border-or focus:outline-none">
+                <option class="bg-ink">Private individual</option>
+                <option class="bg-ink">Director / Entrepreneur</option>
+                <option class="bg-ink">Professional / Self-employed</option>
+                <option class="bg-ink">Professional athlete</option>
+                <option class="bg-ink">Other</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label for="message" class="block text-xs uppercase tracking-micro text-or-light mb-2">Your message</label>
+              <textarea id="message" name="message" rows="5" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none resize-none" placeholder="Describe your situation or your question in a few words…"></textarea>
+            </div>
+            <button type="submit" class="btn-or w-full justify-center mt-auto">
+              Send the message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <p class="text-xs text-cream/50">Your information stays confidential. No marketing.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coordonnées + couverture -->
+  <section class="py-16 border-t border-ink/10">
+    <div class="shell grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div>
+        <p class="eyebrow mb-3">The firm</p>
+        <p class="text-ink mb-1">{site.name}</p>
+        <p class="text-ink/70">{site.city}</p>
+        <p class="text-ink/60 text-sm mt-1">Throughout France · in person or remotely</p>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">Phone</p>
+        <a href={`tel:${site.phone.tel}`} class="link-underline text-ink">{site.phone.display}</a>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">Email</p>
+        <a href={`mailto:${site.email}`} class="link-underline text-ink break-all">{site.email}</a>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">LinkedIn</p>
+        <a href={site.linkedin} target="_blank" rel="noopener" class="link-underline text-ink">Camil Czajkowski</a>
+      </div>
+    </div>
+  </section>
+</Base>

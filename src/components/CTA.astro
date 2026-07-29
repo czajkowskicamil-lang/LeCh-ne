@@ -1,13 +1,16 @@
 ---
 import { site } from '../data/site';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 interface Props {
   title?: string;
   body?: string;
 }
-const {
-  title = "Un patrimoine se construit dans la durée.",
-  body = "Planifions un premier échange de 30 minutes. Sans engagement : une conversation claire sur votre situation, et les priorités qui en découlent.",
-} = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const contactHref = localizePath('/contact', lang);
+const newsletterHref = localizePath('/newsletter', lang);
+// Défauts localisés ; une page peut toujours passer un title/body explicite.
+const { title = t('cta.title'), body = t('cta.body') } = Astro.props;
 ---
 
 <section class="py-24 md:py-32 bg-navy-deep text-cream relative overflow-hidden">
@@ -16,7 +19,7 @@ const {
     <div class="lg:col-span-8 reveal">
       <p class="eyebrow-cream mb-5 flex items-center gap-3">
         <span class="inline-block h-px w-8 bg-or"></span>
-        Commencer ensemble
+        {t('cta.eyebrow')}
       </p>
       <h2 class="font-serif text-display text-cream">
         {title}
@@ -26,13 +29,13 @@ const {
       <p class="text-cream/75 leading-relaxed mb-8">{body}</p>
       <div class="flex flex-col sm:flex-row gap-3">
         <a href={site.calendly} target="_blank" rel="noopener" class="btn-or">
-          Prendre rendez-vous
+          {t('cta.rdv')}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
-        <a href="/contact" class="btn-ghost-cream">Écrire un message</a>
+        <a href={contactHref} class="btn-ghost-cream">{t('cta.write')}</a>
       </div>
       <p class="mt-6 text-xs text-cream/60">
-        Ou recevoir <a href="/newsletter" class="text-or-light underline underline-offset-2 hover:text-or">La Lettre du Chêne</a> chaque mois.
+        {t('cta.orReceivePre')} <a href={newsletterHref} class="text-or-light underline underline-offset-2 hover:text-or">{t('nlt.eyebrow')}</a> {t('cta.orReceivePost')}
       </p>
     </div>
   </div>

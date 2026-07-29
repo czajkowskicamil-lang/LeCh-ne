@@ -1,14 +1,26 @@
 ---
 import { site, nav, navSecondary } from '../data/site';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 const year = new Date().getFullYear();
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Menus localisés (libellé traduit + href préfixé selon la langue).
+const menu = nav.map((i) => ({ href: localizePath(i.href, lang), label: t(i.key) }));
+const resources = navSecondary.map((i) => ({ href: localizePath(i.href, lang), label: t(i.key) }));
 
 // Pages de destination ciblées (niche sportifs + local), reliées ici pour
 // qu'elles soient accessibles depuis tout le site et indexées par Google.
 const specialites = [
-  { label: 'LMNP pour sportif', href: '/expertise/lmnp-sportif-haut-niveau' },
-  { label: 'Placement du sportif', href: '/expertise/placement-sportif-haut-niveau' },
-  { label: 'CGP à Montpellier', href: '/conseiller-gestion-patrimoine-montpellier' },
+  { label: t('footer.spec.lmnp'), href: localizePath('/expertise/lmnp-sportif-haut-niveau', lang) },
+  { label: t('footer.spec.placement'), href: localizePath('/expertise/placement-sportif-haut-niveau', lang) },
+  { label: t('footer.spec.montpellier'), href: localizePath('/conseiller-gestion-patrimoine-montpellier', lang) },
 ];
+
+const mentionsHref = localizePath('/mentions-legales', lang);
+const privacyHref = localizePath('/confidentialite', lang);
+const newsletterHref = localizePath('/newsletter', lang);
 ---
 
 <footer class="relative bg-ink text-cream/85 mt-40 overflow-hidden">
@@ -18,14 +30,14 @@ const specialites = [
     <div class="max-w-4xl mb-20 md:mb-28 reveal">
       <p class="eyebrow-cream mb-6 flex items-center gap-3">
         <span class="inline-block h-px w-8 bg-or"></span>
-        Cabinet privé indépendant
+        {t('footer.eyebrow')}
       </p>
       <h2 class="font-serif text-cream mb-8" style="font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1; letter-spacing: -0.025em;">
-        Faire fructifier<br/>
-        <span class="italic text-or-light">ce qui compte.</span>
+        {t('footer.title1')}<br/>
+        <span class="italic text-or-light">{t('footer.title2')}</span>
       </h2>
       <a href={site.calendly} target="_blank" rel="noopener" class="btn-or inline-flex">
-        Échanger 30 minutes
+        {t('footer.cta')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
@@ -35,24 +47,31 @@ const specialites = [
       <div>
         <p class="eyebrow-cream mb-4 flex items-center gap-3">
           <span class="inline-block h-px w-8 bg-or"></span>
-          La Lettre du Chêne
+          {t('footer.nl.eyebrow')}
         </p>
         <p class="font-serif text-2xl md:text-3xl text-cream leading-snug">
-          Une édition par mois.<br/>
-          <span class="italic text-or-light">Un cas, un chiffre, une actualité.</span>
+          {t('footer.nl.pitch1')}<br/>
+          <span class="italic text-or-light">{t('footer.nl.pitch2')}</span>
         </p>
       </div>
-      <form id="footer-nl" class="w-full">
-        <label for="footer-nl-email" class="text-xs uppercase tracking-micro text-or-light mb-3 block">Recevoir La Lettre</label>
+      <form id="footer-nl" class="w-full"
+        data-msg-need={t('footer.nl.needEmail')}
+        data-msg-sending={t('footer.nl.sending')}
+        data-msg-success={t('footer.nl.success')}
+        data-msg-invalid={t('footer.nl.errInvalid')}
+        data-msg-generic={t('footer.nl.errGeneric')}
+        data-msg-network={t('footer.nl.errNetwork')}
+      >
+        <label for="footer-nl-email" class="text-xs uppercase tracking-micro text-or-light mb-3 block">{t('footer.nl.label')}</label>
         <div class="flex flex-col sm:flex-row gap-3">
-          <input type="email" id="footer-nl-email" name="email" required autocomplete="email" placeholder="votre@email.fr" class="flex-1 bg-transparent border-b border-cream/25 py-2.5 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" />
+          <input type="email" id="footer-nl-email" name="email" required autocomplete="email" placeholder={t('footer.nl.placeholder')} class="flex-1 bg-transparent border-b border-cream/25 py-2.5 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none" />
           <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
           <button type="submit" id="footer-nl-btn" class="btn-or shrink-0 justify-center">
-            M'inscrire
+            {t('footer.nl.submit')}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </button>
         </div>
-        <p id="footer-nl-msg" role="status" class="text-xs text-cream/40 mt-3">Gratuit, sans engagement. <a href="/newsletter" class="underline underline-offset-2 hover:text-or-light">En savoir plus</a>.</p>
+        <p id="footer-nl-msg" role="status" class="text-xs text-cream/40 mt-3">{t('footer.nl.legal')} <a href={newsletterHref} class="underline underline-offset-2 hover:text-or-light">{t('footer.nl.learnMore')}</a>.</p>
       </form>
     </div>
 
@@ -61,30 +80,30 @@ const specialites = [
       <div class="lg:col-span-3">
         <p class="font-serif text-2xl text-cream mb-3">{site.name}</p>
         <p class="text-sm leading-relaxed text-cream/60 max-w-sm">
-          Conseil en gestion de patrimoine indépendant. {site.coverage}.
+          {t('footer.tagline')} {t('common.coverage')}.
         </p>
       </div>
 
       <div class="lg:col-span-2">
-        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Naviguer</p>
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">{t('footer.col.navigate')}</p>
         <ul class="space-y-3 text-sm">
-          {nav.map((item) => (
+          {menu.map((item) => (
             <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div class="lg:col-span-2">
-        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Ressources</p>
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">{t('footer.col.resources')}</p>
         <ul class="space-y-3 text-sm">
-          {navSecondary.map((item) => (
+          {resources.map((item) => (
             <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div class="lg:col-span-2">
-        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Spécialités</p>
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">{t('footer.col.specialities')}</p>
         <ul class="space-y-3 text-sm">
           {specialites.map((item) => (
             <li><a href={item.href} class="text-cream/70 hover:text-or-light transition-colors duration-300">{item.label}</a></li>
@@ -93,7 +112,7 @@ const specialites = [
       </div>
 
       <div class="lg:col-span-3">
-        <p class="text-xs uppercase tracking-micro text-or-light mb-5">Contact</p>
+        <p class="text-xs uppercase tracking-micro text-or-light mb-5">{t('footer.col.contact')}</p>
         <ul class="space-y-3 text-sm">
           <li><a href={`tel:${site.phone.tel}`} class="text-cream/70 hover:text-or-light transition-colors duration-300">{site.phone.display}</a></li>
           <li><a href={`mailto:${site.email}`} class="text-cream/70 hover:text-or-light transition-colors duration-300">{site.email}</a></li>
@@ -108,8 +127,8 @@ const specialites = [
     <div class="flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/40 pt-6">
       <p>© {year} {site.name} · ORIAS 25 00 00 16 · RCS Montpellier 929 887 594</p>
       <div class="flex gap-6">
-        <a href="/mentions-legales" class="hover:text-or-light transition-colors">Mentions légales</a>
-        <a href="/confidentialite" class="hover:text-or-light transition-colors">Confidentialité</a>
+        <a href={mentionsHref} class="hover:text-or-light transition-colors">{t('footer.legal.mentions')}</a>
+        <a href={privacyHref} class="hover:text-or-light transition-colors">{t('footer.legal.privacy')}</a>
       </div>
     </div>
   </div>
@@ -120,14 +139,16 @@ const specialites = [
       const msg = document.getElementById('footer-nl-msg') as HTMLElement;
       const btn = document.getElementById('footer-nl-btn') as HTMLButtonElement;
       const input = document.getElementById('footer-nl-email') as HTMLInputElement;
+      // Messages localisés injectés via data-* (voir ui.ts) — repli FR si absent.
+      const M = fnl.dataset;
       fnl.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = input?.value.trim() || '';
         const website = (fnl.querySelector('input[name="website"]') as HTMLInputElement)?.value || '';
-        if (!email) { msg.textContent = 'Merci de saisir votre email.'; msg.className = 'text-xs text-or-light mt-3'; return; }
+        if (!email) { msg.textContent = M.msgNeed || 'Merci de saisir votre email.'; msg.className = 'text-xs text-or-light mt-3'; return; }
         btn.disabled = true;
         const label = btn.innerHTML;
-        btn.textContent = 'Envoi…';
+        btn.textContent = M.msgSending || 'Envoi…';
         try {
           const r = await fetch('/api/newsletter', {
             method: 'POST',
@@ -137,15 +158,15 @@ const specialites = [
           const data = await r.json().catch(() => ({}));
           if (r.ok && data.ok) {
             fnl.querySelector('div')?.remove();
-            msg.innerHTML = 'Presque&nbsp;! Cliquez sur le lien de confirmation qu\'on vient de vous envoyer par email.';
+            msg.textContent = M.msgSuccess || 'Presque ! Cliquez sur le lien de confirmation qu\'on vient de vous envoyer par email.';
             msg.className = 'text-sm text-cream mt-1';
           } else {
-            msg.textContent = data.error === 'email_invalide' ? 'Cet email ne semble pas valide.' : 'Une erreur est survenue. Réessayez ou écrivez à camil.cz@lechenepatrimonial.com.';
+            msg.textContent = data.error === 'email_invalide' ? (M.msgInvalid || 'Cet email ne semble pas valide.') : (M.msgGeneric || 'Une erreur est survenue. Réessayez ou écrivez à camil.cz@lechenepatrimonial.com.');
             msg.className = 'text-xs text-or-light mt-3';
             btn.disabled = false; btn.innerHTML = label;
           }
         } catch {
-          msg.textContent = 'Connexion impossible. Réessayez dans un instant.';
+          msg.textContent = M.msgNetwork || 'Connexion impossible. Réessayez dans un instant.';
           msg.className = 'text-xs text-or-light mt-3';
           btn.disabled = false; btn.innerHTML = label;
         }

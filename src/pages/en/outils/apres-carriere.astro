@@ -1,0 +1,356 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "The Post-Career Countdown: A Simulator for High-Level Athletes | Le Chêne Patrimonial";
+const description = "High-level athlete: at what age will you be financially free? See the post-career income cliff, the capital that sets you free, and the plan to smooth the transition. Free, confidential.";
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.lechenepatrimonial.com/en/' },
+        { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://www.lechenepatrimonial.com/en/outils' },
+        { '@type': 'ListItem', position: 3, name: 'The Post-Career Countdown', item: 'https://www.lechenepatrimonial.com/en/outils/apres-carriere' },
+      ]},
+      { '@type': 'WebApplication', name: 'The Post-Career Countdown', applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Web', url: 'https://www.lechenepatrimonial.com/en/outils/apres-carriere',
+        description: 'Free simulator for high-level athletes: see the post-career income cliff, your freedom capital, and the plan to prepare for what comes next.',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+        provider: { '@id': 'https://www.lechenepatrimonial.com/#organization' } },
+    ],
+  })} />
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Post-career</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        High-level athletes
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">The post-career countdown</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        One day, income from sport stops. The real question is not <em class="text-chene not-italic font-medium">whether</em>, but
+        <em class="text-chene not-italic font-medium">at what age you will be free</em>. See the cliff, the capital that sets you free, and the path to reach it while you are still earning well.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label for="ac-sport">Your sport</label>
+            <select class="tool-input" id="ac-sport">
+              <option value="football">Football</option>
+              <option value="basket">Basketball</option>
+              <option value="rugby">Rugby</option>
+              <option value="tennis">Tennis</option>
+              <option value="handball">Handball</option>
+              <option value="volley">Volleyball</option>
+              <option value="athletisme">Athletics</option>
+              <option value="natation">Swimming</option>
+              <option value="cyclisme">Cycling</option>
+              <option value="ski">Skiing / winter sports</option>
+              <option value="autre" selected>Other sport</option>
+            </select>
+          </div>
+          <div class="tool-field">
+            <label>Your age today <b id="ac-age-val">26 years old</b></label>
+            <input class="tool-range" type="range" id="ac-age" min="16" max="45" step="1" value="26" />
+          </div>
+          <div class="tool-field">
+            <label>Estimated end of career <b id="ac-fin-val">34 years old</b></label>
+            <input class="tool-range" type="range" id="ac-fin" min="25" max="50" step="1" value="34" />
+          </div>
+          <div class="tool-field">
+            <label>Net annual income today <b id="ac-rev-val">150 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-rev" min="20000" max="2000000" step="10000" value="150000" />
+            <span class="ac-hint">What sport nets you per year, right now.</span>
+          </div>
+          <div class="tool-field">
+            <label>What you spend to live, per year <b id="ac-dep-val">70 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-dep" min="15000" max="600000" step="5000" value="70000" />
+            <span class="ac-hint">Housing, daily life, family, pleasures. This is the amount your wealth will have to cover on its own, the day sport stops.</span>
+          </div>
+          <div class="tool-field">
+            <label>Savings and wealth already built <b id="ac-epa-val">60 000 €</b></label>
+            <input class="tool-range" type="range" id="ac-epa" min="0" max="3000000" step="10000" value="60000" />
+            <span class="ac-hint">Everything you have already set aside: savings accounts, life insurance (assurance-vie), rental property.</span>
+          </div>
+          <div class="tool-field">
+            <label>Annual performance of your investments <b id="ac-rdt-val">4,0 %</b></label>
+            <input class="tool-range" type="range" id="ac-rdt" min="2" max="7" step="0.5" value="4" />
+            <span class="ac-hint">What a well-invested capital returns on average, each year. A prudent assumption, not a promise.</span>
+          </div>
+          <p class="tool-note">An indicative, educational estimate, based solely on the information entered. We assume that <b>income from sport falls to zero</b> the day you stop: your freedom capital is the sum that lets you live without any salary. A future career after sport would come on top of this, as a safety margin. Annuity calculated on a prudent 3.5% withdrawal rate. Excludes inflation and detailed taxation. Does not constitute personalised advice or a recommendation on financial instruments. Le Chêne Patrimonial acts as an insurance broker and real estate intermediary.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Your freedom capital</p>
+          <p class="big" id="ac-nombre">—</p>
+          <p class="ac-sub" id="ac-nombre-sub">The sum that, well invested, lets you live without depending on a salary.</p>
+
+          <div class="ac-falaise">
+            <div class="ac-refline" id="ac-refline"></div>
+            <div class="ac-col">
+              <span class="ac-val" id="ac-rev-av">—</span>
+              <div class="ac-bar av" id="ac-bar-av" style="height:100%"></div>
+              <span class="ac-lab">Your income today</span>
+            </div>
+            <div class="ac-drop"><span id="ac-chute">—</span></div>
+            <div class="ac-col">
+              <span class="ac-val" id="ac-rev-ap">—</span>
+              <div class="ac-bar ap" id="ac-bar-ap" style="height:20%"></div>
+              <span class="ac-lab">If sport stopped tomorrow</span>
+            </div>
+          </div>
+          <div class="ac-falaise-legend">
+            <p><span class="ac-swatch gold"></span><b>What you need to live</b>&nbsp;: the golden line.</p>
+            <p><span class="ac-swatch blue"></span>What your wealth pays you today, if sport stops&nbsp;: the blue bar.</p>
+          </div>
+
+          <div class="ac-progress">
+            <div class="ac-progress-top"><span>Already on the way to your freedom</span><span id="ac-prog-pct">—</span></div>
+            <div class="ac-progress-track"><div class="ac-progress-fill" id="ac-prog-fill"></div></div>
+            <p class="ac-progress-sub" id="ac-prog-sub">What your current savings will become by the end of your career, without a single euro more.</p>
+          </div>
+
+          <div class="tool-brk"><span class="k">What you need to live</span><span class="v" id="ac-train">—</span></div>
+          <div class="tool-brk"><span class="k">Your estimated freedom date</span><span class="v" id="ac-liberte">—</span></div>
+          <div class="tool-brk"><span class="k">To set aside each month until the end of your career</span><span class="v" id="ac-versement">—</span></div>
+          <div class="tool-brk"><span class="k">What you can set aside today</span><span class="v" id="ac-capacite">—</span></div>
+          <p class="ac-verdict" id="ac-verdict">—</p>
+          <details class="ac-method">
+            <summary>How this result is calculated</summary>
+            <ul>
+              <li>We assume that <b>income from sport falls to zero</b> at the end of your career. Your freedom capital is therefore the sum that, alone, lets you live.</li>
+              <li>Freedom capital = what you spend to live each year, divided by a <b>prudent withdrawal rate of 3.5%/year</b> (sustainable annuity rule).</li>
+              <li>The annuity shown in the cliff is what 3.5% of your current wealth would pay, starting today.</li>
+              <li>The progress bar and freedom date assume your <b>target return</b>, compounded monthly. Excludes inflation and detailed taxation.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div id="ac-lead" class="mt-10 rounded-none border border-ink/10 bg-cream-soft p-6 md:p-8">
+      <h3 class="font-serif text-xl text-ink mb-1.5">Receive your post-career plan as a PDF</h3>
+      <p class="text-sm text-ink/60 mb-5 leading-relaxed">Enter your details to receive your detailed report. Camil Czajkowski will get back to you to discuss it, with no obligation. Your data is never resold.</p>
+      <form id="ac-lead-form" class="space-y-3.5" novalidate>
+        <div class="grid sm:grid-cols-2 gap-3.5">
+          <input name="prenom" required placeholder="First name" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input name="nom" required placeholder="Last name" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        </div>
+        <input name="email" type="email" required placeholder="Email address" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input name="telephone" type="tel" required placeholder="Phone number" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
+          <span>I agree that Le Chêne Patrimonial may collect and process this information (name, email, phone, simulator answers) in order to send me my report and contact me about it. <a href="/en/confidentialite" class="underline hover:text-ink" target="_blank">Privacy Policy</a>.</span>
+        </label>
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
+          <span>I would also like to receive The Oak Letter (optional, unsubscribe at any time).</span>
+        </label>
+        <button type="submit" class="btn-primary w-full justify-center py-3"><span class="ac-lead-btn-label">Get my plan (PDF)</span></button>
+        <p class="text-[11px] text-ink/45 text-center leading-relaxed">Data controller: Le Chêne Patrimonial. Data kept for the duration of the business relationship, never resold.</p>
+        <p id="ac-lead-msg" class="text-sm text-center hidden"></p>
+      </form>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Why this countdown changes everything</h2>
+      <p>A high-level athlete's career is short and intense. Income arrives early, strong, then stops, often before age 35. That is what the cliff shows: the day sport stops, if nothing has been prepared, your standard of living collapses.</p>
+      <p>Your <strong>freedom capital</strong> is the sum that, well invested, generates enough income to let you live without depending on a salary. Building it during the years you earn well turns a brilliant career into lasting security. This is exactly the work I do with the athletes I support.</p>
+    </div>
+  </div>
+
+  <CTA
+    title="Your post-career life is prepared now."
+    body="This countdown sets the frame. Together, we turn it into a concrete strategy: wrappers, allocation, protection. A first 30-minute conversation, with no obligation."
+  />
+</Base>
+
+<style is:global>
+  .ac-sub { font-size: .82rem; color: #9fb0c8; margin: -6px 0 18px; }
+  .ac-hint { display: block; font-size: .74rem; line-height: 1.45; color: #8a8574; margin-top: 6px; }
+  .ac-falaise-note { font-size: .74rem; line-height: 1.45; color: #9fb0c8; margin: -10px 0 20px; }
+  .ac-falaise { position: relative; display: flex; align-items: flex-end; gap: 10px; height: 160px; margin: 4px 0 22px; }
+  .ac-refline { position: absolute; left: 0; right: 0; bottom: 47%; border-top: 1px dashed rgba(230,194,89,.6); pointer-events: none; z-index: 2; transition: bottom .45s cubic-bezier(.16,1,.3,1); }
+  .ac-falaise-legend { margin: -8px 0 20px; display: flex; flex-direction: column; gap: 7px; }
+  .ac-falaise-legend p { display: flex; align-items: center; gap: 9px; margin: 0; font-size: .74rem; line-height: 1.4; color: #9fb0c8; }
+  .ac-falaise-legend b { color: #EDE7DA; font-weight: 600; }
+  .ac-swatch { flex: 0 0 auto; width: 22px; }
+  .ac-swatch.gold { height: 0; border-top: 2px dashed #E6C259; }
+  .ac-swatch.blue { height: 9px; border-radius: 2px; background: #3a5f86; }
+  .ac-progress { margin: 0 0 22px; }
+  .ac-progress-top { display: flex; justify-content: space-between; align-items: baseline; font-size: .78rem; color: #EDE7DA; margin-bottom: 7px; }
+  .ac-progress-top span:last-child { font-family: Georgia, serif; font-weight: 700; color: #E6C259; font-size: .95rem; }
+  .ac-progress-track { height: 8px; border-radius: 100px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .ac-progress-fill { height: 100%; width: 0; border-radius: 100px; background: linear-gradient(90deg,#D4A82D,#E6C259); transition: width .5s cubic-bezier(.16,1,.3,1); }
+  .ac-progress-sub { font-size: .72rem; line-height: 1.45; color: #9fb0c8; margin-top: 8px; }
+  .ac-method { margin-top: 16px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 14px; }
+  .ac-method summary { font-size: .78rem; color: #cbd5e6; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 7px; }
+  .ac-method summary::-webkit-details-marker { display: none; }
+  .ac-method summary::before { content: "+"; color: #E6C259; font-weight: 700; width: 12px; text-align: center; }
+  .ac-method[open] summary::before { content: "\2013"; }
+  .ac-method ul { margin: 12px 0 2px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .ac-method li { position: relative; padding-left: 16px; font-size: .76rem; line-height: 1.5; color: #b9c4d6; }
+  .ac-method li::before { content: ""; position: absolute; left: 0; top: .5em; width: 5px; height: 5px; border-radius: 50%; background: #E6C259; }
+  .ac-method b { color: #EDE7DA; font-weight: 600; }
+  .ac-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .ac-bar { width: 100%; border-radius: 8px 8px 0 0; transition: height .45s cubic-bezier(.16,1,.3,1); min-height: 6px; }
+  .ac-bar.av { background: linear-gradient(180deg,#E6C259,#D4A82D); }
+  .ac-bar.ap { background: #3a5f86; }
+  .ac-val { font-family: Georgia, serif; font-size: .82rem; color: #F5F1E8; margin-bottom: 6px; font-weight: 600; }
+  .ac-lab { font-size: .72rem; color: #9fb0c8; margin-top: 8px; text-align: center; }
+  .ac-drop { align-self: center; font-size: .8rem; color: #E6C259; font-weight: 700; white-space: nowrap; padding-bottom: 30px; }
+  .ac-drop span::before { content: "\2193 "; }
+  .ac-verdict { font-size: .9rem; line-height: 1.5; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); color: #EDE7DA; }
+  .ac-verdict.on-track { color: #a9e0bd; }
+  .ac-verdict.effort { color: #f2d38a; }
+  select.tool-input { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237A7566' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const SPORTFIN = { football:34, basket:35, rugby:33, tennis:32, handball:34, volley:34, athletisme:32, natation:29, cyclisme:36, ski:32, autre:35 };
+    const TAUX_RETRAIT = 0.035;
+    const CALENDLY = 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+    let state = {};
+
+    function calc(){
+      const spEl=document.getElementById('ac-sport');
+      const sportVal=spEl.value, sportLabel=spEl.options[spEl.selectedIndex].text;
+      const age=+document.getElementById('ac-age').value, fin=+document.getElementById('ac-fin').value,
+        rev=+document.getElementById('ac-rev').value, dep=+document.getElementById('ac-dep').value,
+        epa=+document.getElementById('ac-epa').value,
+        rdt=+document.getElementById('ac-rdt').value;
+
+      document.getElementById('ac-age-val').textContent=age+' years old';
+      document.getElementById('ac-fin-val').textContent=fin+' years old';
+      document.getElementById('ac-rev-val').textContent=eur(rev);
+      document.getElementById('ac-dep-val').textContent=eur(dep);
+      document.getElementById('ac-epa-val').textContent=eur(epa);
+      document.getElementById('ac-rdt-val').textContent=rdt.toFixed(1).replace('.',',')+' %';
+
+      const r=rdt/100, rm=r/12;
+      const n=Math.max(0, fin-age), N=n*12;
+      // We assume that income from sport falls to zero: the freedom number is the
+      // capital that, at 3.5%/year, covers the entire cost of living.
+      const cible=dep/TAUX_RETRAIT;
+      const capaciteM=Math.max(0,(rev-dep)/12);
+      // Annuity that the ALREADY built-up savings pays (a real figure, not a hypothesis).
+      const renteActuelle=epa*TAUX_RETRAIT;
+      const fvEpa=epa*Math.pow(1+r,n);
+      const besoin=Math.max(0, cible-fvEpa);
+      const versementNec = N>0 ? (rm>0 ? besoin*rm/(Math.pow(1+rm,N)-1) : besoin/N) : besoin;
+
+      // Year-by-year simulation for the freedom date (income = 0 after the
+      // career ends, then you live only off capital and draw down your living costs).
+      let cap=epa, freedom=null;
+      for(let a=age; a<=99; a++){
+        const flux = a<fin ? (rev-dep) : (-dep);
+        cap = cap*(1+r) + flux;
+        if(freedom===null && cible>0 && cap>=cible){ freedom=a+1; }
+        if(cap < -50000000) break;
+      }
+      const dejaLibre = renteActuelle>=dep;
+
+      document.getElementById('ac-nombre').textContent = eur(cible);
+      document.getElementById('ac-nombre-sub').textContent = "The sum that, well invested, lets you live without depending on a salary.";
+
+      // Cliff: today's income -> real annuity from current wealth.
+      const chute = rev>0 ? Math.max(0, Math.min(100, Math.round((1-renteActuelle/rev)*100))) : 0;
+      document.getElementById('ac-chute').textContent = chute+' %';
+      document.getElementById('ac-rev-av').textContent = eur(rev);
+      document.getElementById('ac-rev-ap').textContent = eur(renteActuelle)+' / year';
+      document.getElementById('ac-bar-ap').style.height = (rev>0 ? Math.max(4, Math.min(100, renteActuelle/rev*100)) : 4)+'%';
+      document.getElementById('ac-refline').style.bottom = (rev>0 ? Math.max(0, Math.min(100, dep/rev*100)) : 0)+'%';
+
+      // Progress: what current savings become by the end of the career, vs the target.
+      const prog = cible>0 ? Math.max(0, Math.min(100, fvEpa/cible*100)) : (epa>0?100:0);
+      document.getElementById('ac-prog-pct').textContent = Math.round(prog)+' %';
+      document.getElementById('ac-prog-fill').style.width = prog+'%';
+      document.getElementById('ac-prog-sub').textContent =
+        "Without a single euro more, your current savings will become approximately "+eur(fvEpa)+" by the end of your career, or "+Math.round(prog)+"% of your freedom capital.";
+
+      document.getElementById('ac-train').textContent = eur(dep)+' / year';
+      document.getElementById('ac-liberte').textContent = dejaLibre ? 'already reached' : (freedom ? freedom+' years old' : 'not reached as things stand');
+      document.getElementById('ac-versement').textContent = dejaLibre ? '—' : (n>0 ? eur(versementNec)+' / month' : 'to be built now');
+      document.getElementById('ac-capacite').textContent = eur(capaciteM)+' / month';
+
+      const v=document.getElementById('ac-verdict');
+      v.classList.remove('on-track','effort');
+      if(dejaLibre){
+        v.textContent = "Your wealth already lets you live without a salary: you are financially free. The challenge now is to protect this capital, optimise it for tax purposes, and prepare its transmission.";
+        v.classList.add('on-track');
+      } else if(n<=0){
+        v.textContent = "Income from sport is now behind you: the absolute priority is to put your capital to work to bring you closer to your freedom capital. This is the heart of what I do.";
+        v.classList.add('effort');
+      } else if(capaciteM>=versementNec){
+        v.textContent = "You are on the right track: your savings capacity covers the effort needed to be free by the end of your career. Everything now depends on how this money is invested.";
+        v.classList.add('on-track');
+      } else {
+        const ecart=Math.max(0, versementNec-capaciteM);
+        v.textContent = "At this rate, about "+eur(ecart)+" / month is missing to be free by the end of your career. We can act on your spending, your time horizon, or your returns, or rely on a future career. This is exactly what we build together.";
+        v.classList.add('effort');
+      }
+
+      state = { sport:sportVal, sportLabel, age, fin, revenu:rev, depenses:dep, epargne:epa, rendement:rdt,
+        nombreLiberte:Math.round(cible), renteActuelle:Math.round(renteActuelle), chute,
+        capitalFinCarriere:Math.round(fvEpa), progression:Math.round(prog),
+        dateLiberte: dejaLibre ? 'already reached' : (freedom ? (freedom+' years old') : "not reached as things stand"),
+        versementNecessaire: dejaLibre ? null : (n>0 ? Math.round(versementNec) : null), capaciteMensuelle: Math.round(capaciteM),
+        verdict: v.textContent };
+    }
+
+    function init(){
+      const g=document.getElementById('ac-age'); if(!g||g.dataset.ready) return; g.dataset.ready='1';
+      ['ac-age','ac-fin','ac-rev','ac-dep','ac-epa','ac-rdt'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      document.getElementById('ac-sport').addEventListener('change',(e)=>{
+        const f=SPORTFIN[e.target.value]; if(f){ const fin=document.getElementById('ac-fin'); fin.value=f; }
+        calc();
+      });
+      calc();
+
+      const form=document.getElementById('ac-lead-form');
+      if(form){
+        const msg=document.getElementById('ac-lead-msg');
+        const btnLabel=document.querySelector('.ac-lead-btn-label');
+        const showMsg=(t,ok)=>{msg.textContent=t;msg.className='text-sm text-center '+(ok?'text-chene':'text-[#b4472e]');msg.classList.remove('hidden');};
+        const downloadPdf=async()=>{try{const res=await fetch('/api/apres-carriere-pdf',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='apres-carriere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
+        form.addEventListener('submit',async(e)=>{
+          e.preventDefault();
+          const fd=new FormData(form);
+          if(!fd.get('prenom')||!fd.get('nom')||!fd.get('email')){showMsg('Please enter your details.',false);return;}
+          if(!fd.get('telephone')){showMsg("Please provide a phone number.",false);return;}
+          if(!fd.get('consent')){showMsg('Your consent is required to receive the report.',false);return;}
+          btnLabel.textContent='Sending...';
+          try{
+            const res=await fetch('/api/apres-carriere-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:fd.get('prenom'),nom:fd.get('nom'),email:fd.get('email'),telephone:fd.get('telephone'),consent:!!fd.get('consent'),optin:!!fd.get('optin'),website:fd.get('website'),data:state})});
+            const data=await res.json().catch(()=>({}));
+            if(res.ok&&data.ok){
+              downloadPdf();
+              const em=String(fd.get('email')||'');
+              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Your plan has been sent to you by email</p><p class="text-sm text-ink/60 mb-4">It is on its way to <strong class="text-ink">'+em+'</strong> (check your spam folder just in case). Camil will get back to you very soon.</p><button id="ac-pdf-again" class="btn-ghost text-sm">Also download it now</button><div class="mt-5"><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="btn-primary">Choose a time with Camil</a></div></div>';
+              const again=form.querySelector('#ac-pdf-again'); if(again) again.onclick=downloadPdf;
+            } else { showMsg('Something went wrong. Please try again or write to us directly.',false); btnLabel.textContent='Get my plan (PDF)'; }
+          }catch(err){ showMsg('Connection failed. Please try again in a moment.',false); btnLabel.textContent='Get my plan (PDF)'; }
+        });
+      }
+    }
+    init();
+    if(!window['__hk_ac-age']){window['__hk_ac-age']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

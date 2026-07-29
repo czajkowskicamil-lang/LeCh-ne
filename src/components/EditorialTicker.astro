@@ -1,11 +1,13 @@
 ---
 // Bandeau défilant style "ticker" éditorial — sobre cabinet senior
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+const t = useTranslations(getLangFromUrl(Astro.url));
 const items = [
-  'Indépendance',
-  'Méthode',
-  'Patience',
-  'Clarté',
-  'Engagement',
+  t('ticker.1'),
+  t('ticker.2'),
+  t('ticker.3'),
+  t('ticker.4'),
+  t('ticker.5'),
 ];
 // Doublé pour boucle continue sans saut visuel
 const loop = [...items, ...items, ...items, ...items];

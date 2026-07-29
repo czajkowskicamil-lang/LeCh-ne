@@ -1,45 +1,26 @@
 ---
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const contactHref = localizePath('/contact', lang);
+const expertiseHref = localizePath('/expertise', lang);
+
+// Leviers réutilisés : slug (URL) + clé i18n (libellé traduit).
+const AV = { key: 'exp.assurance-vie', slug: 'assurance-vie' };
+const IMMO = { key: 'exp.immobilier', slug: 'immobilier-lmnp-demembrement' };
+const PER = { key: 'exp.per', slug: 'plan-epargne-retraite' };
+const TRANS = { key: 'exp.transmission', slug: 'transmission' };
+const TRANS_ANT = { key: 'exp.transmission-anticipee', slug: 'transmission' };
+const SAL = { key: 'exp.epargne-salariale', slug: 'epargne-salariale-dirigeant' };
+const CRED = { key: 'exp.credit', slug: 'credit-strategie-patrimoniale' };
+const PE = { key: 'exp.private-equity', slug: 'private-equity-non-cote' };
+const SCPI = { key: 'exp.scpi', slug: 'scpi' };
+
 const profils = [
-  {
-    title: 'Sportifs professionnels',
-    description: 'Huit à quinze ans pour bâtir un patrimoine qui devra tenir soixante. Carrière dense, fiscalité parfois internationale, fin de carrière qui arrive tôt. La méthode se construit pendant, pas après. Je l\'ai vécu, je la pilote pour vous.',
-    expertises: [
-      { label: 'Assurance-vie', slug: 'assurance-vie' },
-      { label: 'Immobilier patrimonial', slug: 'immobilier-lmnp-demembrement' },
-      { label: 'Plan Épargne Retraite', slug: 'plan-epargne-retraite' },
-      { label: 'Transmission anticipée', slug: 'transmission' },
-    ],
-  },
-  {
-    title: 'Dirigeants & cadres',
-    description: 'Revenus solides, enveloppes accumulées sans cohérence d\'ensemble. Plusieurs contrats, plusieurs logiques, qui ne se parlent pas. Ce qui n\'est pas mis en cohérence vous coûte chaque année, en fiscalité comme en performance.',
-    expertises: [
-      { label: 'Plan Épargne Retraite', slug: 'plan-epargne-retraite' },
-      { label: 'Immobilier patrimonial', slug: 'immobilier-lmnp-demembrement' },
-      { label: 'Épargne salariale & retraite dirigeant', slug: 'epargne-salariale-dirigeant' },
-      { label: 'Transmission', slug: 'transmission' },
-    ],
-  },
-  {
-    title: 'Entrepreneurs',
-    description: 'Votre entreprise est votre actif principal, et c\'est précisément là le risque. Cession, holding, Pacte Dutreil : ces leviers se préparent deux ans en amont, pas deux mois. Modélisation avant signature, jamais l\'inverse.',
-    expertises: [
-      { label: 'Crédit & effet de levier', slug: 'credit-strategie-patrimoniale' },
-      { label: 'Immobilier patrimonial', slug: 'immobilier-lmnp-demembrement' },
-      { label: 'Private Equity', slug: 'private-equity-non-cote' },
-      { label: 'Transmission', slug: 'transmission' },
-    ],
-  },
-  {
-    title: 'Particuliers',
-    description: 'Vous gagnez, vous épargnez, vous payez vos impôts. Personne ne vous a appris à articuler les trois. Bâtir un patrimoine cohérent ne demande pas d\'être déjà fortuné, mais une méthode. Et la méthode commence par savoir précisément où vous en êtes.',
-    expertises: [
-      { label: 'Assurance-vie', slug: 'assurance-vie' },
-      { label: 'Immobilier patrimonial', slug: 'immobilier-lmnp-demembrement' },
-      { label: 'Plan Épargne Retraite', slug: 'plan-epargne-retraite' },
-      { label: 'SCPI', slug: 'scpi' },
-    ],
-  },
+  { title: t('profils.1.title'), description: t('profils.1.desc'), expertises: [AV, IMMO, PER, TRANS_ANT] },
+  { title: t('profils.2.title'), description: t('profils.2.desc'), expertises: [PER, IMMO, SAL, TRANS] },
+  { title: t('profils.3.title'), description: t('profils.3.desc'), expertises: [CRED, IMMO, PE, TRANS] },
+  { title: t('profils.4.title'), description: t('profils.4.desc'), expertises: [AV, IMMO, PER, SCPI] },
 ];
 ---
 
@@ -48,14 +29,14 @@ const profils = [
     <!-- En-tête asymétrique -->
     <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-16 md:mb-20">
       <div class="lg:col-span-7 reveal">
-        <p class="pe-label mb-6">Pour qui</p>
+        <p class="pe-label mb-6">{t('profils.label')}</p>
         <h2 class="font-serif text-ink leading-[0.98] text-[clamp(2.4rem,5vw,4rem)] tracking-tight">
-          Quatre profils,<br/>une même exigence.
+          {t('profils.title1')}<br/>{t('profils.title2')}
         </h2>
       </div>
       <div class="lg:col-span-4 lg:col-start-9 reveal">
         <p class="text-ink/65 leading-relaxed">
-          Le cabinet accompagne quatre trajectoires patrimoniales. Chacune appelle ses propres leviers, jamais les mêmes priorités.
+          {t('profils.intro')}
         </p>
       </div>
     </div>
@@ -77,16 +58,16 @@ const profils = [
 
           <!-- Leviers + lien -->
           <div class="lg:col-span-3">
-            <p class="pe-label mb-3">Leviers</p>
+            <p class="pe-label mb-3">{t('profils.leviers')}</p>
             <ul class="flex flex-wrap gap-x-4 gap-y-1.5 mb-6">
               {p.expertises.map((e) => (
                 <li>
-                  <a href={`/expertise/${e.slug}`} class="text-sm text-ink/80 hover:text-chene transition-colors">{e.label}</a>
+                  <a href={localizePath(`/expertise/${e.slug}`, lang)} class="text-sm text-ink/80 hover:text-chene transition-colors">{t(e.key)}</a>
                 </li>
               ))}
             </ul>
-            <a href="/contact" class="inline-flex items-center gap-2 text-sm font-medium text-chene">
-              <span class="pe-cta">Premier échange offert</span>
+            <a href={contactHref} class="inline-flex items-center gap-2 text-sm font-medium text-chene">
+              <span class="pe-cta">{t('profils.rowCta')}</span>
               <svg class="transition-transform duration-300 group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
@@ -95,8 +76,8 @@ const profils = [
     </div>
 
     <div class="mt-14 reveal">
-      <a href="/expertise" class="inline-flex items-baseline gap-3 font-serif text-ink text-xl md:text-2xl group">
-        <span class="pe-cta">Voir les dix domaines d'expertise</span>
+      <a href={expertiseHref} class="inline-flex items-baseline gap-3 font-serif text-ink text-xl md:text-2xl group">
+        <span class="pe-cta">{t('profils.bottomCta')}</span>
         <svg class="translate-y-0.5 transition-transform duration-300 group-hover:translate-x-1.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>

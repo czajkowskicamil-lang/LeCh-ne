@@ -3,15 +3,103 @@
 // Le visiteur écrit librement ; la réponse vient d'une IA STRICTEMENT cadrée
 // (voir api/chat.js) : orientation générale seulement, jamais de conseil
 // chiffré, périmètre COA / Carte T, redirection vers un vrai échange.
-// Présent sur toutes les pages (inclus dans Base.astro).
+// Présent sur toutes les pages (inclus dans Base.astro). Bilingue FR / EN :
+// la langue est déduite de l'URL, tout le contenu bascule en conséquence.
 import { site } from '../data/site';
+import { getLangFromUrl } from '../i18n/utils';
 
-const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. Posez-moi votre question sur votre épargne, votre retraite, un projet immobilier, votre fiscalité ou la transmission, je vous réponds tout de suite. Et si vous préférez, on échange directement par téléphone ou par mail.";
+const lang = getLangFromUrl(Astro.url);
+
+const STR = {
+  fr: {
+    launcherAria: 'Ouvrir la discussion avec Le Chêne Patrimonial',
+    dialogAria: 'Discuter avec Le Chêne Patrimonial',
+    headSub: 'Camil vous répond',
+    closeAria: 'Fermer la discussion',
+    placeholder: 'Écrivez votre message…',
+    sendAria: 'Envoyer',
+    ctaRdv: 'Prendre rendez-vous',
+    telAria: 'Appeler Camil',
+    mailAria: 'Écrire un email à Camil',
+    legal:
+      'Vos messages servent uniquement à vous répondre. Pour un conseil adapté à votre situation, rien ne vaut un vrai échange avec Camil.',
+    intro:
+      "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. Posez-moi votre question sur votre épargne, votre retraite, un projet immobilier, votre fiscalité ou la transmission, je vous réponds tout de suite. Et si vous préférez, on échange directement par téléphone ou par mail.",
+    fallback:
+      "Bonne question. Le mieux, c'est d'en parler directement avec Camil : il vous répond personnellement au 06 12 82 91 90 ou par email. Dites-lui simplement votre situation.",
+    kb: [
+      { k: ['service', 'accompagn', 'faites', 'proposez', 'aide', 'expertise', 'metier', 'métier'], a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement." },
+      { k: ['banque', 'different', 'différent', 'difference', 'différence', 'pourquoi vous'], a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence." },
+      { k: ['minimum', 'gros patrimoine', 'debut', 'début', 'commenc', 'petit', 'jeune', 'riche', 'fortune', 'pour moi'], a: "Pas besoin d'un gros patrimoine. J'accompagne aussi bien les patrimoines en construction que les situations établies. L'essentiel, c'est d'avoir un projet et l'envie d'être bien conseillé." },
+      { k: ['rémuner', 'remuner', 'honoraire', 'payer', 'coûte', 'coute', 'tarif', 'prix', 'combien ça', 'commission'], a: "En toute transparence : selon les cas, honoraires de conseil, commissions des partenaires en cas de souscription, ou les deux. Vous savez toujours qui me rémunère et comment, avant toute opération. Le premier rendez-vous est offert." },
+      { k: ['distance', 'visio', 'présentiel', 'presentiel', 'déplace', 'deplace', 'où êtes', 'ou etes', 'rendez-vous physique'], a: "J'accompagne mes clients partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein." },
+      { k: ['assurance-vie', 'assurance vie', 'assurance'], a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble." },
+      { k: ['placer', 'somme', 'investir', 'argent', 'épargne', 'epargne', 'placement', 'économie', 'economie'], a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation." },
+      { k: ['retraite', 'retrait', ' per'], a: "Pour la retraite, l'anticipation change tout. Plus on s'y prend tôt, plus des solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif." },
+      { k: ['impôt', 'impot', 'fiscal', 'défiscal', 'defiscal', 'réduire', 'reduire', 'taxe'], a: "L'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation." },
+      { k: ['conjoint', 'enfant', 'protéger', 'proteger', 'famille', 'décès', 'deces', 'proches'], a: "Protéger vos proches est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille." },
+      { k: ['succession', 'transmi', 'transmettre', 'héritage', 'heritage', 'donation', 'démembrement', 'demembrement'], a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés." },
+      { k: ['immobil', 'locatif', 'acheter', 'achat', 'appartement', 'maison', 'résidence', 'residence', 'lmnp', 'pierre'], a: "J'accompagne les projets immobiliers, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris." },
+      { k: ['sportif', 'athlète', 'athlete', 'carrière', 'carriere'], a: "L'accompagnement des sportifs de haut niveau est une spécialité du cabinet : carrières courtes, revenus irréguliers, expatriation. L'objectif, transformer une carrière en patrimoine durable." },
+      { k: ['expatri', 'étranger', 'etranger', 'expat', 'résident fiscal', 'resident fiscal', 'frontalier'], a: "La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation et on vous orientera." },
+      { k: ['rendez-vous', 'rendez vous', 'rdv', 'prendre', 'contact', 'joindre', 'appeler', 'téléphone', 'telephone', 'parler', 'email', 'mail'], a: "Avec plaisir. Vous pouvez joindre Camil directement au 06 12 82 91 90 ou par email à camil.cz@lechenepatrimonial.com, ou réserver un créneau via le bouton Prendre rendez-vous ci-dessous. Le premier échange est offert." },
+      { k: ['indépendant', 'independant', 'conflit', 'intérêt', 'interet'], a: "Oui, Le Chêne est un cabinet totalement indépendant : les recommandations sont faites dans votre seul intérêt, avec une transparence complète sur la rémunération." },
+    ],
+    kbSocial: [
+      { k: ['merci', 'super', 'parfait', 'top', 'génial', 'genial'], a: "Avec plaisir. Si vous voulez aller plus loin sur votre situation, Camil se fera un plaisir d'en discuter avec vous, sans engagement." },
+      { k: ['bonjour', 'salut', 'hello', 'coucou', 'bonsoir', 'hey', 'ça va', 'ca va'], a: "Bonjour et bienvenue chez Le Chêne Patrimonial. Dites-moi ce qui vous amène : épargne, retraite, immobilier, fiscalité ou transmission ?" },
+    ],
+  },
+  en: {
+    launcherAria: 'Open the chat with Le Chêne Patrimonial',
+    dialogAria: 'Chat with Le Chêne Patrimonial',
+    headSub: 'Camil will reply',
+    closeAria: 'Close the chat',
+    placeholder: 'Write your message…',
+    sendAria: 'Send',
+    ctaRdv: 'Book a meeting',
+    telAria: 'Call Camil',
+    mailAria: 'Email Camil',
+    legal:
+      'Your messages are only used to reply to you. For advice tailored to your situation, nothing beats a real conversation with Camil.',
+    intro:
+      "Hello 👋 welcome to Le Chêne Patrimonial. Ask me anything about your savings, your retirement, a property project, your taxes or estate planning, and I'll answer right away. And if you prefer, we can talk directly by phone or email.",
+    fallback:
+      "Good question. The best is to talk it through directly with Camil: you can reach him personally at +33 6 12 82 91 90 or by email. Just tell him about your situation.",
+    kb: [
+      { k: ['service', 'help', 'offer', 'do you do', 'support', 'expertise', 'what do you'], a: "Le Chêne supports your whole wealth strategy: life insurance, retirement savings plans (PER), retirement planning, property investment and estate transmission. The first conversation is always free and with no commitment." },
+      { k: ['bank', 'different', 'difference', 'why you', 'why should'], a: "Le Chêne is an independent firm: no in-house products to push. I start from your situation and your goals to select the most relevant solutions, in full transparency." },
+      { k: ['minimum', 'wealthy', 'start', 'beginning', 'small', 'young', 'rich', 'fortune', 'for me', 'enough'], a: "You don't need a large portfolio. I work with wealth that is still being built as much as with established situations. What matters is having a project and wanting sound advice." },
+      { k: ['paid', 'fee', 'cost', 'price', 'how much', 'commission', 'charge', 'pay'], a: "In full transparency: depending on the case, advisory fees, partner commissions when you subscribe, or both. You always know who pays me and how, before anything is done. The first meeting is free." },
+      { k: ['distance', 'video', 'remote', 'in person', 'where are you', 'online', 'location', 'meet'], a: "I work with clients all across France, by video call as well as in person. Your location is never an obstacle." },
+      { k: ['life insurance', 'assurance', 'insurance', 'life-insurance'], a: "Life insurance is a flexible way to grow your savings, prepare a project and pass on wealth in a favourable framework. The right contract depends on your situation, which is exactly what we look at together." },
+      { k: ['invest', 'sum', 'money', 'savings', 'placement', 'save', 'where to put'], a: "There is no single answer: it all depends on your goals, your time horizon and your appetite for risk. We take stock together to build a strategy that fits, without rushing." },
+      { k: ['retirement', 'retire', 'pension', 'per'], a: "For retirement, anticipation changes everything. The earlier you start, the more effective solutions like the PER or life insurance become. We assess your situation and set up a step-by-step plan." },
+      { k: ['tax', 'fiscal', 'reduce', 'deduction', 'taxation'], a: "Tax optimisation is part of the support, through suitable solutions and within the rules. I always study your situation before making any recommendation." },
+      { k: ['spouse', 'child', 'protect', 'family', 'death', 'loved ones', 'partner'], a: "Protecting your loved ones is a key part of wealth advice. Beneficiary clause, gifts, matrimonial regime: several levers exist. We build the protection that fits your family together." },
+      { k: ['succession', 'estate', 'inherit', 'transmission', 'gift', 'pass on', 'heritage'], a: "Planning transmission protects your loved ones and eases taxation. We look together at the right tools, such as life insurance, gifts or dismemberment of ownership, according to your wishes." },
+      { k: ['property', 'real estate', 'rental', 'buy', 'purchase', 'apartment', 'house', 'home', 'lmnp'], a: "I support property projects, from a main residence to rental investment. We check that the project fits with your overall wealth and goals, financing included." },
+      { k: ['athlete', 'sport', 'sportsperson', 'career', 'player'], a: "Supporting high-level athletes is one of the firm's specialities: short careers, irregular income, expatriation. The goal: turning a career into lasting wealth." },
+      { k: ['expat', 'abroad', 'foreign', 'tax resident', 'cross-border', 'overseas', 'non-resident'], a: "The international dimension, tax residence and suitable investments, is among the topics I handle regularly. Tell me about your situation and I will point you in the right direction." },
+      { k: ['appointment', 'meeting', 'book', 'contact', 'reach', 'call', 'phone', 'speak', 'email', 'mail', 'talk'], a: "With pleasure. You can reach Camil directly at +33 6 12 82 91 90 or by email at camil.cz@lechenepatrimonial.com, or book a slot using the Book a meeting button below. The first conversation is free." },
+      { k: ['independent', 'conflict', 'interest', 'unbiased'], a: "Yes, Le Chêne is a fully independent firm: recommendations are made in your sole interest, with complete transparency on how I am paid." },
+    ],
+    kbSocial: [
+      { k: ['thanks', 'thank', 'great', 'perfect', 'awesome', 'nice', 'cool'], a: "With pleasure. If you would like to go further on your situation, Camil will be glad to talk it through with you, with no commitment." },
+      { k: ['hello', 'hi', 'hey', 'good morning', 'good evening', 'greetings'], a: "Hello and welcome to Le Chêne Patrimonial. Tell me what brings you here: savings, retirement, property, taxes or estate planning?" },
+    ],
+  },
+};
+
+const t = STR[lang];
+// Données consommées par le script client (langue courante uniquement).
+const clientData = JSON.stringify({ lang, intro: t.intro, fallback: t.fallback, kb: t.kb, kbSocial: t.kbSocial });
 ---
 
-<div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-email={site.email} data-calendly={site.calendly} data-intro={intro}>
+<div id="lc-assistant" class="lc-assistant" transition:persist data-phone={site.phone.tel} data-email={site.email} data-calendly={site.calendly}>
+  <script type="application/json" id="lc-data" set:html={clientData} is:inline></script>
   <!-- Lanceur -->
-  <button id="lc-launcher" class="lc-launcher" aria-label="Ouvrir la discussion avec Le Chêne Patrimonial" aria-expanded="false">
+  <button id="lc-launcher" class="lc-launcher" aria-label={t.launcherAria} aria-expanded="false">
     <span class="lc-launcher-icon lc-icon-chat" aria-hidden="true">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8.5h9M7.5 12h6"/><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.3-4.4A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
     </span>
@@ -21,7 +109,7 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
   </button>
 
   <!-- Panneau -->
-  <div id="lc-panel" class="lc-panel" role="dialog" aria-label="Discuter avec Le Chêne Patrimonial" aria-modal="false" hidden>
+  <div id="lc-panel" class="lc-panel" role="dialog" aria-label={t.dialogAria} aria-modal="false" hidden>
     <header class="lc-head">
       <div class="lc-head-id">
         <span class="lc-avatar" aria-hidden="true">
@@ -30,10 +118,10 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
         </span>
         <span class="lc-head-text">
           <span class="lc-head-name">Le Chêne Patrimonial</span>
-          <span class="lc-head-sub">Camil vous répond</span>
+          <span class="lc-head-sub">{t.headSub}</span>
         </span>
       </div>
-      <button id="lc-close" class="lc-close" aria-label="Fermer la discussion">
+      <button id="lc-close" class="lc-close" aria-label={t.closeAria}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </header>
@@ -41,8 +129,8 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
     <div id="lc-thread" class="lc-thread" aria-live="polite"></div>
 
     <form id="lc-form" class="lc-input">
-      <input id="lc-text" class="lc-text" type="text" autocomplete="off" maxlength="800" placeholder="Écrivez votre message…" aria-label="Écrivez votre message" />
-      <button type="submit" id="lc-send" class="lc-send" aria-label="Envoyer">
+      <input id="lc-text" class="lc-text" type="text" autocomplete="off" maxlength="800" placeholder={t.placeholder} aria-label={t.placeholder} />
+      <button type="submit" id="lc-send" class="lc-send" aria-label={t.sendAria}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
       </button>
     </form>
@@ -50,16 +138,16 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
     <footer class="lc-foot">
       <a id="lc-cta-rdv" class="lc-cta-rdv" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Prendre rendez-vous
+        {t.ctaRdv}
       </a>
-      <a id="lc-cta-tel" class="lc-cta-mini" aria-label="Appeler Camil">
+      <a id="lc-cta-tel" class="lc-cta-mini" aria-label={t.telAria}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </a>
-      <a id="lc-cta-mail" class="lc-cta-mini" aria-label="Écrire un email à Camil">
+      <a id="lc-cta-mail" class="lc-cta-mini" aria-label={t.mailAria}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
       </a>
     </footer>
-    <p class="lc-legal">Vos messages servent uniquement à vous répondre. Pour un conseil adapté à votre situation, rien ne vaut un vrai échange avec Camil.</p>
+    <p class="lc-legal">{t.legal}</p>
   </div>
 </div>
 
@@ -81,40 +169,26 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
       const phone = root.dataset.phone;
       const email = root.dataset.email;
       const calendly = root.dataset.calendly;
-      const intro = root.dataset.intro;
       document.getElementById('lc-cta-rdv').href = calendly;
       document.getElementById('lc-cta-tel').href = 'tel:' + phone;
       document.getElementById('lc-cta-mail').href = 'mailto:' + email;
 
-      const FALLBACK = "Bonne question. Le mieux, c'est d'en parler directement avec Camil : il vous répond personnellement au 06 12 82 91 90 ou par email. Dites-lui simplement votre situation.";
+      // Contenu localisé injecté par Astro (langue courante).
+      let DATA = { lang: 'fr', intro: '', fallback: '', kb: [], kbSocial: [] };
+      try {
+        const raw = document.getElementById('lc-data');
+        if (raw && raw.textContent) DATA = JSON.parse(raw.textContent);
+      } catch (e) { /* on garde les valeurs par défaut */ }
 
+      const LANG = DATA.lang || 'fr';
+      const intro = DATA.intro;
+      const FALLBACK = DATA.fallback;
       // Cerveau local : réponses pré-validées, utilisées quand l'IA n'est pas
       // active (pas de clé) ou indisponible. Zéro risque, zéro coût.
-      const KB = [
-        { k: ['service','accompagn','faites','proposez','aide','expertise','metier','métier'], a: "Le Chêne accompagne votre stratégie patrimoniale de bout en bout : assurance-vie, PER, préparation de la retraite, investissement immobilier et transmission. Le premier échange est toujours sans engagement." },
-        { k: ['banque','different','différent','difference','différence','pourquoi vous'], a: "Le Chêne est un cabinet indépendant : aucun produit maison à placer. Je pars de votre situation et de vos objectifs pour sélectionner les solutions les plus pertinentes, en toute transparence." },
-        { k: ['minimum','gros patrimoine','debut','début','commenc','petit','jeune','riche','fortune','pour moi'], a: "Pas besoin d'un gros patrimoine. J'accompagne aussi bien les patrimoines en construction que les situations établies. L'essentiel, c'est d'avoir un projet et l'envie d'être bien conseillé." },
-        { k: ['rémuner','remuner','honoraire','payer','coûte','coute','tarif','prix','combien ça','commission'], a: "En toute transparence : selon les cas, honoraires de conseil, commissions des partenaires en cas de souscription, ou les deux. Vous savez toujours qui me rémunère et comment, avant toute opération. Le premier rendez-vous est offert." },
-        { k: ['distance','visio','présentiel','presentiel','déplace','deplace','où êtes','ou etes','rendez-vous physique'], a: "J'accompagne mes clients partout en France, en visioconférence comme en rendez-vous physique. Votre localisation n'est jamais un frein." },
-        { k: ['assurance-vie','assurance vie','assurance'], a: "L'assurance-vie est un outil souple pour faire fructifier votre épargne, préparer un projet et transmettre dans un cadre avantageux. Le bon contrat dépend de votre situation, c'est justement ce qu'on regarde ensemble." },
-        { k: ['placer','somme','investir','argent','épargne','epargne','placement','économie','economie'], a: "Il n'y a pas de réponse unique : tout dépend de vos objectifs, de votre horizon et de votre sensibilité au risque. On fait le point ensemble pour construire une stratégie adaptée, sans précipitation." },
-        { k: ['retraite','retrait',' per'], a: "Pour la retraite, l'anticipation change tout. Plus on s'y prend tôt, plus des solutions comme le PER ou l'assurance-vie sont efficaces. On évalue votre situation et on met en place un plan progressif." },
-        { k: ['impôt','impot','fiscal','défiscal','defiscal','réduire','reduire','taxe'], a: "L'optimisation fiscale fait partie de l'accompagnement, via des solutions adaptées et dans le respect de la réglementation. J'étudie toujours votre situation avant la moindre recommandation." },
-        { k: ['conjoint','enfant','protéger','proteger','famille','décès','deces','proches'], a: "Protéger vos proches est un sujet clé du conseil patrimonial. Clause bénéficiaire, donation, régime matrimonial : plusieurs leviers existent. On construit ensemble la protection qui correspond à votre famille." },
-        { k: ['succession','transmi','transmettre','héritage','heritage','donation','démembrement','demembrement'], a: "Anticiper la transmission protège vos proches et allège la fiscalité. On regarde ensemble les outils adaptés, comme l'assurance-vie, la donation ou le démembrement, selon vos volontés." },
-        { k: ['immobil','locatif','acheter','achat','appartement','maison','résidence','residence','lmnp','pierre'], a: "J'accompagne les projets immobiliers, de la résidence principale à l'investissement locatif. On évalue la cohérence du projet avec l'ensemble de votre patrimoine et vos objectifs, financement compris." },
-        { k: ['sportif','athlète','athlete','carrière','carriere'], a: "L'accompagnement des sportifs de haut niveau est une spécialité du cabinet : carrières courtes, revenus irréguliers, expatriation. L'objectif, transformer une carrière en patrimoine durable." },
-        { k: ['expatri','étranger','etranger','expat','résident fiscal','resident fiscal','frontalier'], a: "La dimension internationale, résidence fiscale et placements adaptés, fait partie des sujets que je traite régulièrement. Précisez votre situation et on vous orientera." },
-        { k: ['rendez-vous','rendez vous','rdv','prendre','contact','joindre','appeler','téléphone','telephone','parler','email','mail'], a: "Avec plaisir. Vous pouvez joindre Camil directement au 06 12 82 91 90 ou par email à camil.cz@lechenepatrimonial.com, ou réserver un créneau via le bouton Prendre rendez-vous ci-dessous. Le premier échange est offert." },
-        { k: ['indépendant','independant','conflit','intérêt','interet'], a: "Oui, Le Chêne est un cabinet totalement indépendant : les recommandations sont faites dans votre seul intérêt, avec une transparence complète sur la rémunération." },
-      ];
-
+      const KB = DATA.kb || [];
       // Entrées "sociales" : n'écrasent jamais une vraie question. Utilisées
       // seulement si rien d'autre ne correspond.
-      const KB_SOCIAL = [
-        { k: ['merci','super','parfait','top','génial','genial'], a: "Avec plaisir. Si vous voulez aller plus loin sur votre situation, Camil se fera un plaisir d'en discuter avec vous, sans engagement." },
-        { k: ['bonjour','salut','hello','coucou','bonsoir','hey','ça va','ca va'], a: "Bonjour et bienvenue chez Le Chêne Patrimonial. Dites-moi ce qui vous amène : épargne, retraite, immobilier, fiscalité ou transmission ?" },
-      ];
+      const KB_SOCIAL = DATA.kbSocial || [];
 
       function lcNorm(s) {
         return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -179,7 +253,7 @@ const intro = "Bonjour 👋 ravi de vous accueillir chez Le Chêne Patrimonial. 
           const res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ messages: history.slice(-12) }),
+            body: JSON.stringify({ messages: history.slice(-12), lang: LANG }),
             signal: ctrl.signal,
           });
           if (res.ok) {

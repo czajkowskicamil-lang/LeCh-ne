@@ -17,22 +17,22 @@ export const site = {
 // Menu principal — resserré à 7 entrées qui suivent le parcours du visiteur :
 // qui je suis, ce que je fais, mes preuves, mon expertise data, mes contenus, agir.
 export const nav = [
-  { label: 'Parcours', href: '/parcours' },
-  { label: 'Expertise', href: '/expertise' },
-  { label: 'Opportunités', href: '/opportunites' },
-  { label: 'Cas pratiques', href: '/cas-pratiques' },
-  { label: 'Observatoire', href: '/observatoire' },
-  { label: 'Magazine', href: '/magazine' },
-  { label: 'Outils', href: '/outils' },
-  { label: 'Avis clients', href: '/avis' },
-  { label: 'Contact', href: '/contact' },
+  { key: 'nav.parcours', label: 'Parcours', href: '/parcours' },
+  { key: 'nav.expertise', label: 'Expertise', href: '/expertise' },
+  { key: 'nav.opportunites', label: 'Opportunités', href: '/opportunites' },
+  { key: 'nav.cas', label: 'Cas pratiques', href: '/cas-pratiques' },
+  { key: 'nav.observatoire', label: 'Observatoire', href: '/observatoire' },
+  { key: 'nav.magazine', label: 'Magazine', href: '/magazine' },
+  { key: 'nav.outils', label: 'Outils', href: '/outils' },
+  { key: 'nav.avis', label: 'Avis clients', href: '/avis' },
+  { key: 'nav.contact', label: 'Contact', href: '/contact' },
 ];
 
 // Liens secondaires — retirés du menu principal pour l'alléger, mais gardés
 // accessibles dans le footer pour que personne ne soit perdu.
 export const navSecondary = [
-  { label: 'Manifeste', href: '/manifeste' },
-  { label: 'La Lettre du Chêne', href: '/newsletter' },
+  { key: 'nav.manifeste', label: 'Manifeste', href: '/manifeste' },
+  { key: 'nav.lettre', label: 'La Lettre du Chêne', href: '/newsletter' },
 ];
 
 export const expertises = [

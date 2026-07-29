@@ -1,0 +1,445 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CTA from '../../components/CTA.astro';
+import { site } from '../../data/site';
+
+const title = "How French Real Estate Will Be Reshaped by 2045 | The Oak Observatory";
+const description = "A study of France's 40 largest cities: demographics, age, vacancy, employment, prices and yield. How property value will shift by 2045.";
+---
+
+<Base heroDark title={title} description={description}>
+  <article>
+    <PageHeader
+      image="/observatoire-header.jpg"
+      alt="Misty forest seen from above"
+      eyebrow="The Oak Observatory · A 2026 reading"
+      title="How French Real Estate Will Be Reshaped by 2045"
+      intro="Today's price says almost nothing about what a property will be worth in twenty years. We ran France's 40 largest municipalities through the filter of age and demographics."
+    />
+
+    <header class="pt-10 md:pt-14">
+      <div class="shell max-w-4xl">
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone border-b border-ink/10 pb-6">
+          <span><span class="text-ink font-medium">Scope</span> · 40 most populous municipalities</span>
+          <span><span class="text-ink font-medium">Demographics, age, vacancy</span> · INSEE 2023</span>
+          <span><span class="text-ink font-medium">Unemployment</span> · INSEE, employment zones, Q1 2026</span>
+          <span><span class="text-ink font-medium">Prices &amp; rents</span> · 2025-2026</span>
+        </div>
+
+        <div class="flex items-center gap-3 mt-6">
+          <span class="w-9 h-9 rounded-full bg-chene flex items-center justify-center text-cream font-serif text-xs">CC</span>
+          <div class="text-sm">
+            <p class="text-ink font-medium leading-tight">Camil Czajkowski</p>
+            <p class="text-xs text-stone">Founder · Le Chêne Patrimonial · July 2026</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell max-w-5xl pb-20 md:pb-28">
+
+      <!-- Thesis -->
+      <div class="reveal bg-navy text-cream rounded-none p-8 md:p-12 mb-16">
+        <p class="eyebrow-cream mb-4">The study's thesis</p>
+        <p class="font-serif text-2xl md:text-4xl leading-tight text-cream-soft text-balance">
+          Before even looking at a price, you have to look at <em class="text-or-light not-italic italic">the age of the city</em>. That is what decides what a property will be worth in twenty years. A young city that keeps attracting people holds its value. An aging city that is emptying out will take the full force of the coming wave of inheritances.
+        </p>
+        <p class="mt-6 text-cream/70 max-w-prose-wide leading-relaxed">
+          Our starting point: by 2050, between 5 and 7 trillion euros will pass from one generation to the next, much of it in real estate. It is often assumed that such a wave would push prices down everywhere. The opposite is taking shape. It will weigh most heavily where the population is already old and housing already vacant, while attractive cities will absorb it without difficulty. The rest of this study puts that idea to the numbers.
+        </p>
+      </div>
+
+      <!-- Method -->
+      <div class="reveal grid sm:grid-cols-3 border border-ink/10 rounded-none overflow-hidden mb-20 bg-cream-soft">
+        <div class="p-6 border-b sm:border-b-0 sm:border-r border-ink/10">
+          <h4 class="font-serif text-ink text-base mb-2">Municipal scale, a deliberate choice</h4>
+          <p class="text-sm text-stone leading-relaxed">We read the <span class="text-ink font-medium">municipality</span>, not the wider metro area: that is where you actually buy a specific property. A metro area can diverge from its core city. Worth keeping in mind.</p>
+        </div>
+        <div class="p-6 border-b sm:border-b-0 sm:border-r border-ink/10">
+          <h4 class="font-serif text-ink text-base mb-2">The alert index, an open rule</h4>
+          <p class="text-sm text-stone leading-relaxed">No hidden judgment. It counts <span class="text-ink font-medium">three signals in the red</span>: 65 and over above 20%, vacancy above 10%, population in decline. From 0 to 3, based on INSEE data.</p>
+        </div>
+        <div class="p-6">
+          <h4 class="font-serif text-ink text-base mb-2">Gross yield, indicative</h4>
+          <p class="text-sm text-stone leading-relaxed">Rent over price, <span class="text-ink font-medium">excluding charges, property tax and taxation</span>. Net of these, the gap between cities narrows. An order of magnitude, not a promise.</p>
+        </div>
+      </div>
+
+      <!-- Demographic backdrop -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">The backdrop: a France that no longer renews itself</h2>
+        <p class="text-stone max-w-prose-wide mb-8">A national figure first, because it sets the whole scene: France is no longer replacing its generations.</p>
+        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-none p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">645,000</div>
+            <p class="mt-3 text-sm text-stone">births in 2025, <span class="text-ink font-medium">−2.1% year on year</span></p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-none p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">651,000</div>
+            <p class="mt-3 text-sm text-stone">deaths in 2025, <span class="text-ink font-medium">+1.5% year on year</span></p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 rounded-none p-6">
+            <div class="font-serif text-3xl md:text-4xl text-or font-semibold leading-none tabular-nums">−6,000</div>
+            <p class="mt-3 text-sm text-stone">natural population change: <span class="text-ink font-medium">more deaths than births, a first since 1945</span></p>
+          </div>
+        </div>
+        <div class="bg-cream-soft border border-ink/10 rounded-none p-6 md:p-8 space-y-4 text-ink/85 leading-relaxed">
+          <p>The tipping point came in 2025. For the first time since 1945, more people died than were born in the country. Fertility fell to 1.66 children per woman, when 2.1 would be needed just to replace the generations. The country no longer regenerates on its own. For real estate, the consequence fits in one sentence: <strong class="text-ink">a city can no longer grow through its births, only by attracting people from elsewhere.</strong> Without that inflow, it empties out.</p>
+          <p>So why haven't prices already fallen? A shock absorber has long masked the phenomenon. The number of households has climbed faster than the population: people separate, live alone longer, grow old as widows and widowers. Fewer residents, then, but more households to house. That shock absorber is wearing out. The day it stops working, the drop in births will show, starting with the places nobody is moving to.</p>
+          <p>What remains is the scissor effect, the real challenge of the next twenty years. On one side, fewer births, so fewer buyers tomorrow. On the other, a growing number of inheritances, so more properties coming onto the market. Where a city attracts no one, the two blades close in on prices. Where it does attract people, the arrival of new residents absorbs the shock.</p>
+        </div>
+      </section>
+
+      <!-- Four dynamics -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">Four city dynamics</h2>
+        <p class="text-stone max-w-prose-wide mb-8">An editorial reading, illustrated with typical examples. The objective measure, city by city, remains the alert index in the table.</p>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-chene rounded-none p-6">
+            <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-2">Dynamic 1</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Young and growing</h3>
+            <p class="text-sm text-ink/80 mb-4">Rising population, few seniors, low vacancy. These cities renew themselves on their own: demand for the next twenty years looks secure.</p>
+            <p class="text-sm text-stone">Rennes · Toulouse · Montpellier · Nantes · Bordeaux · Lille</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-or rounded-none p-6">
+            <p class="text-xs uppercase tracking-micro text-or-dark font-semibold mb-2">Dynamic 2</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Premium senior, South and mountains</h3>
+            <p class="text-sm text-ink/80 mb-4">Very old, so carrying warning signals, but expensive and sought-after. Retiree magnets where the inflow of affluent newcomers offsets the effect of inheritance transfers.</p>
+            <p class="text-sm text-stone">Nice · Toulon · Aix · Annecy</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 rounded-none p-6" style="border-top-color:#B0442F">
+            <p class="text-xs uppercase tracking-micro font-semibold mb-2" style="color:#B0442F">Dynamic 3</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Old and fragile</h3>
+            <p class="text-sm text-ink/80 mb-4">Old, population stagnant or declining, vacancy already high. The wave of inheritances would hit weak demand here. The real point of caution.</p>
+            <p class="text-sm text-stone">Perpignan · Le Havre · Saint-Étienne · Limoges · Nîmes</p>
+          </div>
+          <div class="reveal bg-cream-soft border border-ink/10 border-t-2 border-t-stone rounded-none p-6">
+            <p class="text-xs uppercase tracking-micro text-stone font-semibold mb-2">Dynamic 4</p>
+            <h3 class="font-serif text-xl text-ink mb-2">Mature, to watch</h3>
+            <p class="text-sm text-ink/80 mb-4">Neither clearly young nor in outright decline. Everything will hinge on their ability to attract people, often neighborhood by neighborhood rather than as a whole.</p>
+            <p class="text-sm text-stone">Paris · Lyon · Grenoble · Metz · Caen</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive map -->
+      <section class="mb-20">
+        <div class="om-card">
+          <p class="om-eye">Observatory · Interactive</p>
+          <h2 class="om-title">Explore your city</h2>
+          <p class="om-lead">Click a city to see its figures. Switch lenses to read the territory differently.</p>
+          <div class="om-controls" id="om-controls">
+            <button class="om-btn on" data-m="alerte">Inheritance alert</button>
+            <button class="om-btn" data-m="rendt">Rental yield</button>
+            <button class="om-btn" data-m="age">Aging</button>
+          </div>
+          <div class="om-grid">
+            <div>
+              <svg id="om-map" viewBox="0 0 640 700" role="img" aria-label="Map of France's major cities"></svg>
+              <div class="om-legend" id="om-legend"></div>
+            </div>
+            <div class="om-panel" id="om-panel">
+              <p class="om-hint">Select a city on the map to display its analysis.</p>
+            </div>
+          </div>
+          <p class="om-note">Metropolitan France. Data from INSEE (demographics, age, vacancy, unemployment) and MeilleursAgents (prices, indicative gross yield).</p>
+        </div>
+      </section>
+
+      <!-- Table -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">The full table</h2>
+        <div class="bg-cream-deep/60 border border-or/30 rounded-none p-5 mb-6 text-sm text-ink/85">
+          <strong class="text-ink">How to read the alert index.</strong> It adds up three INSEE signals in the red: 65 and over ≥ 20%, vacancy ≥ 10%, population 2017-2023 declining. Score from 0 to 3. It measures exposure to aging and the coming wave of inheritances, not the overall quality of an investment.
+        </div>
+        <p class="text-stone text-sm mb-4">The 40 cities, ranked by population. Click a numeric column header to sort.</p>
+        <div class="overflow-x-auto border border-ink/10 rounded-none bg-cream-soft">
+          <table id="obs-tbl" class="w-full border-collapse text-sm" style="min-width:880px">
+            <thead>
+              <tr>
+                <th data-k="0">#</th><th data-k="1">City</th>
+                <th data-k="3" data-num="1">Pop. 17-23</th>
+                <th data-k="4" data-num="1">65+</th>
+                <th data-k="5" data-num="1">Vacancy</th>
+                <th data-k="6" data-num="1">Unemployment</th>
+                <th data-k="7" data-num="1">Price €/m²</th>
+                <th data-k="8" data-num="1">Gross yield</th>
+                <th>Alert</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-stone mt-4 items-center">
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a0">0/3</span> stable</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a1">1/3</span> to watch</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a2">2/3</span> caution</span>
+          <span class="flex items-center gap-2"><span class="obs-alert obs-a3">3/3</span> high risk</span>
+          <span class="sm:ml-auto">DOM (French overseas territories) = very different macro context (16-18% unemployment)</span>
+        </div>
+      </section>
+
+      <!-- Yield -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">What yield reveals</h2>
+        <p class="text-stone max-w-prose-wide mb-6">The market is not naive. Where it pays the most, it is often paying for risk.</p>
+        <div class="bg-cream-soft border border-ink/10 rounded-none p-6 md:p-8 space-y-4 text-ink/85 leading-relaxed">
+          <p>The highest gross yields are found in almost every case in the oldest and most vacant cities: <strong class="text-ink">Saint-Étienne 10.7%, Limoges 8.7%, Le Havre 8.1%, Perpignan 7.7%</strong>. The entry price is low there, so rent pays off handsomely, but the capital is exposed to aging. Conversely, young, premium cities cap out at <strong class="text-ink">3.7 to 4.5%</strong> (Annecy, Aix, Paris, Boulogne): there, yield is traded for security.</p>
+          <p>A decisive nuance: these figures are <strong class="text-ink">gross</strong>. Net of costs, the gap narrows. High-yield cities also carry a heavier property tax, more frequent vacancy and a higher risk of unpaid rent. A fragile 10% gross can end up worth less than a secure 5% gross. The headline yield says nothing about the resale.</p>
+        </div>
+      </section>
+
+      <!-- Grid -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4">The advisor's reading grid</h2>
+        <p class="text-stone max-w-prose-wide mb-8">No single signal is enough on its own. It is their combination that builds a sound decision.</p>
+        <div class="grid sm:grid-cols-2 gap-6 mb-8">
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">The age of the city</h4><p class="text-sm text-ink/80">The forward-looking signal. Many seniors means a wave of inherited properties in ten to twenty years. An opportunity if demand keeps pace, a risk if it declines.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">The population trajectory</h4><p class="text-sm text-ink/80">Who is arriving, who is leaving. A city that is filling up will absorb future supply. A city that is emptying out will suffer it.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">Vacancy</h4><p class="text-sm text-ink/80">The thermometer of oversupply. Vacancy that is already high signals a market struggling to absorb stock, even before the wave of inheritances arrives.</p></div>
+          <div class="border-l-2 border-or pl-5"><h4 class="font-serif text-ink text-lg mb-1">Yield</h4><p class="text-sm text-ink/80">The price of risk. A very high yield is not a gift, it is a premium paid against uncertainty over the capital.</p></div>
+        </div>
+        <div class="bg-navy text-cream/90 rounded-none p-6 md:p-8">
+          <p class="leading-relaxed">The most robust target combines all four: <strong class="text-or-light font-semibold">a young city, gaining residents, with low vacancy and a still-decent yield.</strong> Rennes, Nantes, Bordeaux, Montpellier, Angers and Rouen tick the most boxes. Not the most profitable on paper, but the ones where you can sleep soundly for twenty years.</p>
+        </div>
+      </section>
+
+      <!-- Traps -->
+      <section class="mb-20">
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-6">Two traps to avoid</h2>
+        <div class="space-y-4">
+          <div class="bg-cream-deep/60 border border-or/30 rounded-none p-6 text-ink/85"><p><strong class="text-ink">The mirage of yield.</strong> A 10% gross yield in Saint-Étienne or Limoges catches the eye. But with seniors above 20%, high vacancy and a stagnant population, the rent comes in while the property can lose value and become hard to resell. Gross yield says nothing about the exit.</p></div>
+          <div class="bg-cream-deep/60 border border-or/30 rounded-none p-6 text-ink/85"><p><strong class="text-ink">Attractive is not the same as populated.</strong> Mulhouse topped several 2026 attractiveness rankings. In reality, it has lost nearly 4% of its population and drops out of the top 40. A ranking measures interest, not the residents who actually settle there.</p></div>
+        </div>
+      </section>
+
+      <!-- Conviction -->
+      <section class="mb-20">
+        <div class="reveal bg-navy text-cream rounded-none p-8 md:p-12">
+          <p class="eyebrow-cream mb-4">Our conviction</p>
+          <p class="font-serif text-2xl md:text-3xl leading-snug text-cream-soft text-balance">French real estate is splitting in two. And what draws the line is not the price, it is the age of cities and their power to attract people.</p>
+          <p class="mt-5 text-cream/75 max-w-prose-wide leading-relaxed">Young cities that keep attracting people will get through the wave of inheritances unscathed. Those that age without renewing themselves will suffer it. Positioning yourself now means choosing the right territory, the right investment wrapper and the right transmission strategy while there is still time. That is exactly where we step in alongside you.</p>
+        </div>
+      </section>
+
+      <!-- Sources -->
+      <section class="text-sm text-stone">
+        <h2 class="font-serif text-2xl md:text-3xl text-ink mb-4">Sources, limitations and methodological honesty</h2>
+        <ul class="space-y-2 list-disc pl-5 marker:text-or mb-4">
+          <li><span class="text-ink font-medium">Solid data</span>: demographics, share of residents 65 and over, vacancy rate (INSEE, 2023 census) and unemployment by employment zone (INSEE, Q1 2026).</li>
+          <li><span class="text-ink font-medium">Births and deaths</span>: national figures (INSEE, 2025 demographic report: 645,000 births, 651,000 deaths, natural change −6,000). A national backdrop, not a per-city figure.</li>
+          <li><span class="text-ink font-medium">Scale</span>: read at municipal level, not metro-area level. A deliberate choice, worth keeping in mind.</li>
+          <li><span class="text-ink font-medium">Prices and rents</span>: apartment prices from MeilleursAgents (July 2026), rents from the Carte des loyers (DHUP, France's official rent map) and listing portals. Indicative gross yield.</li>
+          <li><span class="text-ink font-medium">5-year price trend</span>: deliberately excluded, public sources diverge too much to give a reliable per-city figure.</li>
+          <li><span class="text-ink font-medium">Special cases</span>: the two DOM (French overseas) municipalities are included for completeness, but their macro context makes them hard to compare.</li>
+          <li><span class="text-ink font-medium">Nature of the exercise</span>: correlations at a given point in time, not causal laws. The inheritance-transfer thesis is a reasoned hypothesis.</li>
+          <li><span class="text-ink font-medium">For a future edition</span>: rent control, the end of the Pinel scheme, poorly insulated housing (DPE energy rating), local taxation, share of students.</li>
+        </ul>
+        <p class="italic">This document is for educational purposes. It does not constitute personalized investment advice. Every project deserves an analysis tailored to your situation.</p>
+      </section>
+
+    </div>
+  </article>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  #obs-tbl thead th {
+    position: sticky; top: 0; background: #FAF7EF; text-align: right; font-size: .68rem;
+    letter-spacing: .05em; text-transform: uppercase; color: #7A7566; font-weight: 700;
+    padding: 12px 12px; border-bottom: 2px solid rgba(3,16,46,.12); white-space: nowrap; font-family: 'Inter Variable', Inter, sans-serif;
+  }
+  #obs-tbl thead th:nth-child(1), #obs-tbl thead th:nth-child(2) { text-align: left; }
+  #obs-tbl thead th[data-k] { cursor: pointer; }
+  #obs-tbl thead th[data-k]:hover { color: #A7801F; }
+  #obs-tbl tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(3,16,46,.08); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #obs-tbl tbody td.obs-city { text-align: left; font-weight: 600; color: #03102E; font-family: 'Fraunces Variable', Fraunces, serif; font-size: .95rem; }
+  #obs-tbl tbody td.obs-rank { text-align: left; color: #7A7566; width: 30px; }
+  #obs-tbl tbody tr:hover { background: rgba(212,168,45,.06); }
+  #obs-tbl .obs-dom { color: #A7801F; font-size: .68rem; }
+  .obs-pill { display: inline-block; padding: 2px 8px; border-radius: 7px; font-weight: 600; min-width: 50px; font-variant-numeric: tabular-nums; }
+  .obs-g { background: #e2ebdf; color: #2D4A33; }
+  .obs-r { background: #f4ddd3; color: #B0442F; }
+  .obs-w { background: #f3e7cf; color: #6E5414; }
+  .obs-n { color: #7A7566; }
+  .obs-alert { display: inline-block; padding: 2px 10px; border-radius: 20px; font-weight: 700; font-size: .78rem; font-variant-numeric: tabular-nums; }
+  .obs-a0 { background: #e2ebdf; color: #2D4A33; }
+  .obs-a1 { background: rgba(122,117,102,.16); color: #504B3F; }
+  .obs-a2 { background: #f3e7cf; color: #6E5414; }
+  .obs-a3 { background: #f4ddd3; color: #B0442F; }
+</style>
+
+<script is:inline>
+  (function () {
+    const data = [
+      [1,"Paris",0,-3.8,17.7,9.9,7.8,"9 661",4.0,0],[2,"Marseille",0,2.6,19.5,7.6,10.2,"3 626",5.4,0],
+      [3,"Lyon",0,0.6,14.9,9.3,7.4,"4 663",4.3,0],[4,"Toulouse",0,7.4,13.0,8.2,8.8,"3 564",4.7,0],
+      [5,"Nice",0,5.2,23.4,12.4,7.5,"5 205",4.7,0],[6,"Nantes",0,5.9,14.3,6.1,6.5,"3 455",5.0,0],
+      [7,"Montpellier",0,8.8,14.9,6.9,10.5,"3 433",5.4,0],[8,"Strasbourg",0,4.6,14.8,8.6,8.0,"3 724",5.0,0],
+      [9,"Bordeaux",0,5.3,15.0,6.7,7.8,"4 343",4.4,0],[10,"Lille",0,2.3,11.1,8.0,8.2,"3 375",5.6,0],
+      [11,"Rennes",0,6.5,14.3,6.5,6.9,"4 040",4.4,0],[12,"Toulon",0,4.2,23.8,3.6,7.0,"3 168",5.7,0],
+      [13,"Reims",0,-2.6,17.4,10.0,9.0,"2 687",6.0,0],[14,"Saint-Étienne",0,0.3,20.5,12.0,8.8,"1 230",10.7,0],
+      [15,"Le Havre",0,-2.0,20.9,10.9,9.7,"1 919",8.1,0],[16,"Villeurbanne",0,10.8,13.6,8.1,7.4,"3 703",5.2,0],
+      [17,"Dijon",0,3.1,17.9,7.3,6.8,"2 710",6.1,0],[18,"Angers",0,4.0,17.9,5.9,8.0,"3 268",5.1,0],
+      [19,"Grenoble",0,-1.5,15.3,13.5,6.9,"2 556",6.6,0],[20,"Saint-Denis",0,5.2,14.5,8.8,16.0,"2 780",8.6,1],
+      [21,"Nîmes",0,0.8,21.3,11.1,10.1,"2 401",6.3,0],[22,"Aix-en-Provence",0,5.1,20.0,8.0,6.5,"5 482",3.9,0],
+      [23,"Saint-Denis",0,5.4,10.7,7.2,7.8,"4 054",5.1,0],[24,"Clermont-Ferrand",0,1.7,17.0,9.6,7.2,"2 150",6.7,0],
+      [25,"Le Mans",0,2.3,22.2,9.5,8.4,"2 023",6.5,0],[26,"Brest",0,1.6,17.6,6.5,7.0,"2 467",5.6,0],
+      [27,"Tours",0,2.6,19.1,11.2,7.4,"3 014",5.4,0],[28,"Amiens",0,1.8,16.2,9.3,9.2,"2 559",6.5,0],
+      [29,"Annecy",0,4.1,20.4,7.3,5.1,"5 180",3.7,0],[30,"Limoges",0,-1.7,22.7,9.2,7.6,"1 611",8.7,0],
+      [31,"Metz",0,5.3,17.5,11.0,7.7,"2 358",7.1,0],[32,"Perpignan",0,1.2,23.0,14.6,12.7,"1 794",7.7,0],
+      [33,"Boulogne-Billancourt",0,-0.9,17.4,7.2,7.8,"8 287",3.9,0],[34,"Besançon",0,2.2,18.8,9.5,6.7,"2 473",6.3,0],
+      [35,"Rouen",0,6.8,14.4,9.7,9.1,"2 543",6.1,0],[36,"Orléans",0,-0.3,16.8,10.3,7.6,"2 577",6.7,0],
+      [37,"Montreuil",0,1.9,13.0,5.5,7.8,"6 459",4.5,0],[38,"Caen",0,3.8,18.9,8.9,7.6,"3 131",5.4,0],
+      [39,"Saint-Paul",0,3.4,14.7,9.4,18.1,"5 220",5.1,1],[40,"Argenteuil",0,-3.7,13.6,6.1,7.8,"3 323",6.9,0]
+    ];
+    const num = s => parseFloat((""+s).replace(/\s/g,"").replace(",","."));
+    const pct = v => (v>0?"+":"")+(""+v).replace(".",",")+" %";
+    const demoC = v => v>=3?"obs-g":(v<=-1?"obs-r":"obs-n");
+    const seniorC = v => v>=20?"obs-r":(v<14?"obs-g":"obs-n");
+    const vacC = v => v>=10?"obs-r":(v<=6.5?"obs-g":"obs-n");
+    const chomC = v => v<=7?"obs-g":(v>=9.5?"obs-r":"obs-w");
+    const yieldC = v => v>=7?"obs-g":(v<4.5?"obs-r":"obs-n");
+    const score = r => (r[4]>=20?1:0)+(r[5]>=10?1:0)+(r[3]<=0?1:0);
+    let asc = {};
+
+    function render(rows, tb) {
+      tb.innerHTML = "";
+      rows.forEach(r => {
+        const sc = score(r);
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          '<td class="obs-rank">'+r[0]+'</td>'+
+          '<td class="obs-city">'+r[1]+(r[9]?' <span class="obs-dom">DOM</span>':'')+'</td>'+
+          '<td><span class="obs-pill '+demoC(r[3])+'">'+pct(r[3])+'</span></td>'+
+          '<td><span class="obs-pill '+seniorC(r[4])+'">'+(""+r[4]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-pill '+vacC(r[5])+'">'+(""+r[5]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-pill '+chomC(r[6])+'">'+(""+r[6]).replace(".",",")+' %</span></td>'+
+          '<td>'+r[7]+'</td>'+
+          '<td><span class="obs-pill '+yieldC(r[8])+'">'+(""+r[8]).replace(".",",")+' %</span></td>'+
+          '<td><span class="obs-alert obs-a'+sc+'">'+sc+'/3</span></td>';
+        tb.appendChild(tr);
+      });
+    }
+
+    function init() {
+      const tbl = document.getElementById("obs-tbl");
+      if (!tbl || tbl.dataset.ready) return;
+      tbl.dataset.ready = "1";
+      const tb = tbl.querySelector("tbody");
+      render(data, tb);
+      tbl.querySelectorAll("thead th[data-k]").forEach(th => {
+        const k = +th.dataset.k, isNum = th.dataset.num;
+        th.addEventListener("click", () => {
+          asc[k] = !asc[k];
+          const sorted = [...data].sort((a,b) => {
+            let x = a[k], y = b[k];
+            if (isNum) { x = num(x); y = num(y); }
+            return (x>y?1:x<y?-1:0)*(asc[k]?1:-1);
+          });
+          render(sorted, tb);
+        });
+      });
+    }
+
+    init();
+    document.addEventListener("astro:page-load", () => {
+      const t = document.getElementById("obs-tbl");
+      if (t) t.dataset.ready = "";
+      init();
+    });
+  })();
+</script>
+
+<style is:global>
+  .om-card{background:#0c1f3c;border:1px solid rgba(212,168,45,.25);border-radius:20px;padding:clamp(22px,4vw,36px);color:#F5F1E8;}
+  .om-eye{color:#E6C259;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
+  .om-title{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:clamp(1.6rem,3.4vw,2.2rem);color:#F5F1E8;font-weight:600;margin-bottom:8px;}
+  .om-lead{color:#9fb0c8;font-size:1rem;margin-bottom:22px;max-width:60ch;}
+  .om-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .om-btn{background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem system-ui,sans-serif;padding:9px 18px;border-radius:30px;cursor:pointer;transition:.2s;}
+  .om-btn:hover{border-color:#D4A82D;color:#F5F1E8;}
+  .om-btn.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+  .om-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:26px;align-items:start;}
+  @media(max-width:820px){.om-grid{grid-template-columns:1fr;}}
+  #om-map{display:block;width:100%;height:auto;}
+  .om-outline{fill:#102847;stroke:#D4A82D;stroke-width:1.2;opacity:.85;}
+  .om-city{stroke:#0c1f3c;stroke-width:1.4;cursor:pointer;transition:r .15s;}
+  .om-city:hover{r:8;}
+  .om-city.sel{stroke:#F5F1E8;stroke-width:2.5;}
+  .om-clbl{font:600 12px system-ui,sans-serif;fill:#eef1f6;pointer-events:none;}
+  .om-lo{fill:#7bbd90;} .om-mid{fill:#E6C259;} .om-hi{fill:#d99a3f;} .om-max{fill:#d9694f;}
+  .om-panel{background:#102847;border:1px solid rgba(212,168,45,.2);border-radius:16px;padding:24px;min-height:340px;}
+  .om-panel h3{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:1.7rem;color:#F5F1E8;margin-bottom:6px;}
+  .om-badge{display:inline-block;font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .om-b0{background:rgba(123,189,144,.18);color:#7bbd90;}.om-b1{background:rgba(230,194,89,.18);color:#E6C259;}.om-b2{background:rgba(217,154,63,.2);color:#d99a3f;}.om-b3{background:rgba(217,105,79,.2);color:#e08a70;}
+  .om-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .om-row:last-child{border-bottom:none;}
+  .om-row .k{color:#9fb0c8;font-size:.9rem;}
+  .om-row .v{font-family:'Fraunces Variable',Fraunces,Georgia,serif;font-size:1.15rem;font-weight:600;}
+  .om-row .v.pos{color:#7bbd90;}.om-row .v.neg{color:#e08a70;}.om-row .v.neu{color:#F5F1E8;}
+  .om-hint{color:#7a8aa3;font-style:italic;}
+  .om-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:.78rem;color:#9fb0c8;}
+  .om-legend span{display:inline-flex;align-items:center;gap:7px;}
+  .om-legend .om-dot{width:11px;height:11px;border-radius:50%;display:block;}
+  .om-note{color:#6f7f98;font-size:.75rem;margin-top:18px;}
+</style>
+
+<script is:inline>
+  (function () {
+    const cities = [
+      ["Paris",48.86,2.35,-3.8,17.7,9.9,7.8,"9 661",4.0],["Marseille",43.30,5.37,2.6,19.5,7.6,10.2,"3 626",5.4],
+      ["Lyon",45.76,4.83,0.6,14.9,9.3,7.4,"4 663",4.3],["Toulouse",43.60,1.44,7.4,13.0,8.2,8.8,"3 564",4.7],
+      ["Nice",43.70,7.27,5.2,23.4,12.4,7.5,"5 205",4.7],["Nantes",47.22,-1.55,5.9,14.3,6.1,6.5,"3 455",5.0],
+      ["Montpellier",43.61,3.88,8.8,14.9,6.9,10.5,"3 433",5.4],["Strasbourg",48.58,7.75,4.6,14.8,8.6,8.0,"3 724",5.0],
+      ["Bordeaux",44.84,-0.58,5.3,15.0,6.7,7.8,"4 343",4.4],["Lille",50.63,3.06,2.3,11.1,8.0,8.2,"3 375",5.6],
+      ["Rennes",48.11,-1.68,6.5,14.3,6.5,6.9,"4 040",4.4],["Toulon",43.12,5.93,4.2,23.8,3.6,7.0,"3 168",5.7],
+      ["Reims",49.26,4.03,-2.6,17.4,10.0,9.0,"2 687",6.0],["Saint-Étienne",45.44,4.39,0.3,20.5,12.0,8.8,"1 230",10.7],
+      ["Le Havre",49.49,0.11,-2.0,20.9,10.9,9.7,"1 919",8.1],["Dijon",47.32,5.04,3.1,17.9,7.3,6.8,"2 710",6.1],
+      ["Angers",47.47,-0.55,4.0,17.9,5.9,8.0,"3 268",5.1],["Grenoble",45.19,5.72,-1.5,15.3,13.5,6.9,"2 556",6.6],
+      ["Nîmes",43.84,4.36,0.8,21.3,11.1,10.1,"2 401",6.3],["Aix-en-Provence",43.53,5.45,5.1,20.0,8.0,6.5,"5 482",3.9],
+      ["Clermont-Ferrand",45.78,3.08,1.7,17.0,9.6,7.2,"2 150",6.7],["Le Mans",48.00,0.20,2.3,22.2,9.5,8.4,"2 023",6.5],
+      ["Brest",48.39,-4.49,1.6,17.6,6.5,7.0,"2 467",5.6],["Tours",47.39,0.69,2.6,19.1,11.2,7.4,"3 014",5.4],
+      ["Amiens",49.89,2.30,1.8,16.2,9.3,9.2,"2 559",6.5],["Annecy",45.90,6.13,4.1,20.4,7.3,5.1,"5 180",3.7],
+      ["Limoges",45.83,1.26,-1.7,22.7,9.2,7.6,"1 611",8.7],["Metz",49.12,6.18,5.3,17.5,11.0,7.7,"2 358",7.1],
+      ["Perpignan",42.70,2.90,1.2,23.0,14.6,12.7,"1 794",7.7],["Besançon",47.24,6.02,2.2,18.8,9.5,6.7,"2 473",6.3],
+      ["Rouen",49.44,1.10,6.8,14.4,9.7,9.1,"2 543",6.1],["Orléans",47.90,1.90,-0.3,16.8,10.3,7.6,"2 577",6.7],
+      ["Caen",49.18,-0.37,3.8,18.9,8.9,7.6,"3 131",5.4]
+    ];
+    const border=[[51.05,2.53],[50.75,3.65],[49.98,4.85],[49.46,5.9],[48.95,8.1],[47.9,7.55],[46.9,6.9],[46.2,6.05],[45.9,6.85],[45.1,6.65],[44.35,7.0],[43.75,7.52],[43.05,6.6],[43.28,5.37],[43.35,4.05],[42.9,3.05],[42.47,3.15],[42.7,1.4],[42.9,-0.35],[43.35,-1.78],[44.6,-1.25],[45.6,-1.15],[46.25,-1.55],[47.0,-2.2],[47.5,-3.15],[47.8,-4.3],[48.45,-4.78],[48.68,-3.9],[48.75,-2.55],[49.35,-1.6],[49.72,-1.95],[49.65,-0.35],[49.5,0.15],[49.9,1.15],[50.7,1.6],[51.02,2.53]];
+    const corsica=[[43.02,9.38],[42.6,9.55],[41.85,9.42],[41.38,9.22],[41.6,8.75],[42.35,8.55],[42.7,8.72],[43.02,9.05]];
+    const latmax=51.2, lonmin=-5.2, k=Math.cos(46.7*Math.PI/180), S=58, pad=18;
+    const px=lon=>(lon-lonmin)*k*S+pad, py=lat=>(latmax-lat)*S+pad;
+    const NS='http://www.w3.org/2000/svg';
+    const alert=c=>(c[4]>=20?1:0)+(c[5]>=10?1:0)+(c[3]<=0?1:0);
+    const colorFns={alerte:c=>['om-lo','om-mid','om-hi','om-max'][alert(c)],rendt:c=>c[8]>=7.5?'om-max':c[8]>=6?'om-hi':c[8]>=4.8?'om-mid':'om-lo',age:c=>c[4]>=20?'om-max':c[4]>=17?'om-hi':c[4]>=14.5?'om-mid':'om-lo'};
+    const legends={alerte:[['om-lo','0/3 stable'],['om-mid','1/3'],['om-hi','2/3 caution'],['om-max','3/3 risk']],rendt:[['om-lo','< 4.8%'],['om-mid','4.8-6%'],['om-hi','6-7.5%'],['om-max','> 7.5%']],age:[['om-lo','young'],['om-mid','~15%'],['om-hi','~18%'],['om-max','20%+']]};
+    const cssc=cl=>({'om-lo':'#7bbd90','om-mid':'#E6C259','om-hi':'#d99a3f','om-max':'#d9694f'}[cl]);
+    let metric='alerte', sel=null, dots=[], labels=[];
+    function build(){
+      const svg=document.getElementById('om-map'); if(!svg||svg.dataset.ready) return; svg.dataset.ready='1';
+      svg.innerHTML=''; dots=[]; labels=[]; sel=null; metric='alerte';
+      const ctr=document.getElementById('om-controls');
+      ctr.querySelectorAll('.om-btn').forEach(b=>{b.classList.toggle('on',b.dataset.m==='alerte');b.addEventListener('click',()=>{ctr.querySelectorAll('.om-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');metric=b.dataset.m;paint();});});
+      function pathEl(pts){const p=document.createElementNS(NS,'path');p.setAttribute('d',pts.map((q,i)=>(i?'L':'M')+px(q[1]).toFixed(1)+' '+py(q[0]).toFixed(1)).join(' ')+' Z');p.setAttribute('class','om-outline');svg.appendChild(p);}
+      pathEl(border);pathEl(corsica);
+      cities.forEach((c,i)=>{const x=px(c[2]),y=py(c[1]);const circ=document.createElementNS(NS,'circle');circ.setAttribute('cx',x.toFixed(1));circ.setAttribute('cy',y.toFixed(1));circ.setAttribute('r',6);circ.setAttribute('class','om-city');circ.addEventListener('click',()=>select(i));circ.addEventListener('mouseenter',()=>{labels[i].style.display='block';});circ.addEventListener('mouseleave',()=>{if(sel!==i)labels[i].style.display='none';});svg.appendChild(circ);dots.push(circ);const t=document.createElementNS(NS,'text');t.setAttribute('x',(x+9).toFixed(1));t.setAttribute('y',(y+4).toFixed(1));t.setAttribute('class','om-clbl');t.textContent=c[0];t.style.display='none';svg.appendChild(t);labels.push(t);});
+      paint(); select(0);
+    }
+    function paint(){dots.forEach((d,i)=>{d.setAttribute('class','om-city '+colorFns[metric](cities[i])+(sel===i?' sel':''));});document.getElementById('om-legend').innerHTML=legends[metric].map(l=>'<span><span class="om-dot" style="background:'+cssc(l[0])+'"></span>'+l[1]+'</span>').join('');}
+    function select(i){sel=i;labels.forEach((t,j)=>{t.style.display=j===i?'block':'none';});paint();
+      const c=cities[i],sc=alert(c),dcl=v=>v>=2?'pos':(v<0?'neg':'neu');
+      document.getElementById('om-panel').innerHTML='<h3>'+c[0]+'</h3><span class="om-badge om-b'+sc+'">Inheritance alert '+sc+'/3</span>'+
+        '<div class="om-row"><span class="k">Population change 2017-2023</span><span class="v '+dcl(c[3])+'">'+(c[3]>0?'+':'')+(''+c[3]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Age 65 and over</span><span class="v neu">'+(''+c[4]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Vacant housing</span><span class="v neu">'+(''+c[5]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Unemployment (Q1 2026)</span><span class="v neu">'+(''+c[6]).replace('.',',')+' %</span></div>'+
+        '<div class="om-row"><span class="k">Apartment price</span><span class="v neu">'+c[7]+' €/m²</span></div>'+
+        '<div class="om-row"><span class="k">Gross yield</span><span class="v neu">'+(''+c[8]).replace('.',',')+' %</span></div>';
+    }
+    build();
+    document.addEventListener('astro:page-load',()=>{const s=document.getElementById('om-map');if(s)s.dataset.ready='';build();});
+  })();
+</script>

@@ -1,37 +1,39 @@
 import { defineCollection, z } from 'astro:content';
 
-const articles = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    publishedAt: z.date(),
-    updatedAt: z.date().optional(),
-    author: z.string().default('Camil Czajkowski'),
-    category: z.enum([
-      'Fiscalité',
-      'Placements',
-      'Immobilier',
-      'Retraite',
-      'Transmission',
-      'Méthode',
-    ]),
-    readingTime: z.number().default(6),
-    featured: z.boolean().default(false),
-    tags: z.array(z.string()).default([]),
-  }),
+const articleSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  publishedAt: z.date(),
+  updatedAt: z.date().optional(),
+  author: z.string().default('Camil Czajkowski'),
+  category: z.enum([
+    'Fiscalité',
+    'Placements',
+    'Immobilier',
+    'Retraite',
+    'Transmission',
+    'Méthode',
+  ]),
+  readingTime: z.number().default(6),
+  featured: z.boolean().default(false),
+  tags: z.array(z.string()).default([]),
 });
 
-const cas = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    profil: z.string(),
-    problematique: z.string(),
-    publishedAt: z.date(),
-    featured: z.boolean().default(false),
-  }),
+const casSchema = z.object({
+  title: z.string(),
+  profil: z.string(),
+  problematique: z.string(),
+  publishedAt: z.date(),
+  featured: z.boolean().default(false),
 });
+
+const articles = defineCollection({ type: 'content', schema: articleSchema });
+const cas = defineCollection({ type: 'content', schema: casSchema });
+
+// Versions anglaises (mêmes schémas). Le champ `category` garde la valeur FR
+// (enum) pour rester valide ; l'affichage EN mappe vers un libellé anglais.
+const articlesEn = defineCollection({ type: 'content', schema: articleSchema });
+const casEn = defineCollection({ type: 'content', schema: casSchema });
 
 const news = defineCollection({
   type: 'content',
@@ -82,4 +84,4 @@ const opportunites = defineCollection({
   }),
 });
 
-export const collections = { articles, cas, news, opportunites };
+export const collections = { articles, cas, news, opportunites, articlesEn, casEn };

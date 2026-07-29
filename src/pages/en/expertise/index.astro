@@ -1,0 +1,32 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import ExpertiseGrid from '../../../components/ExpertiseGrid.astro';
+import CTA from '../../../components/CTA.astro';
+---
+
+<Base
+  heroDark
+  title="Wealth management expertise, Le Chêne Patrimonial"
+  description="Ten pillars of wealth management covered in depth: PER, life insurance (assurance-vie), SCPI, tax planning, estate transmission, real estate, PEA, executive retirement planning, private equity, wealth-backed credit."
+>
+  <PageHeader
+    image="/expertise-header.jpg"
+    alt="Majestic oak tree in a landscape"
+    eyebrow="Wealth management expertise"
+    title={`Ten pillars.<br/><span class="italic text-or-light">One method.</span>`}
+    intro="Every topic covered in depth: the why, the how, the key figures, the common pitfalls, the FAQ. So you can decide with full knowledge of the facts."
+  />
+
+  <section class="py-8 md:py-10 bg-cream border-b border-ink/10">
+    <div class="shell">
+      <p class="text-sm text-ink/70 max-w-2xl leading-relaxed">
+        <span class="uppercase tracking-micro text-[0.7rem] text-chene mr-2">Recommended reading</span>
+        Start with <a class="link-underline text-chene" href="/en/expertise/assurance-vie">life insurance (assurance-vie)</a> and the <a class="link-underline text-chene" href="/en/expertise/plan-epargne-retraite">PER</a>, the foundation of 80&nbsp;% of wealth strategies.
+      </p>
+    </div>
+  </section>
+
+  <ExpertiseGrid title="The ten pillars" eyebrow="All topics" />
+  <CTA />
+</Base>

@@ -1,0 +1,95 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CTA from '../../../components/CTA.astro';
+
+const title = "PER Tax Savings Simulator 2026 | Le Chêne Patrimonial";
+const description = "How much does a contribution to your Plan Épargne Retraite (PER) reduce your income tax? Estimate your savings based on your marginal tax rate. Free and instant.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Breadcrumb">
+        <a href="/en" class="hover:text-chene">Home</a>
+        <span>/</span>
+        <a href="/en/outils" class="hover:text-chene">Tools</a>
+        <span>/</span>
+        <span class="text-ink">Tax Savings (PER)</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Taxation
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">How much the PER saves you</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Every euro paid into a Plan Épargne Retraite (PER) is deducted from your taxable income. The higher your tax bracket, the greater the saving. Estimate yours.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Contribution to your PER (per year) <b id="pe-vers-val">5 000 €</b></label>
+            <input class="tool-range" type="range" id="pe-vers" min="0" max="40000" step="500" value="5000" />
+          </div>
+          <div class="tool-field">
+            <label>Your marginal tax rate</label>
+            <div class="tool-seg" id="pe-tmi">
+              <button data-t="11">11 %</button>
+              <button class="on" data-t="30">30 %</button>
+              <button data-t="41">41 %</button>
+              <button data-t="45">45 %</button>
+            </div>
+          </div>
+          <p class="tool-note">Estimated saving on income tax, within your deduction ceiling (generally 10% of your professional income). On withdrawal, at retirement, the savings will be taxed: the PER defers and smooths the tax rather than eliminating it.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Tax saving this year</p>
+          <p class="big" id="pe-eco">—</p>
+          <div class="tool-brk"><span class="k">You contribute to your PER</span><span class="v" id="pe-vers2">—</span></div>
+          <div class="tool-brk"><span class="k">Real savings effort (net of tax)</span><span class="v" id="pe-effort">—</span></div>
+          <div class="tool-brk"><span class="k">Savings rate</span><span class="v" id="pe-taux">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>The most effective tool for higher tax brackets</h2>
+      <p>The principle is simple: your contribution is deducted from your taxable income. In the 30% bracket, a €5,000 contribution saves you €1,500 in tax; at 41%, it is €2,050. Your real savings effort is reduced accordingly, and that sum works for your retirement.</p>
+      <p>One caveat, though: PER funds withdrawn at retirement are taxed. Used well, it lets you contribute when you are heavily taxed and withdraw when you are taxed less. That is the whole art of it, and it is what we calibrate together.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    let tmi=30;
+    function calc(){
+      const v=+document.getElementById('pe-vers').value;
+      const eco=v*tmi/100;
+      document.getElementById('pe-vers-val').textContent=eur(v);
+      document.getElementById('pe-vers2').textContent=eur(v);
+      document.getElementById('pe-eco').textContent=eur(eco);
+      document.getElementById('pe-effort').textContent=eur(v-eco);
+      document.getElementById('pe-taux').textContent=tmi+' %';
+    }
+    function init(){
+      const r=document.getElementById('pe-vers'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      r.addEventListener('input',calc);
+      document.querySelectorAll('#pe-tmi button').forEach(b=>b.addEventListener('click',()=>{
+        document.querySelectorAll('#pe-tmi button').forEach(x=>x.classList.remove('on'));
+        b.classList.add('on'); tmi=+b.dataset.t; calc();
+      }));
+      calc();
+    }
+    init();
+    if(!window['__hk_pe-vers']){window['__hk_pe-vers']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>
