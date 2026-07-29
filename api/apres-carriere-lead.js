@@ -43,11 +43,16 @@ export default async function handler(req, res) {
   if (!apiKey) { console.error('BREVO_API_KEY manquante'); return res.status(500).json({ ok: false, error: 'config' }); }
 
   // 1) Contact Brevo.
+  const LETTRE_LIST_ID = 3; // « La Lettre du Chêne - Abonnés » : liste marketing, opt-in obligatoire.
   const listId = process.env.BREVO_LIST_APRESCARRIERE
     ? Number(process.env.BREVO_LIST_APRESCARRIERE)
     : process.env.BREVO_LIST_DIAGNOSTIC
     ? Number(process.env.BREVO_LIST_DIAGNOSTIC)
     : null;
+  // Liste de suivi de l'outil + la Lettre UNIQUEMENT si opt-in explicite (aucune fuite, RGPD propre).
+  const listIds = [];
+  if (listId) listIds.push(listId);
+  if (optin) listIds.push(LETTRE_LIST_ID);
   try {
     await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
@@ -61,7 +66,7 @@ export default async function handler(req, res) {
           CATEGORIE: 'Après-carrière sportif',
           OPT_IN: optin,
         },
-        ...(listId ? { listIds: [listId] } : {}),
+        ...(listIds.length ? { listIds } : {}),
         updateEnabled: true,
       }),
     });

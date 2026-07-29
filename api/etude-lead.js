@@ -76,7 +76,12 @@ export default async function handler(req, res) {
   }
 
   // 1) Contact Brevo (création / mise à jour). Liste optionnelle via env.
+  const LETTRE_LIST_ID = 3; // « La Lettre du Chêne - Abonnés » : liste marketing, opt-in obligatoire.
   const listId = process.env.BREVO_LIST_ETUDES ? Number(process.env.BREVO_LIST_ETUDES) : null;
+  // Liste de suivi de l'outil + la Lettre UNIQUEMENT si opt-in explicite (aucune fuite, RGPD propre).
+  const listIds = [];
+  if (listId) listIds.push(listId);
+  if (optin) listIds.push(LETTRE_LIST_ID);
   try {
     await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
@@ -90,7 +95,7 @@ export default async function handler(req, res) {
           SOURCE: 'Etude patrimoniale',
           OPTIN_MARKETING: optin ? 'oui' : 'non',
         },
-        ...(listId ? { listIds: [listId] } : {}),
+        ...(listIds.length ? { listIds } : {}),
         updateEnabled: true,
       }),
     });

@@ -1,0 +1,155 @@
+---
+// Bloc de capture réutilisable pour les outils / calculatrices.
+// Propose au visiteur son résultat en PDF + l'abonnement à La Lettre du Chêne.
+// La page doit définir window.__leadRows() -> [{ label, value, strong? }]
+// (les lignes du résultat courant), lu au moment du clic.
+interface Props {
+  tool: string;          // catégorie / nom de l'outil (segmentation Brevo)
+  titre?: string;        // titre du PDF
+  sousTitre?: string;    // sous-titre du PDF
+  heading?: string;      // titre affiché du bloc
+  intro?: string;        // phrase d'intro du bloc
+}
+const {
+  tool,
+  titre = tool,
+  sousTitre = '',
+  heading = 'Recevez votre résultat en PDF',
+  intro = 'Laissez votre email : je vous envoie votre résultat détaillé en PDF et, si vous le souhaitez, les opportunités et conseils du mois. Sans engagement, données jamais revendues.',
+} = Astro.props;
+---
+
+<div
+  id="tlc"
+  class="mt-10 border border-ink/10 bg-cream-soft p-6 md:p-8"
+  data-tool={tool}
+  data-titre={titre}
+  data-soustitre={sousTitre}
+>
+  <h3 class="font-serif text-xl text-ink mb-1.5">{heading}</h3>
+  <p class="text-sm text-ink/60 mb-5 leading-relaxed">{intro}</p>
+  <form id="tlc-form" class="space-y-3.5" novalidate>
+    <div class="grid sm:grid-cols-2 gap-3.5">
+      <input name="prenom" required placeholder="Prénom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+      <input name="nom" placeholder="Nom (facultatif)" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+    </div>
+    <div class="grid sm:grid-cols-2 gap-3.5">
+      <input name="email" type="email" required placeholder="Adresse email" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+      <input name="telephone" type="tel" placeholder="Téléphone (facultatif)" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+    </div>
+    <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+      <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
+      <span>J'accepte que Le Chêne Patrimonial collecte ces informations afin de m'envoyer mon résultat et de me recontacter à ce sujet. <a href="/confidentialite" class="underline hover:text-ink" target="_blank">Politique de confidentialité</a>.</span>
+    </label>
+    <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+      <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
+      <span>Je souhaite aussi recevoir La Lettre du Chêne et les opportunités du mois (facultatif, désinscription à tout moment).</span>
+    </label>
+    <button type="submit" class="btn-primary w-full justify-center py-3"><span id="tlc-btn-label">Recevoir mon résultat (PDF)</span></button>
+    <p class="text-[11px] text-ink/45 text-center leading-relaxed">Responsable de traitement : Le Chêne Patrimonial. Données conservées le temps de la relation commerciale, jamais revendues.</p>
+    <p id="tlc-msg" class="text-sm text-center hidden"></p>
+  </form>
+  <div id="tlc-done" class="hidden text-center">
+    <p class="text-lg font-serif text-ink mb-1">C'est envoyé ✓</p>
+    <p class="text-sm text-ink/60 mb-4">Votre résultat part par email. Vous pouvez aussi le télécharger tout de suite.</p>
+    <button id="tlc-dl" type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-ink/25 px-6 py-2.5 text-sm font-medium text-ink hover:border-chene hover:text-chene transition-colors">Télécharger le PDF</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function init() {
+      const box = document.getElementById('tlc');
+      const form = document.getElementById('tlc-form');
+      if (!box || !form || form.dataset.ready) return;
+      form.dataset.ready = '1';
+
+      const meta = {
+        tool: box.dataset.tool || 'Outil',
+        titre: box.dataset.titre || box.dataset.tool || '',
+        sousTitre: box.dataset.soustitre || '',
+      };
+      // Extraction générique du résultat : toutes les calculatrices partagent le
+      // même markup (.tool-result > .lbl + .big, puis des .tool-brk avec .k / .v).
+      const txt = (el) => (el && el.textContent ? el.textContent.replace(/\s+/g, ' ').trim() : '');
+      function extractRows() {
+        const rows = [];
+        const rb = document.querySelector('.tool-result');
+        if (rb) {
+          const lbl = rb.querySelector('.lbl');
+          const big = rb.querySelector('.big');
+          if (lbl && big && txt(big) && txt(big) !== '—') rows.push({ label: txt(lbl), value: txt(big), strong: true });
+          rb.querySelectorAll('.tool-brk').forEach((br) => {
+            const k = br.querySelector('.k');
+            const v = br.querySelector('.v');
+            if (k && v && txt(v) && txt(v) !== '—') rows.push({ label: txt(k), value: txt(v) });
+          });
+        }
+        return rows;
+      }
+      const getRows = () => {
+        if (typeof window.__leadRows === 'function') {
+          try { const r = window.__leadRows(); if (Array.isArray(r) && r.length) return r; } catch (e) {}
+        }
+        return extractRows();
+      };
+      const msg = document.getElementById('tlc-msg');
+      const btnLabel = document.getElementById('tlc-btn-label');
+
+      async function downloadPdf(prenom, nom) {
+        try {
+          const res = await fetch('/api/tool-pdf', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ ...meta, prenom: prenom || '', nom: nom || '', rows: getRows() }),
+          });
+          if (!res.ok) throw 0;
+          const b = await res.blob();
+          const u = URL.createObjectURL(b);
+          const a = document.createElement('a');
+          a.href = u; a.download = 'resultat-le-chene.pdf';
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(u);
+        } catch (e) {}
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const fd = new FormData(form);
+        if (!fd.get('prenom') || !fd.get('email')) { show('Merci de renseigner votre prénom et votre email.', true); return; }
+        if (!fd.get('consent')) { show('Merci d\'accepter le traitement de vos données.', true); return; }
+        if (btnLabel) btnLabel.textContent = 'Envoi…';
+        try {
+          const res = await fetch('/api/tool-lead', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              ...meta,
+              prenom: fd.get('prenom'), nom: fd.get('nom'), email: fd.get('email'),
+              telephone: fd.get('telephone'), consent: !!fd.get('consent'), optin: !!fd.get('optin'),
+              website: fd.get('website'), rows: getRows(),
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) throw 0;
+          form.classList.add('hidden');
+          const done = document.getElementById('tlc-done');
+          if (done) done.classList.remove('hidden');
+          const dl = document.getElementById('tlc-dl');
+          if (dl) dl.addEventListener('click', () => downloadPdf(fd.get('prenom'), fd.get('nom')));
+        } catch (err) {
+          if (btnLabel) btnLabel.textContent = 'Recevoir mon résultat (PDF)';
+          show('Une erreur est survenue. Réessayez dans un instant.', true);
+        }
+      });
+
+      function show(text, isErr) {
+        if (!msg) return;
+        msg.textContent = text;
+        msg.classList.remove('hidden');
+        msg.style.color = isErr ? '#b4453a' : '#2D4A33';
+      }
+    }
+    init();
+    if (!window.__tlc_hooked) { window.__tlc_hooked = 1; document.addEventListener('astro:page-load', init); }
+  })();
+</script>

@@ -67,11 +67,17 @@ export default async function handler(req, res) {
   }
 
   // 1) Contact Brevo (création / mise à jour).
+  const LETTRE_LIST_ID = 3; // « La Lettre du Chêne - Abonnés » : liste marketing, opt-in obligatoire.
   const listId = process.env.BREVO_LIST_DIAGNOSTIC
     ? Number(process.env.BREVO_LIST_DIAGNOSTIC)
     : process.env.BREVO_LIST_ETUDES
     ? Number(process.env.BREVO_LIST_ETUDES)
     : null;
+  // Listes : la liste de suivi de l'outil (trace du lead) + la Lettre UNIQUEMENT si opt-in explicite.
+  // -> aucune fuite : un opt-in reçoit bien la Lettre ; sans opt-in, jamais de marketing.
+  const listIds = [];
+  if (listId) listIds.push(listId);
+  if (optin) listIds.push(LETTRE_LIST_ID);
   // Téléphone stocké en texte (l'attribut TELEPHONE ne valide pas le format,
   // contrairement à SMS/LANDLINE_NUMBER qui exigent un format international strict
   // et feraient échouer toute la création du contact).
@@ -89,7 +95,7 @@ export default async function handler(req, res) {
           ...(d.score != null ? { SCORE_DIAG: Number(d.score) } : {}),
           OPT_IN: !!optin,
         },
-        ...(listId ? { listIds: [listId] } : {}),
+        ...(listIds.length ? { listIds } : {}),
         updateEnabled: true,
       }),
     });
