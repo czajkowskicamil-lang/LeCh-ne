@@ -45,7 +45,7 @@ const dispositifs = [
 ];
 
 const total = lmnp.length + nue.length + neuf.length;
-const mois = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date());
+const moisLabel = 'Juillet 2026';
 ---
 
 <Base
@@ -58,11 +58,15 @@ const mois = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }
       <div class="lg:col-span-8">
         <p class="eyebrow mb-6 flex items-center gap-3">
           <span class="inline-block h-px w-8 bg-chene"></span>
-          La sélection immobilière · <span class="capitalize">{mois}</span>
+          Sélection · {moisLabel}
         </p>
-        <h1 class="font-serif text-display-xl text-ink mb-8">
+        <h1 class="font-serif text-display-xl text-ink mb-5">
           Les bonnes idées, <span class="italic text-chene">au bon moment.</span>
         </h1>
+        <p class="inline-flex items-center gap-2 text-sm font-medium text-or-dark bg-or/10 border border-or/25 rounded-full px-4 py-1.5 mb-7">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-or"></span>
+          Une nouvelle sélection chaque mois
+        </p>
         <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
           Une sélection de biens que le cabinet suit de près, classée en trois familles distinctes. Chaque opportunité mérite d'être regardée à la lumière de <em>votre</em> situation et de votre fiscalité — c'est tout l'objet d'un premier échange.
         </p>
