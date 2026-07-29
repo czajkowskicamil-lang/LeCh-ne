@@ -33,9 +33,11 @@ export default async function handler(req, res) {
   body = body || {};
 
   // Anti-spam : champ piège (honeypot). Un bot le remplit, un humain non.
-  if (body.website) {
-    return res.status(200).json({ ok: true }); // on fait comme si, sans rien envoyer
-  }
+  // ATTENTION : on ne rejette PLUS silencieusement. Certains navigateurs /
+  // gestionnaires de mots de passe remplissent ce champ caché chez de vrais
+  // clients → l'avis était perdu alors que le client voyait « envoyé ».
+  // Désormais on livre quand même, en marquant [À vérifier], et Camil tranche.
+  const suspectHoneypot = Boolean(body.website);
 
   const prenom = clean(body.prenom).slice(0, 60);
   const nom = clean(body.nom).slice(0, 60);
@@ -50,6 +52,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'consentement_requis' });
   }
 
+  // Trace serveur : chaque soumission reçue (visible dans les logs Vercel),
+  // pour ne plus jamais avoir de « avis fantôme » impossible à retrouver.
+  console.log('[AVIS] reçu', JSON.stringify({ prenom, nom, role, email: email || '(vide)', len: avis.length, suspectHoneypot }));
+
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) {
     console.error('BREVO_API_KEY manquante');
@@ -58,6 +64,7 @@ export default async function handler(req, res) {
 
   const htmlContent = `
     <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#03102E">
+      ${suspectHoneypot ? `<p style="background:#FBEEDC;color:#8a5a00;font-size:12px;padding:8px 12px;border-radius:6px;margin:0 0 12px">⚠️ Détecté par l'anti-spam (champ piège rempli). Probablement un robot, mais livré par sécurité : à vérifier avant publication.</p>` : ''}
       <p style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#A7801F;margin:0 0 4px">Nouvel avis à valider</p>
       <h2 style="margin:0 0 16px;font-size:20px">${escapeHtml(prenom)} ${escapeHtml(nom)}</h2>
       ${role ? `<p style="margin:0 0 4px"><strong>Profil :</strong> ${escapeHtml(role)}</p>` : ''}
@@ -81,7 +88,7 @@ export default async function handler(req, res) {
         sender: SENDER,
         to: [{ email: DEST, name: 'Camil Czajkowski' }],
         ...(email ? { replyTo: { email, name: `${prenom} ${nom}` } } : {}),
-        subject: `Nouvel avis à valider — ${prenom} ${nom}`,
+        subject: `${suspectHoneypot ? '[À vérifier] ' : ''}Nouvel avis à valider — ${prenom} ${nom}`,
         htmlContent,
       }),
     });
