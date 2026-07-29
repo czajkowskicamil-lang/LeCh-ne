@@ -25,6 +25,23 @@ export default async function handler(req, res) {
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
   body = body || {};
 
+  // Téléchargement direct du PDF (sans capture) : action explicite, court-circuit.
+  if (body.action === 'pdf') {
+    try {
+      const pdf = await buildLiberteFinancierePdf({
+        prenom: clean(body.prenom).slice(0, 60), nom: clean(body.nom).slice(0, 60),
+        data: body.data && typeof body.data === 'object' ? body.data : {},
+      });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="liberte-financiere-le-chene.pdf"');
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).send(pdf);
+    } catch (err) {
+      console.error('PDF liberté financière failed', err);
+      return res.status(500).json({ ok: false, error: 'pdf' });
+    }
+  }
+
   if (body.website) return res.status(200).json({ ok: true }); // honeypot
 
   const prenom = clean(body.prenom).slice(0, 60);

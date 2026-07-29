@@ -853,9 +853,9 @@ const description =
       // Génère et télécharge le rapport PDF (appelé après validation du formulaire).
       async function downloadPdf(): Promise<boolean> {
         try {
-          const res = await fetch('/api/diagnostic-pdf', {
+          const res = await fetch('/api/diagnostic-lead', {
             method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ answers, diagnostic: d }),
+            body: JSON.stringify({ action: 'pdf', answers, diagnostic: d }),
           });
           if (!res.ok) throw new Error('pdf');
           const blob = await res.blob();

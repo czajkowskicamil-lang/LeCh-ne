@@ -329,7 +329,7 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
         const msg=document.getElementById('ac-lead-msg');
         const btnLabel=document.querySelector('.ac-lead-btn-label');
         const showMsg=(t,ok)=>{msg.textContent=t;msg.className='text-sm text-center '+(ok?'text-chene':'text-[#b4472e]');msg.classList.remove('hidden');};
-        const downloadPdf=async()=>{try{const res=await fetch('/api/apres-carriere-pdf',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='apres-carriere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
+        const downloadPdf=async()=>{try{const res=await fetch('/api/apres-carriere-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'pdf',prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='apres-carriere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
         form.addEventListener('submit',async(e)=>{
           e.preventDefault();
           const fd=new FormData(form);

@@ -35,6 +35,24 @@ export default async function handler(req, res) {
   }
   body = body || {};
 
+  // Téléchargement direct du PDF (sans capture) : action explicite, court-circuit.
+  if (body.action === 'pdf') {
+    try {
+      const ans = body.answers && typeof body.answers === 'object' ? body.answers : {};
+      const pdf = await buildDiagnosticPdf({
+        answers: { prenom: clean(ans.prenom).slice(0, 60), nom: clean(ans.nom).slice(0, 60) },
+        diagnostic: body.diagnostic,
+      });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="diagnostic-patrimonial-le-chene.pdf"');
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).send(pdf);
+    } catch (err) {
+      console.error('PDF diagnostic failed', err);
+      return res.status(500).json({ ok: false, error: 'pdf' });
+    }
+  }
+
   // Anti-spam : champ piège (honeypot).
   if (body.website) return res.status(200).json({ ok: true });
 

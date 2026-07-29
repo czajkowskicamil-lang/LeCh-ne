@@ -266,7 +266,7 @@ const description = "Calculez votre capital liberté et l'âge auquel votre épa
         const msg=document.getElementById('lf-lead-msg');
         const btnLabel=document.querySelector('.lf-lead-btn-label');
         const showMsg=(t,ok)=>{msg.textContent=t;msg.className='text-sm text-center '+(ok?'text-chene':'text-[#b4472e]');msg.classList.remove('hidden');};
-        const downloadPdf=async()=>{try{const res=await fetch('/api/liberte-financiere-pdf',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='liberte-financiere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
+        const downloadPdf=async()=>{try{const res=await fetch('/api/liberte-financiere-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'pdf',prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='liberte-financiere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
         form.addEventListener('submit',async(e)=>{
           e.preventDefault();
           const fd=new FormData(form);

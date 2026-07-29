@@ -99,9 +99,9 @@ const {
 
       async function downloadPdf(prenom, nom) {
         try {
-          const res = await fetch('/api/tool-pdf', {
+          const res = await fetch('/api/tool-lead', {
             method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ ...meta, prenom: prenom || '', nom: nom || '', rows: getRows() }),
+            body: JSON.stringify({ action: 'pdf', ...meta, prenom: prenom || '', nom: nom || '', rows: getRows() }),
           });
           if (!res.ok) throw 0;
           const b = await res.blob();

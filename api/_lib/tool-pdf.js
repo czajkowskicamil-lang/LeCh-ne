@@ -1,6 +1,6 @@
 // Générateur de PDF générique pour les outils / calculatrices — Le Chêne Patrimonial.
 // Prend un titre, un destinataire et une liste de lignes {label, value} et rend un
-// document A4 de marque (Buffer). Utilisé par api/tool-pdf.js et api/tool-lead.js.
+// document A4 de marque (Buffer). Utilisé par api/tool-lead.js (capture + action=pdf).
 import PDFDocument from 'pdfkit';
 
 const NAVY = '#03102E';

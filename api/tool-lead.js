@@ -24,6 +24,28 @@ export default async function handler(req, res) {
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
   body = body || {};
 
+  // Téléchargement direct du PDF (sans capture) : action explicite, court-circuit.
+  if (body.action === 'pdf') {
+    try {
+      const pdf = await buildToolPdf({
+        tool: clean(body.tool).slice(0, 80),
+        titre: clean(body.titre).slice(0, 120),
+        sousTitre: clean(body.sousTitre).slice(0, 120),
+        prenom: clean(body.prenom).slice(0, 60),
+        nom: clean(body.nom).slice(0, 60),
+        rows: Array.isArray(body.rows) ? body.rows.slice(0, 40) : [],
+        intro: body.intro, note: body.note,
+      });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="resultat-le-chene.pdf"');
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).send(pdf);
+    } catch (err) {
+      console.error('tool-pdf failed', err);
+      return res.status(500).json({ ok: false, error: 'pdf' });
+    }
+  }
+
   if (body.website) return res.status(200).json({ ok: true }); // honeypot
 
   const tool = clean(body.tool).slice(0, 80) || 'Outil';
