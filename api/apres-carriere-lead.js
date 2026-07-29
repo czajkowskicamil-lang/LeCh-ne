@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E">
       <p style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#A7801F;margin:0 0 4px">Nouveau lead &middot; compte à rebours après-carrière</p>
       <h2 style="margin:0 0 6px;font-size:20px">${escapeHtml(prenom)} ${escapeHtml(nom)}</h2>
-      <div style="display:inline-block;background:#03102E;color:#E6C259;font-family:Georgia,serif;font-size:20px;font-weight:700;padding:8px 18px;border-radius:10px;margin:0 0 10px">Nombre de la liberté : ${escapeHtml(eur(d.nombreLiberte))}</div>
+      <div style="display:inline-block;background:#03102E;color:#E6C259;font-family:Georgia,serif;font-size:20px;font-weight:700;padding:8px 18px;border-radius:10px;margin:0 0 10px">Capital liberté : ${escapeHtml(eur(d.nombreLiberte))}</div>
       <p style="margin:0 0 2px;font-size:14px"><a href="mailto:${escapeHtml(email)}" style="color:#0A1F4F">${escapeHtml(email)}</a>${telephone ? ` &middot; ${escapeHtml(telephone)}` : ''}</p>
       <p style="margin:0 0 16px;font-size:12px;color:#7A7566">Opt-in newsletter/marketing : <strong>${optin ? 'OUI' : 'non'}</strong> &middot; Consentement traitement : OUI</p>
       <table style="width:100%;border-collapse:collapse;border-top:1px solid #EDE6D3;border-bottom:1px solid #EDE6D3;margin:0 0 16px">
@@ -86,8 +86,8 @@ export default async function handler(req, res) {
         ${ligne('Revenu net annuel', eur(d.revenu))}
         ${ligne('Train de vie annuel', eur(d.depenses))}
         ${ligne('Épargne déjà constituée', eur(d.epargne))}
-        ${ligne('Revenu net après carrière', eur(d.apres))}
-        ${ligne('Chute de revenu', d.chute != null ? d.chute + ' %' : '—')}
+        ${ligne('Rente du patrimoine actuel', eur(d.renteActuelle) + ' / an')}
+        ${ligne('Chute de revenu (salaire → rente actuelle)', d.chute != null ? d.chute + ' %' : '—')}
         ${ligne('Date de liberté estimée', d.dateLiberte || '—')}
         ${ligne('À capitaliser / mois', d.versementNecessaire != null ? eur(d.versementNecessaire) : '—')}
         ${ligne("Capacité d'épargne actuelle", d.capaciteMensuelle != null ? eur(d.capaciteMensuelle) : '—')}
@@ -117,7 +117,7 @@ export default async function handler(req, res) {
       const visitorHtml = `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E;line-height:1.55">
           <p style="font-size:15px">Bonjour ${escapeHtml(prenom)},</p>
-          <p style="font-size:15px">Merci d'avoir utilisé le compte à rebours de l'après-carrière. Vous trouverez <strong>votre rapport en pièce jointe</strong> (PDF), avec votre nombre de la liberté de <strong>${escapeHtml(eur(d.nombreLiberte))}</strong> et vos leviers d'action.</p>
+          <p style="font-size:15px">Merci d'avoir utilisé le compte à rebours de l'après-carrière. Vous trouverez <strong>votre rapport en pièce jointe</strong> (PDF), avec votre capital liberté de <strong>${escapeHtml(eur(d.nombreLiberte))}</strong> et vos leviers d'action.</p>
           <p style="font-size:15px">La carrière est courte, l'après se prépare pendant. Camil Czajkowski vous recontacte prochainement. Vous pouvez aussi réserver directement un créneau&nbsp;:</p>
           <p style="margin:22px 0"><a href="https://calendly.com/camil-cz-lechenepatrimonial/30min" style="background:#0A1F4F;color:#E6C259;text-decoration:none;padding:12px 26px;border-radius:100px;font-weight:bold;font-size:14px">Prendre rendez-vous (30 min)</a></p>
           <p style="font-size:15px">À très bientôt,<br>Camil Czajkowski<br><span style="color:#7A7566">Le Chêne Patrimonial</span></p>

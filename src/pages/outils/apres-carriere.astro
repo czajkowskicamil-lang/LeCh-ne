@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CTA from '../../components/CTA.astro';
 
 const title = "Le compte à rebours de l'après-carrière — simulateur pour sportifs de haut niveau | Le Chêne Patrimonial";
-const description = "Athlète de haut niveau : à quel âge serez-vous libre financièrement ? Visualisez la falaise de revenus de fin de carrière, votre nombre de la liberté et le plan pour lisser l'après. Gratuit, confidentiel.";
+const description = "Athlète de haut niveau : à quel âge serez-vous libre financièrement ? Visualisez la falaise de revenus de fin de carrière, le capital qui vous rend libre et le plan pour lisser l'après. Gratuit, confidentiel.";
 ---
 
 <Base title={title} description={description}>
@@ -23,7 +23,7 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
       <h1 class="font-serif text-display text-ink mb-6 leading-tight">Le compte à rebours de l'après-carrière</h1>
       <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
         Un jour, les revenus du sport s'arrêtent. La vraie question n'est pas <em class="text-chene not-italic font-medium">si</em>, mais
-        <em class="text-chene not-italic font-medium">à quel âge vous serez libre</em>. Visualisez la falaise, votre nombre de la liberté, et le chemin pour la préparer pendant que vous gagnez bien votre vie.
+        <em class="text-chene not-italic font-medium">à quel âge vous serez libre</em>. Visualisez la falaise, le capital qui vous rend libre, et le chemin pour l'atteindre pendant que vous gagnez bien votre vie.
       </p>
     </div>
   </header>
@@ -59,49 +59,67 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
           <div class="tool-field">
             <label>Revenu net annuel aujourd'hui <b id="ac-rev-val">150 000 €</b></label>
             <input class="tool-range" type="range" id="ac-rev" min="20000" max="2000000" step="10000" value="150000" />
+            <span class="ac-hint">Ce que le sport vous rapporte net par an, en ce moment.</span>
           </div>
           <div class="tool-field">
-            <label>Votre train de vie annuel <b id="ac-dep-val">70 000 €</b></label>
+            <label>Ce que vous dépensez pour vivre, par an <b id="ac-dep-val">70 000 €</b></label>
             <input class="tool-range" type="range" id="ac-dep" min="15000" max="600000" step="5000" value="70000" />
+            <span class="ac-hint">Logement, quotidien, famille, plaisirs. C'est ce montant que votre patrimoine devra couvrir tout seul, le jour où le sport s'arrête.</span>
           </div>
           <div class="tool-field">
-            <label>Épargne déjà constituée <b id="ac-epa-val">60 000 €</b></label>
+            <label>Épargne et patrimoine déjà constitués <b id="ac-epa-val">60 000 €</b></label>
             <input class="tool-range" type="range" id="ac-epa" min="0" max="3000000" step="10000" value="60000" />
+            <span class="ac-hint">Tout ce que vous avez déjà mis de côté : livrets, assurance-vie, immobilier de placement.</span>
           </div>
           <div class="tool-field">
-            <label>Revenu net annuel après la carrière <b id="ac-apres-val">35 000 €</b></label>
-            <input class="tool-range" type="range" id="ac-apres" min="0" max="200000" step="5000" value="35000" />
-          </div>
-          <div class="tool-field">
-            <label>Rendement annuel visé (hypothèse) <b id="ac-rdt-val">4,0 %</b></label>
+            <label>Performance annuelle de vos placements <b id="ac-rdt-val">4,0 %</b></label>
             <input class="tool-range" type="range" id="ac-rdt" min="2" max="7" step="0.5" value="4" />
+            <span class="ac-hint">Ce que rapporte en moyenne, chaque année, un capital bien placé. Une hypothèse prudente, pas une promesse.</span>
           </div>
-          <p class="tool-note">Estimation indicative et pédagogique, à partir des seules informations saisies. Rente calculée sur un taux de retrait prudent de 3,5 %. Hors inflation et fiscalité détaillée. Ne constitue pas un conseil personnalisé ni une recommandation sur des instruments financiers. Le Chêne Patrimonial intervient au titre du courtage en assurance et de l'intermédiation immobilière.</p>
+          <p class="tool-note">Estimation indicative et pédagogique, à partir des seules informations saisies. On part du principe que <b>les revenus du sport tombent à zéro</b> le jour de l'arrêt : votre capital liberté est la somme qui vous fait vivre sans aucun salaire. Un futur métier de reconversion viendra en plus, comme marge de sécurité. Rente calculée sur un taux de retrait prudent de 3,5 %. Hors inflation et fiscalité détaillée. Ne constitue pas un conseil personnalisé ni une recommandation sur des instruments financiers. Le Chêne Patrimonial intervient au titre du courtage en assurance et de l'intermédiation immobilière.</p>
         </div>
 
         <div class="tool-result">
-          <p class="lbl">Votre nombre de la liberté</p>
+          <p class="lbl">Votre capital liberté</p>
           <p class="big" id="ac-nombre">—</p>
-          <p class="ac-sub" id="ac-nombre-sub">le capital qui rend votre train de vie autonome</p>
+          <p class="ac-sub" id="ac-nombre-sub">La somme qui, bien placée, vous fait vivre sans dépendre d'un salaire.</p>
 
           <div class="ac-falaise">
+            <div class="ac-refline" id="ac-refline"><span>Ce qu'il vous faut pour vivre</span></div>
             <div class="ac-col">
               <span class="ac-val" id="ac-rev-av">—</span>
               <div class="ac-bar av" id="ac-bar-av" style="height:100%"></div>
-              <span class="ac-lab">Pendant la carrière</span>
+              <span class="ac-lab">Votre salaire aujourd'hui</span>
             </div>
             <div class="ac-drop"><span id="ac-chute">—</span></div>
             <div class="ac-col">
               <span class="ac-val" id="ac-rev-ap">—</span>
               <div class="ac-bar ap" id="ac-bar-ap" style="height:20%"></div>
-              <span class="ac-lab">Après la carrière</span>
+              <span class="ac-lab">Si le sport s'arrête demain</span>
             </div>
           </div>
+          <p class="ac-falaise-note" id="ac-falaise-note">Ce que votre patrimoine actuel vous verserait, une fois le salaire du sport à zéro.</p>
 
+          <div class="ac-progress">
+            <div class="ac-progress-top"><span>Déjà en route vers votre liberté</span><span id="ac-prog-pct">—</span></div>
+            <div class="ac-progress-track"><div class="ac-progress-fill" id="ac-prog-fill"></div></div>
+            <p class="ac-progress-sub" id="ac-prog-sub">Ce que votre épargne actuelle deviendra d'ici la fin de carrière, sans un euro de plus.</p>
+          </div>
+
+          <div class="tool-brk"><span class="k">Ce qu'il vous faut pour vivre</span><span class="v" id="ac-train">—</span></div>
           <div class="tool-brk"><span class="k">Votre date de liberté estimée</span><span class="v" id="ac-liberte">—</span></div>
-          <div class="tool-brk"><span class="k">À capitaliser / mois jusqu'à la fin de carrière</span><span class="v" id="ac-versement">—</span></div>
-          <div class="tool-brk"><span class="k">Votre capacité d'épargne actuelle</span><span class="v" id="ac-capacite">—</span></div>
+          <div class="tool-brk"><span class="k">À mettre de côté chaque mois d'ici la fin de carrière</span><span class="v" id="ac-versement">—</span></div>
+          <div class="tool-brk"><span class="k">Ce que vous pouvez mettre de côté aujourd'hui</span><span class="v" id="ac-capacite">—</span></div>
           <p class="ac-verdict" id="ac-verdict">—</p>
+          <details class="ac-method">
+            <summary>Comment ce résultat est calculé</summary>
+            <ul>
+              <li>On suppose que <b>les revenus du sport tombent à zéro</b> à la fin de carrière. Votre capital liberté est donc la somme qui, seule, vous fait vivre.</li>
+              <li>Capital liberté = ce que vous dépensez pour vivre chaque année, divisé par un <b>taux de retrait prudent de 3,5 %/an</b> (règle de rente durable).</li>
+              <li>La rente affichée dans la falaise est ce que 3,5 % de votre patrimoine actuel verserait, dès aujourd'hui.</li>
+              <li>La progression et la date de liberté supposent votre <b>rendement visé</b>, capitalisé mensuellement. Hors inflation et fiscalité détaillée.</li>
+            </ul>
+          </details>
         </div>
       </div>
     </div>
@@ -134,7 +152,7 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>Pourquoi ce compte à rebours change tout</h2>
       <p>La carrière d'un sportif de haut niveau est courte et intense. Les revenus arrivent tôt, fort, puis s'arrêtent, souvent avant 35 ans. C'est ce que montre la falaise : le jour où le sport s'arrête, si rien n'a été préparé, le niveau de vie s'effondre.</p>
-      <p>Le <strong>nombre de la liberté</strong>, c'est le capital qui, bien placé, génère assez de revenus pour couvrir votre train de vie sans dépendre d'un salaire. L'atteindre pendant les années où vous gagnez bien, c'est transformer une carrière brillante en sécurité durable. C'est exactement le travail que je mène avec les athlètes que j'accompagne.</p>
+      <p>Votre <strong>capital liberté</strong>, c'est la somme qui, bien placée, génère assez de revenus pour vous faire vivre sans dépendre d'un salaire. La constituer pendant les années où vous gagnez bien, c'est transformer une carrière brillante en sécurité durable. C'est exactement le travail que je mène avec les athlètes que j'accompagne.</p>
     </div>
   </div>
 
@@ -146,7 +164,26 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
 
 <style is:global>
   .ac-sub { font-size: .82rem; color: #9fb0c8; margin: -6px 0 18px; }
-  .ac-falaise { display: flex; align-items: flex-end; gap: 10px; height: 160px; margin: 4px 0 22px; }
+  .ac-hint { display: block; font-size: .74rem; line-height: 1.45; color: #8a8574; margin-top: 6px; }
+  .ac-falaise-note { font-size: .74rem; line-height: 1.45; color: #9fb0c8; margin: -10px 0 20px; }
+  .ac-falaise { position: relative; display: flex; align-items: flex-end; gap: 10px; height: 160px; margin: 4px 0 22px; }
+  .ac-refline { position: absolute; left: 0; right: 0; bottom: 47%; border-top: 1px dashed rgba(230,194,89,.55); pointer-events: none; z-index: 2; transition: bottom .45s cubic-bezier(.16,1,.3,1); }
+  .ac-refline span { position: absolute; right: 0; top: -9px; font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: #E6C259; background: rgba(3,16,46,.85); padding: 1px 6px; border-radius: 3px; }
+  .ac-progress { margin: 0 0 22px; }
+  .ac-progress-top { display: flex; justify-content: space-between; align-items: baseline; font-size: .78rem; color: #EDE7DA; margin-bottom: 7px; }
+  .ac-progress-top span:last-child { font-family: Georgia, serif; font-weight: 700; color: #E6C259; font-size: .95rem; }
+  .ac-progress-track { height: 8px; border-radius: 100px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .ac-progress-fill { height: 100%; width: 0; border-radius: 100px; background: linear-gradient(90deg,#D4A82D,#E6C259); transition: width .5s cubic-bezier(.16,1,.3,1); }
+  .ac-progress-sub { font-size: .72rem; line-height: 1.45; color: #9fb0c8; margin-top: 8px; }
+  .ac-method { margin-top: 16px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 14px; }
+  .ac-method summary { font-size: .78rem; color: #cbd5e6; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 7px; }
+  .ac-method summary::-webkit-details-marker { display: none; }
+  .ac-method summary::before { content: "+"; color: #E6C259; font-weight: 700; width: 12px; text-align: center; }
+  .ac-method[open] summary::before { content: "\2013"; }
+  .ac-method ul { margin: 12px 0 2px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .ac-method li { position: relative; padding-left: 16px; font-size: .76rem; line-height: 1.5; color: #b9c4d6; }
+  .ac-method li::before { content: ""; position: absolute; left: 0; top: .5em; width: 5px; height: 5px; border-radius: 50%; background: #E6C259; }
+  .ac-method b { color: #EDE7DA; font-weight: 600; }
   .ac-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
   .ac-bar { width: 100%; border-radius: 8px 8px 0 0; transition: height .45s cubic-bezier(.16,1,.3,1); min-height: 6px; }
   .ac-bar.av { background: linear-gradient(180deg,#E6C259,#D4A82D); }
@@ -174,7 +211,7 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
       const sportVal=spEl.value, sportLabel=spEl.options[spEl.selectedIndex].text;
       const age=+document.getElementById('ac-age').value, fin=+document.getElementById('ac-fin').value,
         rev=+document.getElementById('ac-rev').value, dep=+document.getElementById('ac-dep').value,
-        epa=+document.getElementById('ac-epa').value, apres=+document.getElementById('ac-apres').value,
+        epa=+document.getElementById('ac-epa').value,
         rdt=+document.getElementById('ac-rdt').value;
 
       document.getElementById('ac-age-val').textContent=age+' ans';
@@ -182,67 +219,82 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
       document.getElementById('ac-rev-val').textContent=eur(rev);
       document.getElementById('ac-dep-val').textContent=eur(dep);
       document.getElementById('ac-epa-val').textContent=eur(epa);
-      document.getElementById('ac-apres-val').textContent=eur(apres);
       document.getElementById('ac-rdt-val').textContent=rdt.toFixed(1).replace('.',',')+' %';
 
       const r=rdt/100, rm=r/12;
       const n=Math.max(0, fin-age), N=n*12;
-      const deficit=Math.max(0, dep-apres);
-      const cible=deficit/TAUX_RETRAIT;
+      // On part du principe que le revenu du sport tombe à zéro : le nombre de la
+      // liberté est le capital qui, à 3,5 %/an, couvre tout le train de vie.
+      const cible=dep/TAUX_RETRAIT;
       const capaciteM=Math.max(0,(rev-dep)/12);
+      // Rente que l'épargne DÉJÀ constituée verse (chiffre réel, pas une hypothèse).
+      const renteActuelle=epa*TAUX_RETRAIT;
       const fvEpa=epa*Math.pow(1+r,n);
       const besoin=Math.max(0, cible-fvEpa);
       const versementNec = N>0 ? (rm>0 ? besoin*rm/(Math.pow(1+rm,N)-1) : besoin/N) : besoin;
 
-      // Simulation année par année pour la date de liberté.
+      // Simulation année par année pour la date de liberté (revenu = 0 après la
+      // carrière, on ne vit alors que du capital et on prélève le train de vie).
       let cap=epa, freedom=null;
       for(let a=age; a<=99; a++){
-        const flux = a<fin ? (rev-dep) : (apres-dep);
+        const flux = a<fin ? (rev-dep) : (-dep);
         cap = cap*(1+r) + flux;
         if(freedom===null && cible>0 && cap>=cible){ freedom=a+1; }
         if(cap < -50000000) break;
       }
+      const dejaLibre = renteActuelle>=dep;
 
-      document.getElementById('ac-nombre').textContent = cible>0 ? eur(cible) : 'Déjà couvert';
-      document.getElementById('ac-nombre-sub').textContent = cible>0 ? "le capital qui rend votre train de vie autonome" : "votre revenu d'après-carrière couvre déjà votre train de vie";
+      document.getElementById('ac-nombre').textContent = eur(cible);
+      document.getElementById('ac-nombre-sub').textContent = "La somme qui, bien placée, vous fait vivre sans dépendre d'un salaire.";
 
-      // Falaise
-      const chute = rev>0 ? Math.max(0, Math.round((1-apres/rev)*100)) : 0;
+      // Falaise : salaire d'aujourd'hui -> rente réelle du patrimoine actuel.
+      const chute = rev>0 ? Math.max(0, Math.min(100, Math.round((1-renteActuelle/rev)*100))) : 0;
       document.getElementById('ac-chute').textContent = chute+' %';
       document.getElementById('ac-rev-av').textContent = eur(rev);
-      document.getElementById('ac-rev-ap').textContent = eur(apres);
-      document.getElementById('ac-bar-ap').style.height = (rev>0 ? Math.max(4, apres/rev*100) : 4)+'%';
+      document.getElementById('ac-rev-ap').textContent = eur(renteActuelle)+' / an';
+      document.getElementById('ac-bar-ap').style.height = (rev>0 ? Math.max(4, Math.min(100, renteActuelle/rev*100)) : 4)+'%';
+      document.getElementById('ac-refline').style.bottom = (rev>0 ? Math.max(0, Math.min(100, dep/rev*100)) : 0)+'%';
 
-      document.getElementById('ac-liberte').textContent = freedom ? freedom+' ans' : 'non atteinte en l’état';
-      document.getElementById('ac-versement').textContent = n>0 ? eur(versementNec)+' / mois' : 'à constituer maintenant';
+      // Progression : ce que l'épargne actuelle devient d'ici la fin de carrière, vs cible.
+      const prog = cible>0 ? Math.max(0, Math.min(100, fvEpa/cible*100)) : (epa>0?100:0);
+      document.getElementById('ac-prog-pct').textContent = Math.round(prog)+' %';
+      document.getElementById('ac-prog-fill').style.width = prog+'%';
+      document.getElementById('ac-prog-sub').textContent =
+        "Sans un euro de plus, votre épargne actuelle deviendra environ "+eur(fvEpa)+" d'ici la fin de carrière, soit "+Math.round(prog)+" % de votre capital liberté.";
+
+      document.getElementById('ac-train').textContent = eur(dep)+' / an';
+      document.getElementById('ac-liberte').textContent = dejaLibre ? 'déjà atteinte' : (freedom ? freedom+' ans' : 'non atteinte en l’état');
+      document.getElementById('ac-versement').textContent = dejaLibre ? '—' : (n>0 ? eur(versementNec)+' / mois' : 'à constituer maintenant');
       document.getElementById('ac-capacite').textContent = eur(capaciteM)+' / mois';
 
       const v=document.getElementById('ac-verdict');
       v.classList.remove('on-track','effort');
-      if(cible<=0){
-        v.textContent = "Votre revenu d'après-carrière couvre déjà votre train de vie. L'enjeu devient la transmission et la performance de votre capital.";
+      if(dejaLibre){
+        v.textContent = "Votre patrimoine vous fait déjà vivre sans salaire : vous êtes libre financièrement. L'enjeu devient de protéger ce capital, l'optimiser fiscalement et préparer la transmission.";
         v.classList.add('on-track');
       } else if(n<=0){
-        v.textContent = "Vos revenus sportifs sont derrière vous : la priorité est de faire travailler votre capital et vos revenus de reconversion vers votre nombre de la liberté.";
+        v.textContent = "Les revenus du sport sont derrière vous : la priorité absolue est de faire travailler votre capital pour vous rapprocher de votre capital liberté. C'est le cœur de mon accompagnement.";
         v.classList.add('effort');
       } else if(capaciteM>=versementNec){
-        v.textContent = "Vous êtes sur la bonne voie : votre capacité d'épargne couvre l'effort nécessaire. Tout se joue maintenant dans la façon de le placer.";
+        v.textContent = "Vous êtes sur la bonne voie : votre capacité d'épargne couvre l'effort nécessaire pour être libre à la fin de votre carrière. Tout se joue maintenant dans la façon de placer cet argent.";
         v.classList.add('on-track');
       } else {
         const ecart=Math.max(0, versementNec-capaciteM);
-        v.textContent = "À ce rythme, il manque environ "+eur(ecart)+" / mois pour atteindre votre liberté à la fin de carrière. On peut agir sur le train de vie, l'horizon ou le rendement. C'est le cœur de mon accompagnement.";
+        v.textContent = "À ce rythme, il manque environ "+eur(ecart)+" / mois pour être libre à la fin de votre carrière. On peut agir sur vos dépenses, l'horizon ou le rendement, ou s'appuyer sur un futur métier. C'est exactement ce que nous construisons ensemble.";
         v.classList.add('effort');
       }
 
-      state = { sport:sportVal, sportLabel, age, fin, revenu:rev, depenses:dep, epargne:epa, apres, rendement:rdt,
-        nombreLiberte:Math.round(cible), chute, dateLiberte: freedom ? (freedom+' ans') : "non atteinte en l'état",
-        versementNecessaire: n>0 ? Math.round(versementNec) : null, capaciteMensuelle: Math.round(capaciteM),
+      state = { sport:sportVal, sportLabel, age, fin, revenu:rev, depenses:dep, epargne:epa, rendement:rdt,
+        nombreLiberte:Math.round(cible), renteActuelle:Math.round(renteActuelle), chute,
+        capitalFinCarriere:Math.round(fvEpa), progression:Math.round(prog),
+        dateLiberte: dejaLibre ? 'déjà atteinte' : (freedom ? (freedom+' ans') : "non atteinte en l'état"),
+        versementNecessaire: dejaLibre ? null : (n>0 ? Math.round(versementNec) : null), capaciteMensuelle: Math.round(capaciteM),
         verdict: v.textContent };
     }
 
     function init(){
       const g=document.getElementById('ac-age'); if(!g||g.dataset.ready) return; g.dataset.ready='1';
-      ['ac-age','ac-fin','ac-rev','ac-dep','ac-epa','ac-apres','ac-rdt'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      ['ac-age','ac-fin','ac-rev','ac-dep','ac-epa','ac-rdt'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
       document.getElementById('ac-sport').addEventListener('change',(e)=>{
         const f=SPORTFIN[e.target.value]; if(f){ const fin=document.getElementById('ac-fin'); fin.value=f; }
         calc();
