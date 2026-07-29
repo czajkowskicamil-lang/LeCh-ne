@@ -1,0 +1,279 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+
+const title = "À quel âge serez-vous libre ? Simulateur d'indépendance financière | Le Chêne Patrimonial";
+const description = "Calculez votre capital liberté et l'âge auquel votre épargne vous fera vivre sans dépendre d'un salaire. Gratuit, confidentiel, sans inscription.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Indépendance financière</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Indépendance financière · Pour tous
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">À quel âge serez-vous libre ?</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Être libre, c'est le jour où votre patrimoine vous fait vivre <em class="text-chene not-italic font-medium">sans dépendre d'un salaire</em>. Découvrez votre capital liberté, l'âge où vous l'atteindrez au rythme actuel, et le chemin pour y arriver plus tôt.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Votre âge aujourd'hui <b id="lf-age-val">35 ans</b></label>
+            <input class="tool-range" type="range" id="lf-age" min="20" max="65" step="1" value="35" />
+          </div>
+          <div class="tool-field">
+            <label>Vos revenus nets, par mois <b id="lf-rev-val">4 000 €</b></label>
+            <input class="tool-range" type="range" id="lf-rev" min="1200" max="25000" step="100" value="4000" />
+            <span class="lf-hint">Salaire, activité : ce qui rentre net chaque mois.</span>
+          </div>
+          <div class="tool-field">
+            <label>Ce que vous dépensez pour vivre, par mois <b id="lf-dep-val">2 800 €</b></label>
+            <input class="tool-range" type="range" id="lf-dep" min="800" max="18000" step="100" value="2800" />
+            <span class="lf-hint">Logement, quotidien, famille, plaisirs. C'est ce montant que votre patrimoine devra couvrir tout seul.</span>
+          </div>
+          <div class="tool-field">
+            <label>Épargne et patrimoine déjà constitués <b id="lf-epa-val">30 000 €</b></label>
+            <input class="tool-range" type="range" id="lf-epa" min="0" max="2000000" step="5000" value="30000" />
+            <span class="lf-hint">Tout ce que vous avez déjà mis de côté : livrets, assurance-vie, immobilier de placement.</span>
+          </div>
+          <div class="tool-field">
+            <label>Performance annuelle de vos placements <b id="lf-rdt-val">4,0 %</b></label>
+            <input class="tool-range" type="range" id="lf-rdt" min="2" max="7" step="0.5" value="4" />
+            <span class="lf-hint">Ce que rapporte en moyenne, chaque année, un capital bien placé. Une hypothèse prudente, pas une promesse.</span>
+          </div>
+          <p class="tool-note">Estimation indicative et pédagogique, à partir des seules informations saisies. Votre capital liberté est la somme qui, à un taux de retrait prudent de 3,5 %/an, couvre à elle seule vos dépenses. Hors inflation et fiscalité détaillée. Ne constitue pas un conseil personnalisé ni une recommandation sur des instruments financiers. Le Chêne Patrimonial intervient au titre du courtage en assurance et de l'intermédiation immobilière.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Votre capital liberté</p>
+          <p class="big" id="lf-cible">—</p>
+          <p class="lf-sub">La somme qui, bien placée, vous fait vivre sans dépendre d'un salaire.</p>
+
+          <div class="lf-free">
+            <span class="lf-free-k">Au rythme actuel, vous êtes libre à</span>
+            <span class="lf-free-v" id="lf-age-libre">—</span>
+          </div>
+
+          <div class="lf-timeline">
+            <div class="lf-tl-track"><div class="lf-tl-fill" id="lf-tl-fill"></div></div>
+            <div class="lf-tl-marker" id="lf-tl-marker"><span class="lf-tl-dot"></span><span class="lf-tl-lab" id="lf-tl-lab">libre</span></div>
+            <div class="lf-tl-ends"><span id="lf-tl-start">aujourd'hui</span><span>90 ans</span></div>
+          </div>
+
+          <div class="lf-progress">
+            <div class="lf-progress-top"><span>Déjà en route vers votre liberté</span><span id="lf-prog-pct">—</span></div>
+            <div class="lf-progress-track"><div class="lf-progress-fill" id="lf-prog-fill"></div></div>
+          </div>
+
+          <div class="tool-brk"><span class="k">Ce qu'il vous faut pour vivre</span><span class="v" id="lf-besoin">—</span></div>
+          <div class="tool-brk"><span class="k">Ce que vous mettez de côté / mois</span><span class="v" id="lf-eff">—</span></div>
+          <div class="tool-brk"><span class="k">Années avant votre liberté</span><span class="v" id="lf-annees">—</span></div>
+          <p class="lf-verdict" id="lf-verdict">—</p>
+          <details class="lf-method">
+            <summary>Comment ce résultat est calculé</summary>
+            <ul>
+              <li>Votre capital liberté = ce que vous dépensez pour vivre chaque année, divisé par un <b>taux de retrait prudent de 3,5 %/an</b> (règle de rente durable).</li>
+              <li>L'âge de liberté = l'année où votre épargne, en continuant à mettre de côté ce que vous mettez aujourd'hui, atteint ce capital.</li>
+              <li>La croissance suppose votre <b>performance visée</b>, capitalisée. Hors inflation et fiscalité détaillée.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div id="lf-lead" class="mt-10 rounded-none border border-ink/10 bg-cream-soft p-6 md:p-8">
+      <h3 class="font-serif text-xl text-ink mb-1.5">Recevez votre plan de liberté financière en PDF</h3>
+      <p class="text-sm text-ink/60 mb-5 leading-relaxed">Renseignez vos coordonnées pour recevoir votre rapport détaillé. Camil Czajkowski vous recontacte pour en parler, sans engagement. Vos données ne sont jamais revendues.</p>
+      <form id="lf-lead-form" class="space-y-3.5" novalidate>
+        <div class="grid sm:grid-cols-2 gap-3.5">
+          <input name="prenom" required placeholder="Prénom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+          <input name="nom" required placeholder="Nom" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        </div>
+        <input name="email" type="email" required placeholder="Adresse email" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input name="telephone" type="tel" required placeholder="Téléphone" class="w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-stone/60 focus:border-chene focus:outline-none" />
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="consent" required class="mt-0.5 accent-chene" />
+          <span>J'accepte que Le Chêne Patrimonial collecte et traite ces informations (nom, email, téléphone, réponses au simulateur) afin de m'adresser mon rapport et de me recontacter à ce sujet. <a href="/confidentialite" class="underline hover:text-ink" target="_blank">Politique de confidentialité</a>.</span>
+        </label>
+        <label class="flex items-start gap-2.5 text-xs text-ink/60 cursor-pointer">
+          <input type="checkbox" name="optin" class="mt-0.5 accent-chene" />
+          <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désinscription à tout moment).</span>
+        </label>
+        <button type="submit" class="btn-primary w-full justify-center py-3"><span class="lf-lead-btn-label">Recevoir mon plan (PDF)</span></button>
+        <p class="text-[11px] text-ink/45 text-center leading-relaxed">Responsable de traitement : Le Chêne Patrimonial. Données conservées le temps de la relation commerciale, jamais revendues.</p>
+        <p id="lf-lead-msg" class="text-sm text-center hidden"></p>
+      </form>
+    </div>
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>La liberté financière n'est pas un rêve, c'est un calcul</h2>
+      <p>La plupart des gens travaillent sans savoir vers quel nombre ils avancent. Pourtant, il existe : c'est le capital qui, bien placé, génère assez de revenus pour couvrir votre train de vie sans que vous ayez à travailler. On l'appelle ici votre <strong>capital liberté</strong>.</p>
+      <p>Le connaître change tout : vous ne mettez plus de côté « au hasard », vous visez un objectif chiffré, à une date. Et surtout, vous découvrez les trois leviers qui rapprochent cette date : ce que vous dépensez, ce que vous mettez de côté, et la façon dont vous le placez. C'est exactement le travail que je mène avec les personnes que j'accompagne.</p>
+    </div>
+  </div>
+
+  <CTA
+    title="Votre liberté financière se prépare maintenant."
+    body="Ce simulateur pose le cap. Ensemble, nous le transformons en stratégie concrète : enveloppes, allocation, fiscalité. Un premier échange de 30 minutes, sans engagement."
+  />
+
+  <style is:global>
+  .lf-sub { font-size: .82rem; color: #9fb0c8; margin: -6px 0 18px; }
+  .lf-hint { display: block; font-size: .74rem; line-height: 1.45; color: #8a8574; margin-top: 6px; }
+  .lf-free { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 18px; padding: 14px 16px; background: rgba(230,194,89,.09); border: 1px solid rgba(230,194,89,.22); border-radius: 10px; }
+  .lf-free-k { font-size: .82rem; color: #cbd5e6; }
+  .lf-free-v { font-family: Georgia, serif; font-weight: 700; color: #E6C259; font-size: 1.5rem; white-space: nowrap; }
+  .lf-timeline { margin: 0 0 22px; }
+  .lf-tl-track { position: relative; height: 8px; border-radius: 100px; background: rgba(255,255,255,.10); overflow: hidden; }
+  .lf-tl-fill { height: 100%; width: 0; border-radius: 100px; background: linear-gradient(90deg,#3a5f86,#5a82ad); transition: width .5s cubic-bezier(.16,1,.3,1); }
+  .lf-tl-marker { position: relative; height: 26px; margin-top: -13px; }
+  .lf-tl-dot { position: absolute; top: 0; left: 0; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #E6C259; border: 2px solid #03102E; box-shadow: 0 0 0 3px rgba(230,194,89,.25); transition: left .5s cubic-bezier(.16,1,.3,1); }
+  .lf-tl-lab { position: absolute; top: 18px; left: 0; transform: translateX(-50%); font-size: .66rem; letter-spacing: .04em; text-transform: uppercase; color: #E6C259; white-space: nowrap; transition: left .5s cubic-bezier(.16,1,.3,1); }
+  .lf-tl-ends { display: flex; justify-content: space-between; font-size: .7rem; color: #9fb0c8; margin-top: 26px; }
+  .lf-progress { margin: 0 0 22px; }
+  .lf-progress-top { display: flex; justify-content: space-between; align-items: baseline; font-size: .78rem; color: #EDE7DA; margin-bottom: 7px; }
+  .lf-progress-top span:last-child { font-family: Georgia, serif; font-weight: 700; color: #E6C259; font-size: .95rem; }
+  .lf-progress-track { height: 8px; border-radius: 100px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .lf-progress-fill { height: 100%; width: 0; border-radius: 100px; background: linear-gradient(90deg,#D4A82D,#E6C259); transition: width .5s cubic-bezier(.16,1,.3,1); }
+  .lf-verdict { font-size: .9rem; line-height: 1.5; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); color: #EDE7DA; }
+  .lf-verdict.on-track { color: #a9e0bd; }
+  .lf-verdict.effort { color: #f2d38a; }
+  .lf-method { margin-top: 16px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 14px; }
+  .lf-method summary { font-size: .78rem; color: #cbd5e6; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 7px; }
+  .lf-method summary::-webkit-details-marker { display: none; }
+  .lf-method summary::before { content: "+"; color: #E6C259; font-weight: 700; width: 12px; text-align: center; }
+  .lf-method[open] summary::before { content: "\2013"; }
+  .lf-method ul { margin: 12px 0 2px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .lf-method li { position: relative; padding-left: 16px; font-size: .76rem; line-height: 1.5; color: #b9c4d6; }
+  .lf-method li::before { content: ""; position: absolute; left: 0; top: .5em; width: 5px; height: 5px; border-radius: 50%; background: #E6C259; }
+  .lf-method b { color: #EDE7DA; font-weight: 600; }
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const TAUX_RETRAIT = 0.035;
+    const CALENDLY = 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+    let state = {};
+
+    function calc(){
+      const age=+document.getElementById('lf-age').value, rev=+document.getElementById('lf-rev').value,
+        dep=+document.getElementById('lf-dep').value, epa=+document.getElementById('lf-epa').value,
+        rdt=+document.getElementById('lf-rdt').value;
+
+      document.getElementById('lf-age-val').textContent=age+' ans';
+      document.getElementById('lf-rev-val').textContent=eur(rev);
+      document.getElementById('lf-dep-val').textContent=eur(dep);
+      document.getElementById('lf-epa-val').textContent=eur(epa);
+      document.getElementById('lf-rdt-val').textContent=rdt.toFixed(1).replace('.',',')+' %';
+      document.getElementById('lf-tl-start').textContent="aujourd'hui ("+age+" ans)";
+
+      const r=rdt/100;
+      const depA=dep*12, cible=depA/TAUX_RETRAIT;
+      const capaciteM=Math.max(0, rev-dep), saveA=capaciteM*12;
+
+      // Simulation année par année : quand l'épargne atteint la cible.
+      let cap=epa, free=null;
+      for(let a=age; a<=100; a++){
+        if(free===null && cap>=cible){ free=a; break; }
+        cap = cap*(1+r) + saveA;
+      }
+      const dejaLibre = epa>=cible;
+      const annees = free!==null ? Math.max(0, free-age) : null;
+
+      document.getElementById('lf-cible').textContent = eur(cible);
+      document.getElementById('lf-age-libre').textContent = dejaLibre ? 'déjà libre' : (free!==null ? free+' ans' : 'au-delà de 90 ans');
+
+      // Frise : position du marqueur entre l'âge actuel et 90 ans.
+      const span = Math.max(1, 90-age);
+      let pos = free!==null ? (free-age)/span*100 : 100;
+      pos = Math.max(0, Math.min(100, pos));
+      document.getElementById('lf-tl-fill').style.width = pos+'%';
+      document.getElementById('lf-tl-marker').querySelector('.lf-tl-dot').style.left = pos+'%';
+      const lab = document.getElementById('lf-tl-lab');
+      lab.style.left = Math.max(11, Math.min(89, pos))+'%';
+      lab.textContent = dejaLibre ? 'libre' : (free!==null ? 'libre à '+free+' ans' : 'après 90 ans');
+
+      // Progression : épargne actuelle vs cible.
+      const prog = cible>0 ? Math.max(0, Math.min(100, epa/cible*100)) : 100;
+      document.getElementById('lf-prog-pct').textContent = Math.round(prog)+' %';
+      document.getElementById('lf-prog-fill').style.width = prog+'%';
+
+      document.getElementById('lf-besoin').textContent = eur(depA)+' / an';
+      document.getElementById('lf-eff').textContent = eur(capaciteM)+' / mois';
+      document.getElementById('lf-annees').textContent = dejaLibre ? '0 an' : (annees!==null ? annees+' ans' : 'plus de 55 ans');
+
+      const v=document.getElementById('lf-verdict');
+      v.classList.remove('on-track','effort');
+      if(dejaLibre){
+        v.textContent = "Votre patrimoine vous fait déjà vivre sans salaire : vous êtes libre financièrement. L'enjeu devient de protéger ce capital, l'optimiser fiscalement et préparer la transmission.";
+        v.classList.add('on-track');
+      } else if(capaciteM<=0){
+        v.textContent = "Vous ne dégagez pas d'épargne aujourd'hui : la première marche est de créer un écart entre vos revenus et vos dépenses. C'est là que tout commence, et c'est le cœur de mon accompagnement.";
+        v.classList.add('effort');
+      } else if(free!==null && annees<=15){
+        v.textContent = "Vous êtes sur une belle trajectoire : libre à "+free+" ans au rythme actuel. Bien placé, ce capital peut même vous y amener plus tôt.";
+        v.classList.add('on-track');
+      } else {
+        v.textContent = "La liberté est atteignable, mais lointaine au rythme actuel. On peut la rapprocher en agissant sur trois leviers : vos dépenses, votre effort d'épargne et la façon de le placer. C'est exactement ce que nous construisons ensemble.";
+        v.classList.add('effort');
+      }
+
+      state = { age, revenuMensuel:rev, depensesMensuel:dep, epargne:epa, rendement:rdt,
+        capitalLiberte:Math.round(cible), depensesAnnuel:Math.round(depA),
+        ageLiberte: dejaLibre ? 'déjà libre' : (free!==null ? (free+' ans') : 'au-delà de 90 ans'),
+        anneesRestantes: dejaLibre ? 0 : annees, capaciteMensuelle:Math.round(capaciteM),
+        progression:Math.round(prog), verdict: v.textContent };
+    }
+
+    function init(){
+      const g=document.getElementById('lf-age'); if(!g||g.dataset.ready) return; g.dataset.ready='1';
+      ['lf-age','lf-rev','lf-dep','lf-epa','lf-rdt'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+
+      const form=document.getElementById('lf-lead-form');
+      if(form){
+        const msg=document.getElementById('lf-lead-msg');
+        const btnLabel=document.querySelector('.lf-lead-btn-label');
+        const showMsg=(t,ok)=>{msg.textContent=t;msg.className='text-sm text-center '+(ok?'text-chene':'text-[#b4472e]');msg.classList.remove('hidden');};
+        const downloadPdf=async()=>{try{const res=await fetch('/api/liberte-financiere-pdf',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:form.prenom.value,nom:form.nom.value,data:state})});if(!res.ok)throw 0;const b=await res.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='liberte-financiere-le-chene.pdf';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){}};
+        form.addEventListener('submit',async(e)=>{
+          e.preventDefault();
+          const fd=new FormData(form);
+          if(!fd.get('prenom')||!fd.get('nom')||!fd.get('email')){showMsg('Merci de renseigner vos coordonnées.',false);return;}
+          if(!fd.get('telephone')){showMsg("Merci d'indiquer un numéro de téléphone.",false);return;}
+          if(!fd.get('consent')){showMsg('Votre consentement est nécessaire pour recevoir le rapport.',false);return;}
+          btnLabel.textContent='Envoi...';
+          try{
+            const res=await fetch('/api/liberte-financiere-lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prenom:fd.get('prenom'),nom:fd.get('nom'),email:fd.get('email'),telephone:fd.get('telephone'),consent:!!fd.get('consent'),optin:!!fd.get('optin'),website:fd.get('website'),data:state})});
+            const data=await res.json().catch(()=>({}));
+            if(res.ok&&data.ok){
+              downloadPdf();
+              const em=String(fd.get('email')||'');
+              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Votre plan vous a été envoyé par email</p><p class="text-sm text-ink/60 mb-4">Il part vers <strong class="text-ink">'+em+'</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite.</p><button id="lf-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button><div class="mt-5"><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="btn-primary">Choisir un créneau avec Camil</a></div></div>';
+              const again=form.querySelector('#lf-pdf-again'); if(again) again.onclick=downloadPdf;
+            } else { showMsg('Un souci est survenu. Réessayez ou écrivez-nous directement.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }
+          }catch(err){ showMsg('Connexion impossible. Réessayez dans un instant.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }
+        });
+      }
+    }
+    init();
+    if(!window['__hk_lf-age']){window['__hk_lf-age']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>
+</Base>
