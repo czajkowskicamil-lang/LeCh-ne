@@ -7,6 +7,21 @@ const description = "Calculez votre capital liberté et l'âge auquel votre épa
 ---
 
 <Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://www.lechenepatrimonial.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Outils', item: 'https://www.lechenepatrimonial.com/outils' },
+        { '@type': 'ListItem', position: 3, name: 'À quel âge serez-vous libre ?', item: 'https://www.lechenepatrimonial.com/outils/liberte-financiere' },
+      ]},
+      { '@type': 'WebApplication', name: 'À quel âge serez-vous libre ?', applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Web', url: 'https://www.lechenepatrimonial.com/outils/liberte-financiere',
+        description: "Simulateur gratuit d'indépendance financière : calculez votre capital liberté et l'âge où votre épargne vous fera vivre sans dépendre d'un salaire.",
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+        provider: { '@id': 'https://www.lechenepatrimonial.com/#organization' } },
+    ],
+  })} />
   <header class="pt-16 pb-8 md:pt-24 md:pb-10">
     <div class="shell max-w-4xl">
       <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">

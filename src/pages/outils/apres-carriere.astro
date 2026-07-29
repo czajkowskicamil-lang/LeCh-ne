@@ -7,6 +7,21 @@ const description = "Athlète de haut niveau : à quel âge serez-vous libre fin
 ---
 
 <Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://www.lechenepatrimonial.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Outils', item: 'https://www.lechenepatrimonial.com/outils' },
+        { '@type': 'ListItem', position: 3, name: "Le compte à rebours de l'après-carrière", item: 'https://www.lechenepatrimonial.com/outils/apres-carriere' },
+      ]},
+      { '@type': 'WebApplication', name: "Le compte à rebours de l'après-carrière", applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Web', url: 'https://www.lechenepatrimonial.com/outils/apres-carriere',
+        description: "Simulateur gratuit pour sportifs de haut niveau : visualisez la falaise de revenus de fin de carrière, votre capital liberté et le plan pour préparer l'après.",
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+        provider: { '@id': 'https://www.lechenepatrimonial.com/#organization' } },
+    ],
+  })} />
   <header class="pt-16 pb-8 md:pt-24 md:pb-10">
     <div class="shell max-w-4xl">
       <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
