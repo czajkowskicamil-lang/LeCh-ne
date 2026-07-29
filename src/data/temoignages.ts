@@ -33,6 +33,12 @@ export const temoignages: Temoignage[] = [
     author: 'Lucia M',
     role: 'Lyon',
   },
+  {
+    quote:
+      "Je recommande Camil pour son excellent suivi. Il est très disponible et prend le temps d'expliquer les mécanismes financiers de manière claire et accessible. Ses conseils sont pertinents, pragmatiques et permettent de prendre des décisions en toute confiance. Un grand merci pour ce professionnalisme.",
+    author: 'Véronique P.',
+    role: 'Baden-Baden',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
