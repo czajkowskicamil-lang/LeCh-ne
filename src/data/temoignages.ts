@@ -45,6 +45,12 @@ export const temoignages: Temoignage[] = [
     author: 'Slobodan Ocokoljic',
     role: 'Athlète professionnel',
   },
+  {
+    quote:
+      "I highly recommend Camil for anyone looking for clear, reliable advice on choosing the right tax regime and legal structure for their business. From our first consultation, he was efficient, precise and genuinely helpful. What I particularly appreciated was his ability to take complex tax and business matters and explain them in clear, everyday language that anyone can understand. He clearly has an impressive command of tax matters and knows the subject inside out. His advice helped me make informed decisions with confidence, rather than feeling overwhelmed by complicated rules and options. Professional, knowledgeable, responsive, and, above all, someone who knows how to turn complex information into practical advice.",
+    author: 'Aleksandra Ocokoljic',
+    role: 'Entrepreneure',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
