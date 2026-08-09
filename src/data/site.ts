@@ -10,6 +10,7 @@ export const site = {
   phone: { display: '06 12 82 91 90', tel: '+33612829190' },
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
   instagram: 'https://www.instagram.com/lechenepatrimonial/',
+  googleReview: 'https://g.page/r/CT0apkPyT4_CEBM/review',
   city: 'Paris · Lyon · Bordeaux · Strasbourg · Nice · Montpellier · Marseille · Genevois',
   coverage: 'France entière · en présentiel ou à distance',
 };

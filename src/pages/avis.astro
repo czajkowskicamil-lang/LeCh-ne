@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { temoignages } from '../data/temoignages';
+import { site } from '../data/site';
 ---
 
 <Base
@@ -47,6 +48,21 @@ import { temoignages } from '../data/temoignages';
           <p class="text-ink/60">Vous avez été accompagné par Le Chêne ? Partagez votre expérience ci-dessous.</p>
         </div>
       )}
+    </div>
+  </section>
+
+  <!-- CTA : avis Google -->
+  <section class="pt-12 md:pt-16">
+    <div class="shell max-w-2xl">
+      <div class="bg-cream border border-ink/10 p-8 md:p-10 text-center reveal">
+        <svg class="text-or mx-auto mb-5" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 21.3l1.2-6.6L2.3 9.5l6.8-.4L12 2z"/></svg>
+        <p class="font-serif text-xl md:text-2xl text-ink mb-3">Un avis public, en une minute</p>
+        <p class="text-ink/65 mb-7 leading-relaxed">Votre retour sur Google aide d'autres personnes à me trouver et à me faire confiance. Cinq étoiles, quelques mots, c'est tout.</p>
+        <a href={site.googleReview} target="_blank" rel="noopener" class="btn-primary inline-flex items-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 21.3l1.2-6.6L2.3 9.5l6.8-.4L12 2z"/></svg>
+          Laisser un avis sur Google
+        </a>
+      </div>
     </div>
   </section>
 

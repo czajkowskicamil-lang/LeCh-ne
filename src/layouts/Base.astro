@@ -93,7 +93,11 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
           name: site.name,
           url: 'https://www.lechenepatrimonial.com',
           description: site.baseline,
-          areaServed: { '@type': 'Country', name: 'France' },
+          areaServed: [
+            { '@type': 'City', name: 'Montpellier' },
+            { '@type': 'Country', name: 'France' },
+          ],
+          address: { '@type': 'PostalAddress', addressLocality: 'Montpellier', addressRegion: 'Occitanie', addressCountry: 'FR' },
           email: site.email,
           telephone: site.phone.tel,
           priceRange: 'Sur devis',
@@ -106,7 +110,7 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
             'Transmission de patrimoine',
           ],
           founder: { '@id': 'https://www.lechenepatrimonial.com/#founder' },
-          sameAs: [site.linkedin],
+          sameAs: [site.linkedin, site.instagram],
         },
         {
           '@type': 'Person',
