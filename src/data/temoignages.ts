@@ -39,6 +39,12 @@ export const temoignages: Temoignage[] = [
     author: 'Véronique P.',
     role: 'Baden-Baden',
   },
+  {
+    quote:
+      "Un grand merci à Camil pour son accompagnement, ses conseils et son professionnalisme dans mes investissements, notamment sur les produits obligataires et l'assurance-vie. Il a su prendre le temps de m'expliquer les différentes possibilités et de me proposer des solutions adaptées à mes objectifs. Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel : j'aurais certainement pu mieux faire fructifier mon épargne ! Je recommande vivement Camil et Le Chêne Patrimonial pour la qualité de l'accompagnement et la confiance qu'ils inspirent.",
+    author: 'Slobodan Ocokoljic',
+    role: 'Athlète professionnel',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
