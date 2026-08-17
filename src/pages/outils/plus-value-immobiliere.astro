@@ -59,6 +59,26 @@ const description = "Estimez l'impôt sur la plus-value à la revente d'un bien 
       </div>
     </div>
 
+    <div class="tool-card pv-chart-card">
+      <p class="pv-chart-title">L'impôt selon la durée de détention</p>
+      <svg id="pv-svg" viewBox="0 0 640 280" role="img" aria-label="Graphique de l'impôt sur la plus-value selon le nombre d'années de détention">
+        <line class="pv-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="pv-area" class="pv-area" d="" />
+        <path id="pv-line" class="pv-line" d="" fill="none" />
+        <line id="pv-mark-line" class="pv-mark-line" x1="0" y1="20" x2="0" y2="238" />
+        <circle id="pv-mark-dot" class="pv-mark-dot" cx="-20" cy="0" r="4.5" />
+        <text id="pv-mark-lab" class="pv-mark-lab" x="0" y="14" text-anchor="middle"></text>
+        <text id="pv-ymax" class="pv-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="pv-tick" x="40" y="242" text-anchor="end">0</text>
+        <text id="pv-t0" class="pv-tick" x="44" y="262" text-anchor="start">0 an</text>
+        <text id="pv-t22" class="pv-tick" x="336" y="262" text-anchor="middle">22 ans</text>
+        <text id="pv-t30" class="pv-tick" x="628" y="262" text-anchor="end">30 ans</text>
+      </svg>
+      <div class="pv-leg">
+        <span><i class="pv-leg-line"></i> Impôt total à payer à la revente</span>
+      </div>
+    </div>
+
     <ToolLeadCapture tool="Plus-value immobilière" titre="Votre plus-value immobilière" />
 
     <div class="max-w-prose-wide mt-14 prose-editorial">
@@ -70,6 +90,22 @@ const description = "Estimez l'impôt sur la plus-value à la revente d'un bien 
 
   <CTA />
 </Base>
+
+<style is:global>
+  .pv-chart-card{margin-top:22px;}
+  .pv-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #pv-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .pv-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .pv-area{fill:rgba(212,168,45,.30);}
+  .pv-line{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .pv-mark-line{stroke:rgba(255,255,255,.4);stroke-width:1;stroke-dasharray:3 3;}
+  .pv-mark-dot{fill:#fff;stroke:#E6C259;stroke-width:2;}
+  .pv-mark-lab{fill:#e9edf4;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
+  .pv-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .pv-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .pv-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .pv-leg i{width:16px;height:0;border-top:2.5px solid #E6C259;display:block;}
+</style>
 
 <script is:inline>
   (function () {
@@ -91,6 +127,26 @@ const description = "Estimez l'impôt sur la plus-value à la revente d'un bien 
       document.getElementById('pv-ps').textContent=eur(ps);
       document.getElementById('pv-total').textContent=eur(total);
       document.getElementById('pv-net').textContent=eur(pv-total);
+      drawChart(pv, y);
+    }
+    function impot(pv,y){ return pv*(1-abIR(y)/100)*0.19 + pv*(1-abPS(y)/100)*0.172; }
+    function drawChart(pv, sel){
+      const x0=44,x1=628,yTop=20,yBase=238, xmax=30;
+      const vals=[]; for(let y=0;y<=xmax;y++) vals.push(impot(pv,y));
+      const maxV=Math.max(1, vals[0]);
+      const X=y=>x0+(y/xmax)*(x1-x0);
+      const Yc=v=>yBase-(Math.min(v,maxV)/maxV)*(yBase-yTop);
+      const line=vals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      document.getElementById('pv-line').setAttribute('d',line);
+      document.getElementById('pv-area').setAttribute('d',line+' L'+X(xmax).toFixed(1)+' '+yBase+' L'+x0+' '+yBase+' Z');
+      const yy=Math.min(sel,xmax), fx=X(yy), fv=impot(pv,yy), fy=Yc(fv);
+      const ml=document.getElementById('pv-mark-line'), md=document.getElementById('pv-mark-dot'), mlab=document.getElementById('pv-mark-lab');
+      ml.setAttribute('x1',fx.toFixed(1)); ml.setAttribute('x2',fx.toFixed(1));
+      md.setAttribute('cx',fx.toFixed(1)); md.setAttribute('cy',fy.toFixed(1));
+      mlab.setAttribute('x',Math.max(44,Math.min(x1-44,fx)).toFixed(1)); mlab.setAttribute('y',Math.max(14,fy-12).toFixed(1));
+      mlab.textContent=eur(fv);
+      document.getElementById('pv-t22').setAttribute('x',X(22).toFixed(1));
+      document.getElementById('pv-ymax').textContent=eur(maxV);
     }
     function init(){
       const r=document.getElementById('pv-achat'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
