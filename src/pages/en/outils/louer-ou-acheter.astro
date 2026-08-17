@@ -73,6 +73,26 @@ const description = "Should you buy your home or stay a tenant and invest instea
       </div>
     </div>
 
+    <div class="tool-card la-chart-card">
+      <p class="la-chart-title">How the two wealth paths evolve</p>
+      <svg id="la-svg" viewBox="0 0 640 280" role="img" aria-label="Chart comparing your wealth if you buy and if you rent, year by year">
+        <line class="la-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="la-line-a" class="la-line-a" d="" fill="none" />
+        <path id="la-line-l" class="la-line-l" d="" fill="none" />
+        <circle id="la-cross-dot" class="la-cross-dot" cx="-20" cy="0" r="4.5" />
+        <text id="la-cross-lab" class="la-cross-lab" x="0" y="14" text-anchor="middle"></text>
+        <text id="la-ymax" class="la-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="la-tick" x="40" y="242" text-anchor="end">0</text>
+        <text id="la-x0" class="la-tick" x="44" y="262" text-anchor="start">0 yr</text>
+        <text id="la-xmid" class="la-tick" x="336" y="262" text-anchor="middle"></text>
+        <text id="la-xend" class="la-tick" x="628" y="262" text-anchor="end"></text>
+      </svg>
+      <div class="la-leg">
+        <span><i class="la-leg-a"></i> If you buy</span>
+        <span><i class="la-leg-l"></i> If you rent and invest</span>
+      </div>
+    </div>
+
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>How to read this result</h2>
       <p>The owner ends up with a property that's paid off, whose value has changed over time. The tenant, meanwhile, invests the down payment and the monthly saving they make (whenever renting costs less than owning), and lets that sum grow. We compare the two final wealth figures at the end.</p>
@@ -82,6 +102,23 @@ const description = "Should you buy your home or stay a tenant and invest instea
 
   <CTA />
 </Base>
+
+<style is:global>
+  .la-chart-card{margin-top:22px;}
+  .la-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #la-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .la-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .la-line-a{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .la-line-l{stroke:#5a82ad;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .la-cross-dot{fill:#fff;stroke:#7bbd90;stroke-width:2;}
+  .la-cross-lab{fill:#a9e0bd;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
+  .la-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .la-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .la-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .la-leg i{width:16px;height:0;border-top-width:2.5px;border-top-style:solid;display:block;}
+  .la-leg-a{border-top-color:#E6C259;}
+  .la-leg-l{border-top-color:#5a82ad;}
+</style>
 
 <script is:inline>
   (function () {
@@ -119,6 +156,41 @@ const description = "Should you buy your home or stay a tenant and invest instea
       document.getElementById('la-pat-l').textContent=eur(patL);
       document.getElementById('la-ecart').textContent='+ '+eur(Math.abs(delta));
       document.getElementById('la-cout').textContent=eur(coutProprio);
+      drawChart(prix, app, loy, dur, tx, rev, epg);
+    }
+    function drawChart(prix, app, loy, dur, tx, rev, epg){
+      const x0=44,x1=628,yTop=20,yBase=238;
+      const cout=prix*1.075, emprunt=Math.max(0,cout-app), r=tx/1200, n=dur*12;
+      const mens = emprunt>0 ? (r>0 ? emprunt*r/(1-Math.pow(1+r,-n)) : emprunt/n) : 0;
+      const coutProprio = mens + prix*0.015/12;
+      const s=epg/1200, diff=Math.max(0, coutProprio - loy);
+      const A=[],L=[];
+      for(let y=0;y<=dur;y++){
+        const m=y*12, val=prix*Math.pow(1+rev/100,y);
+        let crd = emprunt>0 ? (r>0 ? emprunt*Math.pow(1+r,m) - mens*(Math.pow(1+r,m)-1)/r : emprunt-mens*m) : 0;
+        crd=Math.max(0,crd);
+        A.push(Math.max(0,val-crd));
+        const g=s>0?Math.pow(1+s,m):1;
+        L.push(s>0 ? app*g + diff*(g-1)/s : app+diff*m);
+      }
+      const maxV=Math.max(1,...A,...L);
+      const X=y=>x0+(y/Math.max(1,dur))*(x1-x0);
+      const Yc=v=>yBase-(Math.min(v,maxV)/maxV)*(yBase-yTop);
+      const path=arr=>arr.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      document.getElementById('la-line-a').setAttribute('d',path(A));
+      document.getElementById('la-line-l').setAttribute('d',path(L));
+      let cross=-1;
+      for(let i=1;i<=dur;i++){ if((A[i-1]-L[i-1])===0 || Math.sign(A[i]-L[i])!==Math.sign(A[i-1]-L[i-1])){ cross=i; break; } }
+      const dot=document.getElementById('la-cross-dot'), lab=document.getElementById('la-cross-lab');
+      if(cross>0 && cross<dur){
+        const fx=X(cross), fy=Yc(A[cross]);
+        dot.setAttribute('cx',fx.toFixed(1)); dot.setAttribute('cy',fy.toFixed(1)); dot.style.display='';
+        lab.setAttribute('x',Math.max(56,Math.min(x1-56,fx)).toFixed(1)); lab.setAttribute('y',Math.max(14,fy-12).toFixed(1));
+        lab.textContent='tips over ~'+cross+' yrs'; lab.style.display='';
+      } else { dot.style.display='none'; lab.style.display='none'; }
+      document.getElementById('la-ymax').textContent=eur(maxV);
+      document.getElementById('la-xmid').textContent=Math.round(dur/2)+' yrs';
+      document.getElementById('la-xend').textContent=dur+' yrs';
     }
     function init(){
       const r=document.getElementById('la-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';

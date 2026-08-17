@@ -57,6 +57,25 @@ const description = "Under the furnished-rental LMNP actual-expenses regime, dep
       </div>
     </div>
 
+    <div class="tool-card lm-chart-card">
+      <p class="lm-chart-title">Rent collected vs taxable share over 30 years</p>
+      <svg id="lm-svg" viewBox="0 0 640 280" role="img" aria-label="Chart of rent collected and the taxable share, cumulative over thirty years">
+        <line class="lm-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="lm-area-loy" class="lm-area-loy" d="" />
+        <path id="lm-area-impo" class="lm-area-impo" d="" />
+        <path id="lm-line-impo" class="lm-line-impo" d="" fill="none" />
+        <text id="lm-ymax" class="lm-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="lm-tick" x="40" y="242" text-anchor="end">0</text>
+        <text class="lm-tick" x="44" y="262" text-anchor="start">0 yr</text>
+        <text class="lm-tick" x="336" y="262" text-anchor="middle">15 yrs</text>
+        <text class="lm-tick" x="628" y="262" text-anchor="end">30 yrs</text>
+      </svg>
+      <div class="lm-leg">
+        <span><i style="background:#3a5f86"></i> Rent collected (cumulative)</span>
+        <span><i style="background:#D4A82D"></i> Taxable share (cumulative)</span>
+      </div>
+    </div>
+
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>Why furnished rental is so effective</h2>
       <p>With unfurnished rental, your rent is fully taxed. With furnished rental under the actual-expenses regime, you deduct your expenses <strong>and the depreciation of the property</strong>, an accounting charge that costs you nothing in cash. The result: taxable income often close to zero for many years, so rent collected with almost no tax.</p>
@@ -66,6 +85,20 @@ const description = "Under the furnished-rental LMNP actual-expenses regime, dep
 
   <CTA />
 </Base>
+
+<style is:global>
+  .lm-chart-card{margin-top:22px;}
+  .lm-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #lm-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .lm-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .lm-area-loy{fill:rgba(58,95,134,.55);}
+  .lm-area-impo{fill:rgba(212,168,45,.55);}
+  .lm-line-impo{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .lm-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .lm-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .lm-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .lm-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
 
 <script is:inline>
   (function () {
@@ -83,6 +116,21 @@ const description = "Under the furnished-rental LMNP actual-expenses regime, dep
       document.getElementById('lm-amort').textContent=eur(amort);
       document.getElementById('lm-rdt').textContent=(prix>0?(loyAn/prix*100):0).toFixed(1).replace('.',',')+' %';
       document.getElementById('lm-impo').textContent=eur(imposable);
+      drawChart(loyAn, imposable);
+    }
+    function drawChart(loyAn, imposable){
+      const x0=44,x1=628,yTop=20,yBase=238, yrs=30;
+      const maxV=Math.max(1, loyAn*yrs);
+      const X=i=>x0+(i/yrs)*(x1-x0);
+      const Yc=v=>yBase-(v/maxV)*(yBase-yTop);
+      const loy=[],impo=[];
+      for(let i=0;i<=yrs;i++){ loy.push(loyAn*i); impo.push(imposable*i); }
+      const topLoy=loy.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      document.getElementById('lm-area-loy').setAttribute('d',topLoy+' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z');
+      const topImpo=impo.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      document.getElementById('lm-area-impo').setAttribute('d',topImpo+' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z');
+      document.getElementById('lm-line-impo').setAttribute('d',topImpo);
+      document.getElementById('lm-ymax').textContent=eur(maxV);
     }
     function init(){
       const r=document.getElementById('lm-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';

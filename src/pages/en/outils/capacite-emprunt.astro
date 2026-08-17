@@ -64,6 +64,27 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
       </div>
     </div>
 
+    <div class="tool-card ce-chart-card">
+      <p class="ce-chart-title">Capital and interest by loan term</p>
+      <svg id="ce-svg" viewBox="0 0 640 280" role="img" aria-label="Chart of the borrowable capital and interest cost by loan term">
+        <line class="ce-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="ce-area-cap" class="ce-area-cap" d="" />
+        <path id="ce-area-int" class="ce-area-int" d="" />
+        <path id="ce-line" class="ce-line" d="" fill="none" />
+        <line id="ce-mark-line" class="ce-mark-line" x1="0" y1="20" x2="0" y2="238" />
+        <text id="ce-mark-lab" class="ce-mark-lab" x="0" y="14" text-anchor="middle"></text>
+        <text id="ce-ymax" class="ce-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="ce-tick" x="40" y="242" text-anchor="end">0</text>
+        <text id="ce-x0" class="ce-tick" x="44" y="262" text-anchor="start">5 yrs</text>
+        <text id="ce-xmid" class="ce-tick" x="336" y="262" text-anchor="middle">15 yrs</text>
+        <text id="ce-xend" class="ce-tick" x="628" y="262" text-anchor="end">25 yrs</text>
+      </svg>
+      <div class="ce-leg">
+        <span><i style="background:#3a5f86"></i> Borrowable capital</span>
+        <span><i style="background:#D4A82D"></i> Cost of interest</span>
+      </div>
+    </div>
+
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>How is your capacity calculated?</h2>
       <p>The bank starts from a simple principle: your loan repayments should not exceed <strong>35% of your net income</strong>, insurance included. This maximum monthly payment, applied to the term and rate, determines the capital you can borrow. The longer the term, the more you can borrow, but the higher the interest cost.</p>
@@ -73,6 +94,22 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
 
   <CTA />
 </Base>
+
+<style is:global>
+  .ce-chart-card{margin-top:22px;}
+  .ce-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #ce-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .ce-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .ce-area-cap{fill:rgba(58,95,134,.55);}
+  .ce-area-int{fill:rgba(212,168,45,.42);}
+  .ce-line{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .ce-mark-line{stroke:rgba(255,255,255,.45);stroke-width:1;stroke-dasharray:3 3;}
+  .ce-mark-lab{fill:#e9edf4;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
+  .ce-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .ce-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .ce-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .ce-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
 
 <script is:inline>
   (function () {
@@ -93,6 +130,31 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
       document.getElementById('ce-mens').textContent=eur(mens);
       document.getElementById('ce-cout').textContent=eur(cout);
       document.getElementById('ce-achat').textContent=eur(capital+app);
+      drawChart(mens, i, dur);
+    }
+    function drawChart(mens, i, sel){
+      const x0=44,x1=628,yTop=20,yBase=238, dMin=5,dMax=25;
+      const caps=[],tots=[];
+      for(let d=dMin;d<=dMax;d++){
+        const n=d*12, cap = i>0 ? mens*(1-Math.pow(1+i,-n))/i : mens*n;
+        caps.push(cap); tots.push(mens*n);
+      }
+      const maxV=Math.max(1, tots[tots.length-1]);
+      const X=d=>x0+((d-dMin)/(dMax-dMin))*(x1-x0);
+      const Yc=v=>yBase-(v/maxV)*(yBase-yTop);
+      const idx=i2=>dMin+i2;
+      const topCap=caps.map((v,k)=>(k?'L':'M')+X(idx(k)).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      const areaCap=topCap+' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z';
+      const topTot=tots.map((v,k)=>(k?'L':'M')+X(idx(k)).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      const botCap=caps.map((_,k)=>'L'+X(idx(caps.length-1-k)).toFixed(1)+' '+Yc(caps[caps.length-1-k]).toFixed(1)).join(' ');
+      document.getElementById('ce-area-cap').setAttribute('d',areaCap);
+      document.getElementById('ce-area-int').setAttribute('d',topTot+' '+botCap+' Z');
+      document.getElementById('ce-line').setAttribute('d',topTot);
+      const fx=X(Math.max(dMin,Math.min(dMax,sel)));
+      const ml=document.getElementById('ce-mark-line'), mlab=document.getElementById('ce-mark-lab');
+      ml.setAttribute('x1',fx.toFixed(1)); ml.setAttribute('x2',fx.toFixed(1));
+      mlab.setAttribute('x',Math.max(44,Math.min(x1-44,fx)).toFixed(1)); mlab.textContent=sel+' yrs';
+      document.getElementById('ce-ymax').textContent=eur(maxV);
     }
     function init(){
       const r=document.getElementById('ce-rev'); if(!r||r.dataset.ready) return; r.dataset.ready='1';

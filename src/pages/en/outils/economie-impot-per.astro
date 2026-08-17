@@ -57,6 +57,25 @@ const description = "How much does a contribution to your Plan Épargne Retraite
       </div>
     </div>
 
+    <div class="tool-card pe-chart-card">
+      <p class="pe-chart-title">Cumulative effect over 20 years, at a constant contribution</p>
+      <svg id="pe-svg" viewBox="0 0 640 280" role="img" aria-label="Chart of the cumulative tax saving over twenty years">
+        <line class="pe-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="pe-area-eff" class="pe-area-eff" d="" />
+        <path id="pe-area-eco" class="pe-area-eco" d="" />
+        <path id="pe-line" class="pe-line" d="" fill="none" />
+        <text id="pe-ymax" class="pe-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="pe-tick" x="40" y="242" text-anchor="end">0</text>
+        <text class="pe-tick" x="44" y="262" text-anchor="start">0 yr</text>
+        <text class="pe-tick" x="336" y="262" text-anchor="middle">10 yrs</text>
+        <text class="pe-tick" x="628" y="262" text-anchor="end">20 yrs</text>
+      </svg>
+      <div class="pe-leg">
+        <span><i style="background:#3a5f86"></i> Your real savings effort</span>
+        <span><i style="background:#D4A82D"></i> Cumulative tax saving</span>
+      </div>
+    </div>
+
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>The most effective tool for higher tax brackets</h2>
       <p>The principle is simple: your contribution is deducted from your taxable income. In the 30% bracket, a €5,000 contribution saves you €1,500 in tax; at 41%, it is €2,050. Your real savings effort is reduced accordingly, and that sum works for your retirement.</p>
@@ -66,6 +85,20 @@ const description = "How much does a contribution to your Plan Épargne Retraite
 
   <CTA />
 </Base>
+
+<style is:global>
+  .pe-chart-card{margin-top:22px;}
+  .pe-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #pe-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .pe-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .pe-area-eff{fill:rgba(58,95,134,.55);}
+  .pe-area-eco{fill:rgba(212,168,45,.42);}
+  .pe-line{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .pe-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .pe-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .pe-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .pe-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
 
 <script is:inline>
   (function () {
@@ -79,6 +112,22 @@ const description = "How much does a contribution to your Plan Épargne Retraite
       document.getElementById('pe-eco').textContent=eur(eco);
       document.getElementById('pe-effort').textContent=eur(v-eco);
       document.getElementById('pe-taux').textContent=tmi+' %';
+      drawChart(v, tmi);
+    }
+    function drawChart(v, t){
+      const x0=44,x1=628,yTop=20,yBase=238, yrs=20;
+      const verse=[],effort=[];
+      for(let i=0;i<=yrs;i++){ verse.push(v*i); effort.push(v*(1-t/100)*i); }
+      const maxV=Math.max(1, verse[yrs]);
+      const X=i=>x0+(i/yrs)*(x1-x0);
+      const Yc=val=>yBase-(val/maxV)*(yBase-yTop);
+      const topEff=effort.map((val,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(val).toFixed(1)).join(' ');
+      document.getElementById('pe-area-eff').setAttribute('d',topEff+' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z');
+      const topVer=verse.map((val,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(val).toFixed(1)).join(' ');
+      const botEff=effort.map((_,i)=>'L'+X(yrs-i).toFixed(1)+' '+Yc(effort[yrs-i]).toFixed(1)).join(' ');
+      document.getElementById('pe-area-eco').setAttribute('d',topVer+' '+botEff+' Z');
+      document.getElementById('pe-line').setAttribute('d',topVer);
+      document.getElementById('pe-ymax').textContent=eur(maxV);
     }
     function init(){
       const r=document.getElementById('pe-vers'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
