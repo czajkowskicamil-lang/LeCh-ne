@@ -113,47 +113,14 @@ const placements = [
       </p>
       <h1 class="font-serif text-display text-ink mb-6 leading-tight">Savoir lire son <span class="italic text-chene">avis d'imposition</span></h1>
       <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
-        Revenu imposable, parts fiscales, quotient familial, taux marginal… On décrypte chaque ligne de votre avis, puis vous simulez votre impôt avec le barème officiel 2026 (revenus 2025).
+        Calculez votre impôt 2026 au barème officiel en quelques secondes, puis décryptez chaque ligne de votre avis et découvrez les leviers pour l’alléger.
       </p>
     </div>
   </header>
 
-  <!-- ============ I. DÉCRYPTEUR ============ -->
-  <section class="shell max-w-5xl pb-4">
-    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>I · Décrypter votre avis, ligne par ligne</p>
-    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Chaque ligne, expliquée</h2>
-    <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Cliquez sur une ligne de l'avis pour comprendre à quoi elle correspond. Les montants sont un exemple : un couple avec deux enfants, 62 000 € de revenu imposable.</p>
-
-    <div class="grid md:grid-cols-[1.15fr_.85fr] gap-6 items-start">
-      <div class="imp-avis" role="list">
-        <div class="imp-avis-top">
-          <span>RÉPUBLIQUE FRANÇAISE<br><span class="opacity-80 text-[0.78rem]">Avis d'impôt sur le revenu 2026</span></span>
-          <span class="imp-kind">Revenus 2025</span>
-        </div>
-        {lignes.map((l) => (
-          <button class="imp-line" data-i={l.n} role="listitem">
-            <span class="imp-mk">{l.n}</span>
-            <span class="imp-lbl"><b>{l.lbl}</b>{l.sub}</span>
-            <span class="imp-val">{l.val}</span>
-          </button>
-        ))}
-      </div>
-
-      <aside class="imp-explain" id="imp-explain" aria-live="polite">
-        {explications.map((e) => (
-          <div class="imp-exp" id={`imp-exp-${e.n}`} hidden>
-            <span class="imp-tag"><span class="imp-dot">{e.n}</span>Décryptage</span>
-            <h3>{e.t}</h3>
-            <p set:html={e.h}></p>
-          </div>
-        ))}
-      </aside>
-    </div>
-  </section>
-
-  <!-- ============ II. SIMULATEUR ============ -->
+  <!-- ============ I. SIMULATEUR ============ -->
   <section class="shell max-w-5xl pt-10 pb-6">
-    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>II · Simuler votre impôt</p>
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>I · Simuler votre impôt</p>
     <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Votre impôt, au barème officiel</h2>
     <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Comme le simulateur officiel : salaires, pensions, revenus fonciers, bénéfices indépendants, déductions (pension alimentaire, PER) et principaux crédits d'impôt. Le calcul applique le barème progressif 2026, le quotient familial (avec son plafonnement) et la décote, exactement comme l'administration.</p>
 
@@ -273,7 +240,7 @@ const placements = [
             <p class="imp-hint">Crédit d'impôt de <b>66 %</b> (dans la limite de 1 % de vos salaires et pensions).</p>
           </div>
 
-          <p class="imp-group">Défiscalisation immobilière</p>
+          <p class="imp-group">Défiscalisation immobilière &amp; outre-mer</p>
 
           <div class="tool-field">
             <label>Pinel / Denormandie <span class="imp-opt">réduction d'impôt</span></label>
@@ -297,6 +264,12 @@ const placements = [
             <label>Monument Historique <span class="imp-opt">déduction du revenu</span></label>
             <div class="imp-money"><span>€</span><input id="imp-mh" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
             <p class="imp-hint">Charges et travaux déductibles du <b>revenu global, sans plafonnement</b>. Gain proportionnel à votre TMI.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Girardin industriel <span class="imp-opt">réduction d'impôt</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-girardin" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Réduction d'impôt <b>« one-shot »</b> pour un investissement productif outre-mer, <b>à fonds perdu</b> (le capital n'est pas récupéré). Plafond des niches majoré <b>outre-mer à 18 000 €/an</b>. Saisissez la réduction attendue.</p>
           </div>
 
           <div class="imp-readout" id="imp-readout"></div>
@@ -340,6 +313,39 @@ const placements = [
     </div>
 
     <ToolLeadCapture tool="Impôt sur le revenu" titre="Votre estimation d'impôt sur le revenu" heading="Recevez votre estimation en PDF" />
+  </section>
+
+  <!-- ============ II. DÉCRYPTEUR ============ -->
+  <section class="shell max-w-5xl pb-4">
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>II · Décrypter votre avis, ligne par ligne</p>
+    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Chaque ligne, expliquée</h2>
+    <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Cliquez sur une ligne de l'avis pour comprendre à quoi elle correspond. Les montants sont un exemple : un couple avec deux enfants, 62 000 € de revenu imposable.</p>
+
+    <div class="grid md:grid-cols-[1.15fr_.85fr] gap-6 items-start">
+      <div class="imp-avis" role="list">
+        <div class="imp-avis-top">
+          <span>RÉPUBLIQUE FRANÇAISE<br><span class="opacity-80 text-[0.78rem]">Avis d'impôt sur le revenu 2026</span></span>
+          <span class="imp-kind">Revenus 2025</span>
+        </div>
+        {lignes.map((l) => (
+          <button class="imp-line" data-i={l.n} role="listitem">
+            <span class="imp-mk">{l.n}</span>
+            <span class="imp-lbl"><b>{l.lbl}</b>{l.sub}</span>
+            <span class="imp-val">{l.val}</span>
+          </button>
+        ))}
+      </div>
+
+      <aside class="imp-explain" id="imp-explain" aria-live="polite">
+        {explications.map((e) => (
+          <div class="imp-exp" id={`imp-exp-${e.n}`} hidden>
+            <span class="imp-tag"><span class="imp-dot">{e.n}</span>Décryptage</span>
+            <h3>{e.t}</h3>
+            <p set:html={e.h}></p>
+          </div>
+        ))}
+      </aside>
+    </div>
   </section>
 
   <!-- ============ III. LEVIERS IMMOBILIERS ============ -->
@@ -581,8 +587,8 @@ const placements = [
       var dons=parseNum($('imp-dons').value), domicile=parseNum($('imp-domicile').value);
       var coll=parseNum($('imp-coll').value), lyc=parseNum($('imp-lyc').value), sup=parseNum($('imp-sup').value);
       var synd=parseNum($('imp-synd').value);
-      var pinel=parseNum($('imp-pinel').value), malraux=parseNum($('imp-malraux').value);
-      var immoRed=pinel+malraux;
+      var pinel=parseNum($('imp-pinel').value), malraux=parseNum($('imp-malraux').value), girardin=parseNum($('imp-girardin').value);
+      var immoRed=pinel+malraux+girardin;
       var don75=Math.min(dons,1000)*0.75;
       var don66=Math.min(Math.max(0,dons-1000), revenu*0.20)*0.66;
       var redDonsRaw=Math.round(don75+don66);
@@ -686,7 +692,7 @@ const placements = [
       $('imp-kminus').addEventListener('click',function(){kids=Math.max(0,kids-1);$('imp-kn').textContent=kids;render();});
       $('imp-kplus').addEventListener('click',function(){kids=Math.min(8,kids+1);$('imp-kn').textContent=kids;render();});
       $('imp-isole').addEventListener('change',function(){isole=this.checked;render();});
-      ['imp-salaires','imp-frais-reel','imp-retraites','imp-foncier','imp-lmnp','imp-bic','imp-autres','imp-pension','imp-per','imp-dons','imp-domicile','imp-synd','imp-pinel','imp-malraux','imp-deficit','imp-mh'].forEach(function(id){bindMoney(id,render);});
+      ['imp-salaires','imp-frais-reel','imp-retraites','imp-foncier','imp-lmnp','imp-bic','imp-autres','imp-pension','imp-per','imp-dons','imp-domicile','imp-synd','imp-pinel','imp-malraux','imp-girardin','imp-deficit','imp-mh'].forEach(function(id){bindMoney(id,render);});
       ['imp-coll','imp-lyc','imp-sup'].forEach(function(id){var el=$(id); if(el) el.addEventListener('input',function(){var n=parseNum(this.value);this.value=n?String(n):'';render();});});
 
       document.querySelectorAll('.imp-line').forEach(function(b){b.addEventListener('click',function(){selectExp(+b.dataset.i);});});
