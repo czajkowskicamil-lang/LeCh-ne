@@ -276,15 +276,27 @@ const placements = [
           <p class="imp-group">Défiscalisation immobilière</p>
 
           <div class="tool-field">
-            <label>Réduction d'impôt immobilière <span class="imp-opt">Pinel · Denormandie · Malraux</span></label>
-            <div class="imp-money"><span>€</span><input id="imp-immo-red" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
-            <p class="imp-hint">Montant <b>annuel</b> de la réduction. Rappel : plafond global des niches fiscales de <b>10 000 €/an</b> pour Pinel et Denormandie — Malraux et Monument Historique en sont exclus. Détail des dispositifs plus bas.</p>
+            <label>Pinel / Denormandie <span class="imp-opt">réduction d'impôt</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-pinel" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Réduction d'impôt <b>annuelle</b>. Comprise dans le <b>plafond global des niches fiscales de 10 000 €/an</b>.</p>
           </div>
 
           <div class="tool-field">
-            <label>Déduction du revenu <span class="imp-opt">déficit foncier · Monument Historique</span></label>
-            <div class="imp-money"><span>€</span><input id="imp-immo-ded" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
-            <p class="imp-hint">Montant déductible de votre <b>revenu global</b> : déficit foncier (jusqu'à 10 700 €/an) ou charges Monument Historique. Son gain réel dépend de votre TMI.</p>
+            <label>Malraux <span class="imp-opt">réduction d'impôt</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-malraux" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">22 % ou 30 % des travaux (plafonnés à 400 000 € sur 4 ans). <b>Hors</b> plafond des niches. Saisissez la réduction de l'année.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Déficit foncier <span class="imp-opt">déduction du revenu</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-deficit" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Part imputable sur le <b>revenu global</b>, plafonnée à <b>10 700 €/an</b> (21 400 € pour une rénovation énergétique éligible). Gain proportionnel à votre TMI.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Monument Historique <span class="imp-opt">déduction du revenu</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-mh" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Charges et travaux déductibles du <b>revenu global, sans plafonnement</b>. Gain proportionnel à votre TMI.</p>
           </div>
 
           <div class="imp-readout" id="imp-readout"></div>
@@ -546,7 +558,8 @@ const placements = [
       var bic=parseNum($('imp-bic').value);
       var autres=parseNum($('imp-autres').value);
       var pension=parseNum($('imp-pension').value), per=parseNum($('imp-per').value);
-      var immoDed=parseNum($('imp-immo-ded').value);
+      var deficit=parseNum($('imp-deficit').value), mh=parseNum($('imp-mh').value);
+      var immoDed=deficit+mh;
       var revenu=Math.max(0,Math.round(salNet+retraites+foncier+lmnp+bic+autres-pension-per-immoDed));
       var psSociaux=Math.round((Math.max(0,foncier)+Math.max(0,lmnp))*0.172);
       var fp=foyerParts(), r=calcul(revenu,fp.p,fp.base,couple);
@@ -568,7 +581,8 @@ const placements = [
       var dons=parseNum($('imp-dons').value), domicile=parseNum($('imp-domicile').value);
       var coll=parseNum($('imp-coll').value), lyc=parseNum($('imp-lyc').value), sup=parseNum($('imp-sup').value);
       var synd=parseNum($('imp-synd').value);
-      var immoRed=parseNum($('imp-immo-red').value);
+      var pinel=parseNum($('imp-pinel').value), malraux=parseNum($('imp-malraux').value);
+      var immoRed=pinel+malraux;
       var don75=Math.min(dons,1000)*0.75;
       var don66=Math.min(Math.max(0,dons-1000), revenu*0.20)*0.66;
       var redDonsRaw=Math.round(don75+don66);
@@ -672,7 +686,7 @@ const placements = [
       $('imp-kminus').addEventListener('click',function(){kids=Math.max(0,kids-1);$('imp-kn').textContent=kids;render();});
       $('imp-kplus').addEventListener('click',function(){kids=Math.min(8,kids+1);$('imp-kn').textContent=kids;render();});
       $('imp-isole').addEventListener('change',function(){isole=this.checked;render();});
-      ['imp-salaires','imp-frais-reel','imp-retraites','imp-foncier','imp-lmnp','imp-bic','imp-autres','imp-pension','imp-per','imp-dons','imp-domicile','imp-synd','imp-immo-red','imp-immo-ded'].forEach(function(id){bindMoney(id,render);});
+      ['imp-salaires','imp-frais-reel','imp-retraites','imp-foncier','imp-lmnp','imp-bic','imp-autres','imp-pension','imp-per','imp-dons','imp-domicile','imp-synd','imp-pinel','imp-malraux','imp-deficit','imp-mh'].forEach(function(id){bindMoney(id,render);});
       ['imp-coll','imp-lyc','imp-sup'].forEach(function(id){var el=$(id); if(el) el.addEventListener('input',function(){var n=parseNum(this.value);this.value=n?String(n):'';render();});});
 
       document.querySelectorAll('.imp-line').forEach(function(b){b.addEventListener('click',function(){selectExp(+b.dataset.i);});});
