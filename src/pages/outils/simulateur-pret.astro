@@ -1,0 +1,194 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import ToolLeadCapture from '../../components/ToolLeadCapture.astro';
+
+const title = "Simulateur de prêt immobilier — mensualité et coût du crédit | Le Chêne Patrimonial";
+const description = "Calculez votre mensualité, le coût total de votre crédit immobilier et votre taux d'endettement. Assurance, durée, taux : tout est pris en compte. Gratuit.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Simulateur de prêt</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Crédit
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Votre mensualité, et ce que coûte vraiment le crédit</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Un prêt ne se résume pas à sa mensualité. Voyez d'un coup ce que vous remboursez chaque mois, ce que la banque prend en intérêts, et où se situe votre taux d'endettement.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <div class="tool-field">
+            <label>Montant emprunté <b id="pr-cap-val">200 000 €</b></label>
+            <input class="tool-range" type="range" id="pr-cap" min="20000" max="800000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Taux d'emprunt <b id="pr-tx-val">3,50 %</b></label>
+            <input class="tool-range" type="range" id="pr-tx" min="0.5" max="6" step="0.05" value="3.5" />
+          </div>
+          <div class="tool-field">
+            <label>Taux d'assurance <b id="pr-ass-val">0,34 %</b></label>
+            <input class="tool-range" type="range" id="pr-ass" min="0" max="1" step="0.01" value="0.34" />
+          </div>
+          <div class="tool-field">
+            <label>Durée <b id="pr-dur-val">20 ans</b></label>
+            <input class="tool-range" type="range" id="pr-dur" min="5" max="30" step="1" value="20" />
+          </div>
+          <div class="tool-field">
+            <label>Revenus mensuels nets du foyer <b id="pr-rev-val">4 000 €</b></label>
+            <input class="tool-range" type="range" id="pr-rev" min="1500" max="15000" step="100" value="4000" />
+          </div>
+          <p class="tool-note">Prêt amortissable à échéances constantes. Assurance estimée sur le capital initial. Hors frais de dossier, garantie et frais de tenue de compte. Le TAEG et le coût exact figurent dans votre offre de prêt.</p>
+        </div>
+
+        <div class="tool-result">
+          <p class="lbl">Mensualité (assurance comprise)</p>
+          <p class="big" id="pr-mens">—</p>
+          <div class="pr-badge" id="pr-badge">
+            <span class="pr-badge-k">Taux d'endettement estimé</span>
+            <span class="pr-badge-v"><b id="pr-endet">—</b> <span id="pr-endet-lbl" class="pr-tag">—</span></span>
+          </div>
+          <div class="tool-brk"><span class="k">Capital emprunté</span><span class="v" id="pr-capital">—</span></div>
+          <div class="tool-brk"><span class="k">Coût des intérêts</span><span class="v" id="pr-int">—</span></div>
+          <div class="tool-brk"><span class="k">Coût de l'assurance</span><span class="v" id="pr-cass">—</span></div>
+          <div class="tool-brk"><span class="k">Coût total du crédit</span><span class="v" id="pr-cout">—</span></div>
+          <div class="tool-brk"><span class="k">Montant total remboursé</span><span class="v" id="pr-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card pr-chart-card">
+      <p class="pr-chart-title">Amortissement du prêt</p>
+      <svg id="pr-svg" viewBox="0 0 640 280" role="img" aria-label="Graphique du capital restant dû et des intérêts cumulés année après année">
+        <line class="pr-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="pr-area-crd" class="pr-area-crd" d="" />
+        <path id="pr-line-int" class="pr-line-int" d="" fill="none" />
+        <text id="pr-ymax" class="pr-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="pr-tick" x="40" y="242" text-anchor="end">0</text>
+        <text class="pr-tick" x="44" y="262" text-anchor="start">0 an</text>
+        <text id="pr-xmid" class="pr-tick" x="336" y="262" text-anchor="middle"></text>
+        <text id="pr-xend" class="pr-tick" x="628" y="262" text-anchor="end"></text>
+      </svg>
+      <div class="pr-leg">
+        <span><i style="background:#3a5f86"></i> Capital restant dû</span>
+        <span><i style="background:#D4A82D"></i> Intérêts cumulés payés</span>
+      </div>
+    </div>
+
+    <ToolLeadCapture tool="Simulateur de prêt" titre="Votre plan de financement" />
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Ce que la mensualité ne dit pas</h2>
+      <p>Deux prêts peuvent afficher la même mensualité et ne pas coûter la même chose. La durée, le taux d'assurance et le mode de remboursement changent en profondeur le coût total. Un crédit plus court coûte plus cher chaque mois, mais bien moins au total.</p>
+      <p>Le taux d'endettement reste le premier repère des banques : au-delà de 35 % des revenus, dossier compris, le financement se tend. Reste que ce seuil n'est pas une fatalité : la structure de vos revenus, votre reste à vivre et votre apport pèsent tout autant. C'est ce que nous regardons ensemble avant de solliciter une banque.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  .pr-badge{background:#0a1a30;border:1px solid rgba(212,168,45,.2);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .pr-badge-k{color:#9fb0c8;font-size:.82rem;}
+  .pr-badge-v{display:inline-flex;align-items:center;gap:10px;}
+  .pr-badge-v b{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.35rem;color:#F5F1E8;font-weight:600;}
+  .pr-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:20px;}
+  .pr-tag.ok{background:rgba(96,168,120,.16);color:#7fce9a;}
+  .pr-tag.mid{background:rgba(212,168,45,.16);color:#E6C259;}
+  .pr-tag.high{background:rgba(210,110,95,.16);color:#e79184;}
+  .pr-chart-card{margin-top:22px;}
+  .pr-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #pr-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .pr-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .pr-area-crd{fill:rgba(58,95,134,.55);}
+  .pr-line-int{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .pr-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .pr-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:12px;}
+  .pr-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .pr-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    function calc(){
+      const P=+document.getElementById('pr-cap').value, T=+document.getElementById('pr-tx').value,
+        A=+document.getElementById('pr-ass').value, Y=+document.getElementById('pr-dur').value,
+        REV=+document.getElementById('pr-rev').value;
+      document.getElementById('pr-cap-val').textContent=eur(P);
+      document.getElementById('pr-tx-val').textContent=T.toFixed(2).replace('.',',')+' %';
+      document.getElementById('pr-ass-val').textContent=A.toFixed(2).replace('.',',')+' %';
+      document.getElementById('pr-dur-val').textContent=Y+' ans';
+      document.getElementById('pr-rev-val').textContent=eur(REV);
+
+      const r=T/1200, n=Y*12;
+      const capMens = r>0 ? P*r/(1-Math.pow(1+r,-n)) : P/n;   // mensualité hors assurance
+      const assMens = P*(A/100)/12;                            // assurance sur capital initial
+      const mens = capMens + assMens;
+      const coutInt = capMens*n - P;
+      const coutAss = assMens*n;
+      const total = mens*n;
+      const endet = REV>0 ? mens/REV*100 : 0;
+
+      document.getElementById('pr-mens').textContent = eur(mens) + ' /mois';
+      document.getElementById('pr-capital').textContent = eur(P);
+      document.getElementById('pr-int').textContent = eur(coutInt);
+      document.getElementById('pr-cass').textContent = eur(coutAss);
+      document.getElementById('pr-cout').textContent = eur(coutInt + coutAss);
+      document.getElementById('pr-total').textContent = eur(total);
+
+      document.getElementById('pr-endet').textContent = endet.toFixed(1).replace('.',',') + ' %';
+      const tag = document.getElementById('pr-endet-lbl');
+      if(endet <= 33){ tag.textContent='Maîtrisé'; tag.className='pr-tag ok'; }
+      else if(endet <= 35){ tag.textContent='Acceptable'; tag.className='pr-tag mid'; }
+      else { tag.textContent='Au-dessus du seuil'; tag.className='pr-tag high'; }
+
+      drawChart(P, capMens, r, n, Y);
+    }
+    function drawChart(P, capMens, r, n, Y){
+      const x0=44,x1=628,yTop=20,yBase=238;
+      const crd=[P], cumInt=[0];
+      let solde=P, ci=0;
+      for(let m=1;m<=n;m++){
+        const interest = solde*r;
+        const principal = capMens - interest;
+        solde = Math.max(0, solde - principal);
+        ci += interest;
+        if(m%12===0 || m===n){ crd.push(solde); cumInt.push(ci); }
+      }
+      const pts = crd.length;
+      const maxV = Math.max(1, P);
+      const X=i=>x0+(i/(pts-1))*(x1-x0);
+      const Yc=v=>yBase-(v/maxV)*(yBase-yTop);
+      const areaCrd = crd.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ')
+        + ' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z';
+      const lineInt = cumInt.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      document.getElementById('pr-area-crd').setAttribute('d', areaCrd);
+      document.getElementById('pr-line-int').setAttribute('d', lineInt);
+      document.getElementById('pr-ymax').textContent = eur(maxV);
+      document.getElementById('pr-xmid').textContent = Math.round(Y/2)+' ans';
+      document.getElementById('pr-xend').textContent = Y+' ans';
+    }
+    function init(){
+      const r=document.getElementById('pr-cap'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
+      ['pr-cap','pr-tx','pr-ass','pr-dur','pr-rev'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+      calc();
+    }
+    init();
+    if(!window['__hk_pr-cap']){window['__hk_pr-cap']=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>

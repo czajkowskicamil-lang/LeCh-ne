@@ -66,6 +66,25 @@ const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Sim
       </div>
     </div>
 
+    <div class="tool-card ic-chart-card">
+      <p class="ic-chart-title">Évolution du capital</p>
+      <svg id="ic-svg" viewBox="0 0 640 280" role="img" aria-label="Graphique de l'évolution du capital année après année">
+        <line class="ic-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="ic-area-v" class="ic-area-v" d="" />
+        <path id="ic-area-g" class="ic-area-g" d="" />
+        <path id="ic-line" class="ic-line" d="" fill="none" />
+        <text id="ic-ymax" class="ic-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="ic-tick" x="40" y="242" text-anchor="end">0</text>
+        <text id="ic-x0" class="ic-tick" x="44" y="262" text-anchor="start">0 an</text>
+        <text id="ic-xmid" class="ic-tick" x="336" y="262" text-anchor="middle"></text>
+        <text id="ic-xend" class="ic-tick" x="628" y="262" text-anchor="end"></text>
+      </svg>
+      <div class="ic-leg">
+        <span><i style="background:#3a5f86"></i> Total versé</span>
+        <span><i style="background:#D4A82D"></i> Intérêts générés</span>
+      </div>
+    </div>
+
     <ToolLeadCapture tool="Intérêts composés" titre="Votre projection d'épargne" />
 
     <div class="max-w-prose-wide mt-14 prose-editorial">
@@ -85,6 +104,14 @@ const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Sim
   .ic-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-bottom:14px;}
   .ic-leg span{display:inline-flex;align-items:center;gap:7px;}
   .ic-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+  .ic-chart-card{margin-top:22px;}
+  .ic-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  #ic-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .ic-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .ic-area-v{fill:rgba(58,95,134,.55);}
+  .ic-area-g{fill:rgba(212,168,45,.42);}
+  .ic-line{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .ic-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
 </style>
 
 <script is:inline>
@@ -110,6 +137,31 @@ const description = "Que peut devenir votre épargne dans 10, 20 ou 30 ans ? Sim
       document.getElementById('ic-part').textContent=(fv>0?(gains/fv*100):0).toFixed(0)+' %';
       document.getElementById('ic-bar-v').style.width=(fv>0?verse/fv*100:100)+'%';
       document.getElementById('ic-bar-g').style.width=(fv>0?gains/fv*100:0)+'%';
+      drawChart(P0,PM,Y,r);
+    }
+    function drawChart(P0,PM,Y,r){
+      const x0=44,x1=628,yTop=20,yBase=238;
+      const yrs=Math.max(1,Y);
+      const totals=[],verses=[];
+      for(let i=0;i<=yrs;i++){
+        const m=i*12, g=r>0?Math.pow(1+r,m):1;
+        verses.push(P0+PM*12*i);
+        totals.push(r>0 ? P0*g + PM*(g-1)/r*(1+r) : P0+PM*m);
+      }
+      const maxV=Math.max(1,totals[totals.length-1]);
+      const X=i=>x0+(i/yrs)*(x1-x0);
+      const Yc=v=>yBase-(v/maxV)*(yBase-yTop);
+      const line=totals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      const areaV=totals.map((_,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(verses[i]).toFixed(1)).join(' ')
+        +' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z';
+      const topG=totals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
+      const botG=verses.map((v,i)=>'L'+X(yrs-i).toFixed(1)+' '+Yc(verses[yrs-i]).toFixed(1)).join(' ');
+      document.getElementById('ic-line').setAttribute('d',line);
+      document.getElementById('ic-area-v').setAttribute('d',areaV);
+      document.getElementById('ic-area-g').setAttribute('d',topG+' '+botG+' Z');
+      document.getElementById('ic-ymax').textContent=eur(maxV);
+      document.getElementById('ic-xmid').textContent=Math.round(yrs/2)+' ans';
+      document.getElementById('ic-xend').textContent=yrs+' ans';
     }
     function init(){
       const r=document.getElementById('ic-cap'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
