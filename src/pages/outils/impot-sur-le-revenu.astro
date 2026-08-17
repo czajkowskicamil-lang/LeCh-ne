@@ -1,0 +1,668 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import ToolLeadCapture from '../../components/ToolLeadCapture.astro';
+
+const title = "Comprendre et simuler son impôt sur le revenu 2026 | Le Chêne Patrimonial";
+const description = "Apprenez à lire votre avis d'imposition (revenu imposable, parts, quotient familial, TMI) et calculez votre impôt 2026 avec le barème officiel. Leviers immobiliers et fiscalité des placements expliqués simplement.";
+
+// Barème officiel — imposition 2026 sur les revenus 2025
+const tranches = [
+  { rate: '0 %',  rng: 'Jusqu’à 11 600 €',  cls: 'r0' },
+  { rate: '11 %', rng: '11 600 – 29 579 €',       cls: 'r1' },
+  { rate: '30 %', rng: '29 579 – 84 577 €',       cls: 'r2' },
+  { rate: '41 %', rng: '84 577 – 181 917 €',      cls: 'r3' },
+  { rate: '45 %', rng: '181 918 € et plus',       cls: 'r4' },
+];
+
+// Décrypteur de l'avis — exemple : couple, 2 enfants, 62 000 € imposables (chiffres exacts)
+const lignes = [
+  { n: 1,  lbl: 'Nombre de parts', sub: 'Quotient familial',        val: '3 parts' },
+  { n: 2,  lbl: 'Revenu brut global', sub: 'Après abattements',     val: '62 000 €' },
+  { n: 3,  lbl: 'Revenu net imposable', sub: 'La base de calcul',   val: '62 000 €' },
+  { n: 4,  lbl: 'Impôt sur les revenus soumis au barème', sub: 'Avant corrections', val: '2 992 €' },
+  { n: 5,  lbl: 'Quotient familial', sub: 'Revenu ÷ parts',         val: '20 667 €' },
+  { n: 6,  lbl: 'Revenu fiscal de référence (RFR)', sub: 'Ouvre / ferme des droits', val: '62 000 €' },
+  { n: 7,  lbl: 'Taux marginal d’imposition (TMI)', sub: 'Votre tranche haute', val: '11 %' },
+  { n: 8,  lbl: 'Taux moyen d’imposition', sub: 'Impôt ÷ revenu', val: '4,6 %' },
+  { n: 9,  lbl: 'Montant de votre impôt', sub: 'Net à payer',       val: '2 863 €' },
+  { n: 10, lbl: 'Taux de prélèvement à la source', sub: 'Appliqué sur vos revenus', val: '4,6 %' },
+];
+
+const explications = [
+  { n: 1, t: 'Le nombre de parts', h: `C'est la « taille fiscale » de votre foyer. Un célibataire compte <b>1 part</b>, un couple marié ou pacsé <b>2 parts</b>. Chacun des deux premiers enfants ajoute <b>0,5 part</b>, et à partir du troisième, <b>1 part</b> par enfant.<br><br>Ici : 2 (couple) + 0,5 + 0,5 = <b>3 parts</b>.<br><span class="imp-aside">Plus vous avez de parts, plus votre revenu est « divisé », donc moins il est taxé : c'est tout l'effet du quotient familial.</span>` },
+  { n: 2, t: 'Le revenu brut global', h: `La somme de tous vos revenus (salaires, pensions, foncier…) <b>après l'abattement de 10 %</b> pour frais professionnels sur les salaires, mais avant vos déductions personnelles.<br><span class="imp-aside">Ce n'est pas votre salaire brut de fiche de paie : l'administration part de votre net imposable, puis retire 10 %.</span>` },
+  { n: 3, t: 'Le revenu net imposable', h: `<b>C'est LE chiffre clé.</b> C'est sur lui que l'impôt est calculé, une fois retirées vos charges déductibles (pension alimentaire, PER…).<br><br>Ni votre salaire brut, ni votre net perçu chaque mois : c'est le montant retenu par le fisc.<br><span class="imp-aside">Vous le retrouvez aussi sur votre fiche de paie de décembre, ligne « net imposable » (cumul annuel).</span>` },
+  { n: 4, t: 'L’impôt « brut » selon le barème', h: `Le résultat du barème progressif appliqué à votre quotient familial, <b>avant</b> plafonnement, décote et réductions d'impôt.<br><br>C'est une étape de calcul intermédiaire : le montant réellement dû figure plus bas.` },
+  { n: 5, t: 'Le quotient familial', h: `Votre revenu imposable divisé par votre nombre de parts : 62 000 ÷ 3 = <b>20 667 €</b>. C'est ce quotient qui est passé dans le barème, puis le résultat est multiplié par le nombre de parts.<br><span class="imp-aside">Ce mécanisme atténue la progressivité pour les familles. Son avantage est toutefois <b>plafonné</b> (1 807 € par demi-part).</span>` },
+  { n: 6, t: 'Le revenu fiscal de référence', h: `Un indicateur plus large que le revenu imposable (il réintègre certains revenus exonérés). Il <b>ne sert pas à calculer votre impôt</b>, mais à déterminer votre éligibilité à des aides, exonérations, taux réduits, bourses…<br><span class="imp-aside">C'est souvent le chiffre qu'on vous demande pour un dossier (crèche, aide, prêt).</span>` },
+  { n: 7, t: 'Le taux marginal (TMI)', h: `Le taux de la <b>tranche la plus élevée</b> que vous atteignez. Il s'applique seulement à la part de revenu au-dessus du seuil de tranche, <b>pas à tout votre revenu</b>. Dans notre exemple, le quotient (20 667 €) reste dans la tranche à <b>11 %</b>.<br><span class="imp-aside">C'est le bon repère pour une décision : 1 000 € versés sur un PER vous font économiser « votre TMI » d'impôt (300 € si vous êtes à 30 %).</span>` },
+  { n: 8, t: 'Le taux moyen', h: `Votre impôt réel divisé par votre revenu imposable. Toujours <b>plus faible que le TMI</b>, parce que vos premières tranches sont taxées à 0 % et 11 %.<br><span class="imp-aside">C'est votre taux d'imposition « ressenti » : ce que l'impôt vous coûte réellement en proportion.</span>` },
+  { n: 9, t: 'L’impôt net', h: `Le montant réellement dû, une fois appliqués le plafonnement, la décote et vos éventuelles réductions et crédits d'impôt.<br><br>C'est ce qui est comparé à ce que vous avez déjà payé via le prélèvement à la source, pour déterminer votre solde (à payer ou à rembourser).` },
+  { n: 10, t: 'Le taux de prélèvement à la source', h: `Le taux que l'administration transmet à votre employeur (ou caisse de retraite) pour prélever l'impôt <b>chaque mois</b>, en temps réel.<br><span class="imp-aside">Vous pouvez l'individualiser au sein d'un couple, ou le moduler en cours d'année si vos revenus changent.</span>` },
+];
+
+const immo = [
+  { nom: 'Déficit foncier', badge: 'Déduction', cls: 'imp-b-ded',
+    principe: 'Location nue au réel : les travaux et charges qui dépassent vos loyers créent un déficit.',
+    avantage: 'Jusqu’à <b>10 700 €/an</b> imputables sur votre revenu global (plafond relevé pour certains travaux de rénovation énergétique). Surplus reportable 10 ans.',
+    surveiller: 'Location nue à maintenir 3 ans après la dernière imputation.' },
+  { nom: 'LMNP', badge: 'Amortissement', cls: 'imp-b-amo',
+    principe: 'Location meublée au réel : vous amortissez le bien et le mobilier, ce qui efface une large part des loyers imposables.',
+    avantage: 'Des revenus locatifs souvent <b>très peu fiscalisés</b> pendant des années.',
+    surveiller: 'Depuis 2025, les amortissements déduits sont réintégrés dans le calcul de la plus-value à la revente : à anticiper.' },
+  { nom: 'Denormandie', badge: 'Réduction d’impôt', cls: 'imp-b-red',
+    principe: 'Achat d’un logement ancien à rénover dans une ville éligible, loué sous conditions.',
+    avantage: 'Réduction d’impôt de <b>12, 18 ou 21 %</b> du prix (location 6, 9 ou 12 ans).',
+    surveiller: 'Travaux ≥ 25 % du coût total, plafonds de loyer et de ressources du locataire. Prolongé jusqu’à fin 2027.' },
+  { nom: 'Pinel', badge: 'Clos depuis 2025', cls: 'imp-b-clos',
+    principe: 'Logement neuf loué sous conditions de plafonds de loyer et de ressources.',
+    avantage: 'Réduction jusqu’à <b>14 %</b> du prix (derniers taux 2024).',
+    surveiller: 'Fermé aux nouveaux investissements depuis le 1ᵉʳ janvier 2025. Ne concerne plus que les opérations engagées avant.' },
+  { nom: 'Malraux', badge: 'Réduction d’impôt', cls: 'imp-b-red',
+    principe: 'Restauration complète d’un immeuble ancien en site patrimonial remarquable.',
+    avantage: 'Réduction de <b>22 % ou 30 %</b> des travaux (plafonnés à 400 000 € sur 4 ans), <b>hors</b> plafonnement des niches fiscales.',
+    surveiller: 'Opération lourde, encadrée par les Architectes des Bâtiments de France.' },
+  { nom: 'Monument Historique', badge: 'Déduction', cls: 'imp-b-ded',
+    principe: 'Bien classé ou inscrit : charges et travaux déductibles du revenu.',
+    avantage: 'Déduction sur le revenu global <b>sans plafonnement</b> des niches — d’autant plus forte que votre TMI est élevée.',
+    surveiller: 'Engagement de conservation 15 ans, fortes contraintes patrimoniales.' },
+];
+
+const placements = [
+  { nom: 'Intérêts & obligations', badge: 'Flat tax 30 %', cls: 'imp-b-ded',
+    principe: 'Coupons d’obligations, intérêts de comptes à terme, fonds obligataires : des revenus de capitaux mobiliers.',
+    impo: 'PFU de <b>30 %</b> (12,8 % d’impôt + 17,2 % de prélèvements sociaux). Option possible pour le barème si c’est plus favorable.',
+    note: 'Souvent la fiscalité la plus lourde : d’où l’intérêt des enveloppes ci-dessous.' },
+  { nom: 'Dividendes & actions', badge: 'Flat tax 30 %', cls: 'imp-b-ded',
+    principe: 'Dividendes perçus et plus-values de cession de titres.',
+    impo: 'PFU de <b>30 %</b>. Sur option pour le barème : abattement de 40 % sur les dividendes.',
+    note: 'L’option barème s’applique à tout le foyer et à tous les revenus de l’année.' },
+  { nom: 'Assurance-vie', badge: 'Enveloppe', cls: 'imp-b-red',
+    principe: 'Enveloppe souple : la fiscalité ne porte que sur les gains, uniquement lors d’un retrait.',
+    impo: 'Après 8 ans : abattement annuel de <b>4 600 € (seul) / 9 200 € (couple)</b> sur les gains, puis 7,5 % (+17,2 % PS) jusqu’à 150 000 € de primes.',
+    note: 'Atout aussi pour la transmission : abattement de 152 500 € par bénéficiaire.' },
+  { nom: 'PEA', badge: 'Après 5 ans', cls: 'imp-b-red',
+    principe: 'Enveloppe dédiée aux actions européennes.',
+    impo: 'Après 5 ans, gains <b>exonérés d’impôt</b> — seuls les 17,2 % de prélèvements sociaux restent dus.',
+    note: 'Un retrait avant 5 ans entraîne la clôture du plan (sauf exceptions).' },
+  { nom: 'Livret A · LDDS · LEP', badge: 'Exonéré', cls: 'imp-b-red',
+    principe: 'Épargne de précaution réglementée, disponible à tout moment.',
+    impo: 'Intérêts <b>totalement exonérés</b> d’impôt et de prélèvements sociaux.',
+    note: 'Plafonds de versement et taux fixés par l’État : une réserve, pas un moteur de rendement.' },
+  { nom: 'PER', badge: 'Déduction à l’entrée', cls: 'imp-b-ded',
+    principe: 'Épargne retraite : les versements réduisent votre revenu imposable (voir le simulateur ci-dessus).',
+    impo: 'Gain immédiat = versement × votre <b>TMI</b>. La sortie (capital ou rente) est ensuite imposée.',
+    note: 'Épargne bloquée jusqu’à la retraite, sauf déblocage anticipé (achat résidence principale, accidents de la vie).' },
+];
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Impôt sur le revenu</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Fiscalité
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Savoir lire son <span class="italic text-chene">avis d'imposition</span></h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Revenu imposable, parts fiscales, quotient familial, taux marginal… On décrypte chaque ligne de votre avis, puis vous simulez votre impôt avec le barème officiel 2026 (revenus 2025).
+      </p>
+    </div>
+  </header>
+
+  <!-- ============ I. DÉCRYPTEUR ============ -->
+  <section class="shell max-w-5xl pb-4">
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>I · Décrypter votre avis, ligne par ligne</p>
+    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Chaque ligne, expliquée</h2>
+    <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Cliquez sur une ligne de l'avis pour comprendre à quoi elle correspond. Les montants sont un exemple : un couple avec deux enfants, 62 000 € de revenu imposable.</p>
+
+    <div class="grid md:grid-cols-[1.15fr_.85fr] gap-6 items-start">
+      <div class="imp-avis" role="list">
+        <div class="imp-avis-top">
+          <span>RÉPUBLIQUE FRANÇAISE<br><span class="opacity-80 text-[0.78rem]">Avis d'impôt sur le revenu 2026</span></span>
+          <span class="imp-kind">Revenus 2025</span>
+        </div>
+        {lignes.map((l) => (
+          <button class="imp-line" data-i={l.n} role="listitem">
+            <span class="imp-mk">{l.n}</span>
+            <span class="imp-lbl"><b>{l.lbl}</b>{l.sub}</span>
+            <span class="imp-val">{l.val}</span>
+          </button>
+        ))}
+      </div>
+
+      <aside class="imp-explain" id="imp-explain" aria-live="polite">
+        {explications.map((e) => (
+          <div class="imp-exp" id={`imp-exp-${e.n}`} hidden>
+            <span class="imp-tag"><span class="imp-dot">{e.n}</span>Décryptage</span>
+            <h3>{e.t}</h3>
+            <p set:html={e.h}></p>
+          </div>
+        ))}
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ II. SIMULATEUR ============ -->
+  <section class="shell max-w-5xl pt-10 pb-6">
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>II · Simuler votre impôt</p>
+    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Votre impôt, au barème officiel</h2>
+    <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Comme le simulateur officiel : salaires, pensions, revenus fonciers, bénéfices indépendants, déductions (pension alimentaire, PER) et principaux crédits d'impôt. Le calcul applique le barème progressif 2026, le quotient familial (avec son plafonnement) et la décote, exactement comme l'administration.</p>
+
+    <div class="tool-card">
+      <div class="tool-grid">
+        <!-- Inputs -->
+        <div>
+          <div class="tool-field">
+            <label>Situation du foyer</label>
+            <div class="imp-seg" id="imp-statut">
+              <button class="on" data-v="single">Célibataire</button>
+              <button data-v="couple">Marié / pacsé</button>
+              <button data-v="divorce">Divorcé</button>
+              <button data-v="veuf">Veuf</button>
+            </div>
+          </div>
+
+          <div class="tool-field">
+            <label>Enfants et personnes à charge</label>
+            <div class="imp-stepper">
+              <button id="imp-kminus" aria-label="Retirer un enfant">–</button>
+              <span class="n" id="imp-kn">0</span>
+              <button id="imp-kplus" aria-label="Ajouter un enfant">+</button>
+            </div>
+            <label class="imp-check" id="imp-isole-wrap" hidden>
+              <input type="checkbox" id="imp-isole" />
+              <span>Je vis <b>seul(e) avec mes enfants</b> (parent isolé) : une demi-part supplémentaire.</span>
+            </label>
+          </div>
+
+          <p class="imp-group">Vos revenus</p>
+
+          <div class="tool-field">
+            <label>Salaires & traitements nets annuels du foyer</label>
+            <div class="imp-money"><span>€</span><input id="imp-salaires" class="tool-input" type="text" inputmode="numeric" value="35 000" /></div>
+          </div>
+
+          <div class="tool-field">
+            <label>Frais professionnels</label>
+            <div class="imp-seg imp-seg-2" id="imp-frais">
+              <button class="on" data-v="forfait">Abattement 10 %</button>
+              <button data-v="reel">Frais réels</button>
+            </div>
+            <div id="imp-reel-wrap" hidden style="margin-top:10px">
+              <div class="imp-money"><span>€</span><input id="imp-frais-reel" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            </div>
+          </div>
+
+          <div class="tool-field">
+            <label>Pensions & retraites <span class="imp-opt">net imposable</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-retraites" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+          </div>
+
+          <div class="tool-field">
+            <label>Revenus fonciers nets <span class="imp-opt">location nue</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-foncier" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Loyers encaissés moins charges et intérêts (régime réel), ou loyers − 30 % (micro-foncier). Soumis aussi à <b>17,2 % de prélèvements sociaux</b>, calculés à part.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Location meublée — LMNP <span class="imp-opt">résultat BIC</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-lmnp" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Le meublé relève des <b>BIC</b> (pas des BNC). Reportez ici le bénéfice après amortissement — calculable avec notre <a href="/outils/lmnp" style="color:#E6C259;text-decoration:underline">simulateur LMNP</a>. Soumis à <b>17,2 % de prélèvements sociaux</b> (LMNP non professionnel).</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Bénéfices indépendants (BIC / BNC) <span class="imp-opt">activité pro</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-bic" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Activité indépendante (commerçant, artisan, profession libérale), hors location meublée.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Autres revenus imposables</label>
+            <div class="imp-money"><span>€</span><input id="imp-autres" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+          </div>
+
+          <p class="imp-group">Vos déductions</p>
+
+          <div class="tool-field">
+            <label>Pension alimentaire versée <span class="imp-opt">déductible</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-pension" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Inclut l'aide à un <b>enfant majeur non rattaché</b> (études, logement) : déductible jusqu'à <b>6 855 €/enfant</b> avec justificatifs, ou <b>4 075 €</b> en forfait.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Versements épargne retraite (PER) <span class="imp-opt">déductible</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-per" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+          </div>
+
+          <p class="imp-group">Réductions & crédits d'impôt</p>
+
+          <div class="tool-field">
+            <label>Dons aux associations <span class="imp-opt">réduction</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-dons" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">75 % jusqu'à 1 000 €, puis 66 % (dans la limite de 20 % du revenu imposable).</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Emploi à domicile / garde d'enfants <span class="imp-opt">crédit</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-domicile" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Crédit d'impôt de <b>50 %</b> des dépenses (plafond 12 000 €), <b>remboursé</b> même sans impôt.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Enfants scolarisés <span class="imp-opt">réduction</span></label>
+            <div class="imp-scol">
+              <div><span>Collège</span><input id="imp-coll" type="text" inputmode="numeric" value="0" /></div>
+              <div><span>Lycée</span><input id="imp-lyc" type="text" inputmode="numeric" value="0" /></div>
+              <div><span>Supérieur</span><input id="imp-sup" type="text" inputmode="numeric" value="0" /></div>
+            </div>
+            <p class="imp-hint">Réduction de <b>61 €</b> par collégien, <b>153 €</b> par lycéen, <b>183 €</b> par étudiant du supérieur.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Cotisations syndicales <span class="imp-opt">crédit</span></label>
+            <div class="imp-money"><span>€</span><input id="imp-synd" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
+            <p class="imp-hint">Crédit d'impôt de <b>66 %</b> (dans la limite de 1 % de vos salaires et pensions).</p>
+          </div>
+
+          <div class="imp-readout" id="imp-readout"></div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="tool-result">
+            <p class="lbl">Impôt sur le revenu estimé</p>
+            <p class="big" id="imp-res">—</p>
+            <p class="imp-sub" id="imp-sub">—</p>
+          </div>
+
+          <div class="imp-stats">
+            <div class="imp-stat"><p class="k">Nombre de parts</p><div class="v" id="imp-parts">—</div></div>
+            <div class="imp-stat"><p class="k">Quotient familial</p><div class="v" id="imp-qf">—</div></div>
+            <div class="imp-stat"><p class="k">Taux marginal (TMI)</p><div class="v" id="imp-tmi">—</div><div class="imp-band"><i id="imp-tmi-bar"></i></div></div>
+            <div class="imp-stat"><p class="k">Taux moyen réel</p><div class="v" id="imp-moyen">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barème + détail (pleine largeur dans la carte) -->
+      <div class="imp-bareme">
+        <p class="imp-bareme-k">Comment le barème « remplit » vos tranches</p>
+        <p class="imp-bareme-note" id="imp-bareme-note">—</p>
+        <div id="imp-bars">
+          {tranches.map((t, i) => (
+            <div class={`imp-brow ${t.cls}`}>
+              <span class="imp-rng"><b>{t.rate}</b><br>{t.rng}</span>
+              <span class="imp-track"><i id={`imp-fill-${i}`}></i></span>
+              <span class="imp-tax" id={`imp-tax-${i}`}>—</span>
+            </div>
+          ))}
+        </div>
+        <div id="imp-breakdown" class="imp-breakdown"></div>
+      </div>
+
+      <p class="imp-simpl"><b>Ce que nous simplifions volontairement.</b> Les revenus de capitaux mobiliers et plus-values (imposés au prélèvement forfaitaire de 30 %, voir la fiscalité des placements plus bas), les dispositifs immobiliers (voir les leviers plus bas), la CSG déductible, les rentes viagères et le prélèvement à la source déjà payé ne sont pas intégrés au barème. L'essentiel des foyers retrouve ici un résultat très proche de l'avis officiel.</p>
+      <p class="tool-note">Barème de l'impôt sur le revenu 2026 (revenus 2025), plafonnement du quotient familial (1 807 € par demi-part) et décote issus des textes officiels. Estimation pédagogique : elle ne remplace pas le simulateur officiel des impôts ni un conseil personnalisé.</p>
+    </div>
+
+    <ToolLeadCapture tool="Impôt sur le revenu" titre="Votre estimation d'impôt sur le revenu" heading="Recevez votre estimation en PDF" />
+  </section>
+
+  <!-- ============ III. LEVIERS IMMOBILIERS ============ -->
+  <section class="shell max-w-5xl pt-10 pb-6">
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>III · Réduire son impôt par l'immobilier</p>
+    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Les leviers immobiliers</h2>
+    <p class="text-ink/65 max-w-prose-wide mb-6 leading-relaxed">Trois familles de leviers, trois mécaniques différentes. Bien les distinguer, c'est déjà savoir lequel sert votre situation.</p>
+
+    <div class="grid sm:grid-cols-3 gap-4 mb-8">
+      <div class="imp-mech"><p class="mh"><i style="background:#2D4A33"></i>Réduction d'impôt</p><p>Se soustrait <b>directement de votre impôt</b>, euro pour euro.</p></div>
+      <div class="imp-mech"><p class="mh"><i style="background:#D4A82D"></i>Déduction du revenu</p><p>Baisse votre <b>revenu imposable</b> : le gain dépend de votre TMI.</p></div>
+      <div class="imp-mech"><p class="mh"><i style="background:#0A1F4F"></i>Amortissement</p><p>Efface comptablement une part des <b>loyers</b> (location meublée).</p></div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      {immo.map((c) => (
+        <div class="imp-lcard">
+          <div class="imp-lc-top"><h4>{c.nom}</h4><span class={`imp-badge ${c.cls}`}>{c.badge}</span></div>
+          <div class="imp-row"><span class="k">Principe</span><span set:html={c.principe}></span></div>
+          <div class="imp-div"></div>
+          <div class="imp-row imp-av"><span class="k">L'avantage</span><span set:html={c.avantage}></span></div>
+          <div class="imp-div"></div>
+          <div class="imp-row"><span class="k warn">À surveiller</span><span set:html={c.surveiller}></span></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ IV. FISCALITÉ DES PLACEMENTS ============ -->
+  <section class="shell max-w-5xl pt-10 pb-16">
+    <p class="eyebrow mb-4 flex items-center gap-3"><span class="inline-block h-px w-8 bg-chene"></span>IV · Comment sont imposés vos placements</p>
+    <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">La fiscalité de vos placements</h2>
+    <p class="text-ink/65 max-w-prose-wide mb-8 leading-relaxed">Beaucoup de contribuables sont surpris par l'impôt sur leurs intérêts ou obligations. Par défaut, les revenus financiers subissent le <b>prélèvement forfaitaire unique (PFU)</b> de 30 % : 12,8 % d'impôt + 17,2 % de prélèvements sociaux. Les enveloppes dédiées permettent d'alléger cette note.</p>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      {placements.map((c) => (
+        <div class="imp-lcard">
+          <div class="imp-lc-top"><h4>{c.nom}</h4><span class={`imp-badge ${c.cls}`}>{c.badge}</span></div>
+          <div class="imp-row"><span class="k">Principe</span><span set:html={c.principe}></span></div>
+          <div class="imp-div"></div>
+          <div class="imp-row imp-av"><span class="k">Imposition</span><span set:html={c.impo}></span></div>
+          <div class="imp-div"></div>
+          <div class="imp-row"><span class="k warn">À noter</span><span set:html={c.note}></span></div>
+        </div>
+      ))}
+    </div>
+    <p class="text-xs text-stone mt-6 leading-relaxed max-w-prose-wide">Information générale sur la fiscalité des placements, à jour 2026. Elle ne constitue pas un conseil en investissement personnalisé.</p>
+  </section>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  /* ===== I. Décrypteur (sur crème) ===== */
+  .imp-avis{background:#FAF7EF;border:1px solid rgba(3,16,46,.12);border-radius:16px;overflow:hidden;}
+  .imp-avis-top{background:#03102E;color:#F5F1E8;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'Fraunces Variable',Fraunces,serif;font-size:.9rem;line-height:1.3;}
+  .imp-kind{font-family:'Inter Variable',Inter,sans-serif;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:#E6C259;border:1px solid rgba(230,194,89,.5);padding:5px 9px;border-radius:4px;white-space:nowrap;}
+  .imp-line{display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(3,16,46,.08);cursor:pointer;padding:13px 20px;transition:background .18s;font-family:inherit;}
+  .imp-line:last-child{border-bottom:0;}
+  .imp-line:hover{background:#F5F1E8;}
+  .imp-line.on{background:#F5F1E8;}
+  .imp-line.on .imp-mk{background:#D4A82D;color:#fff;border-color:#D4A82D;}
+  .imp-mk{width:24px;height:24px;border-radius:50%;border:1.5px solid #D4A82D;color:#A7801F;font-size:.78rem;font-weight:700;display:grid;place-items:center;font-variant-numeric:tabular-nums;transition:.18s;}
+  .imp-lbl{font-size:.9rem;color:#33406B;}
+  .imp-lbl b{display:block;color:#03102E;font-weight:600;font-size:.95rem;}
+  .imp-val{font-variant-numeric:tabular-nums;font-weight:600;font-size:.98rem;color:#03102E;text-align:right;}
+  .imp-explain{position:sticky;top:20px;background:#FAF7EF;border:1px solid rgba(3,16,46,.12);border-radius:16px;padding:24px;min-height:230px;}
+  .imp-tag{display:inline-flex;align-items:center;gap:8px;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#A7801F;font-weight:700;margin-bottom:12px;}
+  .imp-dot{width:20px;height:20px;border-radius:50%;background:#D4A82D;color:#fff;display:grid;place-items:center;font-size:.72rem;font-variant-numeric:tabular-nums;}
+  .imp-explain h3{font-family:'Fraunces Variable',Fraunces,serif;font-weight:400;font-size:1.35rem;margin:0 0 10px;color:#03102E;}
+  .imp-explain p{margin:0;font-size:.95rem;color:#33406B;line-height:1.6;}
+  .imp-aside{display:block;margin-top:14px;padding-left:12px;border-left:2px solid #D4A82D;color:#7A7566;font-size:.86rem;}
+
+  /* ===== II. Simulateur (dans la tool-card navy) ===== */
+  .imp-group{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#E6C259;font-weight:700;margin:28px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(212,168,45,.22);}
+  .imp-scol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .imp-scol > div{display:flex;flex-direction:column;gap:5px;}
+  .imp-scol span{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:#9fb0c8;}
+  .imp-scol input{width:100%;background:#0a1a30;border:1px solid rgba(212,168,45,.4);color:#F5F1E8;font:600 1rem 'Inter Variable',Inter,system-ui,sans-serif;padding:9px 10px;border-radius:10px;text-align:center;font-variant-numeric:tabular-nums;}
+  .imp-scol input:focus{outline:none;border-color:#D4A82D;}
+  .imp-simpl{margin-top:14px;font-size:.76rem;color:#7f8ea6;line-height:1.55;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;}
+  .imp-simpl b{color:#cbd3e0;}
+  .imp-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .imp-seg.imp-seg-2{grid-template-columns:1fr 1fr;}
+  .imp-seg button{background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem 'Inter Variable',Inter,system-ui,sans-serif;padding:11px 8px;border-radius:12px;cursor:pointer;transition:.2s;}
+  .imp-seg button.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+  .imp-stepper{display:inline-flex;align-items:center;border:1px solid rgba(212,168,45,.4);border-radius:12px;overflow:hidden;}
+  .imp-stepper button{width:44px;height:44px;background:transparent;border:0;color:#E6C259;font-size:1.35rem;cursor:pointer;}
+  .imp-stepper button:hover{background:rgba(212,168,45,.12);}
+  .imp-stepper .n{min-width:54px;text-align:center;color:#F5F1E8;font-weight:600;font-variant-numeric:tabular-nums;}
+  .imp-check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;cursor:pointer;font-size:.82rem;color:#9fb0c8;line-height:1.45;}
+  .imp-check input{margin-top:3px;accent-color:#D4A82D;width:16px;height:16px;flex:none;}
+  .imp-check b{color:#F5F1E8;}
+  .imp-money{display:flex;align-items:stretch;border:1px solid rgba(212,168,45,.4);border-radius:12px;overflow:hidden;background:#0a1a30;}
+  .imp-money span{padding:0 14px;display:grid;place-items:center;color:#9fb0c8;background:rgba(255,255,255,.04);border-right:1px solid rgba(212,168,45,.25);}
+  .imp-money .tool-input{border:0;border-radius:0;background:transparent;font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums;}
+  .imp-money:focus-within{border-color:#D4A82D;}
+  .imp-opt{font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:#E6C259;font-weight:700;margin-left:6px;}
+  .imp-hint{font-size:.76rem;color:#7f8ea6;margin-top:8px;line-height:1.5;}
+  .imp-hint b{color:#cbd3e0;}
+  .imp-readout{margin-top:6px;background:#0a1a30;border:1px dashed rgba(212,168,45,.3);border-radius:12px;padding:13px 15px;color:#9fb0c8;font-size:.85rem;}
+  .imp-readout .big2{display:block;font-family:'Fraunces Variable',Fraunces,serif;font-size:1.3rem;color:#F5F1E8;font-variant-numeric:tabular-nums;margin-top:2px;}
+  .imp-readout .det{display:block;color:#6f7f98;font-size:.76rem;margin-top:6px;line-height:1.5;}
+  .imp-sub{margin:0;font-size:.9rem;color:#9fb0c8;line-height:1.5;}
+  .imp-sub b{color:#E6C259;}
+  .imp-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+  .imp-stat{background:#0a1a30;border:1px solid rgba(212,168,45,.15);border-radius:12px;padding:14px 15px;}
+  .imp-stat .k{margin:0 0 4px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#8ba0bd;}
+  .imp-stat .v{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.45rem;color:#F5F1E8;font-variant-numeric:tabular-nums;}
+  .imp-band{margin-top:8px;height:6px;border-radius:3px;background:#213a5e;overflow:hidden;}
+  .imp-band i{display:block;height:100%;background:#D4A82D;width:0;transition:width .5s ease;}
+  .imp-bareme{margin-top:26px;border-top:1px solid rgba(255,255,255,.08);padding-top:20px;}
+  .imp-bareme-k{margin:0 0 4px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#8ba0bd;}
+  .imp-bareme-note{margin:0 0 16px;font-size:.86rem;color:#cbd3e0;}
+  .imp-bareme-note b{font-variant-numeric:tabular-nums;color:#F5F1E8;}
+  .imp-brow{display:grid;grid-template-columns:130px 1fr 92px;gap:12px;align-items:center;font-size:.78rem;margin-bottom:9px;}
+  .imp-rng{color:#8ba0bd;font-variant-numeric:tabular-nums;font-size:.72rem;line-height:1.3;}
+  .imp-rng b{font-size:.82rem;}
+  .imp-track{height:18px;border-radius:4px;background:#213a5e;position:relative;overflow:hidden;}
+  .imp-track i{position:absolute;inset:0 100% 0 0;border-radius:3px;transition:right .5s cubic-bezier(.2,.7,.2,1);}
+  .imp-tax{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#F5F1E8;}
+  .imp-brow.r0 .imp-rng b{color:#9fb0a6}.imp-brow.r0 .imp-track i{background:#6f8a7c}
+  .imp-brow.r1 .imp-rng b{color:#7fbf98}.imp-brow.r1 .imp-track i{background:#5fa87f}
+  .imp-brow.r2 .imp-rng b{color:#E6C259}.imp-brow.r2 .imp-track i{background:#D4A82D}
+  .imp-brow.r3 .imp-rng b{color:#e0a266}.imp-brow.r3 .imp-track i{background:#c8823e}
+  .imp-brow.r4 .imp-rng b{color:#e08a76}.imp-brow.r4 .imp-track i{background:#b8503c}
+  .imp-breakdown{margin-top:18px;}
+  .imp-brl{display:flex;justify-content:space-between;padding:10px 0;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.07);}
+  .imp-brl span{color:#9fb0c8;}
+  .imp-brl b{font-variant-numeric:tabular-nums;color:#F5F1E8;}
+  .imp-brl.minus b{color:#7fbf98;}
+  .imp-brl.tot{border-bottom:0;padding-top:13px;}
+  .imp-brl.tot span{color:#F5F1E8;font-weight:600;}
+  .imp-brl.tot b{color:#E6C259;font-size:1.15rem;font-family:'Fraunces Variable',Fraunces,serif;}
+
+  /* ===== III & IV. cartes leviers (sur crème) ===== */
+  .imp-mech{background:#FAF7EF;border:1px solid rgba(3,16,46,.1);border-radius:12px;padding:15px 16px;}
+  .imp-mech .mh{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:#03102E;margin:0 0 4px;}
+  .imp-mech .mh i{width:9px;height:9px;border-radius:50%;flex:none;}
+  .imp-mech p{margin:0;font-size:.82rem;color:#7A7566;line-height:1.5;}
+  .imp-lcard{background:#FAF7EF;border:1px solid rgba(3,16,46,.1);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:11px;}
+  .imp-lc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .imp-lc-top h4{font-family:'Fraunces Variable',Fraunces,serif;font-weight:400;font-size:1.22rem;margin:0;color:#03102E;}
+  .imp-badge{font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap;border:1px solid transparent;}
+  .imp-b-red{background:rgba(45,74,51,.12);color:#2D4A33;border-color:rgba(45,74,51,.25);}
+  .imp-b-ded{background:rgba(212,168,45,.16);color:#7a5e12;border-color:rgba(212,168,45,.4);}
+  .imp-b-amo{background:rgba(3,16,46,.07);color:#03102E;border-color:rgba(3,16,46,.18);}
+  .imp-b-clos{background:rgba(143,58,44,.1);color:#8f3a2c;border-color:rgba(143,58,44,.28);}
+  .imp-row{font-size:.88rem;line-height:1.55;color:#33406B;}
+  .imp-row .k{display:block;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:#7A7566;margin-bottom:3px;font-weight:700;}
+  .imp-row.imp-av .k{color:#7a5e12;}
+  .imp-row .k.warn{color:#9A6A1E;}
+  .imp-div{height:1px;background:rgba(3,16,46,.07);}
+
+  @media(max-width:820px){
+    .imp-explain{position:static;}
+    .imp-brow{grid-template-columns:104px 1fr 80px;}
+  }
+  @media (prefers-reduced-motion:reduce){.imp-track i,.imp-band i{transition:none;}}
+</style>
+
+<script is:inline>
+  (function(){
+    var TRANCHES=[{min:0,max:11600,rate:0},{min:11600,max:29579,rate:0.11},{min:29579,max:84577,rate:0.30},{min:84577,max:181917,rate:0.41},{min:181917,max:Infinity,rate:0.45}];
+    var PLAFOND_DEMIPART=1807, ABAT_MAX=14555, ABAT_MIN=509;
+    var DECOTE_SEUIL_S=1982, DECOTE_SEUIL_C=3277, DECOTE_HAUT_S=897, DECOTE_HAUT_C=1483, DECOTE_TAUX=0.4525, SEUIL_RECOUVREMENT=61;
+    var eur=function(n){return Math.round(n).toLocaleString('fr-FR')+' €';};
+    var pct=function(n){return (Math.round(n*10)/10).toLocaleString('fr-FR')+' %';};
+    function taxParPart(q){var t=0;for(var i=0;i<TRANCHES.length;i++){var tr=TRANCHES[i];if(q>tr.min)t+=(Math.min(q,tr.max)-tr.min)*tr.rate;}return t;}
+    function tmiRate(q){var r=0;for(var i=0;i<TRANCHES.length;i++)if(q>TRANCHES[i].min)r=TRANCHES[i].rate;return r;}
+    function calcul(revenu,p,baseParts,decoteCouple){
+      var dsup=Math.round((p-baseParts)/0.5), qf=revenu/p;
+      var full=taxParPart(qf)*p, bas=taxParPart(revenu/baseParts)*baseParts;
+      var av=bas-full, pl=PLAFOND_DEMIPART*dsup, iad=full, plaf=false;
+      if(dsup>0&&av>pl){iad=bas-pl;plaf=true;}
+      var seuil=decoteCouple?DECOTE_SEUIL_C:DECOTE_SEUIL_S, haut=decoteCouple?DECOTE_HAUT_C:DECOTE_HAUT_S, dec=0;
+      if(iad<seuil){dec=Math.max(0,haut-DECOTE_TAUX*iad);dec=Math.min(dec,iad);}
+      var net=iad-dec, rec=net>=SEUIL_RECOUVREMENT;
+      return {parts:p,qf:qf,full:full,iad:iad,plaf:plaf,plafond:pl,dec:dec,net:rec?net:0,rec:rec,tmi:tmiRate(qf),moyen:revenu>0?((rec?net:0)/revenu*100):0};
+    }
+
+    var statut='single', kids=0, isole=false, fraisMode='forfait', last=null, lastCtx=null;
+
+    function parseNum(v){return parseInt((v||'').replace(/[^0-9]/g,''),10)||0;}
+    function $(id){return document.getElementById(id);}
+
+    function foyerParts(){
+      var couple=statut==='couple', veufFam=statut==='veuf'&&kids>0;
+      var base=(couple||veufFam)?2:1;
+      var enf=Math.min(kids,2)*0.5+Math.max(0,kids-2)*1;
+      var iso=isole&&kids>0&&(statut==='single'||statut==='divorce');
+      return {p:base+enf+(iso?0.5:0), base:base};
+    }
+
+    function bindMoney(id,cb){
+      var el=$(id); if(!el)return;
+      el.addEventListener('input',function(){
+        var caret=this.selectionStart,len=this.value.length,n=parseNum(this.value);
+        this.value=n?n.toLocaleString('fr-FR'):'';
+        this.selectionStart=this.selectionEnd=Math.max(0,caret+(this.value.length-len));
+        cb();
+      });
+    }
+
+    function render(){
+      var couple=statut==='couple', nbDecl=couple?2:1;
+      var iw=$('imp-isole-wrap'); if(iw) iw.hidden=!(kids>0&&(statut==='single'||statut==='divorce'));
+      var salaires=parseNum($('imp-salaires').value);
+      var fraisPro;
+      if(fraisMode==='reel'){fraisPro=parseNum($('imp-frais-reel').value);}
+      else{fraisPro=Math.min(salaires*0.10,ABAT_MAX*nbDecl);fraisPro=Math.max(fraisPro,Math.min(ABAT_MIN*nbDecl,salaires));}
+      var salNet=Math.max(0,salaires-fraisPro);
+      var retraites=parseNum($('imp-retraites').value);
+      var foncier=parseNum($('imp-foncier').value);
+      var lmnp=parseNum($('imp-lmnp').value);
+      var bic=parseNum($('imp-bic').value);
+      var autres=parseNum($('imp-autres').value);
+      var pension=parseNum($('imp-pension').value), per=parseNum($('imp-per').value);
+      var revenu=Math.max(0,Math.round(salNet+retraites+foncier+lmnp+bic+autres-pension-per));
+      var psSociaux=Math.round((Math.max(0,foncier)+Math.max(0,lmnp))*0.172);
+      var fp=foyerParts(), r=calcul(revenu,fp.p,fp.base,couple);
+      last=r; lastCtx={revenu:revenu,statut:statut,ps:psSociaux};
+
+      var det=[];
+      if(salaires>0) det.push('Salaires −frais '+(fraisMode==='reel'?'(réels)':'(10 %)')+' : '+eur(salNet));
+      if(retraites>0) det.push('Retraites : '+eur(retraites));
+      if(foncier>0) det.push('Foncier : '+eur(foncier));
+      if(lmnp>0) det.push('LMNP : '+eur(lmnp));
+      if(bic>0) det.push('BIC/BNC : '+eur(bic));
+      if(autres>0) det.push('Autres : '+eur(autres));
+      if(pension>0) det.push('Pension : − '+eur(pension));
+      if(per>0) det.push('PER : − '+eur(per));
+      $('imp-readout').innerHTML='Revenu net imposable retenu<span class="big2">'+eur(revenu)+'</span>'+(det.length?'<span class="det">'+det.join(' · ')+'</span>':'');
+
+      // Réductions (non remboursables, plafonnées à l'impôt) & crédits (remboursables)
+      var dons=parseNum($('imp-dons').value), domicile=parseNum($('imp-domicile').value);
+      var coll=parseNum($('imp-coll').value), lyc=parseNum($('imp-lyc').value), sup=parseNum($('imp-sup').value);
+      var synd=parseNum($('imp-synd').value);
+      var don75=Math.min(dons,1000)*0.75;
+      var don66=Math.min(Math.max(0,dons-1000), revenu*0.20)*0.66;
+      var redDonsRaw=Math.round(don75+don66);
+      var redScolRaw=coll*61+lyc*153+sup*183;
+      var base=r.net;
+      var redDons=Math.min(redDonsRaw, base); base-=redDons;
+      var redScol=Math.min(redScolRaw, base); base-=redScol;  // impôt après réductions
+      var credDom=Math.round(Math.min(domicile,12000)*0.50);
+      var credSynd=Math.round(Math.min(synd, Math.max(0,salaires+retraites)*0.01)*0.66);
+      var credit=credDom+credSynd;                            // crédits remboursables
+      var finalIR=base-credit;                                // < 0 = restitution
+      var restit=finalIR<0?-finalIR:0, aPayer=finalIR>0?finalIR:0;
+      var moyen=revenu>0?aPayer/revenu*100:0;
+      lastCtx.finalIR=finalIR; lastCtx.moyen=moyen;
+
+      var anyInput=revenu>0||dons>0||domicile>0||synd>0||coll>0||lyc>0||sup>0;
+      $('imp-res').textContent=anyInput?(finalIR>=0?eur(finalIR):'− '+eur(restit)):'—';
+      var sub;
+      if(!anyInput) sub='Renseignez vos revenus à gauche.';
+      else if(finalIR<0) sub='<b>Crédit d\'impôt restitué</b> : l\'administration vous rembourse '+eur(restit)+'.';
+      else if(!r.rec && redDons===0 && redScol===0 && credit===0) sub='Impôt <b>non mis en recouvrement</b> (inférieur à 61 €). Vous ne payez pas d\'IR.';
+      else sub='Soit un taux moyen de <b>'+pct(moyen)+'</b> sur '+eur(revenu)+' de revenu imposable.';
+      if(psSociaux>0) sub+=' <span style="color:#8ba0bd">+ '+eur(psSociaux)+' de prélèvements sociaux (foncier + LMNP).</span>';
+      $('imp-sub').innerHTML=sub;
+
+      $('imp-parts').textContent=r.parts.toLocaleString('fr-FR');
+      $('imp-qf').textContent=revenu>0?eur(r.qf):'—';
+      $('imp-tmi').textContent=revenu>0?pct(r.tmi*100):'—';
+      $('imp-tmi-bar').style.width=(r.tmi/0.45*100)+'%';
+      $('imp-moyen').textContent=revenu>0?pct(moyen):'—';
+
+      $('imp-bareme-note').innerHTML=revenu>0
+        ? 'Le barème s\'applique à votre quotient familial (<b>'+eur(r.qf)+'</b>), puis le résultat est multiplié par vos <b>'+r.parts.toLocaleString('fr-FR')+' parts</b>.'
+        : 'Le barème s\'applique à votre quotient familial (revenu ÷ parts).';
+
+      var q=revenu>0?r.qf:0;
+      for(var i=0;i<TRANCHES.length;i++){
+        var tr=TRANCHES[i];
+        var span=(tr.max===Infinity)?1:(tr.max-tr.min);
+        var filled=Math.max(0,Math.min(q,tr.max)-tr.min);
+        var ratio=(tr.max===Infinity)?(q>tr.min?1:0):(span>0?filled/span:0);
+        var taxHere=filled*tr.rate*r.parts;
+        var fill=$('imp-fill-'+i); if(fill) fill.style.right=(100-ratio*100)+'%';
+        var tx=$('imp-tax-'+i); if(tx) tx.textContent=filled>0?eur(taxHere):'—';
+      }
+
+      var rows='';
+      if(anyInput){
+        rows+='<div class="imp-brl"><span>Impôt selon le barème</span><b>'+eur(r.full>0?r.full:0)+'</b></div>';
+        if(r.plaf) rows+='<div class="imp-brl"><span>Plafonnement du quotient familial</span><b>'+eur(r.iad)+'</b></div>';
+        if(r.dec>0) rows+='<div class="imp-brl minus"><span>Décote (impôts modérés)</span><b>− '+eur(r.dec)+'</b></div>';
+        if(redDons>0||redScol>0||credit>0){
+          rows+='<div class="imp-brl"><span>Impôt après barème</span><b>'+eur(r.net)+'</b></div>';
+          if(redDons>0) rows+='<div class="imp-brl minus"><span>Réduction — dons</span><b>− '+eur(redDons)+'</b></div>';
+          if(redScol>0) rows+='<div class="imp-brl minus"><span>Réduction — frais de scolarité</span><b>− '+eur(redScol)+'</b></div>';
+          if(credDom>0) rows+='<div class="imp-brl minus"><span>Crédit — emploi à domicile</span><b>− '+eur(credDom)+'</b></div>';
+          if(credSynd>0) rows+='<div class="imp-brl minus"><span>Crédit — cotisations syndicales</span><b>− '+eur(credSynd)+'</b></div>';
+        }
+        if(finalIR>=0) rows+='<div class="imp-brl tot"><span>Impôt sur le revenu net</span><b>'+eur(finalIR)+'</b></div>';
+        else rows+='<div class="imp-brl tot"><span>Crédit d\'impôt restitué</span><b>− '+eur(restit)+'</b></div>';
+        if(psSociaux>0){
+          rows+='<div class="imp-brl"><span>Prélèvements sociaux — foncier + LMNP (17,2 %)</span><b>'+eur(psSociaux)+'</b></div>';
+          var totNet=aPayer+psSociaux-restit;
+          rows+='<div class="imp-brl tot"><span>'+(totNet>=0?'Total dû (IR + prélèvements sociaux)':'Solde en votre faveur')+'</span><b>'+(totNet>=0?eur(totNet):'− '+eur(-totNet))+'</b></div>';
+        }
+      }
+      $('imp-breakdown').innerHTML=rows;
+    }
+
+    // lignes de résultat pour la capture de lead (PDF)
+    window.__leadRows=function(){
+      if(!last||!lastCtx) return [];
+      var stMap={single:'Célibataire',couple:'Marié / pacsé',divorce:'Divorcé',veuf:'Veuf'};
+      var fi=lastCtx.finalIR||0;
+      var rows=[
+        {label:'Situation du foyer', value:stMap[lastCtx.statut]||''},
+        {label:'Revenu net imposable', value:eur(lastCtx.revenu)},
+        {label:'Nombre de parts', value:last.parts.toLocaleString('fr-FR')},
+        {label:'Impôt sur le revenu estimé', value:(fi>=0?eur(fi):'− '+eur(-fi)+' (restitué)'), strong:true},
+        {label:'Taux marginal (TMI)', value:pct(last.tmi*100)},
+        {label:'Taux moyen réel', value:pct(lastCtx.moyen||0)}
+      ];
+      if(lastCtx.ps>0) rows.push({label:'Prélèvements sociaux (foncier)', value:eur(lastCtx.ps)});
+      return rows;
+    };
+
+    function selectExp(n){
+      for(var i=1;i<=10;i++){var e=$('imp-exp-'+i); if(e) e.hidden=(i!==n);}
+      document.querySelectorAll('.imp-line').forEach(function(b){b.classList.toggle('on',+b.dataset.i===n);});
+    }
+
+    function init(){
+      var root=$('imp-salaires'); if(!root||root.dataset.ready) return; root.dataset.ready='1';
+
+      var st=$('imp-statut');
+      if(st) st.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;statut=b.dataset.v;st.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});render();});
+      var fr=$('imp-frais');
+      if(fr) fr.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;fraisMode=b.dataset.v;fr.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});$('imp-reel-wrap').hidden=fraisMode!=='reel';render();});
+      $('imp-kminus').addEventListener('click',function(){kids=Math.max(0,kids-1);$('imp-kn').textContent=kids;render();});
+      $('imp-kplus').addEventListener('click',function(){kids=Math.min(8,kids+1);$('imp-kn').textContent=kids;render();});
+      $('imp-isole').addEventListener('change',function(){isole=this.checked;render();});
+      ['imp-salaires','imp-frais-reel','imp-retraites','imp-foncier','imp-lmnp','imp-bic','imp-autres','imp-pension','imp-per','imp-dons','imp-domicile','imp-synd'].forEach(function(id){bindMoney(id,render);});
+      ['imp-coll','imp-lyc','imp-sup'].forEach(function(id){var el=$(id); if(el) el.addEventListener('input',function(){var n=parseNum(this.value);this.value=n?String(n):'';render();});});
+
+      document.querySelectorAll('.imp-line').forEach(function(b){b.addEventListener('click',function(){selectExp(+b.dataset.i);});});
+
+      selectExp(1);
+      render();
+    }
+
+    init();
+    if(!window.__impInit){window.__impInit=1;document.addEventListener('astro:page-load',init);}
+  })();
+</script>
