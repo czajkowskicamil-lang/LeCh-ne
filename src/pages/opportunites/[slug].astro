@@ -55,10 +55,64 @@ const dateStr = new Intl.DateTimeFormat('fr-FR', {
       </div>
     </header>
 
+    {item.data.cover && (
+      <div class="shell max-w-5xl mb-12 md:mb-16">
+        <figure class="relative overflow-hidden bg-navy-deep">
+          <img
+            src={item.data.cover}
+            alt={item.data.title}
+            width="1536"
+            height="656"
+            fetchpriority="high"
+            decoding="async"
+            class="w-full aspect-[3/2] md:aspect-[21/9] object-cover"
+          />
+          {item.data.highlight && (
+            <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-deep via-navy-deep/70 to-transparent px-5 pt-14 pb-5 md:px-8 md:pt-20 md:pb-7">
+              <p class="text-cream text-sm md:text-base leading-snug max-w-2xl">{item.data.highlight}</p>
+            </figcaption>
+          )}
+        </figure>
+      </div>
+    )}
+
+    {item.data.facts.length > 0 && (
+      <div class="shell max-w-4xl mb-12 md:mb-16">
+        <p class="text-xs uppercase tracking-micro text-or-dark font-semibold mb-4 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-or"></span>
+          Les chiffres du lot
+        </p>
+        <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
+          {item.data.facts.map((f) => (
+            <div class="bg-cream-soft/60 px-5 py-4">
+              <dt class="text-[0.6rem] uppercase tracking-micro text-stone">{f.k}</dt>
+              <dd class="font-serif text-lg text-ink mt-1 leading-snug">{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    )}
+
     <div class="shell max-w-4xl pb-16 md:pb-24">
       <div class="prose-editorial">
         <Content />
       </div>
+
+      {item.data.gallery.length > 0 && (
+        <div class="grid sm:grid-cols-2 gap-4 mt-12">
+          {item.data.gallery.map((g) => (
+            <figure class="bg-navy-deep overflow-hidden">
+              <img
+                src={g.src}
+                alt={g.alt}
+                loading="lazy"
+                decoding="async"
+                class="w-full aspect-[4/3] object-cover"
+              />
+            </figure>
+          ))}
+        </div>
+      )}
 
       <p class="text-xs text-stone/80 leading-relaxed mt-14 pt-6 border-t border-ink/10">
         Communication à caractère informatif et non contractuel. Ne constitue ni un conseil en investissement personnalisé, ni une sollicitation. Tout investissement comporte des risques, notamment de perte en capital.

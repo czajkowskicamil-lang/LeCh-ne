@@ -1,7 +1,19 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CTA from '../../components/CTA.astro';
+import { getCollection } from 'astro:content';
 import { lmnp, nue, neuf, type Bien } from '../../data/opportunites-biens';
+
+// Opportunités rédigées (une page par bien), mises en avant au-dessus de la
+// sélection mensuelle. Les lots clôturés ne sont plus affichés.
+const alaUne = (await getCollection('opportunites'))
+  .filter((o) => o.data.status !== 'Clôturée')
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+  });
+// Une seule opportunité rédigée : carte pleine largeur, visuel à gauche.
+const solo = alaUne.length === 1;
 
 const families = [
   {
@@ -92,6 +104,60 @@ const moisLabel = 'Juillet 2026';
       </div>
     </div>
   </section>
+
+  <!-- À la une -->
+  {alaUne.length > 0 && (
+    <section class="py-10 md:py-14">
+      <div class="shell">
+        <div class="max-w-3xl mb-8">
+          <div class="border-t-2 border-or w-11 mb-4"></div>
+          <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">Regardé de près par le cabinet</p>
+          <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-3">À la une</h2>
+          <p class="text-ink/70 leading-relaxed">
+            Les lots que j'ai étudiés en détail et dont je vous livre l'analyse complète : emplacement, exploitant, chiffres et profils auxquels ils s'adressent.
+          </p>
+        </div>
+
+        <div class={solo ? 'grid gap-6' : 'grid md:grid-cols-2 gap-6'}>
+          {alaUne.map((o) => {
+            const href = o.data.external ?? `/opportunites/${o.slug}`;
+            return (
+              <article class={`group flex flex-col ${solo ? 'md:flex-row' : ''} border border-ink/10 bg-cream-soft/40 overflow-hidden hover:border-chene/40 hover:bg-cream-soft transition-colors`}>
+                {o.data.cover && (
+                  <a href={href} class={`block overflow-hidden bg-navy-deep ${solo ? 'aspect-[16/9] md:aspect-auto md:w-1/2 shrink-0' : 'aspect-[16/9]'}`}>
+                    <img
+                      src={o.data.cover}
+                      alt={o.data.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                    />
+                  </a>
+                )}
+                <div class={`p-6 flex flex-col flex-1 ${solo ? 'md:p-8 md:justify-center' : ''}`}>
+                  <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="text-[0.6rem] uppercase tracking-micro text-chene font-semibold">{o.data.type}</span>
+                    <span class="text-[0.6rem] uppercase tracking-micro rounded-full px-2.5 py-1 bg-or/10 text-or-dark">{o.data.status}</span>
+                  </div>
+                  <h3 class="font-serif text-2xl text-ink leading-tight">
+                    <a href={href} class="hover:text-chene transition-colors">{o.data.title}</a>
+                  </h3>
+                  <p class="text-sm text-stone mt-1">
+                    {o.data.location}{o.data.ticket && ` · ${o.data.ticket}`}
+                  </p>
+                  <p class="text-ink/70 leading-relaxed mt-4 flex-1">{o.data.excerpt}</p>
+                  <a href={href} class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink group-hover:text-chene transition-colors">
+                    Voir l'analyse complète
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Aperçu, pas un catalogue -->
   <section class="pb-6">

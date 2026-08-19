@@ -81,6 +81,17 @@ const opportunites = defineCollection({
     // la carte renvoie vers ce lien plutôt que vers une page détail.
     external: z.string().url().optional(),
     featured: z.boolean().default(false),
+    // Visuel principal (chemin public, ex : "/opportunites/mon-bien.jpg").
+    cover: z.string().optional(),
+    // Visuels secondaires affichés en galerie sur la page détail.
+    gallery: z
+      .array(z.object({ src: z.string(), alt: z.string() }))
+      .default([]),
+    // Chiffres clés affichés en tableau sur la page détail. Reprendre
+    // strictement la fiche officielle du partenaire, jamais de mémoire.
+    facts: z
+      .array(z.object({ k: z.string(), v: z.string() }))
+      .default([]),
   }),
 });
 
