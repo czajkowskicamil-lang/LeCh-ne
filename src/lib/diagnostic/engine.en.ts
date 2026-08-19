@@ -34,7 +34,7 @@ function scale(value: number, bad: number, good: number): number {
   return clamp(t * 100);
 }
 
-const PLAFOND_PER = 35194; // indicative PER deduction cap (PASS — France's annual social security cap — 2025, order of magnitude)
+const PLAFOND_PER = 35194; // indicative PER deduction cap (PASS, France's annual social security cap, 2025, order of magnitude)
 
 // Statuses without employer-provided social cover (the safety net depends on them alone).
 const isIndependant = (s?: string) =>

@@ -3,8 +3,8 @@ import Base from '../../layouts/Base.astro';
 import CTA from '../../components/CTA.astro';
 import { site } from '../../data/site.ts';
 
-const title = "Étude patrimoniale personnalisée — bilan fiscal et diagnostic | Le Chêne Patrimonial";
-const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer, revenus, épargne, immobilier, crédits, objectifs. Obtenez une estimation de votre impôt, de votre patrimoine net et vos premières pistes d'optimisation.";
+const title = "Étude patrimoniale personnalisée : bilan fiscal et diagnostic | Le Chêne Patrimonial";
+const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer, revenus, épargne, immobilier, crédits. Obtenez une estimation de votre impôt et de votre patrimoine.";
 ---
 
 <Base title={title} description={description}>
@@ -110,11 +110,11 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
       </div>
       <div class="ep-row">
         <div class="tool-field ep-col">
-          <label>Revenus d'activité — vous (net imposable / an)</label>
+          <label>Revenus d'activité · vous (net imposable / an)</label>
           <input class="tool-input" inputmode="numeric" id="f-rev1" placeholder="ex. 55 000" />
         </div>
         <div class="tool-field ep-col" id="wrap-rev2" hidden>
-          <label>Revenus d'activité — conjoint·e (net imposable / an)</label>
+          <label>Revenus d'activité · conjoint·e (net imposable / an)</label>
           <input class="tool-input" inputmode="numeric" id="f-rev2" placeholder="ex. 42 000" />
         </div>
       </div>
@@ -209,9 +209,9 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         <div class="tool-field ep-col">
           <label>Votre profil d'investisseur</label>
           <select class="tool-input" id="f-profil">
-            <option value="prudent">Prudent — je privilégie la sécurité</option>
-            <option value="equilibre" selected>Équilibré — rendement et risque maîtrisés</option>
-            <option value="dynamique">Dynamique — je vise la performance long terme</option>
+            <option value="prudent">Prudent : je privilégie la sécurité</option>
+            <option value="equilibre" selected>Équilibré : rendement et risque maîtrisés</option>
+            <option value="dynamique">Dynamique : je vise la performance long terme</option>
           </select>
         </div>
       </div>
@@ -331,7 +331,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
               Joindre votre avis d'impôt
             </label>
             <input type="file" id="l-file" accept=".pdf,.jpg,.jpeg,.png" />
-            <span class="ep-upload-hint" id="l-file-name">Facultatif — PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.</span>
+            <span class="ep-upload-hint" id="l-file-name">Facultatif. PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.</span>
           </div>
 
           <!-- honeypot anti-spam -->
@@ -340,7 +340,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
           <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>J'accepte que Le Chêne Patrimonial traite les informations saisies pour préparer mon étude et me recontacter. <a href="/confidentialite">Politique de confidentialité</a>.</span></label>
           <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désabonnement à tout moment).</span></label>
 
-          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète — 10 €</button>
+          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète (10 €)</button>
           <p class="ep-lead-msg" id="l-msg" hidden></p>
           <p class="ep-lead-fine">Paiement sécurisé à venir. En attendant, votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
         </form>
@@ -873,7 +873,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         if (!b) return;
         if (b.getAttribute('data-action') === 'devis-emprunteur') {
           window.__epInteret = 'Devis assurance emprunteur (loi Lemoine)';
-          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis — 10 €';
+          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis (10 €)';
           calc();
           document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
         }
@@ -894,7 +894,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
       var fileInput = document.getElementById('l-file');
       var fileBtn = lead.querySelector('.ep-upload-btn');
       var fileHint = document.getElementById('l-file-name');
-      var defaultHint = 'Facultatif — PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.';
+      var defaultHint = 'Facultatif. PDF ou image, 5 Mo max. Nous aide à établir une étude plus précise.';
       function resetFile(errTxt) {
         attachment = null;
         fileInput.value = '';
@@ -915,7 +915,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
           attachment = { name: f.name.slice(0, 120), type: f.type, content: b64 };
           fileBtn.classList.add('has-file');
           fileHint.classList.remove('err');
-          fileHint.textContent = 'Joint : ' + f.name + ' — sera envoyé avec votre demande.';
+          fileHint.textContent = 'Joint : ' + f.name + '. Sera envoyé avec votre demande.';
         };
         reader.onerror = function () { resetFile('Lecture du fichier impossible. Réessayez.'); };
         reader.readAsDataURL(f);
@@ -940,7 +940,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         }
 
         btn.disabled = true; btn.textContent = 'Un instant…';
-        var defaultBtn = 'Recevoir mon étude complète — 10 €';
+        var defaultBtn = 'Recevoir mon étude complète (10 €)';
 
         var payloadBase = {
           prenom: prenom, nom: nom, email: email,

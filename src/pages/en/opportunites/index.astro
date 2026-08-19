@@ -5,15 +5,15 @@ import { lmnp, nue, neuf, type Bien } from '../../../data/opportunites-biens';
 
 const families = [
   {
-    k: '01 — Turnkey',
+    k: '01 · Turnkey',
     t: 'LMNP in managed residences',
     intro:
-      "You buy a furnished home in a managed residence (student, tourism or senior). A professional operator handles everything — tenants, upkeep, management — and pays you a rent set by a commercial lease. Income with no management on your side, and the favourable tax treatment of the LMNP (furnished rental) status.",
+      "You buy a furnished home in a managed residence (student, tourism or senior). A professional operator handles everything (tenants, upkeep, management) and pays you a rent set by a commercial lease. Income with no management on your side, and the favourable tax treatment of the LMNP (furnished rental) status.",
     items: lmnp,
     kind: 'lmnp' as const,
   },
   {
-    k: '02 — No management, no tax',
+    k: '02 · No management, no tax',
     t: 'Bare ownership',
     intro:
       "You buy the walls only, at a discounted price. An institutional landlord holds the usufruct for a fixed term: they rent it out, manage it and pay the charges. During that period, no rent but no charges, no property tax, and the asset stays outside the IFI wealth-tax base. At the end, you recover full ownership.",
@@ -21,7 +21,7 @@ const families = [
     kind: 'patrimonial' as const,
   },
   {
-    k: '03 — Building your estate',
+    k: '03 · Building your estate',
     t: 'New-build property',
     intro:
       "New homes (off-plan / VEFA), to live in (main residence, zero-rate loan) or to rent out. Reduced notary fees. No guaranteed rent here: you manage the letting yourself.",
@@ -50,7 +50,7 @@ const moisLabel = 'July 2026';
 
 <Base
   title="This month's opportunities, Le Chêne Patrimonial"
-  description="The month's property selection: LMNP in managed residences, bare ownership and new-build property, presented with method. Indicative information, a conversation to go further."
+  description="The month's property selection: LMNP in managed residences, bare ownership and new-build property. Indicative information, a conversation to go further."
 >
   <!-- Hero -->
   <section class="pt-16 pb-10 md:pt-24">
@@ -68,7 +68,7 @@ const moisLabel = 'July 2026';
           A new selection every month
         </p>
         <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
-          A selection of assets the firm follows closely, sorted into three distinct families. Each opportunity deserves to be looked at in the light of <em>your</em> situation and your tax position — that is exactly what a first conversation is for.
+          A selection of assets the firm follows closely, sorted into three distinct families. Each opportunity deserves to be looked at in the light of <em>your</em> situation and your tax position. That is exactly what a first conversation is for.
         </p>
       </div>
       <div class="lg:col-span-4">
@@ -121,7 +121,7 @@ const moisLabel = 'July 2026';
         <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">Every lever, to match your profile</p>
         <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-3">The schemes we cover</h2>
         <p class="text-ink/70 leading-relaxed">
-          From rental yield to wealth-planning tax relief, from a main residence to prestige property, directly or through our partners. The selection below shows only part of it; the right scheme depends on your tax position and your objectives — and <strong class="text-ink">we adapt to every request</strong>.
+          From rental yield to wealth-planning tax relief, from a main residence to prestige property, directly or through our partners. The selection below shows only part of it; the right scheme depends on your tax position and your objectives, and <strong class="text-ink">we adapt to every request</strong>.
         </p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
@@ -157,7 +157,7 @@ const moisLabel = 'July 2026';
               <div class="aspect-[4/3] overflow-hidden bg-navy-deep">
                 <img
                   src={`/emails/${b.ph}.jpg`}
-                  alt={`${b.nom} — ${b.ville}`}
+                  alt={`${b.nom}, ${b.ville}`}
                   loading="lazy"
                   decoding="async"
                   class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"

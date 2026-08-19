@@ -4,7 +4,7 @@ import CTA from '../../components/CTA.astro';
 import ToolLeadCapture from '../../components/ToolLeadCapture.astro';
 
 const title = "Comprendre et simuler son impôt sur le revenu 2026 | Le Chêne Patrimonial";
-const description = "Apprenez à lire votre avis d'imposition (revenu imposable, parts, quotient familial, TMI) et calculez votre impôt 2026 avec le barème officiel. Leviers immobiliers et fiscalité des placements expliqués simplement.";
+const description = "Apprenez à lire votre avis d'imposition (revenu, parts, quotient familial, TMI) et calculez votre impôt 2026 avec le barème officiel.";
 
 // Barème officiel — imposition 2026 sur les revenus 2025
 const tranches = [
@@ -65,7 +65,7 @@ const immo = [
     surveiller: 'Opération lourde, encadrée par les Architectes des Bâtiments de France.' },
   { nom: 'Monument Historique', badge: 'Déduction', cls: 'imp-b-ded',
     principe: 'Bien classé ou inscrit : charges et travaux déductibles du revenu.',
-    avantage: 'Déduction sur le revenu global <b>sans plafonnement</b> des niches — d’autant plus forte que votre TMI est élevée.',
+    avantage: 'Déduction sur le revenu global <b>sans plafonnement</b> des niches, d’autant plus forte que votre TMI est élevée.',
     surveiller: 'Engagement de conservation 15 ans, fortes contraintes patrimoniales.' },
 ];
 
@@ -84,7 +84,7 @@ const placements = [
     note: 'Atout aussi pour la transmission : abattement de 152 500 € par bénéficiaire.' },
   { nom: 'PEA', badge: 'Après 5 ans', cls: 'imp-b-red',
     principe: 'Enveloppe dédiée aux actions européennes.',
-    impo: 'Après 5 ans, gains <b>exonérés d’impôt</b> — seuls les 17,2 % de prélèvements sociaux restent dus.',
+    impo: 'Après 5 ans, gains <b>exonérés d’impôt</b>, seuls les 17,2 % de prélèvements sociaux restent dus.',
     note: 'Un retrait avant 5 ans entraîne la clôture du plan (sauf exceptions).' },
   { nom: 'Livret A · LDDS · LEP', badge: 'Exonéré', cls: 'imp-b-red',
     principe: 'Épargne de précaution réglementée, disponible à tout moment.',
@@ -181,9 +181,9 @@ const placements = [
           </div>
 
           <div class="tool-field">
-            <label>Location meublée — LMNP <span class="imp-opt">résultat BIC</span></label>
+            <label>Location meublée · LMNP <span class="imp-opt">résultat BIC</span></label>
             <div class="imp-money"><span>€</span><input id="imp-lmnp" class="tool-input" type="text" inputmode="numeric" value="0" /></div>
-            <p class="imp-hint">Le meublé relève des <b>BIC</b> (pas des BNC). Reportez ici le bénéfice après amortissement — calculable avec notre <a href="/outils/lmnp" style="color:#E6C259;text-decoration:underline">simulateur LMNP</a>. Soumis à <b>17,2 % de prélèvements sociaux</b> (LMNP non professionnel).</p>
+            <p class="imp-hint">Le meublé relève des <b>BIC</b> (pas des BNC). Reportez ici le bénéfice après amortissement, calculable avec notre <a href="/outils/lmnp" style="color:#E6C259;text-decoration:underline">simulateur LMNP</a>. Soumis à <b>17,2 % de prélèvements sociaux</b> (LMNP non professionnel).</p>
           </div>
 
           <div class="tool-field">
@@ -643,16 +643,16 @@ const placements = [
         if(r.dec>0) rows+='<div class="imp-brl minus"><span>Décote (impôts modérés)</span><b>− '+eur(r.dec)+'</b></div>';
         if(redDons>0||redScol>0||redImmo>0||credit>0){
           rows+='<div class="imp-brl"><span>Impôt après barème</span><b>'+eur(r.net)+'</b></div>';
-          if(redDons>0) rows+='<div class="imp-brl minus"><span>Réduction — dons</span><b>− '+eur(redDons)+'</b></div>';
-          if(redScol>0) rows+='<div class="imp-brl minus"><span>Réduction — frais de scolarité</span><b>− '+eur(redScol)+'</b></div>';
-          if(redImmo>0) rows+='<div class="imp-brl minus"><span>Réduction — défiscalisation immobilière</span><b>− '+eur(redImmo)+'</b></div>';
-          if(credDom>0) rows+='<div class="imp-brl minus"><span>Crédit — emploi à domicile</span><b>− '+eur(credDom)+'</b></div>';
-          if(credSynd>0) rows+='<div class="imp-brl minus"><span>Crédit — cotisations syndicales</span><b>− '+eur(credSynd)+'</b></div>';
+          if(redDons>0) rows+='<div class="imp-brl minus"><span>Réduction · dons</span><b>− '+eur(redDons)+'</b></div>';
+          if(redScol>0) rows+='<div class="imp-brl minus"><span>Réduction · frais de scolarité</span><b>− '+eur(redScol)+'</b></div>';
+          if(redImmo>0) rows+='<div class="imp-brl minus"><span>Réduction · défiscalisation immobilière</span><b>− '+eur(redImmo)+'</b></div>';
+          if(credDom>0) rows+='<div class="imp-brl minus"><span>Crédit · emploi à domicile</span><b>− '+eur(credDom)+'</b></div>';
+          if(credSynd>0) rows+='<div class="imp-brl minus"><span>Crédit · cotisations syndicales</span><b>− '+eur(credSynd)+'</b></div>';
         }
         if(finalIR>=0) rows+='<div class="imp-brl tot"><span>Impôt sur le revenu net</span><b>'+eur(finalIR)+'</b></div>';
         else rows+='<div class="imp-brl tot"><span>Crédit d\'impôt restitué</span><b>− '+eur(restit)+'</b></div>';
         if(psSociaux>0){
-          rows+='<div class="imp-brl"><span>Prélèvements sociaux — foncier + LMNP (17,2 %)</span><b>'+eur(psSociaux)+'</b></div>';
+          rows+='<div class="imp-brl"><span>Prélèvements sociaux · foncier + LMNP (17,2 %)</span><b>'+eur(psSociaux)+'</b></div>';
           var totNet=aPayer+psSociaux-restit;
           rows+='<div class="imp-brl tot"><span>'+(totNet>=0?'Total dû (IR + prélèvements sociaux)':'Solde en votre faveur')+'</span><b>'+(totNet>=0?eur(totNet):'− '+eur(-totNet))+'</b></div>';
         }
