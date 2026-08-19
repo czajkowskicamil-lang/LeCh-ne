@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+
+const title = "Le Chêne Patrimonial — tous les liens";
+const description = "Diagnostic patrimonial, simulateurs gratuits, sélection immobilière et prise de rendez-vous. Tous les liens du cabinet, au même endroit.";
+
+// Bloc principal : la porte d'entrée, une seule action mise en avant.
+const principal = {
+  eyebrow: "Commencez ici · 3 minutes",
+  titre: "Votre diagnostic patrimonial",
+  desc: "Quelques questions guidées et vous obtenez votre indice de santé patrimoniale sur 100, vos angles morts et un plan sur 12 mois.",
+  href: "/outils/diagnostic-patrimonial",
+  cta: "Lancer mon diagnostic",
+};
+
+// Bloc sportifs : l'outil signature de la niche.
+const sportif = {
+  eyebrow: "Sportifs de haut niveau · Gratuit",
+  titre: "Le compte à rebours de l'après-carrière",
+  desc: "Un jour les revenus du sport s'arrêtent. Visualisez la falaise et le capital qui vous rend libre.",
+  href: "/outils/apres-carriere",
+  cta: "Lancer le compte à rebours",
+};
+
+// Le reste, en liste simple et scannable au pouce.
+const liens = [
+  { tag: "Outils", titre: "À quel âge serez-vous libre ?", desc: "Votre capital liberté et l'âge où vous l'atteindrez.", href: "/outils/liberte-financiere" },
+  { tag: "Fiscalité", titre: "Impôt sur le revenu 2026", desc: "Décryptez votre avis et calculez votre impôt au barème officiel.", href: "/outils/impot-sur-le-revenu" },
+  { tag: "Outils", titre: "Tous les simulateurs gratuits", desc: "Rentabilité locative, frais de notaire, emprunt, succession, LMNP, PER.", href: "/outils" },
+  { tag: "Immobilier", titre: "La sélection immobilière du mois", desc: "Les biens que j'ai retenus, avec les chiffres réels.", href: "/opportunites" },
+  { tag: "Étude", titre: "L'Observatoire du Chêne", desc: "Où la valeur immobilière va se déplacer sur la carte de France.", href: "/observatoire" },
+  { tag: "Newsletter", titre: "La Lettre du Chêne", desc: "Une fois par mois, ce qui compte vraiment pour votre patrimoine.", href: "/newsletter" },
+  { tag: "Cabinet", titre: "Mon parcours", desc: "L'athlète devenu conseiller en gestion de patrimoine.", href: "/parcours" },
+  { tag: "Preuve", titre: "Les avis de mes clients", desc: "Ce qu'ils en disent, sans filtre.", href: "/avis" },
+];
+---
+
+<Base noIndex heroDark title={title} description={description}>
+  <div class="bg-navy-deep min-h-screen">
+    <div class="mx-auto w-full max-w-lg px-5 pt-14 pb-20">
+
+      <!-- ============ En-tête ============ -->
+      <header class="text-center mb-10">
+        <img src="/logo.png" alt="Le Chêne Patrimonial" class="mx-auto h-20 w-auto mb-6" />
+        <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-3">
+          Conseil en gestion de patrimoine
+        </p>
+        <h1 class="font-serif text-3xl text-cream leading-tight mb-3">
+          Faire fructifier <em class="italic text-or-light">ce qui compte</em>.
+        </h1>
+        <p class="text-cream/65 text-sm leading-relaxed max-w-sm mx-auto">
+          Sportifs de haut niveau, dirigeants et entrepreneurs. Sans jargon, sans banque derrière moi.
+        </p>
+      </header>
+
+      <!-- ============ Rendez-vous : l'action qui compte ============ -->
+      <a
+        href="https://calendly.com/camil-cz-lechenepatrimonial/30min"
+        target="_blank"
+        rel="noopener"
+        class="group flex items-center justify-between gap-4 bg-or text-ink font-semibold px-6 py-5 mb-8 transition hover:bg-or-light"
+      >
+        <span>
+          <span class="block text-base leading-tight">Prendre rendez-vous</span>
+          <span class="block text-xs font-medium text-ink/70 mt-0.5">30 minutes, gratuit et sans engagement</span>
+        </span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+
+      <!-- ============ Diagnostic : la porte d'entrée gratuite ============ -->
+      <a href={principal.href} class="group block bg-cream-soft p-7 mb-5 transition hover:-translate-y-0.5">
+        <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-3 flex items-center gap-2.5">
+          <span class="inline-block h-px w-7 bg-chene"></span>
+          {principal.eyebrow}
+        </p>
+        <h2 class="font-serif text-2xl text-ink leading-tight mb-2 group-hover:text-chene transition">{principal.titre}</h2>
+        <p class="text-ink/70 text-sm leading-relaxed mb-5">{principal.desc}</p>
+        <span class="inline-flex items-center gap-2 bg-ink text-cream font-semibold px-5 py-3 text-sm group-hover:bg-chene transition">
+          {principal.cta}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- ============ Sportifs : l'outil signature ============ -->
+      <a href={sportif.href} class="group block bg-navy p-7 mb-10 border border-or/25 transition hover:-translate-y-0.5 hover:border-or/50">
+        <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-3 flex items-center gap-2.5">
+          <span class="inline-block h-px w-7 bg-or"></span>
+          {sportif.eyebrow}
+        </p>
+        <h2 class="font-serif text-2xl text-cream leading-tight mb-2">{sportif.titre}</h2>
+        <p class="text-cream/70 text-sm leading-relaxed mb-5">{sportif.desc}</p>
+        <span class="inline-flex items-center gap-2 bg-or text-ink font-semibold px-5 py-3 text-sm group-hover:bg-or-light transition">
+          {sportif.cta}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- ============ Le reste ============ -->
+      <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-5 flex items-center gap-2.5">
+        <span class="inline-block h-px w-7 bg-or"></span>
+        Tout le reste
+      </p>
+
+      <ul class="space-y-3 mb-12">
+        {liens.map((l) => (
+          <li>
+            <a href={l.href} class="group flex items-center gap-4 border border-cream/12 px-5 py-4 transition hover:border-or/45 hover:bg-cream/[0.03]">
+              <span class="flex-1 min-w-0">
+                <span class="block text-[0.65rem] uppercase tracking-micro text-or-light/80 font-semibold mb-1">{l.tag}</span>
+                <span class="block font-serif text-lg text-cream leading-snug">{l.titre}</span>
+                <span class="block text-cream/55 text-xs leading-relaxed mt-1">{l.desc}</span>
+              </span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-or/70 transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- ============ Contact ============ -->
+      <div class="border-t border-or/25 pt-8 text-center">
+        <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-5">Me joindre directement</p>
+        <div class="space-y-3 text-sm">
+          <p>
+            <a href="mailto:camil.cz@lechenepatrimonial.com" class="text-cream/80 hover:text-or-light transition">camil.cz@lechenepatrimonial.com</a>
+          </p>
+          <p>
+            <a href="tel:+33612829190" class="text-cream/80 hover:text-or-light transition">06 12 82 91 90</a>
+          </p>
+          <p>
+            <a href="/" class="text-or-light font-semibold hover:text-or transition">lechenepatrimonial.com</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Base>
+
+<!--
+  Page "lien en bio" : elle doit ressembler a une carte de visite, pas a une page du site.
+  On masque donc la navigation, le pied de page, la barre CTA mobile et l'assistant,
+  qui feraient doublon avec les liens de la page elle-meme.
+-->
+<style is:global>
+  #site-header,
+  #reading-progress,
+  #menu-overlay,
+  .mobile-cta,
+  #lc-assistant,
+  body > footer {
+    display: none !important;
+  }
+  /* le fond du site est creme : on force le navy jusqu'en bas de page */
+  html, body { background-color: #061238; }
+</style>
