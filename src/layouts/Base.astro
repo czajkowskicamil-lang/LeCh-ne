@@ -150,20 +150,51 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
 
     <script>
       // Scroll reveal, watches all reveal variants
+      const REVEAL_SELECTOR = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-mask';
+
       function setupReveal() {
-        const selector = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-mask';
-        const nodes = document.querySelectorAll(selector);
+        const pending = new Set<Element>();
+
+        function show(el: Element) {
+          el.classList.add('is-visible');
+          pending.delete(el);
+        }
+
+        // Filet de sécurité : tout ce qui est déjà entré dans la fenêtre (ou qui
+        // l'a dépassée) est révélé sans attendre l'observer. Sans ça, un scroll
+        // rapide saute des blocs entre deux frames et ils restent invisibles.
+        function sweep() {
+          const vh = window.innerHeight;
+          pending.forEach((el) => {
+            if (el.getBoundingClientRect().top < vh - 40) show(el);
+          });
+          if (!pending.size) window.removeEventListener('scroll', onScroll);
+        }
+
+        let ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { sweep(); ticking = false; });
+        }
+
         const obs = new IntersectionObserver((entries) => {
           entries.forEach((e) => {
             if (e.isIntersecting) {
-              e.target.classList.add('is-visible');
+              show(e.target);
               obs.unobserve(e.target);
             }
           });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        nodes.forEach((el) => {
-          if (!el.classList.contains('is-visible')) obs.observe(el);
+        }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll(REVEAL_SELECTOR).forEach((el) => {
+          if (el.classList.contains('is-visible')) return;
+          pending.add(el);
+          obs.observe(el);
         });
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        sweep();
       }
 
       // Lightweight parallax for elements with data-parallax="N" (N = intensity 0..1)

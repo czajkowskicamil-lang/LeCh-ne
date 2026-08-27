@@ -69,7 +69,7 @@ const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
         </div>
         <div>
           <dt class="hero-meta-label">{t('hero.trust.registrationLabel')}</dt>
-          <dd class="hero-meta-value">ORIAS 25&nbsp;000&nbsp;016</dd>
+          <dd class="hero-meta-value">ORIAS 25&nbsp;00&nbsp;00&nbsp;16</dd>
         </div>
         <div>
           <dt class="hero-meta-label">{t('hero.trust.presenceLabel')}</dt>
@@ -158,6 +158,16 @@ const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
   }
   @media (max-width: 640px) {
     .hero-copy { border-left: none; padding-left: 0; }
+
+    /* La barre CTA et le lanceur du chat occupent le bas de l'écran : sans ça
+       le lanceur recouvre la ligne ORIAS (chevauchement mesuré 54 x 16 px). */
+    .hero-forest .shell {
+      padding-bottom: 11rem;
+    }
+    .hero-trust {
+      margin-top: 2.25rem;
+      padding-right: 4.5rem;
+    }
   }
 
   /* ---------- Typographie ---------- */

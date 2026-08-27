@@ -8,10 +8,26 @@
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function init() {
-    if (reduced) return;
+  // On gère nous-mêmes la position de scroll (sinon le navigateur restaure
+  // l'ancienne position et la page s'ouvre "en bas").
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-    const lenis = new Lenis({
+  let lenis: Lenis | null = null;
+
+  // Remet la fenêtre tout en haut, sauf si l'URL pointe vers une ancre (#section).
+  function resetScrollTop() {
+    if (window.location.hash) return;
+    window.scrollTo(0, 0);
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+  }
+
+  function init() {
+    if (reduced) {
+      resetScrollTop();
+      return;
+    }
+
+    lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
@@ -19,7 +35,11 @@
       touchMultiplier: 1.5,
     });
 
+    // Nouvelle page = on repart du haut.
+    resetScrollTop();
+
     function raf(time: number) {
+      if (!lenis) return;
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
@@ -31,18 +51,23 @@
         const id = a.getAttribute('href');
         if (!id || id === '#') return;
         const target = document.querySelector(id);
-        if (target) {
+        if (target && lenis) {
           e.preventDefault();
           lenis.scrollTo(target as HTMLElement, { offset: -80 });
         }
       });
     });
-
-    // Re-init on Astro view transitions
-    document.addEventListener('astro:before-swap', () => {
-      lenis.destroy();
-    });
   }
+
+  // Détruit Lenis avant chaque navigation View Transitions.
+  document.addEventListener('astro:before-swap', () => {
+    if (lenis) { lenis.destroy(); lenis = null; }
+  });
+
+  // Après l'échange de page, on force le haut (avant que Lenis ne relise la position).
+  document.addEventListener('astro:after-swap', () => {
+    window.scrollTo(0, 0);
+  });
 
   // Init on first load + after each navigation
   init();
