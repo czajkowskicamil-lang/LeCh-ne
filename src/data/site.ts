@@ -11,7 +11,10 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/camil-czajkowski/',
   instagram: 'https://www.instagram.com/le.chene.patrimonial/',
   googleReview: 'https://g.page/r/CT0apkPyT4_CEBM/review',
-  city: 'Paris · Lyon · Bordeaux · Strasbourg · Nice · Montpellier · Marseille · Genevois',
+  // Siège social réel, tel qu'immatriculé au RCS de Montpellier. Obligatoire
+  // dans les mentions légales (LCEN art. 6-III) et déjà public au BODACC.
+  address: 'Bâtiment E, 50 rue Dora Maar, 34070 Montpellier',
+  city: 'Montpellier',
   coverage: 'France entière · en présentiel ou à distance',
 };
 
@@ -21,9 +24,7 @@ export const nav = [
   { key: 'nav.parcours', label: 'Parcours', href: '/parcours' },
   { key: 'nav.expertise', label: 'Expertise', href: '/expertise' },
   { key: 'nav.opportunites', label: 'Opportunités', href: '/opportunites' },
-  { key: 'nav.cas', label: 'Cas pratiques', href: '/cas-pratiques' },
   { key: 'nav.observatoire', label: 'Observatoire', href: '/observatoire' },
-  { key: 'nav.magazine', label: 'Magazine', href: '/magazine' },
   { key: 'nav.outils', label: 'Outils', href: '/outils' },
   { key: 'nav.avis', label: 'Avis clients', href: '/avis' },
   { key: 'nav.contact', label: 'Contact', href: '/contact' },
@@ -32,6 +33,8 @@ export const nav = [
 // Liens secondaires — retirés du menu principal pour l'alléger, mais gardés
 // accessibles dans le footer pour que personne ne soit perdu.
 export const navSecondary = [
+  { key: 'nav.magazine', label: 'Magazine', href: '/magazine' },
+  { key: 'nav.cas', label: 'Cas pratiques', href: '/cas-pratiques' },
   { key: 'nav.manifeste', label: 'Manifeste', href: '/manifeste' },
   { key: 'nav.lettre', label: 'La Lettre du Chêne', href: '/newsletter' },
 ];
