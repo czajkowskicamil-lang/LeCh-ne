@@ -7,6 +7,11 @@ import { buildEtudePdf } from './_lib/pdf.js';
 const CAMIL = 'camil.cz@lechenepatrimonial.com';
 const SENDER = { name: 'Le Chêne Patrimonial', email: 'etudes@lechenepatrimonial.com' };
 
+// Lien de réservation de la restitution comprise dans l'étude. Surchageable par
+// PUBLIC_CALENDLY_URL, comme partout ailleurs sur le site (voir src/data/site.ts).
+const RESTITUTION_URL =
+  process.env.PUBLIC_CALENDLY_URL || 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+
 const clean = (s = '') => String(s).trim().replace(/\s+/g, ' ');
 const escapeHtml = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -71,10 +76,10 @@ export default async function handler(req, res) {
         <p style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#A7801F;margin:0 0 4px">Le Chêne Patrimonial</p>
         <h2 style="margin:0 0 16px;font-size:20px">Votre étude patrimoniale, ${escapeHtml(prenom)}</h2>
         <p style="font-size:15px;line-height:1.6;color:#0A1F4F">Merci de votre confiance. Vous trouverez en pièce jointe votre étude patrimoniale personnalisée : diagnostic fiscal, lecture de votre patrimoine et pistes d'optimisation.</p>
-        <p style="font-size:15px;line-height:1.6;color:#0A1F4F">Ce document est un avis éclairé, à visée pédagogique. Pour aller plus loin et l'adapter précisément à votre situation, échangeons de vive voix.</p>
-        <p style="margin:22px 0"><a href="https://www.lechenepatrimonial.com/contact" style="background:#D4A82D;color:#0c1f3c;text-decoration:none;font-weight:bold;padding:12px 22px;border-radius:10px;display:inline-block">Prendre rendez-vous</a></p>
+        <p style="font-size:15px;line-height:1.6;color:#0A1F4F">Il reste une étape, comprise dans votre étude : votre restitution en visio avec moi. Nous passons en revue vos priorités, et je réponds à vos questions. Choisissez le créneau qui vous arrange.</p>
+        <p style="margin:22px 0"><a href="${RESTITUTION_URL}" style="background:#D4A82D;color:#0c1f3c;text-decoration:none;font-weight:bold;padding:12px 22px;border-radius:10px;display:inline-block">Réserver ma restitution</a></p>
         <hr style="border:none;border-top:1px solid #EDE6D3;margin:20px 0">
-        <p style="font-size:12px;color:#7A7566;line-height:1.5">Camil Czajkowski — Le Chêne Patrimonial<br>Estimation indicative, ne constitue pas un conseil personnalisé au sens réglementaire.</p>
+        <p style="font-size:12px;color:#7A7566;line-height:1.5">Camil Czajkowski, Le Chêne Patrimonial<br>Estimation indicative, ne constitue pas un conseil personnalisé au sens réglementaire.</p>
       </div>`;
     try {
       await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -84,7 +89,7 @@ export default async function handler(req, res) {
           sender: SENDER,
           to: [{ email, name: `${prenom} ${nom}`.trim() }],
           bcc: [{ email: CAMIL, name: 'Camil Czajkowski' }],
-          subject: `Votre étude patrimoniale — ${prenom} ${nom}`.trim(),
+          subject: `Votre étude patrimoniale : ${prenom} ${nom}`.trim(),
           htmlContent: html,
           attachment: [{ name: filename, content: pdfBase64 }],
         }),

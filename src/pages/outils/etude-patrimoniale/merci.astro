@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import { site } from '../../../data/site.ts';
 
 const title = "Votre étude patrimoniale est prête | Le Chêne Patrimonial";
 const description = "Merci pour votre confiance. Votre étude patrimoniale personnalisée est en cours de préparation.";
@@ -25,11 +26,12 @@ const description = "Merci pour votre confiance. Votre étude patrimoniale perso
           Merci pour votre confiance
         </p>
         <h1 class="font-serif text-display-sm text-ink mb-4">Votre étude patrimoniale est prête</h1>
-        <p class="text-ink/70 mb-8 max-w-prose-wide mx-auto">Le téléchargement démarre automatiquement. Une copie vient aussi de vous être envoyée par email. Pour l'adapter précisément à votre situation, échangeons de vive voix.</p>
+        <p class="text-ink/70 mb-8 max-w-prose-wide mx-auto">Le téléchargement démarre automatiquement, et une copie vient de vous être envoyée par email. Il reste une étape, comprise dans votre étude : votre restitution en visio avec Camil, pour passer en revue vos priorités et répondre à vos questions.</p>
         <div class="flex flex-wrap gap-4 justify-center">
-          <button id="mr-download" class="bg-ink text-cream font-semibold rounded-none px-6 py-3.5 hover:bg-navy-deep transition">Télécharger à nouveau</button>
-          <a href="/contact" class="border border-ink/25 text-ink font-semibold rounded-none px-6 py-3.5 hover:border-chene/50 transition">Prendre rendez-vous</a>
+          <a href={site.calendly} target="_blank" rel="noopener" class="bg-ink text-cream font-semibold rounded-none px-6 py-3.5 hover:bg-navy-deep transition">Réserver ma restitution</a>
+          <button id="mr-download" class="border border-ink/25 text-ink font-semibold rounded-none px-6 py-3.5 hover:border-chene/50 transition">Télécharger à nouveau</button>
         </div>
+        <p class="text-ink/50 text-sm mt-6 max-w-prose-wide mx-auto">Vous pouvez aussi réserver plus tard : le lien figure dans l'email qui accompagne votre étude.</p>
       </div>
 
       <!-- État : erreur -->

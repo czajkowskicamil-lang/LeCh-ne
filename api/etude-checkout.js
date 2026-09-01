@@ -1,8 +1,12 @@
 // Fonction serverless Vercel — crée une session Stripe Checkout pour l'étude
-// patrimoniale (10 €). Si Stripe n'est pas encore configuré (clé absente),
-// renvoie { error: 'stripe_absent' } : le front bascule alors sur la simple
+// patrimoniale. Si Stripe n'est pas encore configuré (clé absente), renvoie
+// { error: 'stripe_absent' } : le front bascule alors sur la simple
 // transmission de la demande à Camil, sans casser le parcours.
+//
+// Le tarif vient de ETUDE_PRICE_CENTS (voir api/etude-config.js), pour qu'un
+// changement de prix ne demande jamais un redéploiement.
 import Stripe from 'stripe';
+import { prixCentimes } from './etude-config.js';
 
 const clean = (s = '') => String(s).trim().replace(/\s+/g, ' ');
 
@@ -52,10 +56,10 @@ export default async function handler(req, res) {
         quantity: 1,
         price_data: {
           currency: 'eur',
-          unit_amount: 1000, // 10,00 €
+          unit_amount: prixCentimes(),
           product_data: {
             name: 'Étude patrimoniale personnalisée',
-            description: 'Votre bilan patrimonial complet en PDF, établi à votre nom.',
+            description: "Votre bilan patrimonial complet en PDF, établi à votre nom, suivi d'une restitution en visio avec Camil Czajkowski.",
           },
         },
       }],

@@ -319,8 +319,14 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         <p class="ep-avis-kicker">Aller plus loin</p>
         <h2 class="font-serif text-display-sm text-cream mb-4">Recevez votre étude patrimoniale complète</h2>
         <p class="ep-cta-lead">
-          Un document PDF personnalisé et détaillé, à votre nom : diagnostic fiscal, lecture de votre patrimoine, pistes d'optimisation chiffrées et hiérarchisées. Un avis éclairé pour préparer votre réflexion.
+          Le bilan que vous obtiendriez en rendez-vous, établi à votre nom, puis commenté de vive voix par Camil Czajkowski.
         </p>
+
+        <ul class="ep-inclus">
+          <li><strong>Votre étude en PDF</strong>, à votre nom : diagnostic fiscal, lecture de votre patrimoine, axes d'optimisation chiffrés et hiérarchisés.</li>
+          <li><strong>Une restitution en visio avec Camil</strong>, pour passer en revue vos priorités et répondre à vos questions.</li>
+          <li><strong>Une réponse écrite à votre situation</strong>, dans le cadre des habilitations du cabinet, sans engagement de souscription.</li>
+        </ul>
 
         <form id="ep-lead" class="ep-lead">
           <p class="ep-lead-recap" id="l-recap">Votre étude sera établie au nom renseigné en haut de page.</p>
@@ -340,9 +346,9 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
           <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>J'accepte que Le Chêne Patrimonial traite les informations saisies pour préparer mon étude et me recontacter. <a href="/confidentialite">Politique de confidentialité</a>.</span></label>
           <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désabonnement à tout moment).</span></label>
 
-          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète (10 €)</button>
+          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète</button>
           <p class="ep-lead-msg" id="l-msg" hidden></p>
-          <p class="ep-lead-fine">Paiement sécurisé à venir. En attendant, votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
+          <p class="ep-lead-fine" id="l-fine">Votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
         </form>
 
         <div class="ep-or"><span>ou</span></div>
@@ -427,7 +433,11 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
   /* ---- CTA étude complète ---- */
   .ep-cta{margin-top:28px;background:linear-gradient(160deg,#03102E,#061238);border:1px solid rgba(212,168,45,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
   .ep-cta-inner{max-width:620px;margin:auto;}
-  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 26px;}
+  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 22px;}
+  .ep-inclus{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:11px;}
+  .ep-inclus li{position:relative;padding-left:24px;color:#c9d3e2;font-size:.94rem;line-height:1.55;}
+  .ep-inclus li::before{content:"";position:absolute;left:0;top:.58em;width:9px;height:9px;border:1px solid rgba(212,168,45,.75);transform:rotate(45deg);}
+  .ep-inclus strong{color:#F5F1E8;font-weight:600;}
   .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,45,.2);border-radius:12px;}
   .ep-lead-recap b{color:#E6C259;}
   .ep-upload{margin:0 0 14px;}
@@ -873,7 +883,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         if (!b) return;
         if (b.getAttribute('data-action') === 'devis-emprunteur') {
           window.__epInteret = 'Devis assurance emprunteur (loi Lemoine)';
-          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis (10 €)';
+          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis' + (window.__epSuffixe || '');
           calc();
           document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
         }
@@ -886,6 +896,30 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
     function bindLead() {
       var lead = document.getElementById('ep-lead');
       if (!lead) return;
+
+      // ----- Tarif -----
+      // Le prix n'est jamais écrit en dur dans la page : il vient du serveur.
+      // Tant que Stripe n'est pas branché, aucun tarif ne s'affiche et le
+      // parcours reste celui de la demande transmise à Camil.
+      window.__epSuffixe = window.__epSuffixe || '';
+      function appliquerTarif() {
+        if (!window.__epSuffixe) return;
+        var btn = document.getElementById('l-submit');
+        if (btn) btn.textContent = btn.textContent.replace(/\s*\([^)]*\)\s*$/, '') + window.__epSuffixe;
+        var fine = document.getElementById('l-fine');
+        if (fine) fine.textContent = "Paiement sécurisé par Stripe. Votre étude vous est adressée par email juste après le règlement, avec le lien pour réserver votre restitution avec Camil.";
+      }
+      appliquerTarif();
+      // Une seule requête par visite : bindLead est rejoué à chaque navigation
+      // interne, le tarif lui reste connu.
+      if (!window.__epTarifCharge) {
+        window.__epTarifCharge = true;
+        fetch('/api/etude-config').then(function (r) { return r.json(); }).then(function (c) {
+          if (!c || !c.ok || !c.actif || !c.prixLabel) return;
+          window.__epSuffixe = ' (' + c.prixLabel + ')';
+          appliquerTarif();
+        }).catch(function () {});
+      }
 
       // ----- Pièce jointe facultative (avis d'impôt) -----
       var attachment = null;
@@ -940,7 +974,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         }
 
         btn.disabled = true; btn.textContent = 'Un instant…';
-        var defaultBtn = 'Recevoir mon étude complète (10 €)';
+        var defaultBtn = 'Recevoir mon étude complète' + (window.__epSuffixe || '');
 
         var payloadBase = {
           prenom: prenom, nom: nom, email: email,

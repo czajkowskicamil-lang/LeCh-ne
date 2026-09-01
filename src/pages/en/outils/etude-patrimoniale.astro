@@ -319,8 +319,14 @@ const description = "Answer the questions of a real wealth assessment: household
         <p class="ep-avis-kicker">Going further</p>
         <h2 class="font-serif text-display-sm text-cream mb-4">Receive your complete wealth assessment</h2>
         <p class="ep-cta-lead">
-          A personalised, detailed PDF document, in your name: tax diagnosis, a reading of your assets, costed and prioritised optimisation ideas. An informed view to prepare your thinking.
+          The review you would receive in a meeting, prepared in your name, then talked through with Camil Czajkowski.
         </p>
+
+        <ul class="ep-inclus">
+          <li><strong>Your assessment as a PDF</strong>, in your name: tax diagnosis, a reading of your assets, costed and prioritised optimisation ideas.</li>
+          <li><strong>A video call with Camil</strong>, to go through your priorities and answer your questions.</li>
+          <li><strong>A written response to your situation</strong>, within the firm's regulatory scope, with no obligation to subscribe to anything.</li>
+        </ul>
 
         <form id="ep-lead" class="ep-lead">
           <p class="ep-lead-recap" id="l-recap">Your assessment will be prepared in the name entered at the top of the page.</p>
@@ -340,9 +346,9 @@ const description = "Answer the questions of a real wealth assessment: household
           <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>I agree that Le Chêne Patrimonial may process the information provided to prepare my assessment and contact me. <a href="/en/confidentialite">Privacy policy</a>.</span></label>
           <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>I would also like to receive The Oak Letter (optional, unsubscribe at any time).</span></label>
 
-          <button type="submit" class="ep-submit" id="l-submit">Get my complete assessment - €10</button>
+          <button type="submit" class="ep-submit" id="l-submit">Get my complete assessment</button>
           <p class="ep-lead-msg" id="l-msg" hidden></p>
-          <p class="ep-lead-fine">Secure payment coming soon. In the meantime, your request is sent directly to Camil, who will send you your personalised assessment.</p>
+          <p class="ep-lead-fine" id="l-fine">Your request is sent directly to Camil, who will send you your personalised assessment.</p>
         </form>
 
         <div class="ep-or"><span>or</span></div>
@@ -427,7 +433,11 @@ const description = "Answer the questions of a real wealth assessment: household
   /* ---- CTA étude complète ---- */
   .ep-cta{margin-top:28px;background:linear-gradient(160deg,#03102E,#061238);border:1px solid rgba(212,168,45,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
   .ep-cta-inner{max-width:620px;margin:auto;}
-  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 26px;}
+  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 22px;}
+  .ep-inclus{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:11px;}
+  .ep-inclus li{position:relative;padding-left:24px;color:#c9d3e2;font-size:.94rem;line-height:1.55;}
+  .ep-inclus li::before{content:"";position:absolute;left:0;top:.58em;width:9px;height:9px;border:1px solid rgba(212,168,45,.75);transform:rotate(45deg);}
+  .ep-inclus strong{color:#F5F1E8;font-weight:600;}
   .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,45,.2);border-radius:12px;}
   .ep-lead-recap b{color:#E6C259;}
   .ep-upload{margin:0 0 14px;}
@@ -873,7 +883,7 @@ const description = "Answer the questions of a real wealth assessment: household
         if (!b) return;
         if (b.getAttribute('data-action') === 'devis-emprunteur') {
           window.__epInteret = 'Loan insurance quote (Lemoine law)';
-          document.getElementById('l-submit').textContent = 'Get my assessment + my quote - €10';
+          document.getElementById('l-submit').textContent = 'Get my assessment + my quote' + (window.__epSuffixe || '');
           calc();
           document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
         }
@@ -886,6 +896,32 @@ const description = "Answer the questions of a real wealth assessment: household
     function bindLead() {
       var lead = document.getElementById('ep-lead');
       if (!lead) return;
+
+      // ----- Price -----
+      // Never hard-coded in the page: it comes from the server. While Stripe is
+      // not connected, no price is shown and the journey stays a simple request
+      // sent to Camil.
+      window.__epSuffixe = window.__epSuffixe || '';
+      function appliquerTarif() {
+        if (!window.__epSuffixe) return;
+        var btn = document.getElementById('l-submit');
+        if (btn) btn.textContent = btn.textContent.replace(/\s*\([^)]*\)\s*$/, '') + window.__epSuffixe;
+        var fine = document.getElementById('l-fine');
+        if (fine) fine.textContent = 'Secure payment via Stripe. Your assessment is emailed to you right after payment, together with the link to book your call with Camil.';
+      }
+      appliquerTarif();
+      // One request per visit: bindLead runs again on internal navigation, but
+      // the price is already known.
+      if (!window.__epTarifCharge) {
+        window.__epTarifCharge = true;
+        fetch('/api/etude-config').then(function (r) { return r.json(); }).then(function (c) {
+          if (!c || !c.ok || !c.actif) return;
+          var label = c.prixLabelEn || c.prixLabel;
+          if (!label) return;
+          window.__epSuffixe = ' (' + label + ')';
+          appliquerTarif();
+        }).catch(function () {});
+      }
 
       // ----- Optional attachment (tax notice) -----
       var attachment = null;
@@ -940,7 +976,7 @@ const description = "Answer the questions of a real wealth assessment: household
         }
 
         btn.disabled = true; btn.textContent = 'One moment…';
-        var defaultBtn = 'Get my complete assessment - €10';
+        var defaultBtn = 'Get my complete assessment' + (window.__epSuffixe || '');
 
         var payloadBase = {
           prenom: prenom, nom: nom, email: email,
