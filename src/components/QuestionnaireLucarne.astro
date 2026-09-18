@@ -10,26 +10,43 @@
 // COA et carte T, pas CIF.
 ---
 
-<section id="questionnaire" class="py-14 md:py-20 bg-cream-soft/50 border-y border-ink/10 scroll-mt-20">
-  <div class="shell">
+<section
+  id="questionnaire"
+  class="relative py-16 md:py-24 bg-navy-deep text-cream overflow-hidden scroll-mt-20"
+>
+  <!-- Halo kaki discret, pour que le bloc ne soit pas un aplat mort -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.55]"
+    style="background:radial-gradient(120% 80% at 15% 0%, rgba(120,133,64,.38), transparent 62%), radial-gradient(90% 70% at 100% 100%, rgba(212,168,45,.14), transparent 60%)"
+  >
+  </div>
+
+  <div class="shell relative">
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-10">
-        <p class="text-xs uppercase tracking-micro text-kaki font-semibold">
+        <p class="eyebrow-cream mb-4 flex items-center justify-center gap-3">
+          <span class="inline-block h-px w-8 bg-or"></span>
           Deux minutes, quelques questions
+          <span class="inline-block h-px w-8 bg-or"></span>
         </p>
-        <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2">
-          Dites-nous ce que vous cherchez
+        <h2 class="font-serif text-3xl md:text-4xl text-cream">
+          Dites-nous ce que vous <span class="italic text-or-light">cherchez</span>
         </h2>
-        <p class="text-ink/70 leading-relaxed mt-3">
+        <p class="text-cream/75 leading-relaxed mt-3 max-w-xl mx-auto">
           Pas de catalogue à éplucher. Vous décrivez votre projet, on vous
           répond avec ce qui correspond vraiment.
         </p>
       </div>
 
-      <div class="bg-white border border-ink/10 shadow-[0_1px_2px_rgba(3,16,46,.04),0_18px_50px_-30px_rgba(3,16,46,.35)]">
+      <div class="bg-white/[0.045] border border-cream/15 backdrop-blur-sm">
         <!-- Progression -->
-        <div class="h-1 bg-ink/5">
-          <div id="q-barre" class="h-full bg-kaki transition-[width] duration-500 ease-out" style="width:0%"></div>
+        <div class="h-[3px] bg-cream/10">
+          <div
+            id="q-barre"
+            class="h-full bg-or transition-[width] duration-500 ease-out"
+            style="width:0%"
+          >
+          </div>
         </div>
 
         <div class="p-6 sm:p-10">
@@ -37,20 +54,21 @@
             <button
               id="q-retour"
               type="button"
-              class="hidden items-center gap-1.5 text-sm text-stone hover:text-ink transition-colors"
+              class="hidden items-center gap-1.5 text-sm text-cream/60 hover:text-or-light transition-colors"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
               Retour
             </button>
-            <span id="q-etape" class="ml-auto text-xs uppercase tracking-micro text-stone"></span>
+            <span id="q-etape" class="ml-auto text-xs uppercase tracking-micro text-or-light/80"
+            ></span>
           </div>
 
           <div id="q-zone" aria-live="polite"></div>
 
           <noscript>
-            <p class="text-ink/70 leading-relaxed">
+            <p class="text-cream/75 leading-relaxed">
               Ce questionnaire a besoin de JavaScript.
-              <a href="/contact" class="text-kaki font-medium underline underline-offset-4"
+              <a href="/contact" class="text-or-light font-medium underline underline-offset-4"
                 >Écrivez-nous directement</a
               >, on vous répond aussi bien.
             </p>
@@ -58,7 +76,7 @@
         </div>
       </div>
 
-      <p class="text-xs text-stone/80 leading-relaxed mt-4 text-center max-w-xl mx-auto">
+      <p class="text-xs text-cream/55 leading-relaxed mt-5 text-center max-w-xl mx-auto">
         Vos réponses servent uniquement à préparer notre réponse. Aucune donnée
         n'est revendue, aucun appel automatisé. Vous pouvez demander leur
         suppression à tout moment.
@@ -321,22 +339,21 @@
 
       if (q.type === 'fin') return rendreFin(q);
 
-      const aide = q.aide ? `<p class="text-[0.95rem] text-stone leading-relaxed mt-2">${echappe(q.aide)}</p>` : '';
+      const aide = q.aide ? `<p class="text-[0.95rem] text-cream/65 leading-relaxed mt-2">${echappe(q.aide)}</p>` : '';
 
       if (q.type === 'texte') {
         zone!.innerHTML = `
-          <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
+          <h3 class="font-serif text-2xl md:text-[1.75rem] text-cream leading-snug">${echappe(q.titre)}</h3>
           ${aide}
           <div class="mt-7">
             <label for="q-texte" class="sr-only">${echappe(q.label ?? q.titre)}</label>
-            <input id="q-texte" type="text" placeholder="${echappe(q.placeholder ?? '')}"
-              class="w-full border border-ink/15 bg-white px-4 py-3.5 text-[15px] text-ink placeholder:text-stone/60 outline-none transition focus:border-kaki focus:ring-1 focus:ring-kaki" />
-            <div class="flex items-center gap-3 mt-5">
+            <input id="q-texte" type="text" placeholder="${echappe(q.placeholder ?? '')}" class="q-champ w-full" />
+            <div class="flex items-center gap-4 mt-5">
               <button id="q-suite" type="button" class="btn-or inline-flex items-center gap-2">
                 Continuer
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </button>
-              ${q.facultatif ? '<button id="q-passer" type="button" class="text-sm text-stone hover:text-ink transition-colors underline underline-offset-4">Passer</button>' : ''}
+              ${q.facultatif ? '<button id="q-passer" type="button" class="text-sm text-cream/60 hover:text-or-light transition-colors underline underline-offset-4">Passer</button>' : ''}
             </div>
           </div>`;
 
@@ -364,18 +381,18 @@
         .options!.map(
           (o, i) => `
           <button type="button" data-i="${i}"
-            class="q-choix group w-full text-left border border-ink/12 bg-white hover:border-kaki hover:bg-kaki/[0.04] transition-colors px-5 py-4 flex items-start gap-4">
-            <span class="mt-[3px] h-4 w-4 shrink-0 rounded-full border border-ink/25 group-hover:border-kaki group-hover:border-[5px] transition-all"></span>
+            class="q-choix group w-full text-left border border-cream/15 bg-cream/[0.04] hover:border-or hover:bg-cream/[0.09] transition-colors px-5 py-4 flex items-start gap-4">
+            <span class="mt-[3px] h-4 w-4 shrink-0 rounded-full border border-cream/35 group-hover:border-or group-hover:border-[5px] transition-all"></span>
             <span>
-              <span class="block text-[15.5px] font-medium text-ink leading-snug">${echappe(o.v)}</span>
-              ${o.desc ? `<span class="block text-[13.5px] text-stone mt-0.5 leading-relaxed">${echappe(o.desc)}</span>` : ''}
+              <span class="block text-[15.5px] font-medium text-cream leading-snug">${echappe(o.v)}</span>
+              ${o.desc ? `<span class="block text-[13.5px] text-cream/60 mt-0.5 leading-relaxed">${echappe(o.desc)}</span>` : ''}
             </span>
           </button>`
         )
         .join('');
 
       zone!.innerHTML = `
-        <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
+        <h3 class="font-serif text-2xl md:text-[1.75rem] text-cream leading-snug">${echappe(q.titre)}</h3>
         ${aide}
         <div class="grid gap-2.5 mt-7">${cartes}</div>`;
 
@@ -393,16 +410,16 @@
       const recap = reponses
         .map(
           (r) =>
-            `<div class="flex items-baseline justify-between gap-4 py-2 border-b border-ink/8 last:border-0">
-               <span class="text-[13px] text-stone">${echappe(r.label)}</span>
-               <span class="text-[13.5px] font-medium text-ink text-right">${echappe(r.value)}</span>
+            `<div class="flex items-baseline justify-between gap-4 py-2 border-b border-cream/10 last:border-0">
+               <span class="text-[13px] text-cream/60">${echappe(r.label)}</span>
+               <span class="text-[13.5px] font-medium text-cream text-right">${echappe(r.value)}</span>
              </div>`
         )
         .join('');
 
       zone!.innerHTML = `
-        <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
-        <p class="text-[0.95rem] text-stone leading-relaxed mt-2">
+        <h3 class="font-serif text-2xl md:text-[1.75rem] text-cream leading-snug">${echappe(q.titre)}</h3>
+        <p class="text-[0.95rem] text-cream/65 leading-relaxed mt-2">
           On vous répond sous 24 heures ouvrées, par une personne qui aura lu vos réponses.
         </p>
 
@@ -415,12 +432,12 @@
           <input name="telephone" type="tel" placeholder="Téléphone (facultatif)" class="q-champ" />
           <input name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
 
-          <label class="flex gap-2.5 items-start text-[12.5px] text-stone leading-relaxed mt-1">
-            <input name="consent" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#4C5526]" />
+          <label class="flex gap-2.5 items-start text-[12.5px] text-cream/65 leading-relaxed mt-1">
+            <input name="consent" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#D4A82D]" />
             <span>J’accepte d’être recontacté au sujet de cette recherche. Mes données ne sont ni revendues ni cédées, et je peux demander leur suppression à tout moment.</span>
           </label>
-          <label class="flex gap-2.5 items-start text-[12.5px] text-stone leading-relaxed">
-            <input name="optin" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#4C5526]" />
+          <label class="flex gap-2.5 items-start text-[12.5px] text-cream/65 leading-relaxed">
+            <input name="optin" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#D4A82D]" />
             <span>Je souhaite aussi recevoir La Lettre du Chêne, une fois par mois. Facultatif.</span>
           </label>
 
@@ -432,10 +449,10 @@
         </form>
 
         <details class="mt-6 group">
-          <summary class="text-[13px] text-stone hover:text-ink cursor-pointer transition-colors list-none">
+          <summary class="text-[13px] text-cream/60 hover:text-or-light cursor-pointer transition-colors list-none">
             <span class="underline underline-offset-4">Revoir mes réponses</span>
           </summary>
-          <div class="mt-3 border-t border-ink/10 pt-2">${recap}</div>
+          <div class="mt-3 border-t border-cream/15 pt-2">${recap}</div>
         </details>`;
 
       const form = document.getElementById('q-form') as HTMLFormElement;
@@ -474,15 +491,15 @@
             retour.classList.add('hidden');
             zone!.innerHTML = `
               <div class="text-center py-6">
-                <div class="mx-auto w-12 h-12 rounded-full bg-kaki/10 grid place-items-center">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4C5526" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <div class="mx-auto w-14 h-14 rounded-full bg-or/15 border border-or/40 grid place-items-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E6C259" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                 </div>
-                <h3 class="font-serif text-2xl text-ink mt-5">C’est envoyé.</h3>
-                <p class="text-ink/70 leading-relaxed mt-2 max-w-md mx-auto">
+                <h3 class="font-serif text-2xl text-cream mt-5">C’est envoyé.</h3>
+                <p class="text-cream/70 leading-relaxed mt-2 max-w-md mx-auto">
                   Votre recherche est bien arrivée. Vous recevez une réponse sous 24 heures
                   ouvrées, écrite à la main, pas un catalogue automatique.
                 </p>
-                <a href="/opportunites" class="inline-flex items-center gap-2 mt-7 px-6 py-3 border border-ink/15 text-sm font-medium text-ink hover:border-kaki hover:text-kaki transition-colors">
+                <a href="/opportunites" class="inline-flex items-center gap-2 mt-7 px-6 py-3 border border-cream/25 text-sm font-medium text-cream hover:border-or hover:text-or-light transition-colors">
                   Voir la sélection du moment
                 </a>
               </div>`;
@@ -519,11 +536,22 @@
 </script>
 
 <style is:global>
-  .q-champ {
-    @apply border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none transition;
+  /* Champs posés sur le bloc navy : translucides, pas de rectangle blanc. */
+  #questionnaire .q-champ {
+    @apply border border-cream/20 bg-cream/[0.06] px-4 py-3 text-[15px] text-cream outline-none transition;
   }
-  .q-champ:focus {
-    @apply border-kaki ring-1 ring-kaki;
+  #questionnaire .q-champ::placeholder {
+    @apply text-cream/45;
+  }
+  #questionnaire .q-champ:focus {
+    @apply border-or bg-cream/[0.1];
+  }
+  /* Le navigateur repeint les champs auto-remplis en blanc : on l'en empêche. */
+  #questionnaire .q-champ:-webkit-autofill,
+  #questionnaire .q-champ:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f5f1e8;
+    caret-color: #f5f1e8;
+    transition: background-color 9999s ease-in-out 0s;
   }
   #questionnaire details > summary::-webkit-details-marker {
     display: none;
