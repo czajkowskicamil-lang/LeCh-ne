@@ -163,11 +163,15 @@ const faitageHref = localizePath('/faitage', lang);
   .nav-faitage:hover {
     color: #353C18;
   }
+  /* Au-dessus d'un hero photo, le kaki se noie dans les zones claires. On passe
+     au crème du reste du header, avec l'ombre portée déjà utilisée pour le logo
+     du cabinet. Le kaki revient dès que le header devient solide. */
   header.nav-hero:not(.is-solid) .nav-faitage {
-    color: #A9B473;
+    color: #faf7ef;
+    filter: drop-shadow(0 1px 2px rgba(3, 9, 28, 0.6)) drop-shadow(0 3px 10px rgba(3, 9, 28, 0.5));
   }
   header.nav-hero:not(.is-solid) .nav-faitage:hover {
-    color: #C6CE97;
+    color: #e6c259;
   }
   /* Bouton CTA doré tant qu'on survole le hero */
   header.nav-hero:not(.is-solid) .nav-cta {
