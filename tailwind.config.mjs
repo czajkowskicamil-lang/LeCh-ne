@@ -34,6 +34,12 @@ export default {
           deep: '#142419',
           light: '#3E6247',
         },
+        // Kaki — couleur propre à la marque Lucarne, distincte du vert chêne
+        kaki: {
+          DEFAULT: '#6F7553',
+          light: '#A3A87B',
+          dark: '#545942',
+        },
         stone: {
           DEFAULT: '#7A7566',
           light: '#A8A395',

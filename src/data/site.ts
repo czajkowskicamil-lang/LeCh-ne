@@ -33,6 +33,9 @@ export const nav = [
 // Liens secondaires — retirés du menu principal pour l'alléger, mais gardés
 // accessibles dans le footer pour que personne ne soit perdu.
 export const navSecondary = [
+  // Lucarne a son emplacement dédié dans le header, pas dans le menu déroulant.
+  // On la garde ici pour qu'elle reste atteignable depuis le pied de page.
+  { key: 'nav.lucarne', label: 'Lucarne', href: '/lucarne' },
   { key: 'nav.magazine', label: 'Magazine', href: '/magazine' },
   { key: 'nav.cas', label: 'Cas pratiques', href: '/cas-pratiques' },
   { key: 'nav.manifeste', label: 'Manifeste', href: '/manifeste' },

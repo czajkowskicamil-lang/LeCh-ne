@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import LogoLucarne from './LogoLucarne.astro';
 import LanguageToggle from './LanguageToggle.astro';
 import { nav, site } from '../data/site';
 import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
@@ -23,6 +24,7 @@ const menu = nav.map((item) => ({
   label: t(item.key),
 }));
 const avisHref = localizePath('/avis', lang);
+const lucarneHref = localizePath('/lucarne', lang);
 ---
 
 <header
@@ -37,6 +39,24 @@ const avisHref = localizePath('/avis', lang);
     <Logo />
 
     <div class="flex items-center gap-4 sm:gap-5 md:gap-7">
+      <!-- Lucarne a son propre emplacement, hors du menu déroulant : c'est une
+           marque du cabinet, elle doit se voir sans avoir à ouvrir le menu.
+           Sa couleur kaki la distingue du vert chêne du cabinet. -->
+      <a
+        href={lucarneHref}
+        class="nav-lucarne inline-flex items-center gap-2 pr-4 sm:pr-5 md:pr-7 border-r border-current/15 transition-colors"
+        aria-label="Lucarne, le portail d'annonces du cabinet"
+      >
+        <LogoLucarne size={26} class="shrink-0" />
+        <span class="hidden sm:inline font-serif text-[1.05rem] leading-none tracking-[0.01em]"
+          >Lucarne</span
+        >
+        <span
+          class="hidden md:inline text-[0.55rem] uppercase tracking-micro font-semibold border border-current/35 rounded-full px-1.5 py-0.5 leading-none opacity-80"
+          >Bientôt</span
+        >
+      </a>
+
       <a href={avisHref} class="nav-avis inline-flex items-center gap-1.5 text-sm font-medium text-current hover:text-or transition-colors" aria-label={t('nav.ariaAvis')}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
         <span>{t('nav.avisShort')}</span>
@@ -136,6 +156,20 @@ const avisHref = localizePath('/avis', lang);
   /* Logo lisible sur la zone claire du hero (ombre portée douce) */
   header.nav-hero:not(.is-solid) img {
     filter: drop-shadow(0 1px 2px rgba(3, 9, 28, 0.55)) drop-shadow(0 3px 10px rgba(3, 9, 28, 0.45));
+  }
+  /* Lucarne en kaki : soutenu sur fond crème, éclairci au-dessus d'un hero
+     sombre pour rester lisible. Le cabinet garde sa propre couleur. */
+  .nav-lucarne {
+    color: #6F7553;
+  }
+  .nav-lucarne:hover {
+    color: #545942;
+  }
+  header.nav-hero:not(.is-solid) .nav-lucarne {
+    color: #A3A87B;
+  }
+  header.nav-hero:not(.is-solid) .nav-lucarne:hover {
+    color: #C3C79E;
   }
   /* Bouton CTA doré tant qu'on survole le hero */
   header.nav-hero:not(.is-solid) .nav-cta {

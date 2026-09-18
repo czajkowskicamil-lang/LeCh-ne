@@ -1,0 +1,143 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import LogoLucarne from '../components/LogoLucarne.astro';
+
+// Lucarne est une marque du cabinet, pas un tiers : la page le dit
+// explicitement. Présenter une marque qu'on détient comme un partenaire
+// extérieur serait trompeur au sens de l'article L121-2 du code de la
+// consommation.
+//
+// Aucun bien n'est affiché tant que les conventions de diffusion ne sont pas
+// signées avec les promoteurs. On annonce la marque, pas un stock.
+
+const principes = [
+  {
+    t: 'Les chiffres avant la prise de contact',
+    d: "Prix, loyer mensuel, rentabilité, durée du bail et exploitant. Affichés sur la fiche, sans avoir à laisser un numéro de téléphone pour connaître un montant.",
+  },
+  {
+    t: 'Aucune annonce sponsorisée',
+    d: "L'ordre d'affichage ne s'achète pas. Aucun bien n'est mis en avant parce qu'il rapporte davantage que le suivant.",
+  },
+  {
+    t: 'Peu de biens, tous vérifiés',
+    d: "Un bien n'est publié que si sa fiche officielle est complète et son exploitant identifié. À défaut, il n'apparaît pas.",
+  },
+];
+---
+
+<Base
+  title="Lucarne, la marque immobilière du cabinet"
+  description="Lucarne est le portail d'annonces immobilières du Chêne Patrimonial : les chiffres affichés avant la prise de contact, aucune annonce sponsorisée. Ouverture prochaine."
+>
+  <!-- Hero -->
+  <section class="pt-16 pb-12 md:pt-24 md:pb-16">
+    <div class="shell">
+      <!-- La marque avant tout le reste : c'est la page de Lucarne. -->
+      <div class="flex flex-col items-center text-center pb-12 md:pb-16 border-b border-ink/10">
+        <LogoLucarne size={96} withWordmark class="text-kaki" />
+        <p class="eyebrow mt-6 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-kaki"></span>
+          Une marque du Chêne Patrimonial
+          <span class="inline-block h-px w-8 bg-kaki"></span>
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-14 items-center pt-12 md:pt-16">
+        <div class="lg:col-span-7">
+          <h1 class="font-serif text-display-xl text-ink mb-6">
+            Bientôt, les biens <span class="italic text-kaki">à ciel ouvert.</span>
+          </h1>
+          <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
+            Lucarne réunira les biens immobiliers suivis par le cabinet, avec leurs
+            chiffres affichés dès la fiche. Le portail ouvrira quand les conventions de
+            diffusion seront signées avec les promoteurs et les exploitants, et pas
+            avant. Il vaut mieux peu de biens vérifiés qu'un catalogue qu'on ne peut
+            pas défendre.
+          </p>
+
+          <div class="flex flex-wrap gap-4 mt-10">
+            <a href="/contact" class="btn-or inline-flex items-center gap-2">
+              Être prévenu de l'ouverture
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="/opportunites"
+              class="inline-flex items-center gap-2 px-6 py-3 border border-ink/15 text-sm font-medium text-ink hover:border-chene/50 hover:text-chene transition-colors"
+            >
+              Voir la sélection du moment
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-navy-deep text-cream p-10 md:p-12 flex flex-col items-center text-center">
+            <LogoLucarne size={88} class="text-kaki-light mb-7" />
+            <div class="font-serif text-3xl tracking-[0.02em] text-cream">Lucarne</div>
+            <div class="mt-3 h-px w-12 bg-or/60"></div>
+            <p class="text-sm text-cream/70 mt-5 leading-relaxed">
+              Le portail d'annonces immobilières du Chêne Patrimonial
+            </p>
+          </div>
+          <p class="text-xs text-stone/80 mt-3 leading-relaxed">
+            Marque exploitée par Le Chêne Patrimonial. Le portail sera édité sous la
+            responsabilité du cabinet, avec ses immatriculations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principes -->
+  <section class="py-12 md:py-16 border-t border-ink/10">
+    <div class="shell">
+      <div class="max-w-3xl mb-10">
+        <div class="border-t-2 border-or w-11 mb-4"></div>
+        <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">
+          Ce à quoi Lucarne s'engage
+        </p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-3">
+          Trois règles, tenues dès la première annonce
+        </h2>
+        <p class="text-ink/70 leading-relaxed">
+          Un portail d'annonces se juge à ce qu'il refuse d'afficher, pas au nombre de
+          lots qu'il empile. Ces règles valent dès l'ouverture.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
+        {
+          principes.map((p, i) => (
+            <div class="bg-cream-soft/60 p-6">
+              <div class="text-xs font-semibold text-or-dark tabular-nums">0{i + 1}</div>
+              <h3 class="font-serif text-xl text-ink leading-tight mt-2">{p.t}</h3>
+              <p class="text-sm text-stone mt-2 leading-relaxed">{p.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Mention réglementaire -->
+  <section class="pt-12 pb-16 md:pb-24 border-t border-ink/10">
+    <div class="shell">
+      <p class="text-xs text-stone/80 leading-relaxed max-w-3xl">
+        Lucarne est une marque exploitée par Le Chêne Patrimonial. Cette page présente
+        un projet de portail et ne constitue ni une offre, ni une sollicitation, ni un
+        conseil en investissement personnalisé. Aucun bien n'y est diffusé à ce jour.
+        Le Chêne Patrimonial · Camil Czajkowski, courtier en assurance (COA, ORIAS
+        n° 25 00 00 16) et agent immobilier (carte T n° CPI 3402 2024 000 000 049).
+      </p>
+    </div>
+  </section>
+
+  <CTA
+    title="Vous cherchez un bien en particulier ?"
+    body="Dites-moi votre secteur, votre budget et votre objectif. Le cabinet suit des lots partout en France, bien au-delà de ce qui est publié. 30 minutes, sans engagement."
+  />
+</Base>

@@ -1,0 +1,78 @@
+---
+// Logo Lucarne : une lucarne de toit vue de face, le pan de toiture posé sur
+// l'ouverture. Le trait suit la finesse du logo du Chêne, sans le concurrencer.
+interface Props {
+  size?: number;
+  color?: string;
+  withWordmark?: boolean;
+  class?: string;
+}
+const {
+  size = 48,
+  color = 'currentColor',
+  withWordmark = false,
+  class: klass = '',
+} = Astro.props;
+
+// Un style inline l'emporterait sur une classe utilitaire passée via `class` :
+// on ne le pose que si une couleur explicite a été demandée.
+const style = color === 'currentColor' ? undefined : `color:${color}`;
+---
+
+{
+  withWordmark ? (
+    <span class={`inline-flex items-center gap-3 ${klass}`} style={style}>
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 48 48"
+        fill="none"
+        aria-hidden="true"
+        class="shrink-0"
+      >
+        <path
+          d="M5 22 24 5l19 17"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M11.5 22h25v19a1.5 1.5 0 0 1-1.5 1.5H13a1.5 1.5 0 0 1-1.5-1.5V22Z"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linejoin="round"
+        />
+        <path d="M24 22v20.5M11.5 32.25h25" stroke="currentColor" stroke-width="1.1" />
+      </svg>
+      <span class="font-serif tracking-[0.02em]" style={`font-size:${size * 0.62}px`}>
+        Lucarne
+      </span>
+    </span>
+  ) : (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
+      aria-hidden="true"
+      class={klass}
+      style={style}
+    >
+      <path
+        d="M5 22 24 5l19 17"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.5 22h25v19a1.5 1.5 0 0 1-1.5 1.5H13a1.5 1.5 0 0 1-1.5-1.5V22Z"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linejoin="round"
+      />
+      <path d="M24 22v20.5M11.5 32.25h25" stroke="currentColor" stroke-width="1.1" />
+    </svg>
+  )
+}
