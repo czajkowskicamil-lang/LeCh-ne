@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import LogoFaitage from '../components/LogoFaitage.astro';
 import QuestionnaireFaitage from '../components/QuestionnaireFaitage.astro';
 import { temoignages } from '../data/temoignages';
 
@@ -50,9 +49,12 @@ const avis = temoignages.slice(0, 2);
     </div>
 
     <div class="shell relative pt-12 pb-16 md:pt-16 md:pb-20">
-      <LogoFaitage size={122} layout="empile" class="text-or-light" />
+      <p class="eyebrow-cream flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-or"></span>
+        Le Faitage · La marque immobilière du Chêne Patrimonial
+      </p>
 
-      <div class="mt-10 md:mt-12 grid lg:grid-cols-12 gap-x-16 gap-y-8 items-end">
+      <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-x-16 gap-y-8 items-end">
         <div class="lg:col-span-7">
           <h1 class="font-serif text-[2.1rem] sm:text-[2.7rem] lg:text-[3.1rem] text-cream leading-[1.08]">
             On ne vous envoie pas un catalogue.
