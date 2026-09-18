@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
 import LogoLucarne from '../components/LogoLucarne.astro';
+import QuestionnaireLucarne from '../components/QuestionnaireLucarne.astro';
 
 // Lucarne est une marque du cabinet, pas un tiers : la page le dit
 // explicitement. Présenter une marque qu'on détient comme un partenaire
@@ -47,19 +48,18 @@ const principes = [
       <div class="grid lg:grid-cols-12 gap-14 items-center pt-12 md:pt-16">
         <div class="lg:col-span-7">
           <h1 class="font-serif text-display-xl text-ink mb-6">
-            Bientôt, les biens <span class="italic text-kaki">à ciel ouvert.</span>
+            Les biens, <span class="italic text-kaki">à ciel ouvert.</span>
           </h1>
           <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
-            Lucarne réunira les biens immobiliers suivis par le cabinet, avec leurs
-            chiffres affichés dès la fiche. Le portail ouvrira quand les conventions de
-            diffusion seront signées avec les promoteurs et les exploitants, et pas
-            avant. Il vaut mieux peu de biens vérifiés qu'un catalogue qu'on ne peut
-            pas défendre.
+            Le cabinet suit des biens partout en France, avec leurs vrais chiffres :
+            prix, loyer mensuel, rentabilité et durée de bail. Plutôt que de vous
+            faire éplucher un catalogue, on part de votre projet. Dites-nous ce que
+            vous cherchez, on vous répond avec ce qui correspond vraiment.
           </p>
 
           <div class="flex flex-wrap gap-4 mt-10">
-            <a href="/contact" class="btn-or inline-flex items-center gap-2">
-              Être prévenu de l'ouverture
+            <a href="#questionnaire" class="btn-or inline-flex items-center gap-2">
+              Décrire ma recherche
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
@@ -92,8 +92,10 @@ const principes = [
     </div>
   </section>
 
+  <QuestionnaireLucarne />
+
   <!-- Principes -->
-  <section class="py-12 md:py-16 border-t border-ink/10">
+  <section class="py-12 md:py-16">
     <div class="shell">
       <div class="max-w-3xl mb-10">
         <div class="border-t-2 border-or w-11 mb-4"></div>

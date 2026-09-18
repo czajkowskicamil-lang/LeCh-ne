@@ -1,0 +1,531 @@
+---
+// Questionnaire de recherche Lucarne.
+//
+// Une question par écran, des réponses en cartes cliquables, un parcours qui
+// s'adapte au projet déclaré. À la fin seulement, on demande les coordonnées :
+// le visiteur a déjà investi quelques clics, il va au bout.
+//
+// Le parcours reste strictement immobilier (achat, location, fiscalité
+// immobilière). Aucune question sur des placements financiers : le cabinet est
+// COA et carte T, pas CIF.
+---
+
+<section id="questionnaire" class="py-14 md:py-20 bg-cream-soft/50 border-y border-ink/10 scroll-mt-20">
+  <div class="shell">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-xs uppercase tracking-micro text-kaki font-semibold">
+          Deux minutes, quelques questions
+        </p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2">
+          Dites-nous ce que vous cherchez
+        </h2>
+        <p class="text-ink/70 leading-relaxed mt-3">
+          Pas de catalogue à éplucher. Vous décrivez votre projet, on vous
+          répond avec ce qui correspond vraiment.
+        </p>
+      </div>
+
+      <div class="bg-white border border-ink/10 shadow-[0_1px_2px_rgba(3,16,46,.04),0_18px_50px_-30px_rgba(3,16,46,.35)]">
+        <!-- Progression -->
+        <div class="h-1 bg-ink/5">
+          <div id="q-barre" class="h-full bg-kaki transition-[width] duration-500 ease-out" style="width:0%"></div>
+        </div>
+
+        <div class="p-6 sm:p-10">
+          <div class="flex items-center justify-between mb-7 min-h-[24px]">
+            <button
+              id="q-retour"
+              type="button"
+              class="hidden items-center gap-1.5 text-sm text-stone hover:text-ink transition-colors"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+              Retour
+            </button>
+            <span id="q-etape" class="ml-auto text-xs uppercase tracking-micro text-stone"></span>
+          </div>
+
+          <div id="q-zone" aria-live="polite"></div>
+
+          <noscript>
+            <p class="text-ink/70 leading-relaxed">
+              Ce questionnaire a besoin de JavaScript.
+              <a href="/contact" class="text-kaki font-medium underline underline-offset-4"
+                >Écrivez-nous directement</a
+              >, on vous répond aussi bien.
+            </p>
+          </noscript>
+        </div>
+      </div>
+
+      <p class="text-xs text-stone/80 leading-relaxed mt-4 text-center max-w-xl mx-auto">
+        Vos réponses servent uniquement à préparer notre réponse. Aucune donnée
+        n'est revendue, aucun appel automatisé. Vous pouvez demander leur
+        suppression à tout moment.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Option = { v: string; desc?: string; suivant?: string };
+  type Question = {
+    titre: string;
+    aide?: string;
+    type: 'choix' | 'texte' | 'fin';
+    label?: string;
+    options?: Option[];
+    placeholder?: string;
+    facultatif?: boolean;
+    suivant?: string;
+  };
+
+  // Le parcours. Chaque option peut rediriger vers une branche précise ;
+  // sinon on suit le `suivant` de la question.
+  const Q: Record<string, Question> = {
+    projet: {
+      titre: 'Votre projet, c’est plutôt…',
+      type: 'choix',
+      options: [
+        { v: 'Investir dans l’immobilier locatif', desc: 'Faire travailler mon épargne, me constituer des revenus', suivant: 'inv_budget' },
+        { v: 'Acheter ma résidence principale', desc: 'Le logement dans lequel je vais vivre', suivant: 'rp_ville' },
+        { v: 'Réduire mes impôts', desc: 'Utiliser l’immobilier pour alléger ma fiscalité', suivant: 'fisc_tmi' },
+        { v: 'Je ne sais pas encore', desc: 'J’explore, j’aimerais qu’on m’oriente', suivant: 'situation' },
+      ],
+    },
+
+    // ---------- Investissement locatif ----------
+    inv_budget: {
+      titre: 'Quel budget avez-vous en tête ?',
+      aide: 'Une fourchette suffit, rien n’est figé.',
+      type: 'choix',
+      options: [
+        { v: 'Moins de 80 000 €' },
+        { v: '80 000 à 150 000 €' },
+        { v: '150 000 à 300 000 €' },
+        { v: 'Plus de 300 000 €' },
+      ],
+      suivant: 'inv_priorite',
+    },
+    inv_priorite: {
+      titre: 'Qu’est-ce qui compte le plus pour vous ?',
+      type: 'choix',
+      options: [
+        { v: 'Le rendement', desc: 'Maximiser le loyer par rapport au prix' },
+        { v: 'Ne rien avoir à gérer', desc: 'Un exploitant s’occupe de tout' },
+        { v: 'La sécurité du loyer', desc: 'Un bail solide, un exploitant fiable' },
+        { v: 'L’emplacement', desc: 'Une ville et un quartier qui tiennent dans le temps' },
+      ],
+      suivant: 'inv_type',
+    },
+    inv_type: {
+      titre: 'Un type de bien en particulier ?',
+      aide: 'Si vous ne savez pas, dites-le, c’est précisément notre travail.',
+      type: 'choix',
+      options: [
+        { v: 'LMNP en résidence gérée', desc: 'Étudiante, tourisme ou senior, loyer par bail commercial' },
+        { v: 'Nue-propriété', desc: 'Les murs à prix décoté, sans gestion ni fiscalité pendant l’usufruit' },
+        { v: 'Immobilier neuf', desc: 'VEFA, frais de notaire réduits, garanties du neuf' },
+        { v: 'Je ne sais pas encore', desc: 'Orientez-moi selon ma situation' },
+      ],
+      suivant: 'inv_financement',
+    },
+    inv_financement: {
+      titre: 'Comment comptez-vous financer ?',
+      type: 'choix',
+      options: [
+        { v: 'À crédit' },
+        { v: 'Comptant' },
+        { v: 'Un peu des deux' },
+        { v: 'À étudier ensemble' },
+      ],
+      suivant: 'situation',
+    },
+
+    // ---------- Résidence principale ----------
+    rp_ville: {
+      titre: 'Dans quelle ville, ou quel secteur ?',
+      type: 'texte',
+      label: 'Ville ou secteur recherché',
+      placeholder: 'Montpellier, alentours de Lyon, bord de mer…',
+      suivant: 'rp_budget',
+    },
+    rp_budget: {
+      titre: 'Quel budget pour ce logement ?',
+      aide: 'Prix d’achat envisagé, hors frais de notaire.',
+      type: 'choix',
+      options: [
+        { v: 'Moins de 200 000 €' },
+        { v: '200 000 à 350 000 €' },
+        { v: '350 000 à 500 000 €' },
+        { v: 'Plus de 500 000 €' },
+      ],
+      suivant: 'rp_typologie',
+    },
+    rp_typologie: {
+      titre: 'Combien de pièces vous faut-il ?',
+      type: 'choix',
+      options: [
+        { v: 'T1 ou T2' },
+        { v: 'T3' },
+        { v: 'T4' },
+        { v: 'T5 ou plus' },
+      ],
+      suivant: 'rp_surface',
+    },
+    rp_surface: {
+      titre: 'Quelle surface visez-vous ?',
+      type: 'texte',
+      label: 'Surface souhaitée',
+      placeholder: 'Environ 70 m², ou 60 m² minimum…',
+      facultatif: true,
+      suivant: 'rp_etage',
+    },
+    rp_etage: {
+      titre: 'Une préférence sur l’étage ?',
+      type: 'choix',
+      options: [
+        { v: 'Rez-de-chaussée avec extérieur', desc: 'Jardin ou grande terrasse' },
+        { v: 'Étage intermédiaire' },
+        { v: 'Dernier étage', desc: 'Vue dégagée, pas de voisin au-dessus' },
+        { v: 'Peu importe' },
+      ],
+      suivant: 'rp_neuf',
+    },
+    rp_neuf: {
+      titre: 'Neuf ou ancien ?',
+      type: 'choix',
+      options: [
+        { v: 'Neuf', desc: 'Frais de notaire réduits, rien à refaire' },
+        { v: 'Ancien', desc: 'Plus de charme, plus de choix d’emplacement' },
+        { v: 'Les deux m’intéressent' },
+      ],
+      suivant: 'situation',
+    },
+
+    // ---------- Fiscalité ----------
+    fisc_tmi: {
+      titre: 'Dans quelle tranche d’imposition êtes-vous ?',
+      aide: 'C’est le taux qui s’applique à la dernière partie de vos revenus. Si vous ne savez pas, ce n’est pas grave.',
+      type: 'choix',
+      options: [
+        { v: '11 %' },
+        { v: '30 %' },
+        { v: '41 %' },
+        { v: '45 %' },
+      ],
+      suivant: 'fisc_montant',
+    },
+    fisc_montant: {
+      titre: 'Combien payez-vous d’impôt par an, environ ?',
+      type: 'choix',
+      options: [
+        { v: 'Moins de 3 000 €' },
+        { v: '3 000 à 8 000 €' },
+        { v: '8 000 à 15 000 €' },
+        { v: 'Plus de 15 000 €' },
+      ],
+      suivant: 'fisc_objectif',
+    },
+    fisc_objectif: {
+      titre: 'Votre objectif principal ?',
+      type: 'choix',
+      options: [
+        { v: 'Payer moins d’impôt sur le revenu' },
+        { v: 'Me constituer un patrimoine en même temps' },
+        { v: 'Préparer ma retraite' },
+        { v: 'Transmettre à mes enfants' },
+      ],
+      suivant: 'situation',
+    },
+
+    // ---------- Commun ----------
+    situation: {
+      titre: 'Votre situation professionnelle ?',
+      aide: 'Elle change beaucoup de choses : fiscalité, capacité d’emprunt, horizon.',
+      type: 'choix',
+      options: [
+        { v: 'Salarié' },
+        { v: 'Dirigeant d’entreprise' },
+        { v: 'Profession libérale ou indépendant' },
+        { v: 'Sportif de haut niveau' },
+        { v: 'Retraité' },
+        { v: 'Autre' },
+      ],
+      suivant: 'horizon',
+    },
+    horizon: {
+      titre: 'À quelle échéance ?',
+      type: 'choix',
+      options: [
+        { v: 'Dès maintenant', desc: 'Le projet est prêt' },
+        { v: 'Dans 3 à 6 mois' },
+        { v: 'Dans 6 à 12 mois' },
+        { v: 'Je me renseigne', desc: 'Pas de calendrier arrêté' },
+      ],
+      suivant: 'fin',
+    },
+    fin: { titre: 'Où peut-on vous répondre ?', type: 'fin' },
+  };
+
+  const zone = document.getElementById('q-zone');
+  if (zone) {
+    const barre = document.getElementById('q-barre') as HTMLElement;
+    const retour = document.getElementById('q-retour') as HTMLButtonElement;
+    const compteur = document.getElementById('q-etape') as HTMLElement;
+
+    const reponses: { cle: string; label: string; value: string }[] = [];
+    const pile: string[] = [];
+    let courante = 'projet';
+
+    // Chaque branche a sa longueur : le compteur doit dire vrai, sinon il
+    // décourage au lieu de rassurer. Clé = première question de la branche.
+    const LONGUEURS: Record<string, number> = {
+      inv_budget: 7, // projet + 4 questions + situation + horizon
+      rp_ville: 9, // projet + 6 questions + situation + horizon
+      fisc_tmi: 6, // projet + 3 questions + situation + horizon
+      situation: 3, // projet + situation + horizon
+    };
+    let total = 7;
+
+    const echappe = (s: string) =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    function enregistrer(cle: string, label: string, value: string) {
+      const i = reponses.findIndex((r) => r.cle === cle);
+      const item = { cle, label, value };
+      if (i >= 0) reponses.splice(i, 1, item);
+      else reponses.push(item);
+    }
+
+    function aller(cle: string) {
+      // Le choix du projet détermine la longueur réelle du parcours.
+      if (courante === 'projet' && LONGUEURS[cle]) total = LONGUEURS[cle];
+      pile.push(courante);
+      courante = cle;
+      rendre();
+    }
+
+    function progression() {
+      const fait = Math.min(pile.length, total);
+      barre.style.width = `${Math.round((fait / total) * 100)}%`;
+      compteur.textContent =
+        courante === 'fin' ? 'Dernière étape' : `Étape ${Math.min(pile.length + 1, total)} sur ${total}`;
+      retour.classList.toggle('hidden', pile.length === 0);
+      retour.classList.toggle('inline-flex', pile.length > 0);
+    }
+
+    function rendre() {
+      const q = Q[courante];
+      progression();
+
+      if (q.type === 'fin') return rendreFin(q);
+
+      const aide = q.aide ? `<p class="text-[0.95rem] text-stone leading-relaxed mt-2">${echappe(q.aide)}</p>` : '';
+
+      if (q.type === 'texte') {
+        zone!.innerHTML = `
+          <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
+          ${aide}
+          <div class="mt-7">
+            <label for="q-texte" class="sr-only">${echappe(q.label ?? q.titre)}</label>
+            <input id="q-texte" type="text" placeholder="${echappe(q.placeholder ?? '')}"
+              class="w-full border border-ink/15 bg-white px-4 py-3.5 text-[15px] text-ink placeholder:text-stone/60 outline-none transition focus:border-kaki focus:ring-1 focus:ring-kaki" />
+            <div class="flex items-center gap-3 mt-5">
+              <button id="q-suite" type="button" class="btn-or inline-flex items-center gap-2">
+                Continuer
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+              ${q.facultatif ? '<button id="q-passer" type="button" class="text-sm text-stone hover:text-ink transition-colors underline underline-offset-4">Passer</button>' : ''}
+            </div>
+          </div>`;
+
+        const champ = document.getElementById('q-texte') as HTMLInputElement;
+        const valider = () => {
+          const v = champ.value.trim();
+          if (!v && !q.facultatif) {
+            champ.focus();
+            return;
+          }
+          if (v) enregistrer(courante, q.label ?? q.titre, v);
+          aller(q.suivant!);
+        };
+        document.getElementById('q-suite')!.addEventListener('click', valider);
+        champ.addEventListener('keydown', (e) => {
+          if ((e as KeyboardEvent).key === 'Enter') valider();
+        });
+        document.getElementById('q-passer')?.addEventListener('click', () => aller(q.suivant!));
+        champ.focus();
+        return;
+      }
+
+      // Question à choix.
+      const cartes = q
+        .options!.map(
+          (o, i) => `
+          <button type="button" data-i="${i}"
+            class="q-choix group w-full text-left border border-ink/12 bg-white hover:border-kaki hover:bg-kaki/[0.04] transition-colors px-5 py-4 flex items-start gap-4">
+            <span class="mt-[3px] h-4 w-4 shrink-0 rounded-full border border-ink/25 group-hover:border-kaki group-hover:border-[5px] transition-all"></span>
+            <span>
+              <span class="block text-[15.5px] font-medium text-ink leading-snug">${echappe(o.v)}</span>
+              ${o.desc ? `<span class="block text-[13.5px] text-stone mt-0.5 leading-relaxed">${echappe(o.desc)}</span>` : ''}
+            </span>
+          </button>`
+        )
+        .join('');
+
+      zone!.innerHTML = `
+        <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
+        ${aide}
+        <div class="grid gap-2.5 mt-7">${cartes}</div>`;
+
+      zone!.querySelectorAll<HTMLElement>('.q-choix').forEach((b) => {
+        b.addEventListener('click', () => {
+          const o = q.options![Number(b.dataset.i)];
+          enregistrer(courante, q.titre, o.v);
+          aller(o.suivant ?? q.suivant!);
+        });
+      });
+    }
+
+    function rendreFin(q: Question) {
+      const projet = reponses.find((r) => r.cle === 'projet')?.value ?? 'Non précisé';
+      const recap = reponses
+        .map(
+          (r) =>
+            `<div class="flex items-baseline justify-between gap-4 py-2 border-b border-ink/8 last:border-0">
+               <span class="text-[13px] text-stone">${echappe(r.label)}</span>
+               <span class="text-[13.5px] font-medium text-ink text-right">${echappe(r.value)}</span>
+             </div>`
+        )
+        .join('');
+
+      zone!.innerHTML = `
+        <h3 class="font-serif text-2xl md:text-[1.75rem] text-ink leading-snug">${echappe(q.titre)}</h3>
+        <p class="text-[0.95rem] text-stone leading-relaxed mt-2">
+          On vous répond sous 24 heures ouvrées, par une personne qui aura lu vos réponses.
+        </p>
+
+        <form id="q-form" class="mt-7 grid gap-3" novalidate>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input name="prenom" type="text" required placeholder="Prénom" class="q-champ" />
+            <input name="nom" type="text" placeholder="Nom" class="q-champ" />
+          </div>
+          <input name="email" type="email" required placeholder="Adresse email" class="q-champ" />
+          <input name="telephone" type="tel" placeholder="Téléphone (facultatif)" class="q-champ" />
+          <input name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+
+          <label class="flex gap-2.5 items-start text-[12.5px] text-stone leading-relaxed mt-1">
+            <input name="consent" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#4C5526]" />
+            <span>J’accepte d’être recontacté au sujet de cette recherche. Mes données ne sont ni revendues ni cédées, et je peux demander leur suppression à tout moment.</span>
+          </label>
+          <label class="flex gap-2.5 items-start text-[12.5px] text-stone leading-relaxed">
+            <input name="optin" type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#4C5526]" />
+            <span>Je souhaite aussi recevoir La Lettre du Chêne, une fois par mois. Facultatif.</span>
+          </label>
+
+          <button type="submit" class="btn-or mt-2 inline-flex items-center justify-center gap-2">
+            Envoyer ma recherche
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <p id="q-retour-msg" class="hidden text-[13.5px] leading-relaxed"></p>
+        </form>
+
+        <details class="mt-6 group">
+          <summary class="text-[13px] text-stone hover:text-ink cursor-pointer transition-colors list-none">
+            <span class="underline underline-offset-4">Revoir mes réponses</span>
+          </summary>
+          <div class="mt-3 border-t border-ink/10 pt-2">${recap}</div>
+        </details>`;
+
+      const form = document.getElementById('q-form') as HTMLFormElement;
+      const msg = document.getElementById('q-retour-msg') as HTMLElement;
+      const bouton = form.querySelector('button[type=submit]') as HTMLButtonElement;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const d = new FormData(form);
+        bouton.disabled = true;
+        const libelle = bouton.innerHTML;
+        bouton.textContent = 'Envoi…';
+        msg.className = 'hidden';
+
+        try {
+          const r = await fetch('/api/lucarne-lead', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              prenom: d.get('prenom'),
+              nom: d.get('nom'),
+              email: d.get('email'),
+              telephone: d.get('telephone'),
+              website: d.get('website'),
+              consent: d.get('consent') === 'on',
+              optin: d.get('optin') === 'on',
+              projet,
+              reponses: reponses.map((r) => ({ label: r.label, value: r.value })),
+            }),
+          });
+          const res = await r.json();
+
+          if (res.ok) {
+            barre.style.width = '100%';
+            compteur.textContent = 'Terminé';
+            retour.classList.add('hidden');
+            zone!.innerHTML = `
+              <div class="text-center py-6">
+                <div class="mx-auto w-12 h-12 rounded-full bg-kaki/10 grid place-items-center">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4C5526" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <h3 class="font-serif text-2xl text-ink mt-5">C’est envoyé.</h3>
+                <p class="text-ink/70 leading-relaxed mt-2 max-w-md mx-auto">
+                  Votre recherche est bien arrivée. Vous recevez une réponse sous 24 heures
+                  ouvrées, écrite à la main, pas un catalogue automatique.
+                </p>
+                <a href="/opportunites" class="inline-flex items-center gap-2 mt-7 px-6 py-3 border border-ink/15 text-sm font-medium text-ink hover:border-kaki hover:text-kaki transition-colors">
+                  Voir la sélection du moment
+                </a>
+              </div>`;
+            return;
+          }
+
+          msg.className = 'text-[13.5px] leading-relaxed text-red-700';
+          msg.textContent =
+            res.error === 'consentement_requis'
+              ? 'Merci de cocher la case de consentement.'
+              : res.error === 'champs_invalides'
+                ? 'Vérifiez votre prénom et votre adresse email.'
+                : 'Une erreur est survenue. Réessayez dans un instant.';
+        } catch {
+          msg.className = 'text-[13.5px] leading-relaxed text-red-700';
+          msg.textContent = 'Connexion impossible. Réessayez dans un instant.';
+        } finally {
+          bouton.disabled = false;
+          bouton.innerHTML = libelle;
+        }
+      });
+    }
+
+    retour.addEventListener('click', () => {
+      const p = pile.pop();
+      if (p) {
+        courante = p;
+        rendre();
+      }
+    });
+
+    rendre();
+  }
+</script>
+
+<style is:global>
+  .q-champ {
+    @apply border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none transition;
+  }
+  .q-champ:focus {
+    @apply border-kaki ring-1 ring-kaki;
+  }
+  #questionnaire details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
