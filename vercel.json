@@ -1,4 +1,16 @@
 {
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/lucarne",
+      "destination": "/faitage",
+      "permanent": true
+    },
+    {
+      "source": "/en/lucarne",
+      "destination": "/en/faitage",
+      "permanent": true
+    }
+  ]
 }

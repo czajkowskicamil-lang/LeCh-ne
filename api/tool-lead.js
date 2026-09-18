@@ -10,7 +10,7 @@ import { buildToolPdf } from './_lib/tool-pdf.js';
 const DEST = 'camil.cz@lechenepatrimonial.com';
 const SENDER = { name: 'Site Le Chêne', email: 'etudes@lechenepatrimonial.com' };
 const LETTRE_LIST_ID = 3; // « La Lettre du Chêne - Abonnés » : marketing, opt-in obligatoire.
-const LUCARNE_LIST_ID = 15; // « Lucarne - Leads portail », aucune automation branchée.
+const FAITAGE_LIST_ID = 15; // « Le Faitage - Leads portail », aucune automation branchée.
 
 const escapeHtml = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -49,10 +49,10 @@ export default async function handler(req, res) {
 
   if (body.website) return res.status(200).json({ ok: true }); // honeypot
 
-  // Questionnaire Lucarne : même plomberie, mais liste Brevo dédiée et aucun
+  // Questionnaire Le Faitage : même plomberie, mais liste Brevo dédiée et aucun
   // email vers le visiteur. Hébergé ici parce que le plan Vercel plafonne le
   // nombre de fonctions serverless.
-  if (body.source === 'lucarne') return traiterLucarne(body, res);
+  if (body.source === 'faitage') return traiterFaitage(body, res);
 
   const tool = clean(body.tool).slice(0, 80) || 'Outil';
   const titre = clean(body.titre).slice(0, 120) || tool;
@@ -158,13 +158,13 @@ export default async function handler(req, res) {
 }
 
 /**
- * Recherche déposée via le questionnaire Lucarne.
+ * Recherche déposée via le questionnaire Le Faitage.
  *
- * Contact rangé dans la liste Lucarne, récapitulatif envoyé à Camil.
+ * Contact rangé dans la liste Le Faitage, récapitulatif envoyé à Camil.
  * Volontairement AUCUN email automatique au visiteur : la reprise de contact
  * reste humaine et décidée par Camil.
  */
-async function traiterLucarne(body, res) {
+async function traiterFaitage(body, res) {
   const prenom = clean(body.prenom).slice(0, 60);
   const nom = clean(body.nom).slice(0, 60);
   const email = clean(body.email).slice(0, 120);
@@ -189,7 +189,7 @@ async function traiterLucarne(body, res) {
     .join(' · ')
     .slice(0, 250);
 
-  const listIds = [LUCARNE_LIST_ID];
+  const listIds = [FAITAGE_LIST_ID];
   if (optin) listIds.push(LETTRE_LIST_ID);
   try {
     await fetch('https://api.brevo.com/v3/contacts', {
@@ -201,16 +201,16 @@ async function traiterLucarne(body, res) {
           FIRSTNAME: prenom,
           ...(nom ? { LASTNAME: nom } : {}),
           ...(telephone ? { TELEPHONE: telephone } : {}),
-          CATEGORIE: 'Lead Lucarne',
+          CATEGORIE: 'Lead Le Faitage',
           OPT_IN: optin,
-          LUCARNE_BIEN: projet,
-          LUCARNE_MESSAGE: resume,
+          FAITAGE_BIEN: projet,
+          FAITAGE_MESSAGE: resume,
         },
         listIds,
         updateEnabled: true,
       }),
     });
-  } catch (err) { console.error('Brevo contact Lucarne échoué', err); }
+  } catch (err) { console.error('Brevo contact Le Faitage échoué', err); }
 
   const ligne = (k, v) =>
     `<tr><td style="padding:6px 14px 6px 0;color:#7A7566;font-size:13px;vertical-align:top">${escapeHtml(k)}</td>` +
@@ -219,12 +219,12 @@ async function traiterLucarne(body, res) {
 
   const htmlContent = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E">
-      <p style="font-size:13px;color:#4C5526;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px">Nouvelle recherche &middot; Lucarne</p>
+      <p style="font-size:13px;color:#4C5526;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px">Nouvelle recherche &middot; Le Faitage</p>
       <p style="margin:0 0 2px;font-size:17px;font-weight:700">${escapeHtml(prenom)} ${escapeHtml(nom)}</p>
       <p style="margin:0 0 2px;font-size:14px"><a href="mailto:${escapeHtml(email)}" style="color:#0A1F4F">${escapeHtml(email)}</a>${telephone ? ` &middot; <a href="tel:${escapeHtml(telephone)}" style="color:#0A1F4F">${escapeHtml(telephone)}</a>` : ''}</p>
       <p style="margin:0 0 18px;font-size:12px;color:#7A7566">Projet : <strong>${escapeHtml(projet)}</strong> &middot; Opt-in newsletter : <strong>${optin ? 'OUI' : 'non'}</strong> &middot; Consentement : OUI</p>
       <table style="width:100%;border-collapse:collapse;border-top:1px solid #EDE6D3">${rowsHtml}</table>
-      <p style="font-size:13px;color:#7A7566;line-height:1.5;margin-top:16px">Recherche déposée sur Lucarne. Aucun email automatique n'est parti vers le visiteur : la reprise de contact est à faire à la main.</p>
+      <p style="font-size:13px;color:#7A7566;line-height:1.5;margin-top:16px">Recherche déposée sur Le Faitage. Aucun email automatique n'est parti vers le visiteur : la reprise de contact est à faire à la main.</p>
     </div>`;
 
   try {
@@ -232,19 +232,19 @@ async function traiterLucarne(body, res) {
       method: 'POST',
       headers: { 'api-key': apiKey, 'content-type': 'application/json', accept: 'application/json' },
       body: JSON.stringify({
-        sender: { name: 'Lucarne', email: SENDER.email },
+        sender: { name: 'Le Faitage', email: SENDER.email },
         to: [{ email: DEST, name: 'Camil Czajkowski' }],
         replyTo: { email, name: `${prenom} ${nom}`.trim() },
-        subject: `Lucarne · ${projet} · ${prenom} ${nom}`.trim(),
+        subject: `Le Faitage · ${projet} · ${prenom} ${nom}`.trim(),
         htmlContent,
       }),
     });
     if (!r.ok) {
-      console.error('Brevo email Lucarne', r.status, await r.text());
+      console.error('Brevo email Le Faitage', r.status, await r.text());
       return res.status(502).json({ ok: false, error: 'envoi' });
     }
   } catch (err) {
-    console.error('Envoi Lucarne échoué', err);
+    console.error('Envoi Le Faitage échoué', err);
     return res.status(502).json({ ok: false, error: 'envoi' });
   }
 

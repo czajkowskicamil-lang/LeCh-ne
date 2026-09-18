@@ -1,10 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
-import LogoLucarne from '../components/LogoLucarne.astro';
-import QuestionnaireLucarne from '../components/QuestionnaireLucarne.astro';
+import LogoFaitage from '../components/LogoFaitage.astro';
+import QuestionnaireFaitage from '../components/QuestionnaireFaitage.astro';
 
-// Lucarne est une marque du cabinet, pas un tiers : la page le dit
+// Le Faitage est une marque du cabinet, pas un tiers : la page le dit
 // explicitement. Présenter une marque qu'on détient comme un partenaire
 // extérieur serait trompeur au sens de l'article L121-2 du code de la
 // consommation.
@@ -29,15 +29,15 @@ const principes = [
 ---
 
 <Base
-  title="Lucarne, la marque immobilière du cabinet"
-  description="Lucarne est le portail d'annonces immobilières du Chêne Patrimonial : les chiffres affichés avant la prise de contact, aucune annonce sponsorisée. Ouverture prochaine."
+  title="Le Faitage, la marque immobilière du cabinet"
+  description="Le Faitage est le portail immobilier du Chêne Patrimonial : vous décrivez votre projet, on vous répond avec les biens qui correspondent. Chiffres affichés, aucune annonce sponsorisée."
 >
   <!-- Hero -->
   <section class="pt-16 pb-12 md:pt-24 md:pb-16">
     <div class="shell">
-      <!-- La marque avant tout le reste : c'est la page de Lucarne. -->
+      <!-- La marque avant tout le reste : c'est la page du Faitage. -->
       <div class="flex flex-col items-center text-center pb-12 md:pb-16 border-b border-ink/10">
-        <LogoLucarne size={96} withWordmark class="text-kaki" />
+        <LogoFaitage size={96} withWordmark class="text-kaki" />
         <p class="eyebrow mt-6 flex items-center gap-3">
           <span class="inline-block h-px w-8 bg-kaki"></span>
           Une marque du Chêne Patrimonial
@@ -48,13 +48,13 @@ const principes = [
       <div class="grid lg:grid-cols-12 gap-14 items-center pt-12 md:pt-16">
         <div class="lg:col-span-7">
           <h1 class="font-serif text-display-xl text-ink mb-6">
-            Les biens, <span class="italic text-kaki">à ciel ouvert.</span>
+            La pièce qui <span class="italic text-kaki">tient tout.</span>
           </h1>
           <p class="text-xl text-ink/75 max-w-2xl leading-relaxed">
-            Le cabinet suit des biens partout en France, avec leurs vrais chiffres :
-            prix, loyer mensuel, rentabilité et durée de bail. Plutôt que de vous
-            faire éplucher un catalogue, on part de votre projet. Dites-nous ce que
-            vous cherchez, on vous répond avec ce qui correspond vraiment.
+            Le faitage, c'est la poutre maîtresse d'une toiture : celle qui porte
+            tout le reste, traditionnellement taillée dans le chêne. Le cabinet suit
+            des biens partout en France, avec leurs vrais chiffres. Plutôt que de vous
+            faire éplucher un catalogue, on part de votre projet.
           </p>
 
           <div class="flex flex-wrap gap-4 mt-10">
@@ -76,11 +76,11 @@ const principes = [
 
         <div class="lg:col-span-5">
           <div class="bg-navy-deep text-cream p-10 md:p-12 flex flex-col items-center text-center">
-            <LogoLucarne size={88} class="text-kaki-light mb-7" />
-            <div class="font-serif text-3xl tracking-[0.02em] text-cream">Lucarne</div>
+            <LogoFaitage size={88} class="text-kaki-light mb-7" />
+            <div class="font-serif text-3xl tracking-[0.02em] text-cream">Le Faitage</div>
             <div class="mt-3 h-px w-12 bg-or/60"></div>
             <p class="text-sm text-cream/70 mt-5 leading-relaxed">
-              Le portail d'annonces immobilières du Chêne Patrimonial
+              Le portail immobilier du Chêne Patrimonial
             </p>
           </div>
           <p class="text-xs text-stone/80 mt-3 leading-relaxed">
@@ -92,7 +92,7 @@ const principes = [
     </div>
   </section>
 
-  <QuestionnaireLucarne />
+  <QuestionnaireFaitage />
 
   <!-- Principes -->
   <section class="py-12 md:py-16">
@@ -100,7 +100,7 @@ const principes = [
       <div class="max-w-3xl mb-10">
         <div class="border-t-2 border-or w-11 mb-4"></div>
         <p class="text-xs uppercase tracking-micro text-or-dark font-semibold">
-          Ce à quoi Lucarne s'engage
+          Ce à quoi Le Faitage s'engage
         </p>
         <h2 class="font-serif text-3xl md:text-4xl text-ink mt-2 mb-3">
           Trois règles, tenues dès la première annonce
@@ -129,9 +129,10 @@ const principes = [
   <section class="pt-12 pb-16 md:pb-24 border-t border-ink/10">
     <div class="shell">
       <p class="text-xs text-stone/80 leading-relaxed max-w-3xl">
-        Lucarne est une marque exploitée par Le Chêne Patrimonial. Cette page présente
-        un projet de portail et ne constitue ni une offre, ni une sollicitation, ni un
-        conseil en investissement personnalisé. Aucun bien n'y est diffusé à ce jour.
+        Le Faitage est une marque exploitée par Le Chêne Patrimonial. Cette page
+        présente un projet de portail et ne constitue ni une offre, ni une
+        sollicitation, ni un conseil en investissement personnalisé. Aucun bien n'y est
+        diffusé à ce jour.
         Le Chêne Patrimonial · Camil Czajkowski, courtier en assurance (COA, ORIAS
         n° 25 00 00 16) et agent immobilier (carte T n° CPI 3402 2024 000 000 049).
       </p>

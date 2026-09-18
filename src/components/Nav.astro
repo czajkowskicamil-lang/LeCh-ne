@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import LogoLucarne from './LogoLucarne.astro';
+import LogoFaitage from './LogoFaitage.astro';
 import LanguageToggle from './LanguageToggle.astro';
 import { nav, site } from '../data/site';
 import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
@@ -24,7 +24,7 @@ const menu = nav.map((item) => ({
   label: t(item.key),
 }));
 const avisHref = localizePath('/avis', lang);
-const lucarneHref = localizePath('/lucarne', lang);
+const faitageHref = localizePath('/faitage', lang);
 ---
 
 <header
@@ -39,18 +39,18 @@ const lucarneHref = localizePath('/lucarne', lang);
     <Logo />
 
     <div class="flex items-center gap-4 sm:gap-5 md:gap-7">
-      <!-- Lucarne a son propre emplacement, hors du menu déroulant : c'est une
+      <!-- Le Faitage a son propre emplacement, hors du menu déroulant : c'est une
            marque du cabinet, elle doit se voir sans avoir à ouvrir le menu.
            Sa couleur kaki la distingue du vert chêne du cabinet. -->
       <a
-        href={lucarneHref}
-        class="nav-lucarne inline-flex items-center gap-2 pr-4 sm:pr-5 md:pr-7 border-r border-current/15 transition-colors"
-        aria-label="Lucarne, le portail d'annonces du cabinet"
+        href={faitageHref}
+        class="nav-faitage inline-flex items-center gap-2 pr-4 sm:pr-5 md:pr-7 border-r border-current/15 transition-colors"
+        aria-label="Le Faitage, le portail d'annonces du cabinet"
       >
-        <LogoLucarne size={31} class="shrink-0" />
+        <LogoFaitage size={31} class="shrink-0" />
         <span
           class="hidden sm:inline font-serif text-[1.15rem] font-medium leading-none tracking-[0.01em]"
-          >Lucarne</span
+          >Le Faitage</span
         >
         <span
           class="hidden md:inline text-[0.55rem] uppercase tracking-micro font-semibold border border-current/35 rounded-full px-1.5 py-0.5 leading-none opacity-80"
@@ -158,18 +158,18 @@ const lucarneHref = localizePath('/lucarne', lang);
   header.nav-hero:not(.is-solid) img {
     filter: drop-shadow(0 1px 2px rgba(3, 9, 28, 0.55)) drop-shadow(0 3px 10px rgba(3, 9, 28, 0.45));
   }
-  /* Lucarne en kaki : soutenu sur fond crème, éclairci au-dessus d'un hero
+  /* Le Faitage en kaki : soutenu sur fond crème, éclairci au-dessus d'un hero
      sombre pour rester lisible. Le cabinet garde sa propre couleur. */
-  .nav-lucarne {
+  .nav-faitage {
     color: #4C5526;
   }
-  .nav-lucarne:hover {
+  .nav-faitage:hover {
     color: #353C18;
   }
-  header.nav-hero:not(.is-solid) .nav-lucarne {
+  header.nav-hero:not(.is-solid) .nav-faitage {
     color: #A9B473;
   }
-  header.nav-hero:not(.is-solid) .nav-lucarne:hover {
+  header.nav-hero:not(.is-solid) .nav-faitage:hover {
     color: #C6CE97;
   }
   /* Bouton CTA doré tant qu'on survole le hero */
