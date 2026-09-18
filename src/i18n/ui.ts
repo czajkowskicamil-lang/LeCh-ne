@@ -23,7 +23,6 @@ export const translatedRoutes = new Set<string>([
   '/questions-frequentes',
   '/suisse-france',
   '/observatoire',
-  '/faitage',
   '/confidentialite',
   '/mentions-legales',
   '/conseiller-gestion-patrimoine-montpellier',
@@ -94,6 +93,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'nav.fermer': 'Fermer',
     'nav.toolBadge': 'Outil',
+    'nav.faitageBadge': 'Arrive bientôt',
     'nav.ariaMenu': 'Ouvrir le menu',
     'nav.ariaAvis': 'Avis clients',
 
@@ -299,6 +299,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'nav.fermer': 'Close',
     'nav.toolBadge': 'Tool',
+    'nav.faitageBadge': 'Coming soon',
     'nav.ariaMenu': 'Open menu',
     'nav.ariaAvis': 'Client reviews',
 

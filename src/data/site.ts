@@ -35,7 +35,7 @@ export const nav = [
 export const navSecondary = [
   // Le Faitage a son emplacement dédié dans le header, pas dans le menu déroulant.
   // On le garde ici pour qu'elle reste atteignable depuis le pied de page.
-  { key: 'nav.faitage', label: 'Le Faitage', href: '/faitage' },
+  { key: 'nav.faitage', label: 'Le Faitage', href: 'https://le-faitage.vercel.app' },
   { key: 'nav.magazine', label: 'Magazine', href: '/magazine' },
   { key: 'nav.cas', label: 'Cas pratiques', href: '/cas-pratiques' },
   { key: 'nav.manifeste', label: 'Manifeste', href: '/manifeste' },

@@ -49,11 +49,6 @@ export default async function handler(req, res) {
 
   if (body.website) return res.status(200).json({ ok: true }); // honeypot
 
-  // Questionnaire Le Faitage : même plomberie, mais liste Brevo dédiée et aucun
-  // email vers le visiteur. Hébergé ici parce que le plan Vercel plafonne le
-  // nombre de fonctions serverless.
-  if (body.source === 'faitage') return traiterFaitage(body, res);
-
   const tool = clean(body.tool).slice(0, 80) || 'Outil';
   const titre = clean(body.titre).slice(0, 120) || tool;
   const sousTitre = clean(body.sousTitre).slice(0, 120);
@@ -153,100 +148,6 @@ export default async function handler(req, res) {
       }),
     });
   } catch (err) { console.error('Envoi PDF visiteur échoué', err); }
-
-  return res.status(200).json({ ok: true });
-}
-
-/**
- * Recherche déposée via le questionnaire Le Faitage.
- *
- * Contact rangé dans la liste Le Faitage, récapitulatif envoyé à Camil.
- * Volontairement AUCUN email automatique au visiteur : la reprise de contact
- * reste humaine et décidée par Camil.
- */
-async function traiterFaitage(body, res) {
-  const prenom = clean(body.prenom).slice(0, 60);
-  const nom = clean(body.nom).slice(0, 60);
-  const email = clean(body.email).slice(0, 120);
-  const telephone = clean(body.telephone).slice(0, 30);
-  const optin = !!body.optin;
-  const projet = clean(body.projet).slice(0, 80) || 'Non précisé';
-  const reponses = Array.isArray(body.reponses) ? body.reponses.slice(0, 30) : [];
-
-  if (!prenom || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    return res.status(400).json({ ok: false, error: 'champs_invalides' });
-  }
-  if (!body.consent) return res.status(400).json({ ok: false, error: 'consentement_requis' });
-
-  const apiKey = process.env.BREVO_API_KEY;
-  if (!apiKey) {
-    console.error('BREVO_API_KEY manquante');
-    return res.status(500).json({ ok: false, error: 'config' });
-  }
-
-  const resume = reponses
-    .map((r) => `${clean(r.label)} : ${clean(String(r.value ?? ''))}`)
-    .join(' · ')
-    .slice(0, 250);
-
-  const listIds = [FAITAGE_LIST_ID];
-  if (optin) listIds.push(LETTRE_LIST_ID);
-  try {
-    await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: { 'api-key': apiKey, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({
-        email,
-        attributes: {
-          FIRSTNAME: prenom,
-          ...(nom ? { LASTNAME: nom } : {}),
-          ...(telephone ? { TELEPHONE: telephone } : {}),
-          CATEGORIE: 'Lead Le Faitage',
-          OPT_IN: optin,
-          FAITAGE_BIEN: projet,
-          FAITAGE_MESSAGE: resume,
-        },
-        listIds,
-        updateEnabled: true,
-      }),
-    });
-  } catch (err) { console.error('Brevo contact Le Faitage échoué', err); }
-
-  const ligne = (k, v) =>
-    `<tr><td style="padding:6px 14px 6px 0;color:#7A7566;font-size:13px;vertical-align:top">${escapeHtml(k)}</td>` +
-    `<td style="padding:6px 0;color:#03102E;font-weight:600;font-size:14px;text-align:right">${escapeHtml(v)}</td></tr>`;
-  const rowsHtml = reponses.map((r) => ligne(clean(r.label), clean(String(r.value ?? '')))).join('');
-
-  const htmlContent = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#03102E">
-      <p style="font-size:13px;color:#4C5526;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px">Nouvelle recherche &middot; Le Faitage</p>
-      <p style="margin:0 0 2px;font-size:17px;font-weight:700">${escapeHtml(prenom)} ${escapeHtml(nom)}</p>
-      <p style="margin:0 0 2px;font-size:14px"><a href="mailto:${escapeHtml(email)}" style="color:#0A1F4F">${escapeHtml(email)}</a>${telephone ? ` &middot; <a href="tel:${escapeHtml(telephone)}" style="color:#0A1F4F">${escapeHtml(telephone)}</a>` : ''}</p>
-      <p style="margin:0 0 18px;font-size:12px;color:#7A7566">Projet : <strong>${escapeHtml(projet)}</strong> &middot; Opt-in newsletter : <strong>${optin ? 'OUI' : 'non'}</strong> &middot; Consentement : OUI</p>
-      <table style="width:100%;border-collapse:collapse;border-top:1px solid #EDE6D3">${rowsHtml}</table>
-      <p style="font-size:13px;color:#7A7566;line-height:1.5;margin-top:16px">Recherche déposée sur Le Faitage. Aucun email automatique n'est parti vers le visiteur : la reprise de contact est à faire à la main.</p>
-    </div>`;
-
-  try {
-    const r = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: { 'api-key': apiKey, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({
-        sender: { name: 'Le Faitage', email: SENDER.email },
-        to: [{ email: DEST, name: 'Camil Czajkowski' }],
-        replyTo: { email, name: `${prenom} ${nom}`.trim() },
-        subject: `Le Faitage · ${projet} · ${prenom} ${nom}`.trim(),
-        htmlContent,
-      }),
-    });
-    if (!r.ok) {
-      console.error('Brevo email Le Faitage', r.status, await r.text());
-      return res.status(502).json({ ok: false, error: 'envoi' });
-    }
-  } catch (err) {
-    console.error('Envoi Le Faitage échoué', err);
-    return res.status(502).json({ ok: false, error: 'envoi' });
-  }
 
   return res.status(200).json({ ok: true });
 }

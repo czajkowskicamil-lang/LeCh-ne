@@ -35,7 +35,6 @@ const staticPages = [
   { path: '/magazine',         priority: 0.9, changefreq: 'weekly' },
   { path: '/actualites',       priority: 0.7, changefreq: 'weekly' },
   { path: '/opportunites',     priority: 0.8, changefreq: 'weekly' },
-  { path: '/faitage',          priority: 0.8, changefreq: 'weekly' },
   { path: '/cas-pratiques',    priority: 0.8, changefreq: 'monthly' },
   { path: '/suisse-france',    priority: 0.8, changefreq: 'monthly' },
   { path: '/contact',          priority: 0.8, changefreq: 'yearly' },

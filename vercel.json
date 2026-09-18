@@ -4,12 +4,22 @@
   "redirects": [
     {
       "source": "/lucarne",
-      "destination": "/faitage",
+      "destination": "https://le-faitage.vercel.app",
       "permanent": true
     },
     {
       "source": "/en/lucarne",
-      "destination": "/en/faitage",
+      "destination": "https://le-faitage.vercel.app",
+      "permanent": true
+    },
+    {
+      "source": "/faitage",
+      "destination": "https://le-faitage.vercel.app",
+      "permanent": true
+    },
+    {
+      "source": "/en/faitage",
+      "destination": "https://le-faitage.vercel.app",
       "permanent": true
     }
   ]
