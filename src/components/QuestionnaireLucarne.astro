@@ -468,10 +468,11 @@
         msg.className = 'hidden';
 
         try {
-          const r = await fetch('/api/lucarne-lead', {
+          const r = await fetch('/api/tool-lead', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
+              source: 'lucarne',
               prenom: d.get('prenom'),
               nom: d.get('nom'),
               email: d.get('email'),
