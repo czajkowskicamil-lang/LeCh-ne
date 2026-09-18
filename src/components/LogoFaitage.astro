@@ -8,11 +8,12 @@
 //
 // Trois montages :
 //   'empile' : chevron au-dessus, nom, puis le métier. Pour les pages.
-//   'ligne'  : chevron et nom côte à côte. Pour le header, où la hauteur compte.
+//   'timbre' : même montage, proportions serrées pour tenir dans le header.
+//   'ligne'  : chevron et nom côte à côte.
 //   'signe'  : le chevron seul. Pour les favicons et les usages réduits.
 interface Props {
   size?: number;
-  layout?: 'empile' | 'ligne' | 'signe';
+  layout?: 'empile' | 'timbre' | 'ligne' | 'signe';
   metier?: boolean;
   color?: string;
   class?: string;
@@ -87,6 +88,33 @@ const metierTaille = nomTaille * 0.52;
         IMMOBILIER
       </span>
     )}
+  </span>
+)}
+
+{layout === 'timbre' && (
+  <span class={`inline-flex flex-col items-center leading-none ${klass}`} style={style}>
+    <svg
+      width={size}
+      height={chevronH}
+      viewBox="0 0 64 27"
+      fill="none"
+      aria-hidden="true"
+      style={`margin-bottom:${size * 0.09}px`}
+    >
+      <path
+        d="M3 24 32 3l29 21"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <span
+      class="font-serif leading-none whitespace-nowrap"
+      style={`font-size:${size * 0.3}px;letter-spacing:0.06em`}
+    >
+      LE FAITAGE
+    </span>
   </span>
 )}
 
