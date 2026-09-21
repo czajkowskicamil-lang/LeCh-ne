@@ -1,0 +1,268 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import { site } from '../data/site';
+import { communes, communePath, type Commune } from '../data/communes';
+
+export function getStaticPaths() {
+  return communes.map((c) => ({
+    params: { commune: c.slug },
+    props: { commune: c },
+  }));
+}
+
+interface Props {
+  commune: Commune;
+}
+
+const { commune } = Astro.props;
+const { nom, prep, accroche, contexte, enjeux, outils } = commune;
+
+const url = `https://www.lechenepatrimonial.com${communePath(commune.slug)}`;
+
+const title = `Conseiller en gestion de patrimoine ${prep} ${nom} | Le Chêne Patrimonial`;
+const description = commune.meta;
+
+const voisines = commune.voisines
+  .map((slug) => communes.find((c) => c.slug === slug))
+  .filter((c): c is Commune => Boolean(c));
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FinancialService',
+  '@id': `${url}#localbusiness`,
+  name: `Le Chêne Patrimonial, conseiller en gestion de patrimoine ${prep} ${nom}`,
+  url,
+  description: `Conseiller en gestion de patrimoine indépendant ${prep} ${nom}, dans la métropole de Montpellier et dans l'Hérault.`,
+  email: site.email,
+  telephone: site.phone.tel,
+  priceRange: 'Sur devis',
+  parentOrganization: { '@id': 'https://www.lechenepatrimonial.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: nom },
+    { '@type': 'City', name: 'Montpellier' },
+    { '@type': 'AdministrativeArea', name: 'Hérault' },
+  ],
+  serviceType: [
+    'Conseil en gestion de patrimoine',
+    'Assurance-vie',
+    'Plan Épargne Retraite',
+    'Investissement immobilier',
+    'Transmission de patrimoine',
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://www.lechenepatrimonial.com/' },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Conseiller en gestion de patrimoine à Montpellier',
+      item: 'https://www.lechenepatrimonial.com/conseiller-gestion-patrimoine-montpellier',
+    },
+    { '@type': 'ListItem', position: 3, name: nom, item: url },
+  ],
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <!-- Hero -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex flex-wrap gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/conseiller-gestion-patrimoine-montpellier" class="hover:text-chene">Montpellier</a>
+        <span>/</span>
+        <span class="text-ink">{nom}</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+            <span class="inline-block h-px w-8 bg-chene"></span>
+            {nom} et métropole de Montpellier
+          </p>
+          <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+            Conseiller en gestion de patrimoine {prep} {nom}
+          </h1>
+          <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+            Un accompagnement indépendant, clair et dans la durée
+          </p>
+          <p class="text-lg text-ink/80 leading-relaxed max-w-prose-wide reveal" style="animation-delay:240ms">
+            {accroche}
+          </p>
+        </div>
+
+        <aside class="lg:col-span-4 reveal" style="animation-delay:320ms">
+          <div class="bg-ink text-cream p-8">
+            <p class="eyebrow-cream mb-5">Interventions</p>
+            <ul class="space-y-3 text-sm">
+              <li class="flex gap-3"><span class="text-or mt-1">,</span><span class="text-cream/85">{nom}</span></li>
+              <li class="flex gap-3"><span class="text-or mt-1">,</span><span class="text-cream/85">Métropole de Montpellier</span></li>
+              <li class="flex gap-3"><span class="text-or mt-1">,</span><span class="text-cream/85">Hérault (34)</span></li>
+              <li class="flex gap-3"><span class="text-or mt-1">,</span><span class="text-cream/85">Partout en France, à distance</span></li>
+            </ul>
+            <p class="text-cream/60 text-xs mt-6 leading-relaxed">
+              Rendez-vous {prep} {nom} et alentours, ou en visioconférence.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repères -->
+  <section class="border-y border-ink/10 bg-cream-soft py-12">
+    <div class="shell">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-px">
+        <div class="md:p-6 md:bg-cream reveal">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Statut</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Indépendant</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:80ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Immatriculation</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">ORIAS</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:160ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Premier échange</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Offert</p>
+        </div>
+        <div class="md:p-6 md:bg-cream reveal" style="transition-delay:240ms">
+          <p class="text-xs uppercase tracking-micro text-stone mb-2">Rendez-vous</p>
+          <p class="font-serif text-2xl md:text-3xl text-ink">Sur place ou à distance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contexte local -->
+  <section class="py-20 md:py-28">
+    <div class="shell grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <p class="eyebrow mb-4 reveal">Le territoire</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink mb-8 reveal">
+          Ce que l'on rencontre {prep} {nom}
+        </h2>
+        <div class="space-y-6 max-w-prose-wide">
+          {contexte.map((p, i) => (
+            <p class="text-ink/80 leading-relaxed reveal" style={`transition-delay:${i * 80}ms`}>{p}</p>
+          ))}
+        </div>
+      </div>
+
+      <aside class="lg:col-span-5 reveal">
+        <div class="border border-ink/12 p-8 bg-cream-soft">
+          <p class="eyebrow mb-5">Commencer seul</p>
+          <p class="text-ink/75 leading-relaxed mb-6">
+            Ces trois outils gratuits recoupent les questions les plus fréquentes sur ce territoire. Sans inscription.
+          </p>
+          <ul class="space-y-4">
+            {outils.map((o) => (
+              <li>
+                <a href={o.href} class="group flex items-start gap-3 text-ink hover:text-chene transition-colors">
+                  <span class="text-or mt-1 text-sm">,</span>
+                  <span class="border-b border-transparent group-hover:border-chene/40 leading-snug">{o.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Enjeux locaux -->
+  <section class="pb-20 md:pb-28">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Les sujets qui reviennent</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">
+        Trois situations fréquentes {prep} {nom}.
+      </h2>
+      <div class="grid md:grid-cols-3 gap-10">
+        {enjeux.map((e, i) => (
+          <div class="reveal" style={`transition-delay:${i * 100}ms`}>
+            <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-2xl text-ink mb-3 leading-snug">{e.t}</h3>
+            <p class="text-ink/75 leading-relaxed">{e.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Méthode -->
+  <section class="border-t border-ink/10 py-20 md:py-28">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Comment se passe un accompagnement</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Trois étapes simples, à votre rythme.</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="reveal">
+          <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Étape 01</p>
+          <h3 class="font-serif text-2xl text-ink mb-3">Premier échange, offert</h3>
+          <p class="text-ink/75 leading-relaxed">
+            Trente minutes pour comprendre votre situation, vos objectifs et vos contraintes. Sans engagement, et sans jargon.
+          </p>
+        </div>
+        <div class="reveal" style="transition-delay:100ms">
+          <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Étape 02</p>
+          <h3 class="font-serif text-2xl text-ink mb-3">Bilan patrimonial</h3>
+          <p class="text-ink/75 leading-relaxed">
+            Une analyse structurée de votre patrimoine, de votre fiscalité et de vos projets. Vous repartez avec une vision claire des priorités.
+          </p>
+        </div>
+        <div class="reveal" style="transition-delay:200ms">
+          <p class="text-xs uppercase tracking-micro text-or mb-3 font-medium">Étape 03</p>
+          <h3 class="font-serif text-2xl text-ink mb-3">Recommandations et suivi</h3>
+          <p class="text-ink/75 leading-relaxed">
+            Des propositions concrètes, expliquées et hiérarchisées. Vous décidez, j'accompagne la mise en place et le suivi dans la durée.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-14 flex flex-wrap gap-x-10 gap-y-4 reveal">
+        <a href="/avis" class="text-chene font-medium hover:underline underline-offset-4">
+          Lire les avis de mes clients
+        </a>
+        <a href="/parcours" class="text-chene font-medium hover:underline underline-offset-4">
+          Qui je suis
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Maillage local -->
+  <section class="border-t border-ink/10 py-16 md:py-20 bg-cream-soft">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Autour de {nom}</p>
+      <h2 class="font-serif text-2xl md:text-3xl text-ink mb-8 reveal">
+        J'interviens aussi dans les communes voisines.
+      </h2>
+      <ul class="flex flex-wrap gap-x-8 gap-y-3">
+        <li>
+          <a href="/conseiller-gestion-patrimoine-montpellier" class="text-ink hover:text-chene border-b border-ink/20 hover:border-chene transition-colors">
+            Montpellier
+          </a>
+        </li>
+        {voisines.map((v) => (
+          <li>
+            <a href={communePath(v.slug)} class="text-ink hover:text-chene border-b border-ink/20 hover:border-chene transition-colors">
+              {v.nom}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTA
+    title={`Vous cherchez un conseiller en gestion de patrimoine ${prep} ${nom} ?`}
+    body="Planifions un premier échange de 30 minutes, en présentiel ou à distance. Une conversation claire sur votre situation, et les priorités qui en découlent."
+  />
+</Base>

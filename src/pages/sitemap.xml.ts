@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { expertises } from '../data/site';
+import { communes, communePath } from '../data/communes';
 import { translatedRoutes } from '../i18n/ui';
 
 const SITE = 'https://www.lechenepatrimonial.com';
@@ -45,6 +46,11 @@ const staticPages = [
 // Chemin FR canonique -> chemin EN équivalent (/en/…), '/' devenant '/en/'.
 const enPath = (path: string) => (path === '/' ? '/en/' : `/en${path}`);
 
+// Le site sert ses pages avec un slash final et le déclare dans la balise
+// canonical. Le sitemap doit annoncer exactement la même forme, sinon Google
+// reçoit deux URL pour une seule page.
+const canonical = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+
 type Entry = {
   path: string;
   lastmod: string;
@@ -56,28 +62,31 @@ type Entry = {
 // Construit un ou deux blocs <url> : la version FR (avec alternates hreflang si
 // une version EN existe) et, le cas échéant, la version EN.
 function renderEntry(e: Entry): string {
+  const fr = canonical(e.path);
+  const en = canonical(enPath(e.path));
+
   const meta = `    <lastmod>${e.lastmod}</lastmod>
     <changefreq>${e.changefreq}</changefreq>
     <priority>${e.priority.toFixed(1)}</priority>`;
 
   if (!e.hasEn) {
     return `  <url>
-    <loc>${SITE}${e.path}</loc>
+    <loc>${SITE}${fr}</loc>
 ${meta}
   </url>`;
   }
 
-  const alt = `    <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${e.path}" />
-    <xhtml:link rel="alternate" hreflang="en" href="${SITE}${enPath(e.path)}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${e.path}" />`;
+  const alt = `    <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${fr}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${SITE}${en}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${fr}" />`;
 
   return `  <url>
-    <loc>${SITE}${e.path}</loc>
+    <loc>${SITE}${fr}</loc>
 ${alt}
 ${meta}
   </url>
   <url>
-    <loc>${SITE}${enPath(e.path)}</loc>
+    <loc>${SITE}${en}</loc>
 ${alt}
 ${meta}
   </url>`;
@@ -103,6 +112,14 @@ export const GET: APIRoute = async () => {
       changefreq: p.changefreq,
       priority: p.priority,
       hasEn: translatedRoutes.has(p.path),
+    })),
+    // Pages locales par commune (SEO local métropole de Montpellier).
+    ...communes.map((c) => ({
+      path: communePath(c.slug),
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: 0.7,
+      hasEn: false,
     })),
     ...expertises.map((x) => ({
       path: `/expertise/${x.slug}`,

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
 import { site } from '../data/site';
+import { communes, communePath } from '../data/communes';
 
 const title = 'Conseiller en gestion de patrimoine à Montpellier | Le Chêne Patrimonial';
 const description =
@@ -147,6 +148,34 @@ const localBusinessSchema = {
         <a href="/avis" class="text-chene font-medium hover:underline underline-offset-4">
           Lire les avis de mes clients
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Maillage local : communes de la métropole -->
+  <section class="border-t border-ink/10 py-16 md:py-24 bg-cream-soft">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Métropole de Montpellier</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-4 reveal">
+        J'interviens dans toute la métropole.
+      </h2>
+      <p class="text-ink/75 leading-relaxed max-w-prose-wide mb-12 reveal">
+        Les questions patrimoniales ne se posent pas de la même façon d'une commune à l'autre. Voici, pour chacune, ce qui revient le plus souvent en rendez-vous.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-px bg-ink/10">
+        {communes.map((c, i) => (
+          <a
+            href={communePath(c.slug)}
+            class="group block bg-cream-soft hover:bg-cream p-7 transition-colors reveal"
+            style={`transition-delay:${(i % 4) * 60}ms`}
+          >
+            <h3 class="font-serif text-xl text-ink mb-2 group-hover:text-chene transition-colors">
+              {c.nom}
+            </h3>
+            <p class="text-sm text-ink/70 leading-relaxed">{c.accroche}</p>
+          </a>
+        ))}
       </div>
     </div>
   </section>

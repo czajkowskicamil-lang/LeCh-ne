@@ -3,15 +3,22 @@
 
 /* ----------------------------------------------------------------------------
    Chiffres de la famille serif : Libre Baskerville, pas Fraunces.
-   Le 8 de Fraunces a la boucle du haut aussi large que celle du bas, il se lit
-   à l'envers, et le 3 a le même défaut. Ces deux @font-face sont déclarés sous
-   le nom de Fraunces avec une unicode-range limitée aux chiffres, au % et à
-   l'euro : le navigateur pioche donc Baskerville pour ces caractères et Fraunces
-   pour tout le reste. Rien d'autre à changer nulle part, y compris dans les
-   outils. Libre Baskerville est sous licence SIL OFL, copie dans public/fonts.
+   Le 8 de Fraunces a la boucle du haut aussi large que celle du bas : il se lit
+   à l'envers. Le 3 a le même défaut.
+
+   Ces deux faces portent un nom de famille A ELLES, « Chiffres Serif », et se
+   placent EN TETE de chaque pile serif du site. C'est la seule méthode fiable :
+   les déclarer sous le nom « Fraunces Variable » avec une unicode-range ne
+   suffit pas, car la face latine de Fraunces couvre déjà les chiffres et
+   remporte l'arbitrage du navigateur. Vérifiable dans l'onglet Polices des
+   outils de développement : les faces Baskerville y restaient « unloaded ».
+
+   L'unicode-range limite la famille aux chiffres, au pourcent et à l'euro :
+   pour tout le reste, le navigateur retombe naturellement sur Fraunces.
+   Libre Baskerville est sous licence SIL OFL, copie dans public/fonts.
    -------------------------------------------------------------------------- */
 @font-face {
-  font-family: 'Fraunces Variable';
+  font-family: 'Chiffres Serif';
   font-style: normal;
   font-display: swap;
   font-weight: 100 500;
@@ -19,7 +26,7 @@
   unicode-range: U+0025, U+0030-0039, U+20AC;
 }
 @font-face {
-  font-family: 'Fraunces Variable';
+  font-family: 'Chiffres Serif';
   font-style: normal;
   font-display: swap;
   font-weight: 501 900;
@@ -345,7 +352,7 @@
   margin-bottom:13px;
 }
 .tool-field > label b{
-  font-family:'Fraunces Variable',Fraunces,serif;
+  font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;
   font-size:1.34rem;font-weight:600;letter-spacing:-.012em;line-height:1;
   color:#F5F1E8;text-transform:none;
   font-variant-numeric:tabular-nums;white-space:nowrap;
@@ -422,7 +429,7 @@
   text-transform:uppercase;letter-spacing:.145em;
 }
 .tool-result .big{
-  font-family:'Fraunces Variable',Fraunces,serif;
+  font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;
   font-size:clamp(2.4rem,6.4vw,3.55rem);line-height:1.02;font-weight:600;
   letter-spacing:-.028em;color:#E6C259;
   font-variant-numeric:tabular-nums;
@@ -437,7 +444,7 @@
 .tool-brk:last-child{border-bottom:none;padding-bottom:0;}
 .tool-brk .k{color:#8FA0BC;line-height:1.45;}
 .tool-brk .v{
-  font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;font-size:1.02rem;
+  font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-weight:600;font-size:1.02rem;
   color:#F5F1E8;font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 .tool-note{color:#64748f;font-size:.735rem;margin-top:20px;line-height:1.6;}
@@ -474,7 +481,7 @@
 [data-editable]:hover{color:#E6C259;border-color:rgba(230,194,89,.85);}
 .tool-val-input{
   width:8.5ch;background:rgba(2,9,28,.75);border:1px solid #D4A82D;border-radius:9px;
-  color:inherit;font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;
+  color:inherit;font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-weight:600;
   font-variant-numeric:tabular-nums;
   padding:2px 9px;text-align:right;outline:none;-moz-appearance:textfield;
 }

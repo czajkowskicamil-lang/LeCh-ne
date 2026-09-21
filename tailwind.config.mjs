@@ -48,7 +48,7 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
+        serif: ['"Chiffres Serif"', '"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
         sans: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
