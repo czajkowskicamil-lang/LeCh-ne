@@ -1,6 +1,32 @@
 @import '@fontsource-variable/fraunces/index.css';
 @import '@fontsource-variable/inter/index.css';
 
+/* ----------------------------------------------------------------------------
+   Chiffres de la famille serif : Libre Baskerville, pas Fraunces.
+   Le 8 de Fraunces a la boucle du haut aussi large que celle du bas, il se lit
+   à l'envers, et le 3 a le même défaut. Ces deux @font-face sont déclarés sous
+   le nom de Fraunces avec une unicode-range limitée aux chiffres, au % et à
+   l'euro : le navigateur pioche donc Baskerville pour ces caractères et Fraunces
+   pour tout le reste. Rien d'autre à changer nulle part, y compris dans les
+   outils. Libre Baskerville est sous licence SIL OFL, copie dans public/fonts.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 500;
+  src: url('/fonts/libre-baskerville-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0025, U+0030-0039, U+20AC;
+}
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 501 900;
+  src: url('/fonts/libre-baskerville-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0025, U+0030-0039, U+20AC;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -265,33 +291,207 @@
   border-radius: 2px;
 }
 
-/* Interactive tools (calculateurs) */
-.tool-card{background:#0c1f3c;border:1px solid rgba(212,168,45,.25);border-radius:20px;padding:clamp(22px,4vw,36px);color:#F5F1E8;}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start;}
-@media(max-width:820px){.tool-grid{grid-template-columns:1fr;}}
-.tool-field{margin-bottom:24px;}
-.tool-field > label{display:flex;justify-content:space-between;align-items:baseline;font-size:.9rem;color:#9fb0c8;margin-bottom:12px;}
-.tool-field > label b{color:#F5F1E8;font-family:'Fraunces Variable',Fraunces,serif;font-size:1.1rem;font-weight:600;}
-.tool-range{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:5px;background:#213a5e;outline:none;}
-.tool-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#D4A82D;cursor:pointer;border:3px solid #0c1f3c;}
-.tool-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#D4A82D;cursor:pointer;border:3px solid #0c1f3c;}
-.tool-seg{display:flex;gap:8px;}
-.tool-seg button{flex:1;background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem system-ui,sans-serif;padding:11px;border-radius:12px;cursor:pointer;transition:.2s;}
-.tool-seg button.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
-.tool-result{background:#102847;border:1px solid rgba(212,168,45,.2);border-radius:16px;padding:26px;}
-.tool-result .lbl{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;}
-.tool-result .big{font-family:'Fraunces Variable',Fraunces,serif;font-size:clamp(2.1rem,6vw,3rem);color:#E6C259;font-weight:600;line-height:1.1;margin:6px 0 20px;}
-.tool-brk{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.92rem;}
-.tool-brk:last-child{border-bottom:none;}
-.tool-brk .k{color:#9fb0c8;}
-.tool-brk .v{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;color:#F5F1E8;}
-.tool-note{color:#6f7f98;font-size:.75rem;margin-top:20px;line-height:1.5;}
-/* Saisie exacte : la valeur affichée devient un champ au clic */
-[data-editable]{cursor:text;border-bottom:1px dashed rgba(212,168,45,.55);transition:color .15s;}
-[data-editable]:hover{color:#D4A82D;}
-.tool-val-input{width:8.5ch;background:rgba(127,127,127,.1);border:1px solid #D4A82D;border-radius:8px;color:inherit;font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;padding:2px 8px;text-align:right;outline:none;-moz-appearance:textfield;}
-.tool-val-input::-webkit-outer-spin-button,.tool-val-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.tool-input{width:100%;background:#0a1a30;border:1px solid rgba(212,168,45,.4);color:#F5F1E8;font:500 .95rem system-ui,sans-serif;padding:12px 14px;border-radius:12px;outline:none;}
-.tool-input::placeholder{color:#7a8aa3;}
-.tool-input:focus{border-color:#D4A82D;}
 
+/* ============================================================================
+   OUTILS INTERACTIFS — socle graphique v3
+   Refonte 2026-09-21. Toutes les calculatrices du site partagent ces classes :
+   ce bloc est le seul endroit où se décide leur allure.
+   Principes : navy de la charte (et non plus un bleu hérité), surfaces
+   stratifiées plutôt que boîte dans boîte, or réservé à la valeur qui compte,
+   chiffres tabulaires partout pour qu'aucun montant ne tressaute.
+   ========================================================================= */
+
+.tool-card{
+  position:relative;
+  isolation:isolate;
+  background:
+    radial-gradient(130% 100% at 8% -10%, rgba(212,168,45,.10) 0%, transparent 58%),
+    linear-gradient(176deg, #071539 0%, #03102E 58%, #020C22 100%);
+  border:1px solid rgba(212,168,45,.18);
+  border-radius:26px;
+  padding:clamp(24px,4vw,46px);
+  color:#F5F1E8;
+  box-shadow:
+    0 32px 74px -34px rgba(2,9,28,.85),
+    0 1px 0 rgba(245,241,232,.06) inset;
+  overflow:hidden;
+}
+/* Filet lumineux sur l'arête haute : la carte accroche la lumière. */
+.tool-card::before{
+  content:'';position:absolute;top:0;left:12%;right:12%;height:1px;z-index:1;
+  background:linear-gradient(90deg,transparent,rgba(212,168,45,.6),transparent);
+}
+
+.tool-grid{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(26px,4.5vw,54px);align-items:start;
+}
+/* Filet de séparation, plus éditorial qu'un simple espace. */
+@media(min-width:821px){
+  .tool-grid::before{
+    content:'';position:absolute;top:2%;bottom:2%;left:50%;width:1px;transform:translateX(-50%);
+    background:linear-gradient(180deg,transparent,rgba(245,241,232,.11) 14%,rgba(245,241,232,.11) 86%,transparent);
+  }
+}
+@media(max-width:820px){.tool-grid{grid-template-columns:1fr;}}
+
+.tool-field{margin-bottom:clamp(20px,2.4vw,28px);}
+.tool-field[hidden]{display:none;}
+.tool-field > label{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  font:600 .71rem/1.35 'Inter Variable',Inter,system-ui,sans-serif;
+  letter-spacing:.115em;text-transform:uppercase;color:#8FA0BC;
+  margin-bottom:13px;
+}
+.tool-field > label b{
+  font-family:'Fraunces Variable',Fraunces,serif;
+  font-size:1.34rem;font-weight:600;letter-spacing:-.012em;line-height:1;
+  color:#F5F1E8;text-transform:none;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+
+/* --- Curseurs : la piste se remplit d'or jusqu'à la valeur ---------------- */
+.tool-range{
+  --fill:0%;
+  -webkit-appearance:none;appearance:none;
+  display:block;width:100%;height:26px;
+  background:transparent;outline:none;cursor:grab;
+}
+.tool-range:active{cursor:grabbing;}
+.tool-range::-webkit-slider-runnable-track{
+  height:6px;border-radius:99px;
+  background:linear-gradient(90deg,#D4A82D 0%,#E6C259 var(--fill),rgba(245,241,232,.13) var(--fill),rgba(245,241,232,.13) 100%);
+}
+.tool-range::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:19px;height:19px;border-radius:50%;margin-top:-6.5px;border:none;
+  background:#F5F1E8;
+  box-shadow:0 0 0 4px rgba(212,168,45,.24),0 3px 9px rgba(2,9,28,.55);
+  transition:box-shadow .2s var(--ease-apple),transform .2s var(--ease-apple);
+}
+.tool-range:hover::-webkit-slider-thumb{box-shadow:0 0 0 7px rgba(212,168,45,.22),0 3px 11px rgba(2,9,28,.6);}
+.tool-range:active::-webkit-slider-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(212,168,45,.3),0 4px 14px rgba(2,9,28,.65);}
+.tool-range::-moz-range-track{height:6px;border-radius:99px;background:rgba(245,241,232,.13);}
+.tool-range::-moz-range-progress{height:6px;border-radius:99px;background:linear-gradient(90deg,#D4A82D,#E6C259);}
+.tool-range::-moz-range-thumb{
+  width:19px;height:19px;border-radius:50%;border:none;background:#F5F1E8;
+  box-shadow:0 0 0 4px rgba(212,168,45,.24),0 3px 9px rgba(2,9,28,.55);
+  transition:box-shadow .2s var(--ease-apple),transform .2s var(--ease-apple);
+}
+.tool-range:active::-moz-range-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(212,168,45,.3);}
+
+/* --- Sélecteurs : une pastille dorée glisse d'une option à l'autre -------- */
+.tool-seg{
+  position:relative;display:flex;gap:0;
+  background:rgba(2,9,28,.66);
+  border:1px solid rgba(245,241,232,.09);
+  border-radius:14px;padding:4px;
+}
+.tool-seg-ind{
+  position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:10px;
+  background:linear-gradient(180deg,#E6C259,#D4A82D);
+  box-shadow:0 3px 12px rgba(212,168,45,.28);
+  transition:transform .34s var(--ease-apple),width .34s var(--ease-apple);
+  pointer-events:none;
+}
+.tool-seg button{
+  position:relative;z-index:1;flex:1;
+  background:transparent;border:none;border-radius:10px;
+  color:#8FA0BC;
+  font:600 .83rem/1 'Inter Variable',Inter,system-ui,sans-serif;
+  padding:12px 10px;cursor:pointer;
+  transition:color .24s var(--ease-apple);
+}
+.tool-seg button:hover{color:#F5F1E8;}
+.tool-seg button.on{color:#03102E;}
+/* Repli si la pastille n'a pas été injectée (JS absent) : on garde un actif lisible. */
+.tool-seg:not(:has(.tool-seg-ind)) button.on{background:#D4A82D;}
+
+/* --- Panneau de résultat -------------------------------------------------- */
+.tool-result{
+  position:relative;
+  background:linear-gradient(180deg,rgba(245,241,232,.06),rgba(245,241,232,.018));
+  border:1px solid rgba(245,241,232,.1);
+  border-radius:20px;
+  padding:clamp(22px,3vw,30px);
+}
+.tool-result .lbl{
+  color:#8FA0BC;
+  font:700 .69rem/1 'Inter Variable',Inter,system-ui,sans-serif;
+  text-transform:uppercase;letter-spacing:.145em;
+}
+.tool-result .big{
+  font-family:'Fraunces Variable',Fraunces,serif;
+  font-size:clamp(2.4rem,6.4vw,3.55rem);line-height:1.02;font-weight:600;
+  letter-spacing:-.028em;color:#E6C259;
+  font-variant-numeric:tabular-nums;
+  margin:13px 0 24px;
+  text-shadow:0 0 44px rgba(212,168,45,.2);
+}
+.tool-brk{
+  display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+  padding:13px 0;border-bottom:1px solid rgba(245,241,232,.07);
+  font-size:.89rem;
+}
+.tool-brk:last-child{border-bottom:none;padding-bottom:0;}
+.tool-brk .k{color:#8FA0BC;line-height:1.45;}
+.tool-brk .v{
+  font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;font-size:1.02rem;
+  color:#F5F1E8;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.tool-note{color:#64748f;font-size:.735rem;margin-top:20px;line-height:1.6;}
+
+/* --- Options avancées repliées : l'outil reste simple au premier regard --- */
+.tool-more{
+  border-top:1px solid rgba(245,241,232,.08);
+  margin-top:4px;padding-top:20px;
+}
+.tool-more > summary{
+  list-style:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:10px;
+  color:#E6C259;
+  font:600 .72rem/1 'Inter Variable',Inter,system-ui,sans-serif;
+  text-transform:uppercase;letter-spacing:.13em;
+  transition:color .2s var(--ease-apple);
+}
+.tool-more > summary:hover{color:#F5F1E8;}
+.tool-more > summary::-webkit-details-marker{display:none;}
+.tool-more > summary::after{
+  content:'';width:6px;height:6px;
+  border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);
+  transition:transform .28s var(--ease-apple);
+}
+.tool-more[open] > summary::after{transform:rotate(-135deg) translate(-1px,-1px);}
+.tool-more[open] > summary{margin-bottom:22px;}
+
+/* --- Saisie exacte : la valeur affichée devient un champ au clic ---------- */
+[data-editable]{
+  cursor:text;border-bottom:1px dashed rgba(212,168,45,.45);padding-bottom:1px;
+  transition:color .16s,border-color .16s;
+}
+[data-editable]:hover{color:#E6C259;border-color:rgba(230,194,89,.85);}
+.tool-val-input{
+  width:8.5ch;background:rgba(2,9,28,.75);border:1px solid #D4A82D;border-radius:9px;
+  color:inherit;font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;
+  font-variant-numeric:tabular-nums;
+  padding:2px 9px;text-align:right;outline:none;-moz-appearance:textfield;
+}
+.tool-val-input::-webkit-outer-spin-button,
+.tool-val-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.tool-input{
+  width:100%;background:rgba(2,9,28,.7);border:1px solid rgba(245,241,232,.12);
+  color:#F5F1E8;font:500 .95rem 'Inter Variable',Inter,system-ui,sans-serif;
+  padding:13px 15px;border-radius:12px;outline:none;
+  transition:border-color .2s var(--ease-apple),box-shadow .2s var(--ease-apple);
+}
+.tool-input::placeholder{color:#64748f;}
+.tool-input:focus{border-color:#D4A82D;box-shadow:0 0 0 3px rgba(212,168,45,.16);}
+
+@media(prefers-reduced-motion:reduce){
+  .tool-seg-ind,
+  .tool-range::-webkit-slider-thumb,
+  .tool-range::-moz-range-thumb,
+  .tool-more > summary::after{transition:none;}
+}
