@@ -52,27 +52,32 @@ const description = "Calculez votre mensualité, le coût total de votre crédit
             <label>Revenus mensuels nets du foyer <b id="pr-rev-val">4 000 €</b></label>
             <input class="tool-range" type="range" id="pr-rev" min="1500" max="15000" step="100" value="4000" />
           </div>
-          <p class="tool-note">Prêt amortissable à échéances constantes. Assurance estimée sur le capital initial. Hors frais de dossier, garantie et frais de tenue de compte. Le TAEG et le coût exact figurent dans votre offre de prêt.</p>
+          <p class="tool-note pr-note">Prêt amortissable à échéances constantes. Assurance estimée sur le capital initial. Hors frais de dossier, garantie et frais de tenue de compte. Le TAEG et le coût exact figurent dans votre offre de prêt.</p>
         </div>
 
-        <div class="tool-result">
+        <div class="tool-sticky">
+          <div class="tool-result">
           <p class="lbl">Mensualité (assurance comprise)</p>
           <p class="big" id="pr-mens">—</p>
           <div class="pr-badge" id="pr-badge">
             <span class="pr-badge-k">Taux d'endettement estimé</span>
-            <span class="pr-badge-v"><b id="pr-endet">—</b> <span id="pr-endet-lbl" class="pr-tag">—</span></span>
+            <span class="pr-badge-v"><b id="pr-endet">—</b> <span id="pr-endet-lbl" class="tool-tag">—</span></span>
           </div>
           <div class="tool-brk"><span class="k">Capital emprunté</span><span class="v" id="pr-capital">—</span></div>
           <div class="tool-brk"><span class="k">Coût des intérêts</span><span class="v" id="pr-int">—</span></div>
           <div class="tool-brk"><span class="k">Coût de l'assurance</span><span class="v" id="pr-cass">—</span></div>
           <div class="tool-brk"><span class="k">Coût total du crédit</span><span class="v" id="pr-cout">—</span></div>
           <div class="tool-brk"><span class="k">Montant total remboursé</span><span class="v" id="pr-total">—</span></div>
+          </div>
+          <p class="tool-read" id="pr-read">—</p>
+          <p class="tool-alert" id="pr-alert" hidden></p>
         </div>
       </div>
     </div>
 
-    <div class="tool-card pr-chart-card">
-      <p class="pr-chart-title">Amortissement du prêt</p>
+    <div class="tool-card tool-chart">
+      <p class="tool-chart-title">Amortissement du prêt</p>
+      <p class="tool-chart-read" id="pr-chart-read">—</p>
       <svg id="pr-svg" viewBox="0 0 640 280" role="img" aria-label="Graphique du capital restant dû et des intérêts cumulés année après année">
         <line class="pr-axis" x1="44" y1="238" x2="628" y2="238" />
         <path id="pr-area-crd" class="pr-area-crd" d="" />
@@ -83,7 +88,7 @@ const description = "Calculez votre mensualité, le coût total de votre crédit
         <text id="pr-xmid" class="pr-tick" x="336" y="262" text-anchor="middle"></text>
         <text id="pr-xend" class="pr-tick" x="628" y="262" text-anchor="end"></text>
       </svg>
-      <div class="pr-leg">
+      <div class="tool-legend">
         <span><i style="background:#3a5f86"></i> Capital restant dû</span>
         <span><i style="background:#D4A82D"></i> Intérêts cumulés payés</span>
       </div>
@@ -102,24 +107,24 @@ const description = "Calculez votre mensualité, le coût total de votre crédit
 </Base>
 
 <style is:global>
-  .pr-badge{background:#0a1a30;border:1px solid rgba(212,168,45,.2);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
-  .pr-badge-k{color:#9fb0c8;font-size:.82rem;}
+  .pr-badge{
+    background:rgba(2,9,28,.6);border:1px solid rgba(245,241,232,.1);border-radius:14px;
+    padding:14px 16px;margin-bottom:18px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .pr-badge-k{color:#8FA0BC;font-size:.82rem;}
   .pr-badge-v{display:inline-flex;align-items:center;gap:10px;}
-  .pr-badge-v b{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.35rem;color:#F5F1E8;font-weight:600;}
-  .pr-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:20px;}
-  .pr-tag.ok{background:rgba(96,168,120,.16);color:#7fce9a;}
-  .pr-tag.mid{background:rgba(212,168,45,.16);color:#E6C259;}
-  .pr-tag.high{background:rgba(210,110,95,.16);color:#e79184;}
-  .pr-chart-card{margin-top:22px;}
-  .pr-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
-  #pr-svg{width:100%;height:auto;display:block;overflow:visible;}
-  .pr-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
-  .pr-area-crd{fill:rgba(58,95,134,.55);}
+  .pr-badge-v b{
+    font-family:'Chiffres Serif','Fraunces Variable',Fraunces,serif;
+    font-size:1.35rem;color:#F5F1E8;font-weight:600;font-variant-numeric:tabular-nums;
+  }
+  .pr-note{max-width:58ch;}
+  /* Propre à cet outil : la courbe d'amortissement. */
+  #pr-svg{overflow:visible;}
+  .pr-axis{stroke:rgba(245,241,232,.12);stroke-width:1;}
+  .pr-area-crd{fill:rgba(74,115,160,.5);}
   .pr-line-int{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
-  .pr-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
-  .pr-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:12px;}
-  .pr-leg span{display:inline-flex;align-items:center;gap:7px;}
-  .pr-leg i{width:11px;height:11px;border-radius:3px;display:block;}
+  .pr-tick{fill:#7f8ea6;font-size:12px;font-family:'Inter Variable',Inter,system-ui,sans-serif;}
 </style>
 
 <script is:inline>
@@ -156,6 +161,53 @@ const description = "Calculez votre mensualité, le coût total de votre crédit
       if(endet <= 33){ tag.textContent='Maîtrisé'; tag.className='pr-tag ok'; }
       else if(endet <= 35){ tag.textContent='Acceptable'; tag.className='pr-tag mid'; }
       else { tag.textContent='Au-dessus du seuil'; tag.className='pr-tag high'; }
+
+      // Phrase de lecture : le résultat dit en français, pas seulement en chiffres.
+      document.getElementById('pr-read').innerHTML =
+        'Pour <b>' + eur(P) + '</b> empruntés sur <b>' + Y + ' ans</b> à <b>'
+        + T.toFixed(2).replace('.', ',') + ' %</b>, vous rembourserez <b>' + eur(mens)
+        + '</b> par mois, assurance comprise. Le crédit vous coûtera <b>' + eur(coutInt + coutAss)
+        + '</b> en plus du capital, soit <b>' + Math.round((coutInt + coutAss) / P * 100)
+        + ' %</b> de la somme empruntée.';
+
+      // Le basculement intérêts / capital, que la courbe montre sans le dire.
+      const int1 = P * r;
+      let solde = P;
+      for (let m = 1; m <= Math.floor(n / 2); m++) solde = Math.max(0, solde - (capMens - solde * r));
+      const intMi = solde * r;
+      document.getElementById('pr-chart-read').innerHTML =
+        'Au premier mois, <b>' + eur(int1) + '</b> de votre mensualité partent en intérêts et <b>'
+        + eur(capMens - int1) + '</b> remboursent réellement le capital. À mi-parcours, ce sera <b>'
+        + eur(intMi) + '</b> contre <b>' + eur(capMens - intMi)
+        + '</b>. C\'est ce basculement que dessine la courbe.';
+
+      // Le levier le plus utile selon la situation.
+      const alerte = document.getElementById('pr-alert');
+      let msg = '';
+      if (endet > 35 && Y < 25) {
+        const n2 = 25 * 12;
+        const m2 = (r > 0 ? P * r / (1 - Math.pow(1 + r, -n2)) : P / n2) + assMens;
+        msg = 'À ' + endet.toFixed(1).replace('.', ',') + ' %, votre dossier dépasse le seuil des banques. '
+          + 'Sur 25 ans, la mensualité tomberait à ' + eur(m2) + ', soit '
+          + (m2 / REV * 100).toFixed(1).replace('.', ',') + ' % de vos revenus. '
+          + 'Le crédit coûterait en revanche plus cher au total.';
+      } else if (A > 0.2) {
+        const gain = coutAss - P * 0.0015 / 12 * n;
+        if (gain > 500) {
+          msg = 'Votre assurance représente ' + eur(coutAss) + ' sur la durée du prêt. '
+            + 'Sur un profil jeune et non fumeur, un taux à 0,15 % est courant : l\'économie atteindrait '
+            + eur(gain) + '. La loi Lemoine permet d\'en changer à tout moment, sans frais.';
+        }
+      }
+      if (!msg && Y > 20) {
+        const n3 = 20 * 12;
+        const m3 = (r > 0 ? P * r / (1 - Math.pow(1 + r, -n3)) : P / n3) + assMens;
+        const c3 = (m3 - assMens) * n3 - P + P * (A / 100) / 12 * n3;
+        msg = 'Ramener la durée à 20 ans porterait la mensualité à ' + eur(m3)
+          + ', mais ferait tomber le coût total du crédit à ' + eur(c3) + ', soit '
+          + eur(coutInt + coutAss - c3) + ' d\'économie.';
+      }
+      if (msg) { alerte.textContent = msg; alerte.hidden = false; } else { alerte.hidden = true; }
 
       drawChart(P, capMens, r, n, Y);
     }

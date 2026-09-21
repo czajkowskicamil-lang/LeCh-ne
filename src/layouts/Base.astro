@@ -413,11 +413,52 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
         });
       }
 
+      // Sur mobile, le panneau de résultat passe sous les curseurs : on déplace
+      // le chiffre principal dans une barre basse, visible pendant le réglage.
+      // Elle se construit toute seule à partir du premier .tool-result de la
+      // page, donc aucun calculateur n'a de HTML à prévoir pour elle.
+      function setupMobileBar() {
+        const result = document.querySelector<HTMLElement>('.tool-result');
+        if (!result || document.querySelector('.tool-bar')) return;
+        const label = result.querySelector<HTMLElement>('.lbl');
+        const value = result.querySelector<HTMLElement>('.big');
+        if (!label || !value) return;
+
+        const bar = document.createElement('div');
+        bar.className = 'tool-bar';
+        bar.setAttribute('aria-hidden', 'true');
+        const k = document.createElement('span');
+        k.className = 'k';
+        const v = document.createElement('span');
+        v.className = 'v';
+        bar.append(k, v);
+        document.body.appendChild(bar);
+
+        const sync = () => {
+          k.textContent = label.textContent;
+          v.textContent = value.textContent;
+        };
+        sync();
+        new MutationObserver(sync).observe(value, { childList: true, characterData: true, subtree: true });
+
+        const card = result.closest('.tool-card');
+        if (!card || !('IntersectionObserver' in window)) return;
+        // Visible quand l'outil est à l'écran, sauf si le panneau l'est déjà.
+        let toolVisible = false;
+        let panelVisible = false;
+        const update = () => bar.classList.toggle('on', toolVisible && !panelVisible);
+        new IntersectionObserver((e) => { toolVisible = e[0].isIntersecting; update(); },
+          { rootMargin: '-5% 0px -20% 0px' }).observe(card);
+        new IntersectionObserver((e) => { panelVisible = e[0].isIntersecting; update(); },
+          { threshold: 0.4 }).observe(result);
+      }
+
       function setupToolChrome() {
         setupToolPrecision();
         setupRangeFill();
         setupSegments();
         setupNumberMorph();
+        setupMobileBar();
       }
 
       // Les curseurs du diagnostic sont reconstruits à chaque étape : on rattrape
