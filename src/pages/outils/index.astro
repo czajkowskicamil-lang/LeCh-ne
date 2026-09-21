@@ -3,146 +3,180 @@ import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import CTA from '../../components/CTA.astro';
 
-const title = "Outils patrimoniaux gratuits : simulateurs immobilier, crédit, transmission | Le Chêne Patrimonial";
-const description = "Des simulateurs simples et gratuits pour y voir clair : frais de notaire, capacité d'emprunt, rentabilité locative, transmission. Calculez, comprenez, décidez.";
+const title = "Outils patrimoniaux gratuits : simulateurs immobilier, crédit, fiscalité | Le Chêne Patrimonial";
+const description = "Seize simulateurs gratuits pour y voir clair : frais de notaire, capacité d'emprunt, rentabilité locative, impôt, transmission. Sans inscription.";
 
-const outils = [
-  { titre: "Rentabilité locative", desc: "Prix, loyer, crédit, assurance : votre cash flow réel, mois par mois.", href: "/calculatrice-rentabilite-credit", tag: "Immobilier", live: true },
-  { titre: "Frais de notaire", desc: "Combien allez-vous vraiment payer chez le notaire, dans l'ancien ou le neuf.", href: "/outils/frais-de-notaire", tag: "Achat", live: true },
-  { titre: "Capacité d'emprunt", desc: "Combien pouvez-vous emprunter selon vos revenus et la durée du prêt.", href: "/outils/capacite-emprunt", tag: "Crédit", live: true },
-  { titre: "Simulateur de prêt", desc: "Votre mensualité, le coût total du crédit et votre taux d'endettement.", href: "/outils/simulateur-pret", tag: "Crédit", live: true },
-  { titre: "Simulateur PTZ", desc: "Le montant de votre Prêt à Taux Zéro selon votre zone, votre foyer et vos revenus.", href: "/outils/simulateur-ptz", tag: "Primo-accédant", live: true },
-  { titre: "Droits de succession", desc: "Ce que vos héritiers paieraient, et combien anticiper permet d'économiser.", href: "/outils/droits-succession", tag: "Transmission", live: true },
-  { titre: "Plus-value immobilière", desc: "L'impôt sur la revente d'un bien locatif ou d'une résidence secondaire.", href: "/outils/plus-value-immobiliere", tag: "Immobilier", live: true },
-  { titre: "Investissement LMNP", desc: "Votre revenu locatif net après amortissement, en meublé.", href: "/outils/lmnp", tag: "Immobilier", live: true },
-  { titre: "Plus-value LMNP", desc: "La réintégration des amortissements à la revente, depuis la réforme 2025.", href: "/outils/plus-value-lmnp", tag: "Immobilier", live: true },
-  { titre: "Impôt sur le revenu", desc: "Décryptez votre avis et calculez votre impôt 2026, au barème officiel.", href: "/outils/impot-sur-le-revenu", tag: "Fiscalité", live: true },
-  { titre: "Économie d'impôt (PER)", desc: "Combien un versement sur votre PER réduit votre impôt.", href: "/outils/economie-impot-per", tag: "Fiscalité", live: true },
-  { titre: "Louer ou acheter ?", desc: "Le match, chiffré, entre rester locataire et devenir propriétaire.", href: "/outils/louer-ou-acheter", tag: "Immobilier", live: true },
-  { titre: "Intérêts composés", desc: "Ce que votre épargne peut devenir dans 10, 20 ou 30 ans.", href: "/outils/interets-composes", tag: "Épargne", live: true },
+// Catégories des filtres. L'ordre est celui de la barre.
+const familles = [
+  { id: 'tout', label: 'Tous les outils' },
+  { id: 'immobilier', label: 'Immobilier' },
+  { id: 'credit', label: 'Crédit' },
+  { id: 'fiscalite', label: 'Fiscalité' },
+  { id: 'epargne', label: 'Épargne' },
+  { id: 'transmission', label: 'Transmission' },
+  { id: 'sportifs', label: 'Sportifs' },
 ];
+
+// livrable = ce que l'outil rend, en toutes lettres. C'est la promesse, pas la méthode.
+const outils = [
+  { titre: "Rentabilité locative", desc: "Prix, loyer, crédit, assurance : votre cash flow réel, mois par mois.", href: "/calculatrice-rentabilite-credit", cat: 'immobilier', tag: "Immobilier", livrable: "Votre cash flow mensuel", duree: "2 min", phare: true },
+  { titre: "Le compte à rebours de l'après-carrière", desc: "Un jour, les revenus du sport s'arrêtent. Visualisez la falaise et le capital qui vous rend libre.", href: "/outils/apres-carriere", cat: 'sportifs', tag: "Sportifs de haut niveau", livrable: "Votre capital liberté", duree: "3 min", phare: true, signature: true },
+  { titre: "À quel âge serez-vous libre ?", desc: "Le jour où votre patrimoine vous fait vivre sans salaire, et le chemin pour y arriver plus tôt.", href: "/outils/liberte-financiere", cat: 'epargne', tag: "Indépendance financière", livrable: "L'âge de votre liberté", duree: "2 min", phare: true, signature: true },
+  { titre: "Plus-value LMNP", desc: "Depuis la réforme 2025, les amortissements déduits gonflent la plus-value à la revente.", href: "/outils/plus-value-lmnp", cat: 'immobilier', tag: "Immobilier", livrable: "L'impôt à la revente", duree: "2 min", nouveau: true },
+  { titre: "Frais de notaire", desc: "Ce que vous payez vraiment chez le notaire, dans l'ancien comme dans le neuf.", href: "/outils/frais-de-notaire", cat: 'immobilier', tag: "Achat", livrable: "Le montant à prévoir", duree: "30 s" },
+  { titre: "Capacité d'emprunt", desc: "Ce que la banque peut vous prêter, selon vos revenus et la durée.", href: "/outils/capacite-emprunt", cat: 'credit', tag: "Crédit", livrable: "Votre enveloppe d'achat", duree: "1 min" },
+  { titre: "Simulateur de prêt", desc: "Votre mensualité, le coût total du crédit et votre taux d'endettement.", href: "/outils/simulateur-pret", cat: 'credit', tag: "Crédit", livrable: "Votre mensualité", duree: "1 min" },
+  { titre: "Simulateur PTZ", desc: "Le montant de votre prêt à taux zéro selon votre zone, votre foyer et vos revenus.", href: "/outils/simulateur-ptz", cat: 'credit', tag: "Primo-accédant", livrable: "Votre montant de PTZ", duree: "1 min" },
+  { titre: "Impôt sur le revenu", desc: "Décryptez votre avis et calculez votre impôt 2026, au barème officiel.", href: "/outils/impot-sur-le-revenu", cat: 'fiscalite', tag: "Fiscalité", livrable: "Votre impôt 2026", duree: "2 min" },
+  { titre: "Économie d'impôt (PER)", desc: "Combien un versement sur votre PER réduit votre impôt cette année.", href: "/outils/economie-impot-per", cat: 'fiscalite', tag: "Fiscalité", livrable: "Votre économie d'impôt", duree: "30 s" },
+  { titre: "Investissement LMNP", desc: "En meublé au réel, l'amortissement efface souvent l'impôt sur vos loyers.", href: "/outils/lmnp", cat: 'immobilier', tag: "Immobilier", livrable: "Votre revenu imposable", duree: "1 min" },
+  { titre: "Plus-value immobilière", desc: "L'impôt sur la revente d'un bien locatif ou d'une résidence secondaire.", href: "/outils/plus-value-immobiliere", cat: 'immobilier', tag: "Immobilier", livrable: "L'impôt à la revente", duree: "1 min" },
+  { titre: "Louer ou acheter ?", desc: "Le match, chiffré, entre rester locataire et devenir propriétaire.", href: "/outils/louer-ou-acheter", cat: 'immobilier', tag: "Immobilier", livrable: "Le verdict chiffré", duree: "2 min" },
+  { titre: "Droits de succession", desc: "Ce que vos héritiers paieraient, et combien anticiper permet d'économiser.", href: "/outils/droits-succession", cat: 'transmission', tag: "Transmission", livrable: "Les droits à payer", duree: "1 min" },
+  { titre: "Intérêts composés", desc: "Ce que votre épargne peut devenir dans 10, 20 ou 30 ans.", href: "/outils/interets-composes", cat: 'epargne', tag: "Épargne", livrable: "Votre capital futur", duree: "30 s" },
+];
+
+const compte = outils.length + 1; // les simulateurs, plus le diagnostic
 ---
 
 <Base heroDark title={title} description={description}>
   <PageHeader
     image="/outils-header.jpg"
     alt="Chemin en forêt vers la lumière"
-    eyebrow="Diagnostic & outils gratuits"
+    eyebrow={`${compte} outils gratuits · Sans inscription`}
     title="Calculez, comprenez, décidez."
-    intro="Commencez par votre diagnostic patrimonial gratuit, puis affinez avec nos simulateurs. Sans inscription, et si vous voulez aller plus loin, on en parle ensemble."
+    intro="Un chiffre juste vaut mieux qu'une intuition. Commencez par votre diagnostic, puis affinez avec le simulateur qui correspond à votre question. Aucun résultat n'est conservé sans votre accord."
   />
 
-  <!-- ================= Porte d'entrée gratuite : Diagnostic patrimonial ================= -->
-  <section class="shell max-w-5xl pb-6">
-    <a href="/outils/diagnostic-patrimonial" class="group block relative overflow-hidden rounded-none bg-cream-soft border border-chene/25 p-8 md:p-10 transition-all duration-300 hover:border-chene/50 hover:-translate-y-1">
-      <div class="md:flex md:items-center md:gap-10">
+  <!-- ================= Porte d'entrée : le diagnostic patrimonial ================= -->
+  <section class="shell max-w-5xl pb-10">
+    <a href="/outils/diagnostic-patrimonial" class="group block relative overflow-hidden bg-navy-deep text-cream p-8 md:p-12 transition-all duration-300 hover:-translate-y-1">
+      <div class="md:flex md:items-center md:gap-12">
         <div class="md:flex-1">
-          <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-4 flex items-center gap-3">
-            <span class="inline-block h-px w-8 bg-chene"></span>
+          <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-5 flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-or"></span>
             Commencez ici · Gratuit · 3 minutes
           </p>
-          <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">Votre Diagnostic Patrimonial Intelligent</h2>
-          <p class="text-ink/70 leading-relaxed mb-6 max-w-prose-wide">
-            Quelques questions guidées, une seule à la fois, et vous obtenez votre Indice de Santé Patrimoniale sur 100 : forces, angles morts, opportunités d'optimisation et plan d'action sur 12 mois. Le point de départ idéal, avant d'aller plus loin.
+          <h2 class="font-serif text-display-sm text-cream mb-4 leading-tight">Votre Diagnostic Patrimonial</h2>
+          <p class="text-cream/75 leading-relaxed mb-7 max-w-prose-wide">
+            Quelques questions guidées, une seule à la fois. Vous repartez avec votre Indice de Santé Patrimoniale sur 100 : vos forces, vos angles morts, et un plan d'action sur douze mois. Si vous ne savez pas par où commencer, commencez par là.
           </p>
-          <span class="inline-flex items-center gap-2 bg-ink text-cream font-semibold rounded-none px-6 py-3.5 group-hover:bg-chene transition">
+          <span class="inline-flex items-center gap-2 bg-or text-ink font-semibold px-7 py-3.5 group-hover:bg-or-light transition-colors">
             Lancer mon diagnostic
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg class="transition-transform duration-300 group-hover:translate-x-1" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </span>
         </div>
-        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-chene/20 pl-8">
-          <div class="font-serif text-6xl text-chene leading-none">/100</div>
-          <p class="text-stone text-xs mt-3 leading-relaxed">Votre indice de santé patrimoniale, calculé en direct</p>
+        <div class="hidden md:flex md:w-48 shrink-0 flex-col items-center text-center border-l border-or/25 pl-10">
+          <div class="font-serif text-7xl text-or-light leading-none">/100</div>
+          <p class="text-cream/60 text-xs mt-4 leading-relaxed">Votre indice de santé patrimoniale, calculé en direct</p>
         </div>
       </div>
     </a>
   </section>
 
-  <!-- ================= Outil signature : après-carrière du sportif ================= -->
-  <section class="shell max-w-5xl pt-6 pb-2">
-    <a href="/outils/apres-carriere" class="group block relative overflow-hidden rounded-none bg-navy-deep text-cream p-8 md:p-10 transition-all duration-300 hover:-translate-y-1">
-      <div class="md:flex md:items-center md:gap-10">
-        <div class="md:flex-1">
-          <p class="text-xs uppercase tracking-micro text-or-light font-semibold mb-4 flex items-center gap-3">
-            <span class="inline-block h-px w-8 bg-or"></span>
-            Sportifs de haut niveau · Gratuit
-          </p>
-          <h2 class="font-serif text-display-sm text-cream mb-3 leading-tight">Le compte à rebours de l'après-carrière</h2>
-          <p class="text-cream/75 leading-relaxed mb-6 max-w-prose-wide">
-            Un jour, les revenus du sport s'arrêtent. Visualisez la falaise, découvrez votre capital liberté et le plan pour préparer l'après pendant que vous gagnez bien votre vie. L'outil que j'aurais aimé avoir.
-          </p>
-          <span class="inline-flex items-center gap-2 bg-or text-ink font-semibold rounded-none px-6 py-3.5 group-hover:bg-or-light transition">
-            Lancer le compte à rebours
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </span>
-        </div>
-        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-or/25 pl-8">
-          <div class="font-serif text-5xl text-or-light leading-none">L'âge</div>
-          <p class="text-cream/60 text-xs mt-3 leading-relaxed">de votre liberté financière, estimé en direct</p>
-        </div>
-      </div>
-    </a>
-  </section>
+  <!-- ================= Les simulateurs, filtrables ================= -->
+  <div class="shell max-w-5xl pb-20 md:pb-28">
+    <div class="flex flex-wrap items-baseline justify-between gap-4 mb-7">
+      <p class="eyebrow flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Et {outils.length} simulateurs pour creuser
+      </p>
+      <p id="ot-count" class="text-sm text-stone" aria-live="polite"></p>
+    </div>
 
-  <!-- ================= Outil grand public : indépendance financière ================= -->
-  <section class="shell max-w-5xl pt-6 pb-2">
-    <a href="/outils/liberte-financiere" class="group block relative overflow-hidden rounded-none bg-cream-soft border border-chene/25 p-8 md:p-10 transition-all duration-300 hover:border-chene/50 hover:-translate-y-1">
-      <div class="md:flex md:items-center md:gap-10">
-        <div class="md:flex-1">
-          <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-4 flex items-center gap-3">
-            <span class="inline-block h-px w-8 bg-chene"></span>
-            Indépendance financière · Pour tous · Gratuit
-          </p>
-          <h2 class="font-serif text-display-sm text-ink mb-3 leading-tight">À quel âge serez-vous libre ?</h2>
-          <p class="text-ink/70 leading-relaxed mb-6 max-w-prose-wide">
-            Être libre, c'est le jour où votre patrimoine vous fait vivre sans salaire. Découvrez votre capital liberté, l'âge où vous l'atteindrez au rythme actuel, et le chemin pour y arriver plus tôt.
-          </p>
-          <span class="inline-flex items-center gap-2 bg-ink text-cream font-semibold rounded-none px-6 py-3.5 group-hover:bg-chene transition">
-            Calculer mon âge de liberté
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </span>
-        </div>
-        <div class="hidden md:flex md:w-44 shrink-0 flex-col items-center text-center border-l border-chene/20 pl-8">
-          <div class="font-serif text-5xl text-chene leading-none">Libre</div>
-          <p class="text-stone text-xs mt-3 leading-relaxed">à quel âge, et comment y arriver plus tôt</p>
-        </div>
-      </div>
-    </a>
-  </section>
-
-  <div class="shell max-w-5xl pt-8 pb-20 md:pb-28">
-    <p class="eyebrow mb-8 flex items-center gap-3">
-      <span class="inline-block h-px w-8 bg-chene"></span>
-      Et nos simulateurs gratuits
-    </p>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {outils.map((o) => (
-        o.live ? (
-          <a href={o.href} class="group bg-cream-soft border border-ink/10 rounded-none p-7 transition-all duration-300 hover:border-chene/40 hover:-translate-y-1 flex flex-col">
-            <p class="text-xs uppercase tracking-micro text-chene font-semibold mb-3">{o.tag}</p>
-            <h2 class="font-serif text-2xl text-ink mb-2 group-hover:text-chene transition">{o.titre}</h2>
-            <p class="text-ink/70 text-sm leading-relaxed mb-5 flex-1">{o.desc}</p>
-            <span class="text-sm font-medium text-or-dark inline-flex items-center gap-2">Ouvrir l'outil
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </span>
-          </a>
-        ) : (
-          <div class="bg-cream-soft/50 border border-ink/8 rounded-none p-7 flex flex-col opacity-80">
-            <div class="flex items-center justify-between mb-3">
-              <p class="text-xs uppercase tracking-micro text-stone font-semibold">{o.tag}</p>
-              <span class="text-[0.65rem] uppercase tracking-wide font-bold text-or-dark bg-or/12 rounded-full px-2.5 py-1">Bientôt</span>
-            </div>
-            <h2 class="font-serif text-2xl text-ink/70 mb-2">{o.titre}</h2>
-            <p class="text-ink/55 text-sm leading-relaxed flex-1">{o.desc}</p>
-          </div>
-        )
+    <div class="ot-filtres" role="group" aria-label="Filtrer les outils par thème">
+      {familles.map((f) => (
+        <button type="button" class:list={['ot-f', f.id === 'tout' && 'on']} data-cat={f.id}>{f.label}</button>
       ))}
     </div>
 
-    <p class="text-sm text-stone mt-10 max-w-prose-wide">
-      Ces outils donnent des ordres de grandeur à visée pédagogique. Ils ne remplacent pas une étude adaptée à votre situation.
+    <div id="ot-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-7">
+      {outils.map((o) => (
+        <a href={o.href} class="ot-card group" data-cat={o.cat}>
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <p class="ot-tag">{o.tag}</p>
+            {o.nouveau && <span class="ot-badge">Nouveau</span>}
+            {o.signature && !o.nouveau && <span class="ot-badge ot-badge-sig">Signature</span>}
+          </div>
+          <h2 class="font-serif text-2xl text-ink mb-2.5 leading-snug group-hover:text-chene transition-colors">{o.titre}</h2>
+          <p class="text-ink/70 text-sm leading-relaxed mb-6 flex-1">{o.desc}</p>
+          <div class="ot-foot">
+            <span class="ot-livrable">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              {o.livrable}
+            </span>
+            <span class="ot-duree">{o.duree}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <p id="ot-vide" class="hidden text-center text-stone py-14">Aucun outil dans ce thème pour le moment.</p>
+
+    <p class="text-sm text-stone mt-12 max-w-prose-wide leading-relaxed">
+      Ces outils donnent des ordres de grandeur à visée pédagogique. Ils ne remplacent pas une étude adaptée à votre situation, et ne constituent pas un conseil en investissement.
     </p>
   </div>
 
   <CTA />
 </Base>
+
+<style is:global>
+  /* Barre de filtres */
+  .ot-filtres{display:flex;flex-wrap:wrap;gap:8px;}
+  .ot-f{background:transparent;border:1px solid rgba(26,35,50,.16);color:#4a5568;font:600 .82rem system-ui,sans-serif;padding:9px 17px;border-radius:999px;cursor:pointer;transition:all .2s ease;}
+  .ot-f:hover{border-color:rgba(184,140,58,.55);color:#1a2332;}
+  .ot-f.on{background:#1a2332;border-color:#1a2332;color:#F5F1E8;}
+
+  /* Cartes outils */
+  .ot-card{display:flex;flex-direction:column;background:#FAF7F0;border:1px solid rgba(26,35,50,.1);padding:26px 24px 20px;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;}
+  .ot-card:hover{transform:translateY(-4px);border-color:rgba(184,140,58,.5);box-shadow:0 14px 34px -18px rgba(26,35,50,.35);}
+  .ot-card.off{display:none;}
+  .ot-tag{font-size:.68rem;text-transform:uppercase;letter-spacing:.11em;font-weight:700;color:#B88C3A;}
+  .ot-badge{font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:#0c1f3c;background:#D4A82D;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .ot-badge-sig{background:transparent;color:#B88C3A;border:1px solid rgba(184,140,58,.5);}
+  .ot-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid rgba(26,35,50,.09);}
+  .ot-livrable{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:600;color:#2D4A33;line-height:1.3;}
+  .ot-livrable svg{flex:none;color:#B88C3A;}
+  .ot-duree{font-size:.72rem;color:#8a8579;white-space:nowrap;}
+
+  @media (prefers-reduced-motion: reduce){
+    .ot-card,.ot-card:hover{transition:none;transform:none;}
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function init() {
+      const barre = document.querySelector('.ot-filtres');
+      if (!barre || barre.dataset.ready) return;
+      barre.dataset.ready = '1';
+
+      const boutons = Array.prototype.slice.call(barre.querySelectorAll('.ot-f'));
+      const cartes = Array.prototype.slice.call(document.querySelectorAll('.ot-card'));
+      const compteur = document.getElementById('ot-count');
+      const vide = document.getElementById('ot-vide');
+
+      function appliquer(cat) {
+        let visibles = 0;
+        cartes.forEach((c) => {
+          const ok = cat === 'tout' || c.dataset.cat === cat;
+          c.classList.toggle('off', !ok);
+          if (ok) visibles++;
+        });
+        if (compteur) compteur.textContent = visibles + (visibles > 1 ? ' outils affichés' : ' outil affiché');
+        if (vide) vide.classList.toggle('hidden', visibles > 0);
+      }
+
+      boutons.forEach((b) => b.addEventListener('click', () => {
+        boutons.forEach((o) => o.classList.remove('on'));
+        b.classList.add('on');
+        appliquer(b.dataset.cat);
+      }));
+
+      appliquer('tout');
+    }
+    init();
+    if (!window.__ot_hooked) { window.__ot_hooked = 1; document.addEventListener('astro:page-load', init); }
+  })();
+</script>

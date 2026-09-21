@@ -1,0 +1,98 @@
+---
+// Bloc "outils" de la page d'accueil.
+// Le site n'avait aucun accès aux simulateurs depuis la home : le menu déroulant
+// était le seul chemin. Ce bloc ouvre la porte et pousse vers /outils.
+import { getLangFromUrl, localizePath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const lien = (p: string) => localizePath(p, lang);
+
+const vedettes = [
+  {
+    titre: 'Rentabilité locative',
+    desc: 'Prix, loyer, crédit, assurance : votre cash flow réel, mois par mois.',
+    href: '/calculatrice-rentabilite-credit',
+    livrable: 'Votre cash flow mensuel',
+    duree: '2 min',
+  },
+  {
+    titre: 'Capacité d\'emprunt',
+    desc: 'Ce que la banque peut vous prêter, selon vos revenus et la durée.',
+    href: '/outils/capacite-emprunt',
+    livrable: 'Votre enveloppe d\'achat',
+    duree: '1 min',
+  },
+  {
+    titre: 'Plus-value LMNP',
+    desc: 'Depuis la réforme 2025, les amortissements déduits gonflent la note à la revente.',
+    href: '/outils/plus-value-lmnp',
+    livrable: 'L\'impôt à la revente',
+    duree: '2 min',
+    nouveau: true,
+  },
+];
+---
+
+<section class="py-24 md:py-32 bg-cream-soft relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-or/30"></div>
+
+  <div class="shell relative">
+    <div class="md:flex md:items-end md:justify-between gap-10 mb-12">
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-5 flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Seize outils gratuits · Sans inscription
+        </p>
+        <h2 class="font-serif text-display text-ink mb-5 leading-tight">
+          Un chiffre juste vaut mieux<br class="hidden md:block" /> qu'une intuition.
+        </h2>
+        <p class="text-lg text-ink/70 leading-relaxed max-w-prose-wide">
+          Combien vous coûte vraiment ce crédit, ce que la banque peut vous prêter, ce que vos héritiers paieraient, à quel âge vous serez libre. Les questions que vous vous posez ont une réponse chiffrée. Prenez-la avant le rendez-vous, pas après.
+        </p>
+      </div>
+      <a href={lien('/outils')} class="hidden md:inline-flex items-center gap-2 shrink-0 text-sm font-semibold text-ink border-b-2 border-or pb-1.5 hover:text-chene hover:border-chene transition-colors group">
+        Voir les seize outils
+        <svg class="transition-transform duration-300 group-hover:translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {vedettes.map((o) => (
+        <a href={lien(o.href)} class="ts-card group">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <p class="ts-tag">Outil gratuit</p>
+            {o.nouveau && <span class="ts-badge">Nouveau</span>}
+          </div>
+          <h3 class="font-serif text-2xl text-ink mb-2.5 leading-snug group-hover:text-chene transition-colors">{o.titre}</h3>
+          <p class="text-ink/70 text-sm leading-relaxed mb-6 flex-1">{o.desc}</p>
+          <div class="ts-foot">
+            <span class="ts-livrable">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              {o.livrable}
+            </span>
+            <span class="ts-duree">{o.duree}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <a href={lien('/outils')} class="md:hidden mt-8 inline-flex items-center gap-2 text-sm font-semibold text-ink border-b-2 border-or pb-1.5">
+      Voir les seize outils
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<style>
+  .ts-card{display:flex;flex-direction:column;background:#FFFDF8;border:1px solid rgba(26,35,50,.1);padding:26px 24px 20px;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;}
+  .ts-card:hover{transform:translateY(-4px);border-color:rgba(184,140,58,.5);box-shadow:0 14px 34px -18px rgba(26,35,50,.35);}
+  .ts-tag{font-size:.68rem;text-transform:uppercase;letter-spacing:.11em;font-weight:700;color:#B88C3A;}
+  .ts-badge{font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:#0c1f3c;background:#D4A82D;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .ts-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid rgba(26,35,50,.09);}
+  .ts-livrable{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:600;color:#2D4A33;line-height:1.3;}
+  .ts-livrable svg{flex:none;color:#B88C3A;}
+  .ts-duree{font-size:.72rem;color:#8a8579;white-space:nowrap;}
+  @media (prefers-reduced-motion: reduce){
+    .ts-card,.ts-card:hover{transition:none;transform:none;}
+  }
+</style>
