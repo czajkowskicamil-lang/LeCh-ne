@@ -4,7 +4,7 @@ import CTA from '../../components/CTA.astro';
 import ToolLeadCapture from '../../components/ToolLeadCapture.astro';
 
 const title = "Calculateur de frais de notaire 2026 (ancien et neuf) | Le Chêne Patrimonial";
-const description = "Estimez gratuitement vos frais de notaire pour un achat immobilier dans l'ancien ou le neuf : droits de mutation, émoluments, débours. Résultat instantané.";
+const description = "Estimez vos frais de notaire 2026 au taux réel de votre département : droits de mutation, émoluments, débours. Voyez qui encaisse quoi, et ce que vous pouvez négocier.";
 ---
 
 <Base title={title} description={description}>
@@ -23,7 +23,7 @@ const description = "Estimez gratuitement vos frais de notaire pour un achat imm
       </p>
       <h1 class="font-serif text-display text-ink mb-6 leading-tight">Calculez vos frais de notaire</h1>
       <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
-        Les fameux « frais de notaire » sont surtout des taxes. Estimez-les en deux clics, dans l'ancien comme dans le neuf, avant de signer.
+        Les fameux « frais de notaire » sont surtout des taxes. Le calcul reprend les taux en vigueur en 2026, département relevé ou non, et vous montre qui encaisse réellement chaque euro.
       </p>
     </div>
   </header>
@@ -33,77 +33,371 @@ const description = "Estimez gratuitement vos frais de notaire pour un achat imm
       <div class="tool-grid">
         <div>
           <div class="tool-field">
-            <label>Type de bien</label>
+            <label>Type de bien <b id="fn-type-val">Ancien</b></label>
             <div class="tool-seg" id="fn-type">
-              <button class="on" data-t="ancien">Ancien</button>
-              <button data-t="neuf">Neuf (VEFA)</button>
+              <button type="button" class="on" data-t="ancien">Ancien</button>
+              <button type="button" data-t="neuf">Neuf (VEFA)</button>
             </div>
           </div>
+
           <div class="tool-field">
             <label>Prix du bien <b id="fn-prix-val">250 000 €</b></label>
-            <input class="tool-range" type="range" id="fn-prix" min="50000" max="1500000" step="5000" value="250000" />
+            <input class="tool-range" type="range" id="fn-prix" min="50000" max="1500000" step="1" value="250000" />
           </div>
-          <p class="tool-note">Estimation indicative pour un bien d'habitation. Les droits de mutation varient légèrement selon le département (taux standard retenu). Le mobilier déductible n'est pas pris en compte.</p>
+
+          <details class="tool-more">
+            <summary>Affiner le calcul</summary>
+
+          <div class="tool-field" id="fn-dept-field">
+            <label>Taux départemental <b id="fn-dept-val">6,32 %</b></label>
+            <div class="tool-seg" id="fn-dept">
+              <button type="button" class="on" data-d="6.32">Relevé · 6,32 %</button>
+              <button type="button" data-d="5.81">Réduit · 5,81 %</button>
+            </div>
+            <p class="fn-hint">Depuis la loi de finances 2025, la quasi-totalité des départements applique le taux relevé. Onze sont restés au taux réduit. Votre notaire confirme le taux de votre département.</p>
+          </div>
+
+          <div class="tool-field" id="fn-primo-field">
+            <label>Primo-accédant en résidence principale <b id="fn-primo-val">Non</b></label>
+            <div class="tool-seg" id="fn-primo">
+              <button type="button" class="on" data-p="0">Non</button>
+              <button type="button" data-p="1">Oui</button>
+            </div>
+            <p class="fn-hint">Les primo-accédants qui achètent leur résidence principale échappent à la hausse départementale : ils restent à 5,81 % partout.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Mobilier déduit du prix <b id="fn-mob-val">0 €</b></label>
+            <input class="tool-range" type="range" id="fn-mob" min="0" max="60000" step="1" value="0" />
+            <p class="fn-hint">Cuisine équipée, électroménager, meubles : leur valeur, justifiée et raisonnable, sort de l'assiette taxable. C'est le levier le plus simple pour faire baisser la note.</p>
+          </div>
+
+          <div class="tool-field">
+            <label>Remise sur les émoluments <b id="fn-remise-val">Non</b></label>
+            <div class="tool-seg" id="fn-remise">
+              <button type="button" class="on" data-r="0">Non</button>
+              <button type="button" data-r="1">Oui, 20 %</button>
+            </div>
+            <p class="fn-hint">Au-delà de 100 000 €, le notaire peut consentir jusqu'à 20 % de remise sur ses émoluments. Cela se demande, cela ne se propose pas.</p>
+          </div>
+          </details>
         </div>
 
-        <div class="tool-result">
-          <p class="lbl">Frais de notaire estimés</p>
-          <p class="big" id="fn-total">—</p>
-          <div class="tool-brk"><span class="k">Droits de mutation (taxes)</span><span class="v" id="fn-droits">—</span></div>
-          <div class="tool-brk"><span class="k">Émoluments du notaire</span><span class="v" id="fn-emol">—</span></div>
-          <div class="tool-brk"><span class="k">Sécurité immobilière + débours</span><span class="v" id="fn-autres">—</span></div>
-          <div class="tool-brk"><span class="k">Soit, du prix du bien</span><span class="v" id="fn-pct">—</span></div>
-          <div class="tool-brk"><span class="k">Budget total (bien + frais)</span><span class="v" id="fn-budget">—</span></div>
+        <div class="fn-sticky">
+          <div class="tool-result">
+            <p class="lbl">Frais de notaire estimés</p>
+            <p class="big" id="fn-total">—</p>
+            <div class="tool-brk"><span class="k">Droits de mutation (taxes)</span><span class="v" id="fn-droits">—</span></div>
+            <div class="tool-brk"><span class="k">Émoluments du notaire (TTC)</span><span class="v" id="fn-emol">—</span></div>
+            <div class="tool-brk"><span class="k">Sécurité immobilière et débours</span><span class="v" id="fn-autres">—</span></div>
+            <div class="tool-brk"><span class="k">Soit, du prix du bien</span><span class="v" id="fn-pct">—</span></div>
+            <div class="tool-brk"><span class="k">Budget total (bien + frais)</span><span class="v" id="fn-budget">—</span></div>
+          </div>
+          <p class="fn-read" id="fn-read">—</p>
+          <p class="fn-alert" id="fn-alert" hidden></p>
+          <p class="tool-note">Estimation indicative fondée sur les taux 2026 et le barème national des émoluments. Le montant exact figure sur le décompte de votre notaire, seul document opposable.</p>
         </div>
       </div>
+    </div>
+
+    <div class="tool-card fn-chart-card">
+      <p class="fn-chart-title">Qui encaisse vos frais de notaire</p>
+      <p class="fn-chart-read" id="fn-split-read">—</p>
+      <svg id="fn-svg" viewBox="0 0 640 96" role="img" aria-label="Répartition des frais de notaire entre l'État, le notaire et les formalités">
+        <g id="fn-bars"></g>
+        <g id="fn-labels"></g>
+      </svg>
+      <div class="fn-leg">
+        <span><i style="background:#4a73a0"></i> État et collectivités</span>
+        <span><i style="background:#D4A82D"></i> Le notaire</span>
+        <span><i style="background:#8a9bb4"></i> Formalités et débours</span>
+      </div>
+      <p class="fn-hint fn-hint-chart">La TVA sur les émoluments part à l'État, elle n'est pas comptée dans la part du notaire. Sur un achat courant dans l'ancien, le notaire conserve moins de 12 % de ce que vous appelez « les frais de notaire ».</p>
     </div>
 
     <ToolLeadCapture tool="Frais de notaire" titre="Vos frais de notaire" />
 
     <div class="max-w-prose-wide mt-14 prose-editorial">
       <h2>Pourquoi ces frais, et à quoi servent-ils ?</h2>
-      <p>Contrairement à l'idée reçue, le notaire ne garde qu'une petite partie de ces frais. L'essentiel, ce sont des <strong>taxes reversées à l'État et aux collectivités</strong> (les droits de mutation). Viennent ensuite les émoluments du notaire, encadrés par un barème national, puis les débours (frais avancés pour votre compte).</p>
-      <p>Dans le <strong>neuf</strong>, ces frais sont bien plus faibles (environ 2 à 3 % contre 7 à 8 % dans l'ancien), car la taxe de publicité foncière y est réduite. Un point à intégrer dans tout arbitrage d'achat.</p>
+      <p>Contrairement à l'idée reçue, le notaire ne garde qu'une petite partie de ces frais. L'essentiel, ce sont des <strong>taxes reversées à l'État et aux collectivités</strong> : les droits de mutation à titre onéreux. Viennent ensuite les émoluments du notaire, encadrés par un barème national identique partout en France, puis les débours, c'est-à-dire les frais que le notaire avance pour votre compte auprès des administrations.</p>
+
+      <h2>Ce qui a changé en 2026</h2>
+      <p>La loi de finances pour 2025 a autorisé chaque département à relever son taux de 0,5 point, dans la limite de 5 %, pour les actes signés entre le 1er avril 2025 et le 31 mars 2028. La grande majorité des départements a suivi. Résultat : les droits de mutation dans l'ancien atteignent aujourd'hui <strong>6,32 % du prix</strong> dans la plupart des cas, contre 5,81 % dans les onze départements restés au taux réduit. Sur un bien à 300 000 €, l'écart représente environ 1 500 €.</p>
+      <p>Les <strong>primo-accédants</strong> qui achètent leur résidence principale sont exclus de cette hausse : ils conservent le taux de 5,81 % quel que soit leur département.</p>
+
+      <h2>Et dans le neuf ?</h2>
+      <p>Dans le <strong>neuf</strong>, ces frais tombent à environ 2 à 3 % du prix, contre 7 à 8 % dans l'ancien, parce que la taxe de publicité foncière y est réduite à 0,715 %. Un écart qui pèse lourd dans un arbitrage d'achat, et qu'il faut mettre en face du prix au mètre carré, généralement plus élevé dans le neuf.</p>
+
+      <h2>Les deux leviers pour payer moins</h2>
+      <p>Le premier est la <strong>déduction du mobilier</strong>. La cuisine équipée, l'électroménager et les meubles qui restent dans le bien sortent de l'assiette taxable, à condition d'être listés et valorisés de façon raisonnable dans le compromis. Sur 8 000 € de mobilier justifié, l'économie tourne autour de 600 €.</p>
+      <p>Le second est la <strong>remise sur les émoluments</strong>. Au-delà de 100 000 €, le notaire peut consentir jusqu'à 20 % de remise sur la part de ses émoluments excédant ce seuil. Elle n'est jamais automatique : elle se demande, avant la signature.</p>
     </div>
+  </div>
+
+  <div class="fn-mobile-bar" id="fn-mobile-bar" aria-hidden="true">
+    <span class="k">Frais de notaire</span>
+    <span class="v" id="fn-mobile-total">—</span>
   </div>
 
   <CTA />
 </Base>
 
+<style is:global>
+  .fn-sticky{position:sticky;top:96px;}
+  @media(max-width:820px){.fn-sticky{position:static;}}
+  .fn-hint{color:#7f8ea6;font-size:.75rem;line-height:1.5;margin-top:9px;}
+  .fn-hint-chart{margin-top:14px;max-width:64ch;}
+  .fn-read{margin-top:16px;color:#F5F1E8;font-size:.98rem;line-height:1.65;max-width:56ch;}
+  .fn-read b{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;color:#E6C259;}
+  .fn-alert{margin-top:14px;background:rgba(212,168,45,.1);border:1px solid rgba(212,168,45,.35);border-radius:12px;padding:13px 15px;color:#E6C259;font-size:.82rem;line-height:1.5;}
+  .fn-chart-card{margin-top:22px;}
+  .fn-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;}
+  .fn-chart-read{color:#F5F1E8;font-size:.98rem;line-height:1.6;margin:10px 0 20px;max-width:64ch;}
+  #fn-svg{width:100%;height:auto;display:block;}
+  #fn-svg text{font:600 12px system-ui,sans-serif;fill:#F5F1E8;}
+  #fn-svg text.pct{font:700 13px system-ui,sans-serif;fill:#0c1f3c;}
+  .fn-leg{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;color:#9fb0c8;font-size:.78rem;}
+  .fn-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .fn-leg i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+
+  /* Barre de résultat collante, mobile uniquement : le chiffre reste visible
+     pendant qu'on déplace les curseurs. */
+  .fn-mobile-bar{display:none;}
+  @media(max-width:820px){
+    .fn-mobile-bar{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      position:fixed;left:0;right:0;bottom:0;z-index:40;
+      background:#0c1f3c;border-top:1px solid rgba(212,168,45,.35);
+      padding:13px 18px calc(13px + env(safe-area-inset-bottom));
+      transform:translateY(110%);transition:transform .25s ease;
+    }
+    .fn-mobile-bar.on{transform:translateY(0);}
+    .fn-mobile-bar .k{color:#9fb0c8;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;}
+    .fn-mobile-bar .v{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;font-size:1.45rem;color:#E6C259;}
+  }
+</style>
+
 <script is:inline>
   (function () {
-    function emolHT(p){
-      return Math.min(p,6500)*0.03870
-        + Math.max(0,Math.min(p,17000)-6500)*0.01596
-        + Math.max(0,Math.min(p,60000)-17000)*0.01064
-        + Math.max(0,p-60000)*0.00799;
+    // Barème national des émoluments du notaire (arrêté du 28 février 2020), HT.
+    function emolHT(p) {
+      return Math.min(p, 6500) * 0.03870
+        + Math.max(0, Math.min(p, 17000) - 6500) * 0.01596
+        + Math.max(0, Math.min(p, 60000) - 17000) * 0.01064
+        + Math.max(0, p - 60000) * 0.00799;
     }
-    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
-    let type='ancien';
-    function calc(){
-      const p = +document.getElementById('fn-prix').value;
-      const droits = p * (type==='neuf' ? 0.00715 : 0.0580);
-      const emol = emolHT(p) * 1.2;
-      const autres = p*0.001 + 1000;
-      const total = droits + emol + autres;
-      document.getElementById('fn-prix-val').textContent = eur(p);
-      document.getElementById('fn-total').textContent = eur(total);
-      document.getElementById('fn-droits').textContent = eur(droits);
-      document.getElementById('fn-emol').textContent = eur(emol);
-      document.getElementById('fn-autres').textContent = eur(autres);
-      document.getElementById('fn-pct').textContent = (total/p*100).toFixed(1).replace('.',',') + ' %';
-      document.getElementById('fn-budget').textContent = eur(p+total);
+
+    var eur = function (n) { return Math.round(n).toLocaleString('fr-FR') + ' €'; };
+    var pct = function (n) { return n.toFixed(1).replace('.', ',') + ' %'; };
+
+    var type = 'ancien';
+    var tauxDept = 6.32;
+    var primo = false;
+    var remise = false;
+
+    // Un seul moteur de calcul, réutilisé pour le comparatif ancien / neuf.
+    function chiffrer(prix, mobilier, opts) {
+      var base = Math.max(0, prix - mobilier);
+      var taux;
+      if (opts.type === 'neuf') taux = 0.00715;
+      else taux = (opts.primo ? 5.81 : opts.tauxDept) / 100;
+
+      var droits = base * taux;
+
+      var brut = emolHT(base);
+      // La remise ne porte que sur la part des émoluments au-delà de 100 000 €.
+      var ristourne = opts.remise ? Math.max(0, base - 100000) * 0.00799 * 0.20 : 0;
+      var emolNet = brut - ristourne;
+      var tva = emolNet * 0.20;
+
+      var csi = base * 0.001;
+      var debours = opts.type === 'neuf' ? 800 : 1200;
+
+      var total = droits + emolNet + tva + csi + debours;
+
+      return {
+        base: base,
+        droits: droits,
+        emolHT: emolNet,
+        tva: tva,
+        emolTTC: emolNet + tva,
+        ristourne: ristourne,
+        formalites: csi + debours,
+        etat: droits + tva + csi,
+        notaire: emolNet,
+        tiers: debours,
+        total: total
+      };
     }
-    function init(){
-      const r=document.getElementById('fn-prix'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
-      r.addEventListener('input',calc);
-      document.querySelectorAll('#fn-type button').forEach(b=>b.addEventListener('click',()=>{
-        document.querySelectorAll('#fn-type button').forEach(x=>x.classList.remove('on'));
-        b.classList.add('on'); type=b.dataset.t; calc();
-      }));
+
+    function dessiner(r) {
+      var bars = document.getElementById('fn-bars');
+      var labels = document.getElementById('fn-labels');
+      if (!bars || !labels) return;
+      bars.textContent = '';
+      labels.textContent = '';
+
+      var W = 640, H = 44, Y = 26;
+      var parts = [
+        { v: r.etat, c: '#4a73a0' },
+        { v: r.notaire, c: '#D4A82D' },
+        { v: r.tiers, c: '#8a9bb4' }
+      ];
+      var x = 0;
+      var NS = 'http://www.w3.org/2000/svg';
+
+      parts.forEach(function (p, i) {
+        var w = r.total > 0 ? (p.v / r.total) * W : 0;
+        var rect = document.createElementNS(NS, 'rect');
+        rect.setAttribute('x', String(x));
+        rect.setAttribute('y', String(Y));
+        rect.setAttribute('width', String(Math.max(0, w)));
+        rect.setAttribute('height', String(H));
+        rect.setAttribute('fill', p.c);
+        if (i === 0) { rect.setAttribute('rx', '4'); }
+        bars.appendChild(rect);
+
+        var part = r.total > 0 ? (p.v / r.total) * 100 : 0;
+        if (w > 54) {
+          var t = document.createElementNS(NS, 'text');
+          t.setAttribute('class', 'pct');
+          t.setAttribute('x', String(x + w / 2));
+          t.setAttribute('y', String(Y + H / 2 + 5));
+          t.setAttribute('text-anchor', 'middle');
+          t.textContent = Math.round(part) + ' %';
+          labels.appendChild(t);
+
+          var m = document.createElementNS(NS, 'text');
+          m.setAttribute('x', String(x + w / 2));
+          m.setAttribute('y', String(Y + H + 20));
+          m.setAttribute('text-anchor', 'middle');
+          m.textContent = eur(p.v);
+          labels.appendChild(m);
+        }
+        x += w;
+      });
+    }
+
+    function calc() {
+      var prix = +document.getElementById('fn-prix').value;
+      var mob = Math.min(+document.getElementById('fn-mob').value, prix);
+      var opts = { type: type, tauxDept: tauxDept, primo: primo, remise: remise };
+      var r = chiffrer(prix, mob, opts);
+
+      document.getElementById('fn-prix-val').textContent = eur(prix);
+      document.getElementById('fn-mob-val').textContent = eur(mob);
+      document.getElementById('fn-total').textContent = eur(r.total);
+      document.getElementById('fn-droits').textContent = eur(r.droits);
+      document.getElementById('fn-emol').textContent = eur(r.emolTTC);
+      document.getElementById('fn-autres').textContent = eur(r.formalites);
+      document.getElementById('fn-pct').textContent = prix > 0 ? pct(r.total / prix * 100) : '—';
+      document.getElementById('fn-budget').textContent = eur(prix + r.total);
+
+      var mobile = document.getElementById('fn-mobile-total');
+      if (mobile) mobile.textContent = eur(r.total);
+
+      // Phrase de lecture en clair.
+      var lecture = 'Pour un achat de <b>' + eur(prix) + '</b> '
+        + (type === 'neuf' ? 'dans le neuf' : 'dans l\'ancien')
+        + ', comptez environ <b>' + eur(r.total) + '</b> de frais, soit <b>'
+        + pct(prix > 0 ? r.total / prix * 100 : 0) + '</b> du prix. '
+        + 'Sur ce total, le notaire conserve <b>' + eur(r.notaire) + '</b>, le reste part en taxes et en formalités.';
+      document.getElementById('fn-read').innerHTML = lecture;
+
+      document.getElementById('fn-split-read').innerHTML =
+        'Sur <b>' + eur(r.total) + '</b> de frais, <b>' + eur(r.etat)
+        + '</b> vont à l\'État et aux collectivités, <b>' + eur(r.notaire)
+        + '</b> rémunèrent le notaire, et <b>' + eur(r.tiers) + '</b> couvrent les formalités avancées pour votre compte.';
+
+      dessiner(r);
+
+      // Alerte contextuelle : le levier le plus utile au stade où en est le visiteur.
+      var alerte = document.getElementById('fn-alert');
+      var msg = '';
+      if (type === 'ancien') {
+        var autre = chiffrer(prix, mob, { type: 'neuf', tauxDept: tauxDept, primo: primo, remise: remise });
+        var ecart = r.total - autre.total;
+        if (ecart > 0) {
+          msg = 'Le même budget dans le neuf supporterait environ ' + eur(autre.total)
+            + ' de frais, soit ' + eur(ecart) + ' de moins. À mettre en face du prix au mètre carré, plus élevé dans le neuf.';
+        }
+      }
+      if (type === 'ancien' && mob === 0) {
+        var avecMob = chiffrer(prix, Math.min(8000, prix), opts);
+        msg = 'Déduire 8 000 € de mobilier justifié ferait tomber la note à environ '
+          + eur(avecMob.total) + ', soit ' + eur(r.total - avecMob.total)
+          + ' d\'économie. Encore faut-il le lister dans le compromis.';
+      }
+      if (type === 'ancien' && !primo && !remise && r.base > 100000) {
+        var avecRemise = chiffrer(prix, mob, { type: type, tauxDept: tauxDept, primo: primo, remise: true });
+        var gain = r.total - avecRemise.total;
+        if (gain > 100 && mob > 0) {
+          msg = 'Une remise de 20 % sur les émoluments au-delà de 100 000 € vous ferait économiser '
+            + eur(gain) + '. Elle se demande avant la signature, jamais après.';
+        }
+      }
+      if (msg) { alerte.textContent = msg; alerte.hidden = false; }
+      else { alerte.hidden = true; }
+    }
+
+    function seg(id, fn) {
+      var box = document.getElementById(id);
+      if (!box) return;
+      box.querySelectorAll('button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          box.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+          b.classList.add('on');
+          fn(b);
+          calc();
+        });
+      });
+    }
+
+    function majVisibilite() {
+      var neuf = type === 'neuf';
+      document.getElementById('fn-dept-field').hidden = neuf;
+      document.getElementById('fn-primo-field').hidden = neuf;
+      document.getElementById('fn-type-val').textContent = neuf ? 'Neuf (VEFA)' : 'Ancien';
+    }
+
+    // La barre mobile n'apparaît que lorsque l'outil est à l'écran.
+    function observerBarre() {
+      var bar = document.getElementById('fn-mobile-bar');
+      var carte = document.querySelector('.tool-card');
+      if (!bar || !carte || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { bar.classList.toggle('on', e.isIntersecting); });
+      }, { rootMargin: '-10% 0px -30% 0px' }).observe(carte);
+    }
+
+    function init() {
+      var r = document.getElementById('fn-prix');
+      if (!r || r.dataset.ready) return;
+      r.dataset.ready = '1';
+
+      r.addEventListener('input', calc);
+      document.getElementById('fn-mob').addEventListener('input', calc);
+
+      seg('fn-type', function (b) { type = b.dataset.t; majVisibilite(); });
+      seg('fn-dept', function (b) {
+        tauxDept = parseFloat(b.dataset.d);
+        document.getElementById('fn-dept-val').textContent = b.dataset.d.replace('.', ',') + ' %';
+      });
+      seg('fn-primo', function (b) {
+        primo = b.dataset.p === '1';
+        document.getElementById('fn-primo-val').textContent = primo ? 'Oui' : 'Non';
+      });
+      seg('fn-remise', function (b) {
+        remise = b.dataset.r === '1';
+        document.getElementById('fn-remise-val').textContent = remise ? 'Oui, 20 %' : 'Non';
+      });
+
+      majVisibilite();
+      observerBarre();
       calc();
     }
+
     init();
-    if(!window['__hk_fn-prix']){window['__hk_fn-prix']=1;document.addEventListener('astro:page-load',init);}
+    if (!window['__hk_fn']) { window['__hk_fn'] = 1; document.addEventListener('astro:page-load', init); }
   })();
 </script>

@@ -306,10 +306,130 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
         });
       }
 
+      // Remplissage doré de la piste, jusqu'à la valeur courante.
+      function paintRange(range: HTMLInputElement) {
+        const lo = parseFloat(range.min || '0');
+        const hi = parseFloat(range.max || '100');
+        const v = parseFloat(range.value || '0');
+        const p = hi > lo ? ((v - lo) / (hi - lo)) * 100 : 0;
+        range.style.setProperty('--fill', Math.max(0, Math.min(100, p)) + '%');
+      }
+
+      function setupRangeFill() {
+        document.querySelectorAll<HTMLInputElement>('.tool-range').forEach((range) => {
+          paintRange(range);
+          if (range.dataset.fillReady) return;
+          range.dataset.fillReady = '1';
+          range.addEventListener('input', () => paintRange(range));
+        });
+      }
+
+      // Pastille dorée qui glisse d'une option à l'autre dans les sélecteurs.
+      function placeSegIndicator(seg: HTMLElement) {
+        const ind = seg.querySelector<HTMLElement>('.tool-seg-ind');
+        const active = seg.querySelector<HTMLElement>('button.on');
+        if (!ind || !active || !seg.offsetWidth) return;
+        const segBox = seg.getBoundingClientRect();
+        const btnBox = active.getBoundingClientRect();
+        const border = parseFloat(getComputedStyle(seg).borderLeftWidth) || 0;
+        ind.style.width = btnBox.width + 'px';
+        ind.style.transform = 'translateX(' + (btnBox.left - segBox.left - border) + 'px)';
+      }
+
+      function setupSegments() {
+        document.querySelectorAll<HTMLElement>('.tool-seg').forEach((seg) => {
+          if (!seg.querySelector('.tool-seg-ind')) {
+            const ind = document.createElement('span');
+            ind.className = 'tool-seg-ind';
+            ind.setAttribute('aria-hidden', 'true');
+            seg.prepend(ind);
+          }
+          placeSegIndicator(seg);
+          if (seg.dataset.segReady) return;
+          seg.dataset.segReady = '1';
+          // Les scripts de chaque outil basculent .on sur le bouton cliqué. Leur
+          // écouteur est posé sur le bouton, le nôtre sur le conteneur : en phase
+          // de remontée, la classe est donc déjà à jour. On replace sans passer
+          // par requestAnimationFrame, gelé lorsque l'onglet n'est pas visible.
+          seg.addEventListener('click', () => placeSegIndicator(seg));
+          if ('ResizeObserver' in window) {
+            new ResizeObserver(() => placeSegIndicator(seg)).observe(seg);
+          }
+        });
+      }
+
+      // Le chiffre principal se déplace vers sa nouvelle valeur au lieu de sauter.
+      // On lit le texte écrit par l'outil, on l'anime, on réécrit dans le même
+      // format : aucun calculateur n'a besoin de savoir que ce mécanisme existe.
+      function decompose(text: string) {
+        const m = text.match(/-?[\d   ]*\d(?:[.,]\d+)?/);
+        if (!m || m.index === undefined) return null;
+        const raw = m[0];
+        const value = parseFloat(raw.replace(/[   ]/g, '').replace(',', '.'));
+        if (Number.isNaN(value)) return null;
+        const dec = (raw.split(/[.,]/)[1] || '').length;
+        return { value, dec, pre: text.slice(0, m.index), post: text.slice(m.index + raw.length) };
+      }
+
+      function setupNumberMorph() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        document.querySelectorAll<HTMLElement>('.tool-result .big').forEach((el) => {
+          if (el.dataset.morphReady) return;
+          el.dataset.morphReady = '1';
+
+          let shown: number | null = null;
+          let writing = false;
+          let frame = 0;
+
+          const observer = new MutationObserver(() => {
+            if (writing) return;
+            const target = decompose(el.textContent || '');
+            if (!target) { shown = null; return; }
+            if (shown === null || Math.abs(target.value - shown) < 0.5) { shown = target.value; return; }
+
+            const from = shown;
+            const span = target.value - from;
+            const start = performance.now();
+            cancelAnimationFrame(frame);
+
+            const step = (now: number) => {
+              const t = Math.min(1, (now - start) / 260);
+              const eased = 1 - Math.pow(1 - t, 3);
+              shown = from + span * eased;
+              writing = true;
+              el.textContent = target.pre
+                + shown.toLocaleString('fr-FR', { minimumFractionDigits: target.dec, maximumFractionDigits: target.dec })
+                + target.post;
+              writing = false;
+              if (t < 1) frame = requestAnimationFrame(step);
+              else shown = target.value;
+            };
+            frame = requestAnimationFrame(step);
+          });
+
+          const first = decompose(el.textContent || '');
+          shown = first ? first.value : null;
+          observer.observe(el, { childList: true, characterData: true, subtree: true });
+        });
+      }
+
+      function setupToolChrome() {
+        setupToolPrecision();
+        setupRangeFill();
+        setupSegments();
+        setupNumberMorph();
+      }
+
       // Les curseurs du diagnostic sont reconstruits à chaque étape : on rattrape
       // tout ce qui apparaît après coup plutôt que de repasser à la main.
       function watchToolPrecision() {
-        const obs = new MutationObserver(() => setupToolPrecision());
+        // Le morphing du chiffre réécrit du texte à chaque image : sans ce
+        // regroupement, l'observateur relancerait un balayage 60 fois par seconde.
+        let queued = 0;
+        const obs = new MutationObserver(() => {
+          cancelAnimationFrame(queued);
+          queued = requestAnimationFrame(() => setupToolChrome());
+        });
         obs.observe(document.body, { childList: true, subtree: true });
         const open = (target: EventTarget | null) => {
           const display = (target as HTMLElement | null)?.closest<HTMLElement>(VALUE_SELECTOR);
@@ -329,12 +449,21 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
 
       setupReveal();
       setupParallax();
-      setupToolPrecision();
+      setupToolChrome();
       watchToolPrecision();
+      const replaceAllSegs = () => {
+        document.querySelectorAll<HTMLElement>('.tool-seg').forEach((seg) => placeSegIndicator(seg));
+      };
+      window.addEventListener('resize', replaceAllSegs);
+      // Au retour sur l'onglet, les mesures faites en arrière-plan peuvent être
+      // fausses (largeurs nulles) : on repositionne une fois la page revisible.
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) replaceAllSegs();
+      });
       document.addEventListener('astro:page-load', () => {
         setupReveal();
         setupParallax();
-        setupToolPrecision();
+        setupToolChrome();
       });
     </script>
   </body>
