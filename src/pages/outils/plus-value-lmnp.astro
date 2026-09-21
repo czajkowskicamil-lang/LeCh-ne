@@ -1,0 +1,613 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/CTA.astro';
+import ToolLeadCapture from '../../components/ToolLeadCapture.astro';
+
+const title = "Plus-value LMNP et réintégration des amortissements (réforme 2025) | Le Chêne Patrimonial";
+const description = "Depuis février 2025, les amortissements déduits en LMNP s'ajoutent à la plus-value de revente. Calculez l'impôt réel, abattements et surtaxe compris.";
+---
+
+<Base title={title} description={description}>
+  <header class="pt-16 pb-8 md:pt-24 md:pb-10">
+    <div class="shell max-w-4xl">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-chene">Outils</a>
+        <span>/</span>
+        <span class="text-ink">Plus-value LMNP</span>
+      </nav>
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Immobilier · Réforme 2025
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6 leading-tight">Ce que la revente coûte vraiment en LMNP</h1>
+      <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
+        Pendant la détention, l'amortissement efface l'impôt sur les loyers. Depuis la loi de finances 2025, il refait surface le jour de la vente : les amortissements déduits viennent réduire votre prix d'acquisition, donc gonfler la plus-value imposable. Sauf pour certaines résidences. Cet outil déroule le calcul ligne par ligne.
+      </p>
+    </div>
+  </header>
+
+  <div class="shell max-w-5xl pb-16">
+    <div class="tool-card">
+      <div class="tool-grid">
+        <div>
+          <p class="pl-sec">1. Le bien</p>
+          <div class="tool-field" id="pl-type">
+            <label>Nature du logement meublé</label>
+            <p class="pl-grp-t hot">Amortissements réintégrés</p>
+            <div class="pl-pick">
+              <button type="button" data-v="classique" class="on">Meublé longue durée</button>
+              <button type="button" data-v="tourisme">Résidence de tourisme</button>
+              <button type="button" data-v="affaires">Résidence d'affaires</button>
+              <button type="button" data-v="mobilite">Bail mobilité</button>
+            </div>
+            <p class="pl-grp-t ok">Amortissements non repris</p>
+            <div class="pl-pick ok">
+              <button type="button" data-v="etudiante">Résidence étudiante</button>
+              <button type="button" data-v="senior">Résidence senior</button>
+              <button type="button" data-v="ehpad">EHPAD</button>
+            </div>
+          </div>
+          <p id="pl-statut" class="pl-flag">Bien concerné par la réintégration des amortissements.</p>
+
+          <p class="pl-sec">2. L'acquisition</p>
+          <div class="tool-field">
+            <label>Prix d'achat <b id="pl-achat-val" data-editable>200 000 €</b></label>
+            <input class="tool-range" type="range" id="pl-achat" min="20000" max="2000000" step="5000" value="200000" />
+          </div>
+          <div class="tool-field">
+            <label>Frais d'acquisition (notaire)</label>
+            <div class="tool-seg" id="pl-frais-mode">
+              <button type="button" data-v="forfait" class="on">Forfait 7,5 %</button>
+              <button type="button" data-v="reel">Montant réel</button>
+            </div>
+          </div>
+          <div class="tool-field pl-cond" id="pl-frais-box" hidden>
+            <label>Frais réellement payés <b id="pl-frais-val" data-editable>16 000 €</b></label>
+            <input class="tool-range" type="range" id="pl-frais" min="0" max="300000" step="500" value="16000" />
+          </div>
+          <div class="tool-field">
+            <label>Travaux retenus</label>
+            <div class="tool-seg" id="pl-trav-mode">
+              <button type="button" data-v="aucun" class="on">Aucun</button>
+              <button type="button" data-v="forfait">Forfait 15 %</button>
+              <button type="button" data-v="reel">Réel</button>
+            </div>
+          </div>
+          <div class="tool-field pl-cond" id="pl-trav-box" hidden>
+            <label>Montant des travaux <b id="pl-trav-val" data-editable>20 000 €</b></label>
+            <input class="tool-range" type="range" id="pl-trav" min="0" max="500000" step="1000" value="20000" />
+          </div>
+
+          <p class="pl-sec">3. La détention et les amortissements</p>
+          <div class="tool-field">
+            <label>Durée de détention <b id="pl-duree-val">12 ans</b></label>
+            <input class="tool-range" type="range" id="pl-duree" min="0" max="32" step="1" value="12" />
+          </div>
+          <div class="tool-field">
+            <label>Amortissements cumulés</label>
+            <div class="tool-seg" id="pl-amort-mode">
+              <button type="button" data-v="estime" class="on">Estimer</button>
+              <button type="button" data-v="reel">Chiffre du comptable</button>
+            </div>
+          </div>
+          <p class="pl-info" id="pl-amort-info"></p>
+          <div class="tool-field pl-cond" id="pl-amort-box" hidden>
+            <label>Amortissements déduits <b id="pl-amort-val" data-editable>60 000 €</b></label>
+            <input class="tool-range" type="range" id="pl-amort" min="0" max="1000000" step="1000" value="60000" />
+          </div>
+          <div class="tool-field pl-cond" id="pl-ard-box" hidden>
+            <label>Dont différés non déduits <b id="pl-ard-val" data-editable>0 €</b></label>
+            <input class="tool-range" type="range" id="pl-ard" min="0" max="500000" step="1000" value="0" />
+          </div>
+          <div class="tool-field pl-cond" id="pl-lecture-box" hidden>
+            <label>Traitement des amortissements différés</label>
+            <div class="tool-seg" id="pl-lecture">
+              <button type="button" data-v="litterale" class="on">Lecture du texte</button>
+              <button type="button" data-v="prudente">Lecture prudente</button>
+            </div>
+          </div>
+
+          <p class="pl-sec">4. La revente</p>
+          <div class="tool-field">
+            <label>Prix de revente <b id="pl-vente-val" data-editable>300 000 €</b></label>
+            <input class="tool-range" type="range" id="pl-vente" min="20000" max="3000000" step="5000" value="300000" />
+          </div>
+          <div class="tool-field">
+            <label>Frais à votre charge à la vente <b id="pl-fcess-val" data-editable>0 €</b></label>
+            <input class="tool-range" type="range" id="pl-fcess" min="0" max="200000" step="500" value="0" />
+          </div>
+
+          <p class="tool-note">Diagnostics, mainlevée d'hypothèque, commission d'agence si elle est à votre charge : ces frais viennent en déduction du prix de cession. Le forfait de 15 % pour travaux suppose une détention de plus de 5 ans, et son application en meublé au réel, quand les travaux ont déjà été amortis, se valide avec votre notaire. Simulation pédagogique, hors cas particuliers (démembrement, détention en société, non-résidents, exonérations spécifiques).</p>
+        </div>
+
+        <div class="tool-result pl-stick">
+          <p class="lbl">Impôt total à la revente</p>
+          <p class="big" id="pl-total">—</p>
+          <div class="tool-brk"><span class="k">Plus-value brute imposable</span><span class="v" id="pl-brute">—</span></div>
+          <div class="tool-brk"><span class="k">Amortissements réintégrés</span><span class="v" id="pl-reint">—</span></div>
+          <div class="tool-brk"><span class="k">Impôt sur le revenu (19 %)</span><span class="v" id="pl-ir">—</span></div>
+          <div class="tool-brk"><span class="k">Prélèvements sociaux (17,2 %)</span><span class="v" id="pl-ps">—</span></div>
+          <div class="tool-brk"><span class="k">Surtaxe plus-values élevées</span><span class="v" id="pl-sur">—</span></div>
+          <div class="tool-brk"><span class="k">Le même bien loué nu paierait</span><span class="v" id="pl-nu">—</span></div>
+          <div class="tool-brk"><span class="k">Surcoût dû à la réintégration</span><span class="v pl-hot" id="pl-delta">—</span></div>
+          <div class="tool-brk"><span class="k">Encaissé après impôt</span><span class="v" id="pl-net">—</span></div>
+          <p class="pl-mini" id="pl-mini">Hypothèse de calcul, à confirmer avec votre expert-comptable et votre notaire.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card pl-cmp-card">
+      <p class="pl-chart-title">Le même bien, revendu en nu ou en meublé</p>
+      <div class="pl-cmp">
+        <div class="pl-cmp-col">
+          <p class="t">Location nue</p>
+          <p class="s">Aucun amortissement à reprendre</p>
+          <p class="n" id="c-nu-total">—</p>
+          <div class="pl-cmp-row"><span>Plus-value brute</span><b id="c-nu-brute">—</b></div>
+          <div class="pl-cmp-row"><span>Encaissé après impôt</span><b id="c-nu-net">—</b></div>
+        </div>
+        <div class="pl-cmp-col hot">
+          <p class="t">Meublé au réel (LMNP)</p>
+          <p class="s" id="c-lmnp-s">Amortissements réintégrés</p>
+          <p class="n" id="c-lmnp-total">—</p>
+          <div class="pl-cmp-row"><span>Plus-value brute</span><b id="c-lmnp-brute">—</b></div>
+          <div class="pl-cmp-row"><span>Encaissé après impôt</span><b id="c-lmnp-net">—</b></div>
+        </div>
+        <div class="pl-cmp-col ecart" id="c-col-ecart">
+          <p class="t">L'écart</p>
+          <p class="s">Ce que coûte la réintégration</p>
+          <p class="n" id="c-ecart">—</p>
+          <div class="pl-cmp-row"><span>Plus-value en plus</span><b id="c-ecart-pv">—</b></div>
+          <div class="pl-cmp-row"><span>Sur ce que vous encaissez</span><b id="c-ecart-net">—</b></div>
+        </div>
+      </div>
+      <p class="tool-note">Comparaison à la seule revente, prix et durée identiques. Elle ne dit pas que le nu est plus avantageux : pendant toute la détention, le meublé au réel a payé beaucoup moins d'impôt sur les loyers grâce à ce même amortissement. L'arbitrage se fait sur l'ensemble de l'opération, loyers et revente réunis.</p>
+    </div>
+
+    <div class="tool-card pl-w-card">
+      <p class="pl-chart-title">Le calcul, ligne par ligne</p>
+      <div class="pl-w">
+        <div class="pl-w-row"><span class="k">Prix de revente</span><span class="v" id="w-vente">—</span></div>
+        <div class="pl-w-row neg"><span class="k">Frais à votre charge à la vente</span><span class="v" id="w-fcess">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Prix de cession retenu</span><span class="v" id="w-cession">—</span></div>
+        <div class="pl-w-row"><span class="k">Prix d'achat</span><span class="v" id="w-achat">—</span></div>
+        <div class="pl-w-row pos"><span class="k" id="w-frais-k">Frais d'acquisition</span><span class="v" id="w-frais">—</span></div>
+        <div class="pl-w-row pos"><span class="k" id="w-trav-k">Travaux</span><span class="v" id="w-trav">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Prix d'acquisition majoré</span><span class="v" id="w-majore">—</span></div>
+        <div class="pl-w-row neg hot"><span class="k">Amortissements réintégrés (réforme 2025)</span><span class="v" id="w-reint">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Prix d'acquisition corrigé</span><span class="v" id="w-corrige">—</span></div>
+        <div class="pl-w-row tot big"><span class="k">Plus-value brute</span><span class="v" id="w-brute">—</span></div>
+        <div class="pl-w-row"><span class="k" id="w-abir-k">Abattement impôt sur le revenu</span><span class="v" id="w-abir">—</span></div>
+        <div class="pl-w-row"><span class="k">Base imposable à l'impôt sur le revenu</span><span class="v" id="w-baseir">—</span></div>
+        <div class="pl-w-row"><span class="k" id="w-abps-k">Abattement prélèvements sociaux</span><span class="v" id="w-abps">—</span></div>
+        <div class="pl-w-row"><span class="k">Base imposable aux prélèvements sociaux</span><span class="v" id="w-baseps">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Impôt sur le revenu (19 %)</span><span class="v" id="w-ir">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Prélèvements sociaux (17,2 %)</span><span class="v" id="w-ps">—</span></div>
+        <div class="pl-w-row tot"><span class="k">Surtaxe sur les plus-values élevées</span><span class="v" id="w-sur">—</span></div>
+        <div class="pl-w-row tot big hot"><span class="k">Impôt total dû</span><span class="v" id="w-total">—</span></div>
+      </div>
+    </div>
+
+    <div class="tool-card pl-chart-card">
+      <p class="pl-chart-title">L'impôt selon l'année de revente, nu ou meublé</p>
+      <svg id="pl-svg" viewBox="0 0 640 280" role="img" aria-label="Comparaison de l'impôt à la revente avec et sans réintégration des amortissements, selon le nombre d'années de détention">
+        <line class="pl-axis" x1="44" y1="238" x2="628" y2="238" />
+        <path id="pl-gap" class="pl-gap" d="" />
+        <path id="pl-line-sans" class="pl-line-sans" d="" fill="none" />
+        <path id="pl-line-avec" class="pl-line-avec" d="" fill="none" />
+        <line id="pl-mark-line" class="pl-mark-line" x1="0" y1="20" x2="0" y2="238" />
+        <circle id="pl-mark-dot" class="pl-mark-dot" cx="-20" cy="0" r="4.5" />
+        <text id="pl-mark-lab" class="pl-mark-lab" x="0" y="14" text-anchor="middle"></text>
+        <text id="pl-ymax" class="pl-tick" x="40" y="30" text-anchor="end">—</text>
+        <text class="pl-tick" x="40" y="242" text-anchor="end">0</text>
+        <text class="pl-tick" x="44" y="262" text-anchor="start">0 an</text>
+        <text id="pl-t22" class="pl-tick" x="472" y="262" text-anchor="middle">22 ans</text>
+        <text class="pl-tick" x="628" y="262" text-anchor="end">30 ans</text>
+      </svg>
+      <div class="pl-leg">
+        <span><i class="pl-leg-avec"></i> Meublé au réel, amortissements réintégrés</span>
+        <span><i class="pl-leg-sans"></i> Location nue, aucun amortissement à reprendre</span>
+        <span><i class="pl-leg-gap"></i> L'écart : le coût de la réintégration</span>
+      </div>
+    </div>
+
+    <ToolLeadCapture
+      tool="Plus-value LMNP"
+      titre="Votre plus-value LMNP à la revente"
+      sousTitre="Simulation de la réintégration des amortissements"
+    />
+
+    <div class="max-w-prose-wide mt-14 prose-editorial">
+      <h2>Ce que la réforme a changé</h2>
+      <p>Jusqu'en février 2025, la location meublée offrait une anomalie rare : on amortissait le bien pour effacer l'impôt sur les loyers, et la plus-value se calculait quand même sur le prix d'achat d'origine, amortissements oubliés. L'article 84 de la loi de finances pour 2025 a fermé cette porte. Pour les cessions intervenues à compter du 15 février 2025, les amortissements admis en déduction viennent <strong>minorer le prix d'acquisition</strong>, ce qui augmente mécaniquement la plus-value imposable. Y compris les amortissements pratiqués avant 2025.</p>
+
+      <h2>Les résidences qui échappent à la règle</h2>
+      <p>Le texte prévoit une exception, et c'est là que se joue l'essentiel du conseil. Trois catégories restent hors du champ de la réintégration, leur plus-value continue de se calculer sans reprise des amortissements : la <strong>résidence étudiante</strong>, la <strong>résidence senior</strong> et l'<strong>EHPAD</strong>.</p>
+      <p>Tout le reste est concerné, et c'est là que les confusions coûtent cher : le <strong>meublé de longue durée</strong>, bien sûr, mais aussi la <strong>résidence de tourisme</strong>, la <strong>résidence d'affaires</strong> et le <strong>bail mobilité</strong>. Ces trois derniers sont souvent rangés à tort dans la catégorie des résidences services exonérées. Ils ne le sont pas. Beaucoup de vendeurs l'apprennent chez le notaire, le jour de la signature.</p>
+
+      <h2>Le chiffre à réintégrer n'est pas celui que vous croyez</h2>
+      <p>Le texte vise les amortissements « admis en déduction ». Or en meublé, l'amortissement déductible est plafonné par l'article 39 C du code général des impôts : il ne peut pas créer de déficit. Quand l'opération est financée à crédit, les intérêts absorbent une large part du résultat et une bonne partie de l'amortissement comptable part en report, sans jamais avoir été déduite. Le sort de ces amortissements différés n'est pas encore tranché par la doctrine. Certains cabinets retiennent une lecture prudente et réintègrent l'intégralité du stock pratiqué, pour éviter une mauvaise surprise en cas de contrôle. C'est pour cela que l'outil propose les deux lectures.</p>
+      <p>Une règle simple pour finir : le montant exact des amortissements déduits ne se devine pas, il se lit sur la liasse fiscale. C'est votre expert-comptable qui le fournit, le notaire ne le recalcule pas. Avant de mettre en vente, ce chiffre se demande, et se vérifie. C'est souvent la différence entre une revente préparée et une revente subie.</p>
+    </div>
+  </div>
+
+  <CTA />
+</Base>
+
+<style is:global>
+  @media(min-width:821px){.pl-stick{position:sticky;top:96px;}}
+  .pl-grp-t{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:16px 0 9px;display:flex;align-items:center;gap:7px;}
+  .pl-grp-t::before{content:'';width:8px;height:8px;border-radius:50%;flex:none;}
+  .pl-grp-t.hot{color:#E6C259;}
+  .pl-grp-t.hot::before{background:#D4A82D;}
+  .pl-grp-t.ok{color:#7fc49b;}
+  .pl-grp-t.ok::before{background:#5fae82;}
+  .pl-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .pl-pick button{background:transparent;border:1px solid rgba(212,168,45,.38);color:#cbd3e0;font:600 .8rem system-ui,sans-serif;padding:11px 8px;border-radius:12px;cursor:pointer;transition:.2s;line-height:1.25;}
+  .pl-pick button:hover{border-color:rgba(212,168,45,.75);}
+  .pl-pick button.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+  .pl-pick.ok button{border-color:rgba(95,174,130,.4);}
+  .pl-pick.ok button:hover{border-color:rgba(95,174,130,.8);}
+  .pl-pick.ok button.on{background:#5fae82;color:#06241a;border-color:#5fae82;}
+  .pl-pick button:last-child:nth-child(odd){grid-column:1/-1;}
+  .pl-info{color:#9fb0c8;font-size:.75rem;line-height:1.55;margin:-14px 0 24px;padding-left:11px;border-left:1px solid rgba(212,168,45,.3);}
+  .pl-cmp-card{margin-top:22px;}
+  .pl-cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:760px){.pl-cmp{grid-template-columns:1fr;}}
+  .pl-cmp-col{background:#102847;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;}
+  .pl-cmp-col .t{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.05rem;color:#F5F1E8;font-weight:600;}
+  .pl-cmp-col .s{color:#7f8ea6;font-size:.74rem;line-height:1.45;margin:4px 0 14px;min-height:2.1em;}
+  .pl-cmp-col .n{font-family:'Fraunces Variable',Fraunces,serif;font-size:1.85rem;color:#8fb6e0;font-weight:600;line-height:1.1;margin-bottom:14px;}
+  .pl-cmp-col.hot{border-color:rgba(212,168,45,.42);}
+  .pl-cmp-col.hot .n{color:#E6C259;}
+  .pl-cmp-col.ecart{background:#14203a;border-color:rgba(226,160,160,.32);}
+  .pl-cmp-col.ecart .n{color:#e2a0a0;}
+  .pl-cmp-col.ecart.nul{border-color:rgba(95,174,130,.35);}
+  .pl-cmp-col.ecart.nul .n{color:#7fc49b;}
+  .pl-cmp-row{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:#9fb0c8;padding:7px 0;border-top:1px solid rgba(255,255,255,.07);}
+  .pl-cmp-row b{font-family:'Fraunces Variable',Fraunces,serif;color:#F5F1E8;font-weight:600;white-space:nowrap;}
+  .pl-sec{color:#E6C259;font-size:.72rem;text-transform:uppercase;letter-spacing:.11em;font-weight:700;margin:4px 0 16px;padding-bottom:9px;border-bottom:1px solid rgba(212,168,45,.22);}
+  .pl-seg-wrap button{font-size:.78rem;padding:10px 6px;line-height:1.25;}
+  .pl-flag{font-size:.78rem;line-height:1.5;color:#9fb0c8;background:rgba(212,168,45,.10);border-left:2px solid #D4A82D;padding:10px 13px;border-radius:0 8px 8px 0;margin:-8px 0 26px;}
+  .pl-flag.ok{background:rgba(74,140,104,.14);border-left-color:#5fae82;color:#bcd9c8;}
+  .tool-edit{background:#0c1f3c;border:1px solid rgba(212,168,45,.55);color:#F5F1E8;font:600 1rem 'Fraunces Variable',Fraunces,serif;border-radius:7px;padding:2px 8px;width:9.5em;text-align:right;outline:none;}
+  .pl-hot{color:#E6C259 !important;}
+  .pl-mini{color:#6f7f98;font-size:.72rem;line-height:1.5;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);}
+  .pl-w-card,.pl-chart-card{margin-top:22px;}
+  .pl-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:16px;}
+  .pl-w-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:9px 0;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.06);}
+  .pl-w-row .k{color:#9fb0c8;}
+  .pl-w-row .v{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;color:#F5F1E8;white-space:nowrap;}
+  .pl-w-row.pos .v{color:#8fb6e0;}
+  .pl-w-row.neg .v{color:#e2a0a0;}
+  .pl-w-row.tot{border-bottom:1px solid rgba(212,168,45,.22);}
+  .pl-w-row.tot .k{color:#cbd3e0;font-weight:600;}
+  .pl-w-row.big{padding:13px 0;}
+  .pl-w-row.big .v{font-size:1.28rem;}
+  .pl-w-row.hot .k{color:#E6C259;}
+  .pl-w-row.hot .v{color:#E6C259;}
+  .pl-w-row.off{opacity:.42;}
+  #pl-svg{width:100%;height:auto;display:block;overflow:visible;}
+  .pl-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
+  .pl-gap{fill:rgba(230,194,89,.17);}
+  .pl-line-avec{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .pl-line-sans{stroke:#5f86b4;stroke-width:2;stroke-dasharray:5 4;stroke-linejoin:round;stroke-linecap:round;}
+  .pl-mark-line{stroke:rgba(255,255,255,.4);stroke-width:1;stroke-dasharray:3 3;}
+  .pl-mark-dot{fill:#fff;stroke:#E6C259;stroke-width:2;}
+  .pl-mark-lab{fill:#e9edf4;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
+  .pl-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
+  .pl-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .pl-leg span{display:inline-flex;align-items:center;gap:7px;}
+  .pl-leg i{width:18px;height:0;display:block;}
+  .pl-leg-avec{border-top:2.5px solid #E6C259;}
+  .pl-leg-sans{border-top:2px dashed #5f86b4;}
+  .pl-leg-gap{width:13px;height:13px;border-radius:3px;background:rgba(230,194,89,.34);border:1px solid rgba(230,194,89,.5);}
+</style>
+
+<script is:inline>
+  (function () {
+    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+    const pct = n => n.toFixed(2).replace(/[.,]?0+$/, '').replace('.', ',') + ' %';
+    const g = id => document.getElementById(id);
+    const set = (id, v) => { const e = g(id); if (e) e.textContent = v; };
+    // Libellé de curseur : ne jamais écraser une saisie en cours.
+    const setLbl = (id, v) => { const e = g(id); if (e && !e.querySelector('input')) e.textContent = v; };
+
+    // Résidences hors du champ de la réintégration (art. 84 LF 2025).
+    const EXEMPTES = ['etudiante', 'senior', 'ehpad'];
+    const NOMS = {
+      classique: 'Meublé longue durée', tourisme: 'Résidence de tourisme',
+      affaires: 'Résidence d\'affaires', mobilite: 'Bail mobilité',
+      etudiante: 'Résidence étudiante', senior: 'Résidence senior', ehpad: 'EHPAD',
+    };
+    const MOTIFS = {
+      classique: 'Meublé de longue durée : les amortissements déduits sont réintégrés dans la plus-value depuis le 15 février 2025.',
+      tourisme: 'Résidence de tourisme : elle ne bénéficie pas de l\'exception. Les amortissements sont réintégrés, comme pour un meublé classique.',
+      affaires: 'Résidence d\'affaires : elle ne bénéficie pas de l\'exception. Les amortissements sont réintégrés.',
+      mobilite: 'Bail mobilité : aucune exception prévue, les amortissements déduits sont réintégrés dans la plus-value.',
+      etudiante: 'Résidence étudiante : hors du champ de la réintégration. Les amortissements ne sont pas repris dans la plus-value.',
+      senior: 'Résidence senior : hors du champ de la réintégration. Les amortissements ne sont pas repris dans la plus-value.',
+      ehpad: 'EHPAD : hors du champ de la réintégration. Les amortissements ne sont pas repris dans la plus-value.',
+    };
+
+    // Abattements pour durée de détention (art. 150 VC CGI).
+    function abIR(y) { return y < 6 ? 0 : (y < 22 ? (y - 5) * 6 : 100); }
+    function abPS(y) { return y < 6 ? 0 : (y <= 21 ? (y - 5) * 1.65 : (y === 22 ? 28 : Math.min(100, 28 + (y - 22) * 9))); }
+
+    // Surtaxe sur les plus-values immobilières élevées (art. 1609 nonies G CGI).
+    function surtaxe(pv) {
+      if (pv <= 50000) return 0;
+      if (pv <= 60000) return 0.02 * pv - (60000 - pv) / 20;
+      if (pv <= 100000) return 0.02 * pv;
+      if (pv <= 110000) return 0.03 * pv - (110000 - pv) / 10;
+      if (pv <= 150000) return 0.03 * pv;
+      if (pv <= 160000) return 0.04 * pv - (160000 - pv) * 0.15;
+      if (pv <= 200000) return 0.04 * pv;
+      if (pv <= 210000) return 0.05 * pv - (210000 - pv) * 0.20;
+      if (pv <= 250000) return 0.05 * pv;
+      if (pv <= 260000) return 0.06 * pv - (260000 - pv) * 0.25;
+      return 0.06 * pv;
+    }
+
+    const state = { type: 'classique', fraisMode: 'forfait', travMode: 'aucun', amortMode: 'estime', lecture: 'litterale' };
+
+    function lire() {
+      const achat = +g('pl-achat').value;
+      const duree = +g('pl-duree').value;
+      const vente = +g('pl-vente').value;
+      const fcess = +g('pl-fcess').value;
+      const frais = state.fraisMode === 'forfait' ? achat * 0.075 : +g('pl-frais').value;
+      let trav = 0;
+      if (state.travMode === 'forfait') trav = duree > 5 ? achat * 0.15 : 0;
+      else if (state.travMode === 'reel') trav = +g('pl-trav').value;
+      // Amortissement théorique : bâti estimé à 85 % du prix, linéaire sur 30 ans.
+      const estime = achat * 0.85 / 30 * Math.min(duree, 30);
+      const deduits = state.amortMode === 'estime' ? estime : +g('pl-amort').value;
+      const ard = state.amortMode === 'estime' ? 0 : +g('pl-ard').value;
+      const stock = deduits + (state.lecture === 'prudente' ? ard : 0);
+      const exempte = EXEMPTES.indexOf(state.type) !== -1;
+      return { type: state.type, achat, duree, vente, fcess, frais, trav, deduits, ard, stock, exempte };
+    }
+
+    // Cœur du calcul : renvoie tout l'enchaînement pour une durée et un stock donnés.
+    function chaine(d, duree, reint) {
+      const cession = Math.max(0, d.vente - d.fcess);
+      let trav = d.trav;
+      if (state.travMode === 'forfait') trav = duree > 5 ? d.achat * 0.15 : 0;
+      const majore = d.achat + d.frais + trav;
+      const corrige = Math.max(0, majore - reint);
+      const brute = Math.max(0, cession - corrige);
+      const aIR = abIR(duree), aPS = abPS(duree);
+      const baseIR = brute * (1 - aIR / 100);
+      const basePS = brute * (1 - aPS / 100);
+      const ir = baseIR * 0.19;
+      const ps = basePS * 0.172;
+      const sur = surtaxe(baseIR);
+      return { cession, trav, majore, corrige, brute, aIR, aPS, baseIR, basePS, ir, ps, sur, total: ir + ps + sur };
+    }
+
+    function calc() {
+      const d = lire();
+      const reint = d.exempte ? 0 : d.stock;
+
+      // Libellés des curseurs.
+      setLbl('pl-achat-val', eur(d.achat));
+      setLbl('pl-vente-val', eur(d.vente));
+      setLbl('pl-fcess-val', eur(d.fcess));
+      setLbl('pl-frais-val', eur(+g('pl-frais').value));
+      setLbl('pl-trav-val', eur(+g('pl-trav').value));
+      setLbl('pl-amort-val', eur(+g('pl-amort').value));
+      setLbl('pl-ard-val', eur(+g('pl-ard').value));
+      set('pl-duree-val', d.duree + ' an' + (d.duree > 1 ? 's' : ''));
+
+      const r = chaine(d, d.duree, reint);
+      const sans = chaine(d, d.duree, 0);
+      const delta = Math.max(0, r.total - sans.total);
+
+      // Bloc résultat.
+      set('pl-total', eur(r.total));
+      set('pl-brute', eur(r.brute));
+      set('pl-reint', d.exempte ? 'Non applicable' : eur(reint));
+      set('pl-ir', eur(r.ir));
+      set('pl-ps', eur(r.ps));
+      set('pl-sur', r.sur > 0 ? eur(r.sur) : 'Aucune');
+      set('pl-amort-info', state.amortMode === 'estime'
+        ? 'Estimation retenue : ' + eur(d.deduits) + ', soit le bâti (85 % du prix) amorti sur 30 ans, pour ' + Math.min(d.duree, 30) + ' an' + (Math.min(d.duree, 30) > 1 ? 's' : '') + ' de détention. Le montant réellement déduit est souvent inférieur, il figure sur votre liasse fiscale.'
+        : 'Reprenez le cumul des amortissements de votre liasse fiscale. Les amortissements différés (non déduits faute de bénéfice suffisant) se saisissent à part.');
+      set('pl-nu', eur(sans.total));
+      set('pl-delta', d.exempte ? '0 €' : eur(delta));
+      set('pl-net', eur(r.cession - r.total));
+      set('pl-mini', state.amortMode === 'estime'
+        ? 'Simulation sur une hypothèse d\'amortissements. Le montant réellement déduit figure sur votre liasse fiscale, demandez-le à votre expert-comptable.'
+        : 'Simulation sur l\'hypothèse de ' + eur(reint) + ' d\'amortissements retenus. À confirmer avec votre expert-comptable et votre notaire.');
+
+      // Bandeau de statut.
+      const flag = g('pl-statut');
+      flag.className = d.exempte ? 'pl-flag ok' : 'pl-flag';
+      flag.textContent = MOTIFS[d.type] || '';
+
+      // Comparatif location nue / meublé au réel.
+      set('c-nu-total', eur(sans.total));
+      set('c-nu-brute', eur(sans.brute));
+      set('c-nu-net', eur(sans.cession - sans.total));
+      set('c-lmnp-total', eur(r.total));
+      set('c-lmnp-brute', eur(r.brute));
+      set('c-lmnp-net', eur(r.cession - r.total));
+      set('c-lmnp-s', d.exempte
+        ? NOMS[d.type] + ' : amortissements non repris'
+        : 'Amortissements réintégrés : ' + eur(reint));
+      set('c-ecart', delta > 0 ? '+ ' + eur(delta) : '0 €');
+      set('c-ecart-pv', '+ ' + eur(Math.max(0, r.brute - sans.brute)));
+      set('c-ecart-net', delta > 0 ? '− ' + eur(delta) : '0 €');
+      const colE = g('c-col-ecart');
+      if (colE) colE.classList.toggle('nul', delta <= 0);
+
+      // Cascade détaillée.
+      set('w-vente', eur(d.vente));
+      set('w-fcess', d.fcess > 0 ? '− ' + eur(d.fcess) : '0 €');
+      set('w-cession', eur(r.cession));
+      set('w-achat', eur(d.achat));
+      set('w-frais-k', state.fraisMode === 'forfait' ? 'Frais d\'acquisition (forfait 7,5 %)' : 'Frais d\'acquisition (réels)');
+      set('w-frais', '+ ' + eur(d.frais));
+      set('w-trav-k', state.travMode === 'forfait'
+        ? (d.duree > 5 ? 'Travaux (forfait 15 %)' : 'Travaux (forfait indisponible avant 5 ans)')
+        : (state.travMode === 'reel' ? 'Travaux justifiés' : 'Travaux (aucun retenu)'));
+      set('w-trav', r.trav > 0 ? '+ ' + eur(r.trav) : '0 €');
+      set('w-majore', eur(r.majore));
+      set('w-reint', d.exempte ? 'Non applicable' : '− ' + eur(reint));
+      set('w-corrige', eur(r.corrige));
+      set('w-brute', eur(r.brute));
+      set('w-abir-k', 'Abattement impôt sur le revenu (' + pct(r.aIR) + ')');
+      set('w-abir', '− ' + eur(r.brute - r.baseIR));
+      set('w-baseir', eur(r.baseIR));
+      set('w-abps-k', 'Abattement prélèvements sociaux (' + pct(r.aPS) + ')');
+      set('w-abps', '− ' + eur(r.brute - r.basePS));
+      set('w-baseps', eur(r.basePS));
+      set('w-ir', eur(r.ir));
+      set('w-ps', eur(r.ps));
+      set('w-sur', r.sur > 0 ? eur(r.sur) : 'Aucune');
+      set('w-total', eur(r.total));
+      const wr = g('w-reint').closest('.pl-w-row');
+      if (wr) wr.classList.toggle('off', d.exempte);
+
+      dessiner(d, reint);
+
+      // Lignes envoyées dans le PDF de résultat.
+      window.__leadRows = function () {
+        const rows = [
+          { label: 'Impôt total à la revente', value: eur(r.total), strong: true },
+          { label: 'Nature du bien', value: NOMS[state.type] + (d.exempte ? ' (amortissements non repris)' : ' (amortissements réintégrés)') },
+          { label: 'Prix d\'achat', value: eur(d.achat) },
+          { label: 'Frais d\'acquisition retenus', value: eur(d.frais) },
+          { label: 'Travaux retenus', value: eur(r.trav) },
+          { label: 'Prix d\'acquisition majoré', value: eur(r.majore) },
+          { label: 'Amortissements réintégrés', value: d.exempte ? 'Non applicable' : eur(reint) },
+          { label: 'Prix d\'acquisition corrigé', value: eur(r.corrige) },
+          { label: 'Prix de cession retenu', value: eur(r.cession) },
+          { label: 'Durée de détention', value: d.duree + ' an' + (d.duree > 1 ? 's' : '') },
+          { label: 'Plus-value brute', value: eur(r.brute) },
+          { label: 'Abattement impôt sur le revenu', value: pct(r.aIR) },
+          { label: 'Abattement prélèvements sociaux', value: pct(r.aPS) },
+          { label: 'Impôt sur le revenu (19 %)', value: eur(r.ir) },
+          { label: 'Prélèvements sociaux (17,2 %)', value: eur(r.ps) },
+          { label: 'Surtaxe plus-values élevées', value: r.sur > 0 ? eur(r.sur) : 'Aucune' },
+          { label: 'Impôt si le bien était loué nu', value: eur(sans.total) },
+          { label: 'Surcoût dû à la réintégration', value: d.exempte ? '0 €' : eur(delta) },
+          { label: 'Encaissé après impôt', value: eur(r.cession - r.total) },
+        ];
+        return rows;
+      };
+    }
+
+    function dessiner(d, reint) {
+      const x0 = 44, x1 = 628, yTop = 20, yBase = 238, xmax = 30;
+      const avec = [], sans = [];
+      for (let y = 0; y <= xmax; y++) {
+        avec.push(chaine(d, y, reint).total);
+        sans.push(chaine(d, y, 0).total);
+      }
+      const maxV = Math.max(1, Math.max.apply(null, avec));
+      const X = y => x0 + (y / xmax) * (x1 - x0);
+      const Y = v => yBase - (Math.min(v, maxV) / maxV) * (yBase - yTop);
+      const path = arr => arr.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+      const pAvec = path(avec), pSans = path(sans);
+      g('pl-line-avec').setAttribute('d', pAvec);
+      g('pl-line-sans').setAttribute('d', pSans);
+      // Zone entre les deux courbes : le coût de la réforme.
+      const retour = sans.map((v, i) => 'L' + X(xmax - i).toFixed(1) + ' ' + Y(sans[xmax - i]).toFixed(1)).join(' ');
+      g('pl-gap').setAttribute('d', pAvec + ' ' + retour + ' Z');
+
+      const yy = Math.min(d.duree, xmax), fx = X(yy), fv = avec[yy], fy = Y(fv);
+      const ml = g('pl-mark-line'), md = g('pl-mark-dot'), lab = g('pl-mark-lab');
+      ml.setAttribute('x1', fx.toFixed(1)); ml.setAttribute('x2', fx.toFixed(1));
+      md.setAttribute('cx', fx.toFixed(1)); md.setAttribute('cy', fy.toFixed(1));
+      lab.setAttribute('x', Math.max(70, Math.min(x1 - 50, fx)).toFixed(1));
+      lab.setAttribute('y', Math.max(14, fy - 12).toFixed(1));
+      lab.textContent = eur(fv);
+      g('pl-t22').setAttribute('x', X(22).toFixed(1));
+      set('pl-ymax', eur(maxV));
+    }
+
+    // Groupes de boutons segmentés.
+    function seg(id, key, apres) {
+      const boutons = Array.prototype.slice.call(document.querySelectorAll('#' + id + ' button'))
+        .concat(Array.prototype.slice.call(document.querySelectorAll('[data-grp="' + id + '"]')));
+      boutons.forEach(b => b.addEventListener('click', () => {
+        boutons.forEach(o => o.classList.remove('on'));
+        b.classList.add('on');
+        state[key] = b.dataset.v;
+        if (apres) apres();
+        calc();
+      }));
+    }
+
+    function visibilite() {
+      g('pl-frais-box').hidden = state.fraisMode !== 'reel';
+      g('pl-trav-box').hidden = state.travMode !== 'reel';
+      const reel = state.amortMode === 'reel';
+      g('pl-amort-box').hidden = !reel;
+      g('pl-ard-box').hidden = !reel;
+      g('pl-lecture-box').hidden = !reel || +g('pl-ard').value <= 0;
+    }
+
+    // Saisie directe au clic sur la valeur affichée.
+    function editable(bId, rangeId) {
+      const b = g(bId), r = g(rangeId);
+      if (!b || !r) return;
+      b.addEventListener('click', () => {
+        if (b.querySelector('input')) return;
+        const cur = +r.value;
+        const inp = document.createElement('input');
+        inp.type = 'text'; inp.inputMode = 'numeric'; inp.value = String(cur); inp.className = 'tool-edit';
+        b.textContent = ''; b.appendChild(inp);
+        inp.focus(); inp.select();
+        // Propagation en direct, pour ne jamais dépendre du seul blur.
+        const propager = () => {
+          const v = parseFloat(String(inp.value).replace(/\s/g, '').replace(/[^\d.,]/g, '').replace(',', '.'));
+          if (!isNaN(v)) {
+            if (v > +r.max) r.max = String(Math.ceil(v));
+            r.value = String(Math.max(+r.min, v));
+          }
+          visibilite(); calc();
+        };
+        const fermer = () => {
+          propager();
+          b.textContent = eur(+r.value);
+        };
+        inp.addEventListener('input', propager);
+        inp.addEventListener('blur', fermer);
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); fermer(); }
+          if (e.key === 'Escape') { inp.value = String(cur); fermer(); }
+        });
+      });
+    }
+
+    function init() {
+      const racine = g('pl-achat');
+      if (!racine || racine.dataset.ready) return;
+      racine.dataset.ready = '1';
+
+      ['pl-achat', 'pl-frais', 'pl-trav', 'pl-duree', 'pl-amort', 'pl-ard', 'pl-vente', 'pl-fcess']
+        .forEach(id => g(id).addEventListener('input', () => { visibilite(); calc(); }));
+
+      seg('pl-type', 'type');
+      seg('pl-frais-mode', 'fraisMode', visibilite);
+      seg('pl-trav-mode', 'travMode', visibilite);
+      seg('pl-amort-mode', 'amortMode', visibilite);
+      seg('pl-lecture', 'lecture');
+
+      [['pl-achat-val', 'pl-achat'], ['pl-frais-val', 'pl-frais'], ['pl-trav-val', 'pl-trav'],
+       ['pl-amort-val', 'pl-amort'], ['pl-ard-val', 'pl-ard'], ['pl-vente-val', 'pl-vente'],
+       ['pl-fcess-val', 'pl-fcess']].forEach(p => editable(p[0], p[1]));
+
+      visibilite();
+      calc();
+    }
+
+    init();
+    if (!window.__hk_pl) { window.__hk_pl = 1; document.addEventListener('astro:page-load', init); }
+  })();
+</script>
