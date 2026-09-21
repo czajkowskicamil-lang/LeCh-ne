@@ -286,6 +286,11 @@
 .tool-brk .k{color:#9fb0c8;}
 .tool-brk .v{font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;color:#F5F1E8;}
 .tool-note{color:#6f7f98;font-size:.75rem;margin-top:20px;line-height:1.5;}
+/* Saisie exacte : la valeur affichée devient un champ au clic */
+[data-editable]{cursor:text;border-bottom:1px dashed rgba(212,168,45,.55);transition:color .15s;}
+[data-editable]:hover{color:#D4A82D;}
+.tool-val-input{width:8.5ch;background:rgba(127,127,127,.1);border:1px solid #D4A82D;border-radius:8px;color:inherit;font-family:'Fraunces Variable',Fraunces,serif;font-weight:600;padding:2px 8px;text-align:right;outline:none;-moz-appearance:textfield;}
+.tool-val-input::-webkit-outer-spin-button,.tool-val-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .tool-input{width:100%;background:#0a1a30;border:1px solid rgba(212,168,45,.4);color:#F5F1E8;font:500 .95rem system-ui,sans-serif;padding:12px 14px;border-radius:12px;outline:none;}
 .tool-input::placeholder{color:#7a8aa3;}
 .tool-input:focus{border-color:#D4A82D;}

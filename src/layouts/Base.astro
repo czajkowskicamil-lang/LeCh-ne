@@ -218,11 +218,118 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
         update();
       }
 
+      // Outils : précision à l'unité.
+      // 1. Tous les curseurs du site avancent d'une unité (0,01 pour un taux),
+      //    jamais par paliers de 100, 1 000 ou 5 000.
+      // 2. La valeur affichée se change en champ de saisie au clic, pour taper un
+      //    montant exact. L'élément d'origine reste dans le DOM, les scripts de
+      //    chaque outil continuent de l'alimenter sans rien savoir de ce mécanisme.
+      const VALUE_SELECTOR = '.tool-field label b, .calc-field .calc-head output, #diag-slider-out';
+
+      function normalizeStep(range: HTMLInputElement) {
+        if (range.dataset.unitStep) return;
+        range.dataset.unitStep = '1';
+        const decimal = (range.step || '').includes('.') || (range.min || '').includes('.');
+        range.step = decimal ? '0.01' : '1';
+      }
+
+      function rangeNear(display: HTMLElement): HTMLInputElement | null {
+        let node: HTMLElement | null = display;
+        for (let depth = 0; node && depth < 5; depth++) {
+          const found = node.querySelector<HTMLInputElement>('input[type="range"]');
+          if (found) return found;
+          node = node.parentElement;
+        }
+        return null;
+      }
+
+      function openExactInput(display: HTMLElement, range: HTMLInputElement) {
+        if (display.hidden || display.nextElementSibling?.classList.contains('tool-val-input')) return;
+        normalizeStep(range);
+        const decimal = range.step.includes('.');
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'tool-val-input';
+        input.value = range.value;
+        input.min = range.min;
+        input.max = range.max;
+        input.step = range.step;
+        input.setAttribute('aria-label', 'Valeur exacte');
+        const style = getComputedStyle(display);
+        input.style.fontSize = style.fontSize;
+        input.style.color = style.color;
+        input.style.width = Math.max(5, range.max.length + 2) + 'ch';
+
+        const commit = (apply: boolean) => {
+          if (!input.isConnected) return;
+          if (apply) {
+            const raw = parseFloat(input.value.replace(',', '.'));
+            if (!Number.isNaN(raw)) {
+              const lo = parseFloat(range.min), hi = parseFloat(range.max);
+              let v = raw;
+              if (!Number.isNaN(lo)) v = Math.max(lo, v);
+              if (!Number.isNaN(hi)) v = Math.min(hi, v);
+              range.value = String(decimal ? Math.round(v * 100) / 100 : Math.round(v));
+              range.dispatchEvent(new Event('input', { bubbles: true }));
+              range.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          }
+          input.remove();
+          display.hidden = false;
+        };
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+          if (e.key === 'Escape') { e.preventDefault(); commit(false); }
+        });
+        input.addEventListener('blur', () => commit(true));
+
+        display.hidden = true;
+        display.after(input);
+        input.focus();
+        input.select();
+      }
+
+      function setupToolPrecision() {
+        document.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach(normalizeStep);
+        document.querySelectorAll<HTMLElement>(VALUE_SELECTOR).forEach((display) => {
+          if (display.dataset.editable || !rangeNear(display)) return;
+          display.dataset.editable = '1';
+          display.title = 'Cliquez pour saisir une valeur exacte';
+          display.tabIndex = 0;
+        });
+      }
+
+      // Les curseurs du diagnostic sont reconstruits à chaque étape : on rattrape
+      // tout ce qui apparaît après coup plutôt que de repasser à la main.
+      function watchToolPrecision() {
+        const obs = new MutationObserver(() => setupToolPrecision());
+        obs.observe(document.body, { childList: true, subtree: true });
+        const open = (target: EventTarget | null) => {
+          const display = (target as HTMLElement | null)?.closest<HTMLElement>(VALUE_SELECTOR);
+          if (!display) return false;
+          const range = rangeNear(display);
+          if (!range) return false;
+          openExactInput(display, range);
+          return true;
+        };
+        document.addEventListener('click', (e) => open(e.target));
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          if ((e.target as HTMLElement | null)?.tagName === 'INPUT') return;
+          if (open(e.target)) e.preventDefault();
+        });
+      }
+
       setupReveal();
       setupParallax();
+      setupToolPrecision();
+      watchToolPrecision();
       document.addEventListener('astro:page-load', () => {
         setupReveal();
         setupParallax();
+        setupToolPrecision();
       });
     </script>
   </body>

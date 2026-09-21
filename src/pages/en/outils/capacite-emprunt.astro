@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import CTA from '../../../components/CTA.astro';
 
 const title = "2026 Borrowing Capacity Simulator | Le Chêne Patrimonial";
-const description = "How much can you borrow? Estimate your borrowing capacity and monthly payment based on your income, expenses, loan term and rate. Free and instant.";
+const description = "How much can you borrow? Calculate your borrowing capacity, your monthly payment including loan insurance and the property price you can finance. Free and instant.";
 ---
 
 <Base title={title} description={description}>
@@ -22,7 +22,7 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
       </p>
       <h1 class="font-serif text-display text-ink mb-6 leading-tight">How much can you borrow?</h1>
       <p class="text-xl text-ink/75 max-w-prose-wide leading-relaxed">
-        Before you start viewing properties, know your real budget. Adjust your income, the term and the rate, and watch your borrowing capacity recalculate live.
+        Before you start viewing properties, know your real budget. The calculation follows the method French banks use: capped debt-to-income ratio, loan insurance included in the monthly payment, acquisition costs deducted from the price.
       </p>
     </div>
   </header>
@@ -33,62 +33,91 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
         <div>
           <div class="tool-field">
             <label>Household net income / month <b id="ce-rev-val">3 500 €</b></label>
-            <input class="tool-range" type="range" id="ce-rev" min="1000" max="15000" step="100" value="3500" />
+            <input class="tool-range" type="range" id="ce-rev" min="0" max="20000" step="1" value="3500" />
           </div>
           <div class="tool-field">
-            <label>Ongoing expenses and loan repayments / month <b id="ce-chg-val">0 €</b></label>
-            <input class="tool-range" type="range" id="ce-chg" min="0" max="4000" step="50" value="0" />
+            <label>Rental income / month <b id="ce-loy-val">0 €</b></label>
+            <input class="tool-range" type="range" id="ce-loy" min="0" max="10000" step="1" value="0" />
+            <p class="ce-hint">Counted at 70% by French banks, as applied in the calculation opposite.</p>
           </div>
           <div class="tool-field">
-            <label>Personal down payment <b id="ce-app-val">20 000 €</b></label>
-            <input class="tool-range" type="range" id="ce-app" min="0" max="300000" step="5000" value="20000" />
+            <label>Existing loan repayments / month <b id="ce-chg-val">0 €</b></label>
+            <input class="tool-range" type="range" id="ce-chg" min="0" max="8000" step="1" value="0" />
+          </div>
+          <div class="tool-field">
+            <label>Personal deposit <b id="ce-app-val">20 000 €</b></label>
+            <input class="tool-range" type="range" id="ce-app" min="0" max="500000" step="1" value="20000" />
           </div>
           <div class="tool-field">
             <label>Loan term <b id="ce-dur-val">20 years</b></label>
             <input class="tool-range" type="range" id="ce-dur" min="5" max="25" step="1" value="20" />
           </div>
           <div class="tool-field">
-            <label>Interest rate (excluding insurance) <b id="ce-tx-val">3,50 %</b></label>
-            <input class="tool-range" type="range" id="ce-tx" min="1" max="6" step="0.05" value="3.5" />
+            <label>Nominal interest rate <b id="ce-tx-val">3.40 %</b></label>
+            <input class="tool-range" type="range" id="ce-tx" min="0.5" max="7" step="0.01" value="3.4" />
           </div>
-          <p class="tool-note">Debt-to-income ratio capped at 35% (HCSF standard), borrower insurance not included. Indicative estimate: your bank remains the sole decision-maker.</p>
+          <div class="tool-field">
+            <label>Loan insurance rate <b id="ce-ass-val">0.34 %</b></label>
+            <input class="tool-range" type="range" id="ce-ass" min="0" max="1.5" step="0.01" value="0.34" />
+            <p class="ce-hint">Annual rate applied to the capital borrowed. For a young non-smoker it often falls below 0.20%.</p>
+          </div>
+          <div class="tool-field">
+            <label>Debt-to-income ceiling <b id="ce-end-val">35 %</b></label>
+            <div class="tool-seg" id="ce-end-seg">
+              <button type="button" data-v="33">33 %</button>
+              <button type="button" data-v="35" class="on">35 %</button>
+            </div>
+          </div>
+          <div class="tool-field">
+            <label>Type of property <b id="ce-nat-val">Existing</b></label>
+            <div class="tool-seg" id="ce-nat-seg">
+              <button type="button" data-v="7.5" class="on">Existing</button>
+              <button type="button" data-v="2.5">New build</button>
+            </div>
+            <p class="ce-hint">Used to deduct acquisition costs from the financeable price: 7.5% on existing property, 2.5% on new build.</p>
+          </div>
         </div>
 
-        <div class="tool-result">
-          <p class="lbl">Amount you can borrow</p>
-          <p class="big" id="ce-capital">N/A</p>
-          <div class="tool-brk"><span class="k">Maximum monthly payment</span><span class="v" id="ce-mens">N/A</span></div>
-          <div class="tool-brk"><span class="k">Total interest cost</span><span class="v" id="ce-cout">N/A</span></div>
-          <div class="tool-brk"><span class="k">Purchasing power (including down payment)</span><span class="v" id="ce-achat">N/A</span></div>
+        <div class="ce-sticky">
+          <div class="tool-result">
+            <p class="lbl">Amount you can borrow</p>
+            <p class="big" id="ce-capital">—</p>
+            <div class="tool-brk"><span class="k">Maximum total monthly payment</span><span class="v" id="ce-mens">—</span></div>
+            <div class="tool-brk"><span class="k">of which loan repayment</span><span class="v" id="ce-mens-credit">—</span></div>
+            <div class="tool-brk"><span class="k">of which loan insurance</span><span class="v" id="ce-mens-ass">—</span></div>
+            <div class="tool-brk"><span class="k">Total budget including deposit</span><span class="v" id="ce-achat">—</span></div>
+            <div class="tool-brk"><span class="k">Property price, costs deducted</span><span class="v" id="ce-prix">—</span></div>
+            <div class="tool-brk"><span class="k">Total cost of credit</span><span class="v" id="ce-cout">—</span></div>
+            <div class="tool-brk"><span class="k">Monthly residual income</span><span class="v" id="ce-rav">—</span></div>
+          </div>
+          <p class="ce-alert" id="ce-alert" hidden></p>
+          <p class="tool-note">Indicative estimate based on the French HCSF method: capped debt-to-income ratio, loan insurance included in the monthly payment, rental income counted at 70%. Your bank remains the sole decision maker and applies its own residual income rules.</p>
         </div>
       </div>
     </div>
 
     <div class="tool-card ce-chart-card">
-      <p class="ce-chart-title">Capital and interest by loan term</p>
-      <svg id="ce-svg" viewBox="0 0 640 280" role="img" aria-label="Chart of the borrowable capital and interest cost by loan term">
-        <line class="ce-axis" x1="44" y1="238" x2="628" y2="238" />
-        <path id="ce-area-cap" class="ce-area-cap" d="" />
-        <path id="ce-area-int" class="ce-area-int" d="" />
-        <path id="ce-line" class="ce-line" d="" fill="none" />
-        <line id="ce-mark-line" class="ce-mark-line" x1="0" y1="20" x2="0" y2="238" />
-        <text id="ce-mark-lab" class="ce-mark-lab" x="0" y="14" text-anchor="middle"></text>
-        <text id="ce-ymax" class="ce-tick" x="40" y="30" text-anchor="end">—</text>
-        <text class="ce-tick" x="40" y="242" text-anchor="end">0</text>
-        <text id="ce-x0" class="ce-tick" x="44" y="262" text-anchor="start">5 yrs</text>
-        <text id="ce-xmid" class="ce-tick" x="336" y="262" text-anchor="middle">15 yrs</text>
-        <text id="ce-xend" class="ce-tick" x="628" y="262" text-anchor="end">25 yrs</text>
+      <p class="ce-chart-title">What the loan term changes</p>
+      <p class="ce-chart-read" id="ce-read">—</p>
+      <svg id="ce-svg" viewBox="0 0 640 296" role="img" aria-label="Capital available and cost of credit by loan term">
+        <g id="ce-grid"></g>
+        <g id="ce-bars"></g>
+        <g id="ce-xlab"></g>
       </svg>
       <div class="ce-leg">
-        <span><i style="background:#3a5f86"></i> Borrowable capital</span>
-        <span><i style="background:#D4A82D"></i> Cost of interest</span>
+        <span><i style="background:#4a73a0"></i> Capital borrowed</span>
+        <span><i style="background:#D4A82D"></i> Interest and insurance</span>
       </div>
+      <p class="ce-hint ce-hint-chart">Each bar is the total amount repaid to the bank over the term. At an identical monthly payment, a longer loan raises the capital you obtain, but the gold share grows faster than the blue one.</p>
     </div>
 
     <div class="max-w-prose-wide mt-14 prose-editorial">
-      <h2>How is your capacity calculated?</h2>
-      <p>The bank starts from a simple principle: your loan repayments should not exceed <strong>35% of your net income</strong>, insurance included. This maximum monthly payment, applied to the term and rate, determines the capital you can borrow. The longer the term, the more you can borrow, but the higher the interest cost.</p>
-      <p>This is a starting point, not a decision. Your residual living income, the stability of your earnings and your overall profile matter just as much. That's where personal guidance makes the difference.</p>
+      <h2>How is your borrowing capacity calculated?</h2>
+      <p>The banking logic has three steps. First, eligible income: your net income plus rental income counted at 70%, because the bank provisions for vacancy and running costs. Then the maximum monthly payment: that income multiplied by the authorised debt-to-income ratio, usually 35%, minus the loan repayments you already carry.</p>
+      <p>Finally the capital. That maximum payment includes loan insurance, the very point most simulators skip, which distorts everything downstream. The insurance premium is therefore removed from the payment before the remainder is converted into capital, using the rate and the term. On an average file, ignoring insurance inflates the displayed capacity by 5 to 8%.</p>
+      <h2>Borrowing capacity is not your purchase budget</h2>
+      <p>The capital the bank lends you funds the property but also the acquisition costs, roughly 7.5% of the price on existing property and 2.5% on new build. To find the real price you can target, those costs must be taken out of the total envelope, deposit included. That is the "property price, costs deducted" line in the simulator.</p>
+      <p>What no formula captures: the stability of your income, what is left to live on once the payment is made, the emergency savings that survive the deposit. That is the analysis we carry out with you before a file is presented to a lender.</p>
     </div>
   </div>
 
@@ -96,72 +125,185 @@ const description = "How much can you borrow? Estimate your borrowing capacity a
 </Base>
 
 <style is:global>
+  .ce-sticky{position:sticky;top:96px;}
+  @media(max-width:820px){.ce-sticky{position:static;}}
+  .ce-hint{color:#7f8ea6;font-size:.75rem;line-height:1.5;margin-top:9px;}
+  .ce-hint-chart{margin-top:14px;max-width:62ch;}
+  .ce-alert{margin-top:14px;background:rgba(212,168,45,.1);border:1px solid rgba(212,168,45,.35);border-radius:12px;padding:13px 15px;color:#E6C259;font-size:.82rem;line-height:1.5;}
   .ce-chart-card{margin-top:22px;}
-  .ce-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  .ce-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;}
+  .ce-chart-read{color:#F5F1E8;font-size:.98rem;line-height:1.6;margin:10px 0 20px;max-width:64ch;}
+  .ce-chart-read b{color:#E6C259;font-weight:600;}
   #ce-svg{width:100%;height:auto;display:block;overflow:visible;}
-  .ce-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
-  .ce-area-cap{fill:rgba(58,95,134,.55);}
-  .ce-area-int{fill:rgba(212,168,45,.42);}
-  .ce-line{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
-  .ce-mark-line{stroke:rgba(255,255,255,.45);stroke-width:1;stroke-dasharray:3 3;}
-  .ce-mark-lab{fill:#e9edf4;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
-  .ce-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
-  .ce-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .ce-grid-line{stroke:rgba(255,255,255,.08);stroke-width:1;}
+  .ce-tick{fill:#7f8ea6;font-size:11px;font-family:system-ui,sans-serif;}
+  .ce-bar-cap{fill:#5a86b8;}
+  .ce-bar-int{fill:#E6C259;}
+  .ce-bar-cap.dim{fill:#2d4a6b;}
+  .ce-bar-int.dim{fill:#8a7130;}
+  .ce-xl{fill:#7f8ea6;font-size:11px;font-family:system-ui,sans-serif;}
+  .ce-xl.on{fill:#E6C259;font-weight:700;}
+  .ce-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:16px;flex-wrap:wrap;}
   .ce-leg span{display:inline-flex;align-items:center;gap:7px;}
   .ce-leg i{width:11px;height:11px;border-radius:3px;display:block;}
 </style>
 
 <script is:inline>
   (function () {
-    const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
-    function calc(){
-      const rev=+document.getElementById('ce-rev').value, chg=+document.getElementById('ce-chg').value,
-        app=+document.getElementById('ce-app').value, dur=+document.getElementById('ce-dur').value, tx=+document.getElementById('ce-tx').value;
-      document.getElementById('ce-rev-val').textContent=eur(rev);
-      document.getElementById('ce-chg-val').textContent=eur(chg);
-      document.getElementById('ce-app-val').textContent=eur(app);
-      document.getElementById('ce-dur-val').textContent=dur+' years';
-      document.getElementById('ce-tx-val').textContent=tx.toFixed(2).replace('.',',')+' %';
-      const mens=Math.max(0, rev*0.35 - chg);
-      const i=tx/1200, n=dur*12;
-      const capital = i>0 ? mens*(1-Math.pow(1+i,-n))/i : mens*n;
-      const cout = mens*n - capital;
-      document.getElementById('ce-capital').textContent=eur(capital);
-      document.getElementById('ce-mens').textContent=eur(mens);
-      document.getElementById('ce-cout').textContent=eur(cout);
-      document.getElementById('ce-achat').textContent=eur(capital+app);
-      drawChart(mens, i, dur);
+    const NS = 'http://www.w3.org/2000/svg';
+    const eur = n => Math.round(n).toLocaleString('en-GB') + ' €';
+    const pct = n => n.toFixed(2) + ' %';
+    const el = id => document.getElementById(id);
+
+    let endettement = 35;
+    let fraisPct = 7.5;
+
+    // Capital with loan insurance included in the capped payment.
+    // M = capital/f + capital*a  =>  capital = M*f / (1 + a*f)
+    function capacityFromPayment(M, rate, insuranceRate, years) {
+      const i = rate / 1200, n = years * 12, a = insuranceRate / 1200;
+      const f = i > 0 ? (1 - Math.pow(1 + i, -n)) / i : n;
+      const capital = M > 0 ? (M * f) / (1 + a * f) : 0;
+      return { capital, f, n, mensCredit: f > 0 ? capital / f : 0, mensAss: capital * a };
     }
-    function drawChart(mens, i, sel){
-      const x0=44,x1=628,yTop=20,yBase=238, dMin=5,dMax=25;
-      const caps=[],tots=[];
-      for(let d=dMin;d<=dMax;d++){
-        const n=d*12, cap = i>0 ? mens*(1-Math.pow(1+i,-n))/i : mens*n;
-        caps.push(cap); tots.push(mens*n);
+
+    function calc() {
+      const rev = +el('ce-rev').value, loy = +el('ce-loy').value, chg = +el('ce-chg').value,
+        app = +el('ce-app').value, dur = +el('ce-dur').value,
+        tx = +el('ce-tx').value, ass = +el('ce-ass').value;
+
+      el('ce-rev-val').textContent = eur(rev);
+      el('ce-loy-val').textContent = eur(loy);
+      el('ce-chg-val').textContent = eur(chg);
+      el('ce-app-val').textContent = eur(app);
+      el('ce-dur-val').textContent = dur + ' years';
+      el('ce-tx-val').textContent = pct(tx);
+      el('ce-ass-val').textContent = pct(ass);
+
+      const eligible = rev + loy * 0.7;
+      const mensMax = Math.max(0, eligible * (endettement / 100) - chg);
+      const r = capacityFromPayment(mensMax, tx, ass, dur);
+
+      const interets = r.mensCredit * r.n - r.capital;
+      const coutAssurance = r.mensAss * r.n;
+      const budget = r.capital + app;
+      const prixBien = budget / (1 + fraisPct / 100);
+      const resteAVivre = rev + loy - chg - mensMax;
+
+      el('ce-capital').textContent = eur(r.capital);
+      el('ce-mens').textContent = eur(mensMax);
+      el('ce-mens-credit').textContent = eur(r.mensCredit);
+      el('ce-mens-ass').textContent = eur(r.mensAss);
+      el('ce-achat').textContent = eur(budget);
+      el('ce-prix').textContent = eur(prixBien);
+      el('ce-cout').textContent = eur(interets + coutAssurance);
+      el('ce-rav').textContent = eur(Math.max(0, resteAVivre));
+
+      const alerte = el('ce-alert');
+      if (mensMax <= 0) {
+        alerte.hidden = false;
+        alerte.textContent = "Your existing loan repayments already absorb the whole authorised debt ratio. No additional borrowing capacity appears while those loans run.";
+      } else if (resteAVivre < 800 && rev > 0) {
+        alerte.hidden = false;
+        alerte.textContent = "The debt ratio is respected, but residual income falls below 800 € per month. Most banks decline a file at that level, even under 35%.";
+      } else {
+        alerte.hidden = true;
       }
-      const maxV=Math.max(1, tots[tots.length-1]);
-      const X=d=>x0+((d-dMin)/(dMax-dMin))*(x1-x0);
-      const Yc=v=>yBase-(v/maxV)*(yBase-yTop);
-      const idx=i2=>dMin+i2;
-      const topCap=caps.map((v,k)=>(k?'L':'M')+X(idx(k)).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
-      const areaCap=topCap+' L'+x1+' '+yBase+' L'+x0+' '+yBase+' Z';
-      const topTot=tots.map((v,k)=>(k?'L':'M')+X(idx(k)).toFixed(1)+' '+Yc(v).toFixed(1)).join(' ');
-      const botCap=caps.map((_,k)=>'L'+X(idx(caps.length-1-k)).toFixed(1)+' '+Yc(caps[caps.length-1-k]).toFixed(1)).join(' ');
-      document.getElementById('ce-area-cap').setAttribute('d',areaCap);
-      document.getElementById('ce-area-int').setAttribute('d',topTot+' '+botCap+' Z');
-      document.getElementById('ce-line').setAttribute('d',topTot);
-      const fx=X(Math.max(dMin,Math.min(dMax,sel)));
-      const ml=document.getElementById('ce-mark-line'), mlab=document.getElementById('ce-mark-lab');
-      ml.setAttribute('x1',fx.toFixed(1)); ml.setAttribute('x2',fx.toFixed(1));
-      mlab.setAttribute('x',Math.max(44,Math.min(x1-44,fx)).toFixed(1)); mlab.textContent=sel+' yrs';
-      document.getElementById('ce-ymax').textContent=eur(maxV);
+
+      draw(mensMax, tx, ass, dur, r);
     }
-    function init(){
-      const r=document.getElementById('ce-rev'); if(!r||r.dataset.ready) return; r.dataset.ready='1';
-      ['ce-rev','ce-chg','ce-app','ce-dur','ce-tx'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+
+    function draw(mensMax, tx, ass, durSel, sel) {
+      const x0 = 58, x1 = 632, yTop = 16, yBase = 252, dMin = 5, dMax = 25;
+      const series = [];
+      for (let d = dMin; d <= dMax; d++) {
+        const r = capacityFromPayment(mensMax, tx, ass, d);
+        series.push({ d, capital: r.capital, total: mensMax * r.n });
+      }
+      const maxV = Math.max(1, series[series.length - 1].total);
+      const step = (x1 - x0) / series.length;
+      const bw = Math.min(22, step * 0.66);
+      const Y = v => yBase - (v / maxV) * (yBase - yTop);
+
+      const grid = el('ce-grid'), bars = el('ce-bars'), xlab = el('ce-xlab');
+      grid.textContent = ''; bars.textContent = ''; xlab.textContent = '';
+
+      for (let k = 0; k <= 4; k++) {
+        const v = (maxV / 4) * k, y = Y(v);
+        const line = document.createElementNS(NS, 'line');
+        line.setAttribute('class', 'ce-grid-line');
+        line.setAttribute('x1', x0 - 6); line.setAttribute('x2', x1);
+        line.setAttribute('y1', y.toFixed(1)); line.setAttribute('y2', y.toFixed(1));
+        grid.appendChild(line);
+        const t = document.createElementNS(NS, 'text');
+        t.setAttribute('class', 'ce-tick');
+        t.setAttribute('x', x0 - 12); t.setAttribute('y', (y + 4).toFixed(1));
+        t.setAttribute('text-anchor', 'end');
+        t.textContent = v >= 1000 ? Math.round(v / 1000) + 'k €' : Math.round(v) + ' €';
+        grid.appendChild(t);
+      }
+
+      series.forEach((s, k) => {
+        const x = x0 + step * k + (step - bw) / 2;
+        const on = s.d === durSel;
+        const yCap = Y(s.capital), yTot = Y(s.total);
+
+        const rInt = document.createElementNS(NS, 'rect');
+        rInt.setAttribute('class', 'ce-bar-int' + (on ? '' : ' dim'));
+        rInt.setAttribute('x', x.toFixed(1)); rInt.setAttribute('width', bw.toFixed(1));
+        rInt.setAttribute('y', yTot.toFixed(1));
+        rInt.setAttribute('height', Math.max(0, yCap - yTot).toFixed(1));
+        rInt.setAttribute('rx', '2');
+        bars.appendChild(rInt);
+
+        const rCap = document.createElementNS(NS, 'rect');
+        rCap.setAttribute('class', 'ce-bar-cap' + (on ? '' : ' dim'));
+        rCap.setAttribute('x', x.toFixed(1)); rCap.setAttribute('width', bw.toFixed(1));
+        rCap.setAttribute('y', yCap.toFixed(1));
+        rCap.setAttribute('height', Math.max(0, yBase - yCap).toFixed(1));
+        rCap.setAttribute('rx', '2');
+        bars.appendChild(rCap);
+
+        if (s.d % 5 === 0 || on) {
+          const t = document.createElementNS(NS, 'text');
+          t.setAttribute('class', 'ce-xl' + (on ? ' on' : ''));
+          t.setAttribute('x', (x + bw / 2).toFixed(1));
+          t.setAttribute('y', yBase + 18);
+          t.setAttribute('text-anchor', 'middle');
+          t.textContent = s.d + 'y';
+          xlab.appendChild(t);
+        }
+      });
+
+      const cout = mensMax * sel.n - sel.capital;
+      el('ce-read').innerHTML = mensMax > 0
+        ? "Over <b>" + durSel + " years</b>, a payment of <b>" + eur(mensMax) +
+          "</b> unlocks <b>" + eur(sel.capital) + "</b> of capital. You will repay <b>" +
+          eur(mensMax * sel.n) + "</b> in total, of which <b>" + eur(cout) + "</b> in interest and insurance."
+        : "No monthly payment available with the current settings.";
+    }
+
+    function seg(id, onPick) {
+      const box = el(id);
+      box.addEventListener('click', e => {
+        const b = e.target.closest('button'); if (!b) return;
+        box.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        onPick(parseFloat(b.dataset.v), b.textContent.trim());
+        calc();
+      });
+    }
+
+    function init() {
+      const r = el('ce-rev'); if (!r || r.dataset.ready) return; r.dataset.ready = '1';
+      ['ce-rev', 'ce-loy', 'ce-chg', 'ce-app', 'ce-dur', 'ce-tx', 'ce-ass']
+        .forEach(id => el(id).addEventListener('input', calc));
+      seg('ce-end-seg', v => { endettement = v; el('ce-end-val').textContent = v + ' %'; });
+      seg('ce-nat-seg', (v, lab) => { fraisPct = v; el('ce-nat-val').textContent = lab; });
       calc();
     }
+
     init();
-    if(!window['__hk_ce-rev']){window['__hk_ce-rev']=1;document.addEventListener('astro:page-load',init);}
+    if (!window['__hk_ce-rev']) { window['__hk_ce-rev'] = 1; document.addEventListener('astro:page-load', init); }
   })();
 </script>
