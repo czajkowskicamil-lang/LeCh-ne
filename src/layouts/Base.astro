@@ -233,9 +233,14 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
         range.step = decimal ? '0.01' : '1';
       }
 
+      // Le curseur doit appartenir au MÊME champ que la valeur affichée. Sans ce
+      // garde-fou, la remontée d'ancêtres attrapait le curseur du champ voisin et
+      // rendait « saisissables » des valeurs pilotées par des boutons.
       function rangeNear(display: HTMLElement): HTMLInputElement | null {
+        const field = display.closest<HTMLElement>('.tool-field, .calc-field');
+        if (field) return field.querySelector<HTMLInputElement>('input[type="range"]');
         let node: HTMLElement | null = display;
-        for (let depth = 0; node && depth < 5; depth++) {
+        for (let depth = 0; node && depth < 3; depth++) {
           const found = node.querySelector<HTMLInputElement>('input[type="range"]');
           if (found) return found;
           node = node.parentElement;
