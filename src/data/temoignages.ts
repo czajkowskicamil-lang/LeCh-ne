@@ -51,6 +51,11 @@ export const temoignages: Temoignage[] = [
     author: 'Aleksandra Ocokoljic',
     role: 'Entrepreneure',
   },
+  {
+    quote:
+      "Un vrai professionnel à l'écoute, qui conseille tant dans le meilleur investissement possible, que dans un produit immobilier pour notre cas. Répond à toutes vos questions et assure un suivi tout au long de votre projet. Je recommande vivement !",
+    author: 'Églantine Maisonneuve',
+  },
   // En attente de confirmation "vrais clients" avant réactivation :
   // {
   //   quote: "Camil a ce truc rare : il parle chiffres, mais il écoute d'abord. En 3 mois, il a restructuré ma fiscalité de dirigeant et clarifié dix ans d'épargne désorganisée.",
