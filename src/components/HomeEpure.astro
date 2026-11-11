@@ -133,7 +133,30 @@ const etapes = [
 </div>
 
 <style is:global>
+  /* Une seule teinte sur toute la page : en-tête, barre mobile, chatbot,
+     menu et pied de page reprennent le fond et l'or de l'accueil épuré. */
   body:has(.ep) { background: #0A0D14; }
+  body:has(.ep) header.nav-hero,
+  body:has(.ep) header.nav-hero.is-solid {
+    color: #F2EDE4;
+  }
+  body:has(.ep) header.nav-hero.is-solid {
+    background: rgba(10, 13, 20, 0.86);
+    border-bottom-color: rgba(242, 237, 228, 0.08);
+  }
+  body:has(.ep) header.nav-hero .nav-faitage { color: #F2EDE4; }
+  body:has(.ep) header.nav-hero img { filter: none; }
+  body:has(.ep) header.nav-hero .nav-cta {
+    background-color: #C9A55C;
+    color: #0A0D14;
+    border-radius: 999px;
+  }
+  body:has(.ep) header.nav-hero .nav-cta:hover { background-color: #D8B872; }
+  body:has(.ep) #menu-backdrop { background: #0A0D14; }
+  body:has(.ep) footer { background: #0A0D14; margin-top: 0; border-top: 1px solid rgba(242, 237, 228, 0.08); }
+  body:has(.ep) .mobile-cta { background: rgba(10, 13, 20, 0.88); border-top: 1px solid rgba(242, 237, 228, 0.08); }
+  body:has(.ep) .mobile-cta-btn { background: #C9A55C; color: #0A0D14; border-radius: 999px; }
+  body:has(.ep) .lc-launcher { background: #121722; border-color: rgba(201, 165, 92, 0.55); }
 </style>
 
 <style>
