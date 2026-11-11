@@ -108,12 +108,18 @@ const schema = [
 ];
 ---
 
-<Base title={title} description={description}>
+<Base heroDark title={title} description={description}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
   <!-- En-tête -->
-  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
-    <div class="shell">
+  <section class="sport-hero relative -mt-20 overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28">
+    <!-- Terrain de basket de nuit (Palavas), retravaillé sombre et doré -->
+    <picture aria-hidden="true">
+      <source type="image/webp" srcset="/sport-terrain-nuit.webp" />
+      <img src="/sport-terrain-nuit.jpg" alt="" width="1800" height="1321" fetchpriority="high" decoding="async" class="sport-hero-img absolute inset-0 h-full w-full object-cover" />
+    </picture>
+    <div class="sport-hero-veil absolute inset-0" aria-hidden="true"></div>
+    <div class="shell relative z-10">
       <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
         <a href="/" class="hover:text-chene">Accueil</a>
         <span>/</span>
@@ -135,7 +141,7 @@ const schema = [
           J'ai été sportif de haut niveau avant d'être conseiller. Je sais ce que représentent une carrière courte, des revenus qui montent vite et une fin de carrière qui arrive tôt. Depuis Montpellier, j'aide les sportifs à organiser ces années pour qu'elles comptent longtemps.
         </p>
         <div class="mt-10 flex flex-wrap gap-4 reveal" style="animation-delay:320ms">
-          <a href="/contact" class="btn-primary">Premier échange offert</a>
+          <a href="/rendez-vous" class="btn-primary">Premier échange offert</a>
           <a href="/parcours" class="link-underline text-chene font-medium self-center">Mon parcours d'athlète →</a>
         </div>
       </div>
@@ -224,3 +230,17 @@ const schema = [
     body="Premier échange offert, sans engagement, en visio ou à Montpellier. On part de votre carrière et de vos objectifs, pas d'un produit."
   />
 </Base>
+
+<style>
+  .sport-hero-img { object-position: 62% 60%; animation: sport-drift 30s ease-in-out infinite alternate; transform: scale(1.04); }
+  @keyframes sport-drift { to { transform: scale(1.1) translate3d(-1%, -1%, 0); } }
+  .sport-hero-veil {
+    background:
+      linear-gradient(90deg, rgba(10,13,20,.94) 0%, rgba(10,13,20,.78) 40%, rgba(10,13,20,.25) 75%, rgba(10,13,20,.1) 100%),
+      linear-gradient(180deg, rgba(10,13,20,.6) 0%, rgba(10,13,20,0) 25%, rgba(10,13,20,0) 70%, #0A0D14 100%);
+  }
+  @media (max-width: 767px) {
+    .sport-hero-veil { background: linear-gradient(180deg, rgba(10,13,20,.55) 0%, rgba(10,13,20,.82) 45%, #0A0D14 100%); }
+  }
+  @media (prefers-reduced-motion: reduce) { .sport-hero-img { animation: none; } }
+</style>
