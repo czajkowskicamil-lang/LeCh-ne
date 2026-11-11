@@ -112,14 +112,16 @@ const schema = [
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
   <!-- En-tête -->
-  <section class="sport-hero relative -mt-20 overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28">
-    <!-- Terrain de basket de nuit (Palavas), retravaillé sombre et doré -->
-    <picture aria-hidden="true">
-      <source type="image/webp" srcset="/sport-terrain-nuit.webp" />
-      <img src="/sport-terrain-nuit.jpg" alt="" width="1800" height="1321" fetchpriority="high" decoding="async" class="sport-hero-img absolute inset-0 h-full w-full object-cover" />
-    </picture>
-    <div class="sport-hero-veil absolute inset-0" aria-hidden="true"></div>
-    <div class="shell relative z-10">
+  <section class="sport-hero relative -mt-20 overflow-hidden pb-20 lg:pt-44 lg:pb-28">
+    <!-- Athlète en compétition, maillot Le Chêne : à droite sur ordinateur, au-dessus du texte sur mobile -->
+    <div class="sport-hero-media relative w-full aspect-[4/5] sm:aspect-[16/10] lg:absolute lg:inset-y-0 lg:right-0 lg:w-[60%] lg:aspect-auto">
+      <picture>
+        <source type="image/webp" srcset="/athlete-competition.webp" />
+        <img src="/athlete-competition.jpg" alt="Athlète en compétition avec le maillot Le Chêne Patrimonial" width="1700" height="890" fetchpriority="high" decoding="async" class="sport-hero-img h-full w-full object-cover" />
+      </picture>
+      <div class="sport-hero-veil absolute inset-0" aria-hidden="true"></div>
+    </div>
+    <div class="shell relative z-10 -mt-4 lg:mt-0">
       <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
         <a href="/" class="hover:text-chene">Accueil</a>
         <span>/</span>
@@ -146,15 +148,6 @@ const schema = [
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Athlète en compétition, maillot Le Chêne -->
-  <section class="sport-band relative overflow-hidden" aria-label="Athlète en compétition">
-    <picture>
-      <source type="image/webp" srcset="/athlete-competition.webp" />
-      <img src="/athlete-competition.jpg" alt="Athlète en compétition avec le maillot Le Chêne Patrimonial" width="1700" height="890" loading="lazy" decoding="async" class="sport-band-img h-full w-full object-cover" />
-    </picture>
-    <div class="sport-band-fade pointer-events-none absolute inset-0" aria-hidden="true"></div>
   </section>
 
   <!-- Constats -->
@@ -244,15 +237,14 @@ const schema = [
   .sport-band { height: clamp(380px, 70vh, 760px); }
   .sport-band-img { object-position: 55% 30%; filter: saturate(.88) contrast(1.04) brightness(.92); }
   .sport-band-fade { background: linear-gradient(180deg, #0A0D14 0%, rgba(10,13,20,0) 15%, rgba(10,13,20,0) 82%, #0A0D14 100%); }
-  .sport-hero-img { object-position: 62% 60%; animation: sport-drift 30s ease-in-out infinite alternate; transform: scale(1.04); }
-  @keyframes sport-drift { to { transform: scale(1.1) translate3d(-1%, -1%, 0); } }
+  .sport-hero-img { object-position: 55% 30%; filter: saturate(.9) contrast(1.04) brightness(.95); }
   .sport-hero-veil {
     background:
-      linear-gradient(90deg, rgba(10,13,20,.94) 0%, rgba(10,13,20,.78) 40%, rgba(10,13,20,.25) 75%, rgba(10,13,20,.1) 100%),
-      linear-gradient(180deg, rgba(10,13,20,.6) 0%, rgba(10,13,20,0) 25%, rgba(10,13,20,0) 70%, #0A0D14 100%);
+      linear-gradient(90deg, #0A0D14 0%, rgba(10,13,20,.75) 18%, rgba(10,13,20,0) 45%),
+      linear-gradient(180deg, rgba(10,13,20,.55) 0%, rgba(10,13,20,0) 22%, rgba(10,13,20,0) 78%, #0A0D14 100%);
   }
-  @media (max-width: 767px) {
-    .sport-hero-veil { background: linear-gradient(180deg, rgba(10,13,20,.55) 0%, rgba(10,13,20,.82) 45%, #0A0D14 100%); }
+  @media (max-width: 1023px) {
+    .sport-hero-veil { background: linear-gradient(180deg, rgba(10,13,20,.45) 0%, rgba(10,13,20,0) 25%, rgba(10,13,20,0) 70%, #0A0D14 100%); }
   }
   @media (prefers-reduced-motion: reduce) { .sport-hero-img { animation: none; } }
 </style>
