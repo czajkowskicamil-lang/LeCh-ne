@@ -13,9 +13,18 @@ const lang = getLangFromUrl(Astro.url);
 // Lien localisé seulement si la page existe en anglais (jamais de 404).
 const L = (path: string) => (translatedRoutes.has(path) ? localizePath(path, lang) : path);
 
-const avis = ['Temenuzhka Nikolova', 'Véronique P.', 'Lucia M']
+// Avis mis en avant, dans l'ordre voulu par Camil.
+// Slobodan : extrait seulement. Son avis complet (sur /avis) cite des
+// « produits obligataires », hors du statut COA + carte T : on ne le met pas
+// en avant sur l'accueil. L'extrait reprend ses mots exacts, signalés par […].
+const extraits: Record<string, string> = {
+  'Slobodan Ocokoljic':
+    "[…] Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel : j'aurais certainement pu mieux faire fructifier mon épargne ! Je recommande vivement Camil et Le Chêne Patrimonial pour la qualité de l'accompagnement et la confiance qu'ils inspirent.",
+};
+const avis = ['Slobodan Ocokoljic', 'Kévin Monier', 'Temenuzhka Nikolova']
   .map((a) => temoignages.find((x) => x.author === a))
-  .filter((x): x is NonNullable<typeof x> => Boolean(x));
+  .filter((x): x is NonNullable<typeof x> => Boolean(x))
+  .map((x) => ({ ...x, quote: extraits[x.author] ?? x.quote }));
 
 const T = lang === 'en'
   ? {
