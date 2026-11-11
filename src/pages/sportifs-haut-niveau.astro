@@ -5,7 +5,6 @@
 // aucun contrat, aucun rendement (statut COA + carte T, pas CIF).
 import Base from '../layouts/Base.astro';
 import CTA from '../components/CTA.astro';
-import WhatsAppButton from '../components/WhatsAppButton.astro';
 
 const SITE = 'https://www.lechenepatrimonial.com';
 const title = 'Gestion de patrimoine des sportifs de haut niveau | Le Chêne Patrimonial';
@@ -136,33 +135,9 @@ const schema = [
           J'ai été sportif de haut niveau avant d'être conseiller. Je sais ce que représentent une carrière courte, des revenus qui montent vite et une fin de carrière qui arrive tôt. Depuis Montpellier, j'aide les sportifs à organiser ces années pour qu'elles comptent longtemps.
         </p>
         <div class="mt-10 flex flex-wrap gap-4 reveal" style="animation-delay:320ms">
-          <a href="/rendez-vous" class="btn-primary">Premier échange offert</a>
-          <WhatsAppButton tone="light" context="sport" />
+          <a href="/contact" class="btn-primary">Premier échange offert</a>
           <a href="/parcours" class="link-underline text-chene font-medium self-center">Mon parcours d'athlète →</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Preuve : un athlète professionnel en parle -->
-  <section class="pb-16 md:pb-20">
-    <div class="shell grid gap-6 lg:grid-cols-12">
-      <figure class="lg:col-span-7 bg-ink text-cream p-8 md:p-10 rounded-3xl reveal">
-        <p class="text-xs uppercase tracking-micro text-or-light mb-6">Un athlète professionnel en parle</p>
-        <blockquote class="font-serif text-xl md:text-2xl leading-snug">« […] Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel : j'aurais certainement pu mieux faire fructifier mon épargne ! Je recommande vivement Camil et Le Chêne Patrimonial pour la qualité de l'accompagnement et la confiance qu'ils inspirent. »</blockquote>
-        <figcaption class="mt-6 text-sm text-cream/70">Slobodan Ocokoljic, athlète professionnel · <a href="/avis" class="underline underline-offset-2 hover:text-or-light">tous les avis</a></figcaption>
-      </figure>
-      <a href="/outils/apres-carriere" class="lg:col-span-5 group flex flex-col justify-between gap-8 rounded-3xl border border-ink/10 bg-cream-soft p-8 md:p-10 transition hover:border-chene reveal" style="animation-delay:80ms">
-        <span>
-          <span class="block text-xs uppercase tracking-micro text-chene mb-4">Simulateur gratuit · 2 minutes</span>
-          <span class="block font-serif text-2xl md:text-3xl text-ink leading-tight">Votre compte à rebours après-carrière.</span>
-          <span class="block mt-4 text-ink/70 leading-relaxed">Combien vos années de carrière doivent-elles préparer pour la suite ? Le calcul, en quelques questions.</span>
-        </span>
-        <span class="btn-primary self-start">Faire le calcul <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-      </a>
-      <div class="lg:col-span-12 grid gap-6 md:grid-cols-2 reveal">
-        <p class="border-l-2 border-or/60 pl-5 text-ink/80 leading-relaxed"><strong class="text-ink">Discrétion totale.</strong> Je ne communique jamais sur mes clients, ni sur leur situation.</p>
-        <p class="border-l-2 border-or/60 pl-5 text-ink/80 leading-relaxed"><strong class="text-ink">Avec votre entourage.</strong> Je travaille en lien avec votre agent, votre famille et vos conseils si vous le souhaitez.</p>
       </div>
     </div>
   </section>
