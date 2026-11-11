@@ -1,5 +1,8 @@
 @import '@fontsource-variable/fraunces/index.css';
 @import '@fontsource-variable/inter/index.css';
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/400-italic.css';
 
 /* ----------------------------------------------------------------------------
    Chiffres de la famille serif : Libre Baskerville, pas Fraunces.
@@ -90,8 +93,8 @@
 
   /* Selection color uses navy */
   ::selection {
-    background-color: #0A1F4F;
-    color: #F5F1E8;
+    background-color: #11151F;
+    color: #F2EDE4;
   }
 }
 
@@ -312,12 +315,12 @@
   position:relative;
   isolation:isolate;
   background:
-    radial-gradient(130% 100% at 8% -10%, rgba(212,168,45,.10) 0%, transparent 58%),
-    linear-gradient(176deg, #071539 0%, #03102E 58%, #020C22 100%);
-  border:1px solid rgba(212,168,45,.18);
+    radial-gradient(130% 100% at 8% -10%, rgba(201, 165, 92,.10) 0%, transparent 58%),
+    linear-gradient(176deg, #131824 0%, #0A0D14 58%, #0E121B 100%);
+  border:1px solid rgba(201, 165, 92,.18);
   border-radius:26px;
   padding:clamp(24px,4vw,46px);
-  color:#F5F1E8;
+  color:#F2EDE4;
   box-shadow:
     0 32px 74px -34px rgba(2,9,28,.85),
     0 1px 0 rgba(245,241,232,.06) inset;
@@ -326,7 +329,7 @@
 /* Filet lumineux sur l'arête haute : la carte accroche la lumière. */
 .tool-card::before{
   content:'';position:absolute;top:0;left:12%;right:12%;height:1px;z-index:1;
-  background:linear-gradient(90deg,transparent,rgba(212,168,45,.6),transparent);
+  background:linear-gradient(90deg,transparent,rgba(201, 165, 92,.6),transparent);
 }
 
 .tool-grid{
@@ -354,7 +357,7 @@
 .tool-field > label b{
   font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;
   font-size:1.34rem;font-weight:600;letter-spacing:-.012em;line-height:1;
-  color:#F5F1E8;text-transform:none;
+  color:#F2EDE4;text-transform:none;
   font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 
@@ -368,25 +371,25 @@
 .tool-range:active{cursor:grabbing;}
 .tool-range::-webkit-slider-runnable-track{
   height:6px;border-radius:99px;
-  background:linear-gradient(90deg,#D4A82D 0%,#E6C259 var(--fill),rgba(245,241,232,.13) var(--fill),rgba(245,241,232,.13) 100%);
+  background:linear-gradient(90deg,#C9A55C 0%,#D8B872 var(--fill),rgba(245,241,232,.13) var(--fill),rgba(245,241,232,.13) 100%);
 }
 .tool-range::-webkit-slider-thumb{
   -webkit-appearance:none;appearance:none;
   width:19px;height:19px;border-radius:50%;margin-top:-6.5px;border:none;
-  background:#F5F1E8;
-  box-shadow:0 0 0 4px rgba(212,168,45,.24),0 3px 9px rgba(2,9,28,.55);
+  background:#11151F;
+  box-shadow:0 0 0 4px rgba(201, 165, 92,.24),0 3px 9px rgba(2,9,28,.55);
   transition:box-shadow .2s var(--ease-apple),transform .2s var(--ease-apple);
 }
-.tool-range:hover::-webkit-slider-thumb{box-shadow:0 0 0 7px rgba(212,168,45,.22),0 3px 11px rgba(2,9,28,.6);}
-.tool-range:active::-webkit-slider-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(212,168,45,.3),0 4px 14px rgba(2,9,28,.65);}
+.tool-range:hover::-webkit-slider-thumb{box-shadow:0 0 0 7px rgba(201, 165, 92,.22),0 3px 11px rgba(2,9,28,.6);}
+.tool-range:active::-webkit-slider-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(201, 165, 92,.3),0 4px 14px rgba(2,9,28,.65);}
 .tool-range::-moz-range-track{height:6px;border-radius:99px;background:rgba(245,241,232,.13);}
-.tool-range::-moz-range-progress{height:6px;border-radius:99px;background:linear-gradient(90deg,#D4A82D,#E6C259);}
+.tool-range::-moz-range-progress{height:6px;border-radius:99px;background:linear-gradient(90deg,#C9A55C,#D8B872);}
 .tool-range::-moz-range-thumb{
-  width:19px;height:19px;border-radius:50%;border:none;background:#F5F1E8;
-  box-shadow:0 0 0 4px rgba(212,168,45,.24),0 3px 9px rgba(2,9,28,.55);
+  width:19px;height:19px;border-radius:50%;border:none;background:#11151F;
+  box-shadow:0 0 0 4px rgba(201, 165, 92,.24),0 3px 9px rgba(2,9,28,.55);
   transition:box-shadow .2s var(--ease-apple),transform .2s var(--ease-apple);
 }
-.tool-range:active::-moz-range-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(212,168,45,.3);}
+.tool-range:active::-moz-range-thumb{transform:scale(1.14);box-shadow:0 0 0 9px rgba(201, 165, 92,.3);}
 
 /* --- Sélecteurs : une pastille dorée glisse d'une option à l'autre -------- */
 .tool-seg{
@@ -397,8 +400,8 @@
 }
 .tool-seg-ind{
   position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:10px;
-  background:linear-gradient(180deg,#E6C259,#D4A82D);
-  box-shadow:0 3px 12px rgba(212,168,45,.28);
+  background:linear-gradient(180deg,#D8B872,#C9A55C);
+  box-shadow:0 3px 12px rgba(201, 165, 92,.28);
   transition:transform .34s var(--ease-apple),width .34s var(--ease-apple);
   pointer-events:none;
 }
@@ -410,10 +413,10 @@
   padding:12px 10px;cursor:pointer;
   transition:color .24s var(--ease-apple);
 }
-.tool-seg button:hover{color:#F5F1E8;}
-.tool-seg button.on{color:#03102E;}
+.tool-seg button:hover{color:#F2EDE4;}
+.tool-seg button.on{color:#0A0D14;}
 /* Repli si la pastille n'a pas été injectée (JS absent) : on garde un actif lisible. */
-.tool-seg:not(:has(.tool-seg-ind)) button.on{background:#D4A82D;}
+.tool-seg:not(:has(.tool-seg-ind)) button.on{background:#C9A55C;}
 
 /* --- Panneau de résultat -------------------------------------------------- */
 .tool-result{
@@ -431,10 +434,10 @@
 .tool-result .big{
   font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;
   font-size:clamp(2.4rem,6.4vw,3.55rem);line-height:1.02;font-weight:600;
-  letter-spacing:-.028em;color:#E6C259;
+  letter-spacing:-.028em;color:#D8B872;
   font-variant-numeric:tabular-nums;
   margin:13px 0 24px;
-  text-shadow:0 0 44px rgba(212,168,45,.2);
+  text-shadow:0 0 44px rgba(201, 165, 92,.2);
 }
 .tool-brk{
   display:flex;justify-content:space-between;align-items:baseline;gap:18px;
@@ -445,7 +448,7 @@
 .tool-brk .k{color:#8FA0BC;line-height:1.45;}
 .tool-brk .v{
   font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-weight:600;font-size:1.02rem;
-  color:#F5F1E8;font-variant-numeric:tabular-nums;white-space:nowrap;
+  color:#F2EDE4;font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 .tool-note{color:#64748f;font-size:.735rem;margin-top:20px;line-height:1.6;}
 
@@ -457,12 +460,12 @@
 .tool-more > summary{
   list-style:none;cursor:pointer;
   display:inline-flex;align-items:center;gap:10px;
-  color:#E6C259;
+  color:#D8B872;
   font:600 .72rem/1 'Inter Variable',Inter,system-ui,sans-serif;
   text-transform:uppercase;letter-spacing:.13em;
   transition:color .2s var(--ease-apple);
 }
-.tool-more > summary:hover{color:#F5F1E8;}
+.tool-more > summary:hover{color:#F2EDE4;}
 .tool-more > summary::-webkit-details-marker{display:none;}
 .tool-more > summary::after{
   content:'';width:6px;height:6px;
@@ -475,12 +478,12 @@
 
 /* --- Saisie exacte : la valeur affichée devient un champ au clic ---------- */
 [data-editable]{
-  cursor:text;border-bottom:1px dashed rgba(212,168,45,.45);padding-bottom:1px;
+  cursor:text;border-bottom:1px dashed rgba(201, 165, 92,.45);padding-bottom:1px;
   transition:color .16s,border-color .16s;
 }
-[data-editable]:hover{color:#E6C259;border-color:rgba(230,194,89,.85);}
+[data-editable]:hover{color:#D8B872;border-color:rgba(230,194,89,.85);}
 .tool-val-input{
-  width:8.5ch;background:rgba(2,9,28,.75);border:1px solid #D4A82D;border-radius:9px;
+  width:8.5ch;background:rgba(2,9,28,.75);border:1px solid #C9A55C;border-radius:9px;
   color:inherit;font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-weight:600;
   font-variant-numeric:tabular-nums;
   padding:2px 9px;text-align:right;outline:none;-moz-appearance:textfield;
@@ -489,12 +492,12 @@
 .tool-val-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .tool-input{
   width:100%;background:rgba(2,9,28,.7);border:1px solid rgba(245,241,232,.12);
-  color:#F5F1E8;font:500 .95rem 'Inter Variable',Inter,system-ui,sans-serif;
+  color:#F2EDE4;font:500 .95rem 'Inter Variable',Inter,system-ui,sans-serif;
   padding:13px 15px;border-radius:12px;outline:none;
   transition:border-color .2s var(--ease-apple),box-shadow .2s var(--ease-apple);
 }
 .tool-input::placeholder{color:#64748f;}
-.tool-input:focus{border-color:#D4A82D;box-shadow:0 0 0 3px rgba(212,168,45,.16);}
+.tool-input:focus{border-color:#C9A55C;box-shadow:0 0 0 3px rgba(201, 165, 92,.16);}
 
 @media(prefers-reduced-motion:reduce){
   .tool-seg-ind,
@@ -515,22 +518,22 @@
 
 /* La phrase qui dit le résultat en français, sous le panneau. */
 .tool-read{
-  margin-top:16px;color:#F5F1E8;font-size:.98rem;line-height:1.65;max-width:58ch;
+  margin-top:16px;color:#F2EDE4;font-size:.98rem;line-height:1.65;max-width:58ch;
 }
 .tool-read b{
   font-family:'Chiffres Serif','Fraunces Variable',Fraunces,serif;
-  font-weight:600;color:#E6C259;font-variant-numeric:tabular-nums;
+  font-weight:600;color:#D8B872;font-variant-numeric:tabular-nums;
 }
 
 /* Le levier à connaître, mis en évidence sans crier. */
 .tool-alert{
-  margin-top:14px;background:rgba(212,168,45,.1);
-  border:1px solid rgba(212,168,45,.35);border-radius:12px;
-  padding:13px 16px;color:#E6C259;font-size:.83rem;line-height:1.55;
+  margin-top:14px;background:rgba(201, 165, 92,.1);
+  border:1px solid rgba(201, 165, 92,.35);border-radius:12px;
+  padding:13px 16px;color:#D8B872;font-size:.83rem;line-height:1.55;
 }
 
 /* Précision de second rang, sous un champ ou un graphique. */
-.tool-hint{color:#7f8ea6;font-size:.75rem;line-height:1.55;margin-top:9px;}
+.tool-hint{color:#8C877D;font-size:.75rem;line-height:1.55;margin-top:9px;}
 
 /* Graphiques : même en-tête, même légende partout. */
 .tool-chart{margin-top:22px;}
@@ -539,11 +542,11 @@
   text-transform:uppercase;letter-spacing:.145em;
 }
 .tool-chart-read{
-  color:#F5F1E8;font-size:.98rem;line-height:1.6;margin:11px 0 20px;max-width:64ch;
+  color:#F2EDE4;font-size:.98rem;line-height:1.6;margin:11px 0 20px;max-width:64ch;
 }
 .tool-chart-read b{
   font-family:'Chiffres Serif','Fraunces Variable',Fraunces,serif;
-  font-weight:600;color:#E6C259;font-variant-numeric:tabular-nums;
+  font-weight:600;color:#D8B872;font-variant-numeric:tabular-nums;
 }
 .tool-chart svg{width:100%;height:auto;display:block;}
 .tool-legend{
@@ -558,7 +561,7 @@
   text-transform:uppercase;letter-spacing:.07em;padding:5px 11px;border-radius:20px;
 }
 .tool-tag.ok{background:rgba(96,168,120,.16);color:#7fce9a;}
-.tool-tag.mid{background:rgba(212,168,45,.16);color:#E6C259;}
+.tool-tag.mid{background:rgba(201, 165, 92,.16);color:#D8B872;}
 .tool-tag.high{background:rgba(210,110,95,.16);color:#e79184;}
 
 /* Barre de résultat collante, mobile uniquement. Injectée par Base.astro sur
@@ -568,8 +571,8 @@
   .tool-bar{
     display:flex;align-items:center;justify-content:space-between;gap:14px;
     position:fixed;left:0;right:0;bottom:0;z-index:40;
-    background:linear-gradient(180deg,#071539,#03102E);
-    border-top:1px solid rgba(212,168,45,.35);
+    background:linear-gradient(180deg,#131824,#0A0D14);
+    border-top:1px solid rgba(201, 165, 92,.35);
     box-shadow:0 -10px 30px -12px rgba(2,9,28,.8);
     padding:13px 18px calc(13px + env(safe-area-inset-bottom));
     transform:translateY(115%);transition:transform .28s var(--ease-apple);
@@ -581,7 +584,7 @@
   }
   .tool-bar .v{
     font-family:'Chiffres Serif','Fraunces Variable',Fraunces,serif;
-    font-weight:600;font-size:1.4rem;color:#E6C259;
+    font-weight:600;font-size:1.4rem;color:#D8B872;
     font-variant-numeric:tabular-nums;white-space:nowrap;
   }
 }
@@ -678,3 +681,91 @@
   :is(.btn, .btn-round, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv):hover::before { animation: none; }
   :is(.btn, .btn-round, .ep-btn, .mobile-cta-btn):hover { transform: none; }
 }
+
+/* ============================================================================
+   THÈME SOMBRE SITE ENTIER (11/11/2026)
+   Toutes les pages reprennent la palette de l'accueil épuré :
+   fond #0A0D14, cartes #11151F, texte crème #F2EDE4, or #C9A55C, titres
+   Cormorant Garamond. Les classes de couleur historiques (crème, encre, vert
+   chêne, pierre, marine) sont ramenées ici, sans réécrire chaque page.
+   Les photos ne sont pas touchées.
+   ========================================================================== */
+:root {
+  --th-bg: #0A0D14;
+  --th-card: #11151F;
+  --th-cream: #F2EDE4;
+  --th-gold: #C9A55C;
+  --th-line: rgba(242, 237, 228, 0.10);
+}
+html, body { background: var(--th-bg) !important; color: var(--th-cream); }
+
+/* Fonds */
+[class*="bg-cream"], [class*="bg-white"], [class*="bg-navy"], [class*="bg-ink"],
+[class*="from-cream"], [class*="from-navy"], [class*="from-ink"] {
+  background-color: var(--th-bg) !important;
+}
+/* Cartes et encadrés (fonds « doux » et vert chêne) : un cran plus clair */
+[class*="bg-cream-soft"], [class*="bg-cream-deep"], [class*="bg-white"], [class*="bg-chene"] {
+  background-color: var(--th-card) !important;
+}
+section[class*="bg-cream-soft"], section[class*="bg-cream-deep"], section[class*="bg-chene"] {
+  background-color: var(--th-bg) !important;
+}
+
+/* Textes */
+[class*="text-ink"], [class*="text-cream"], [class*="text-navy"] { color: rgba(242, 237, 228, 0.88) !important; }
+h1[class*="text-ink"], h2[class*="text-ink"], h3[class*="text-ink"], h1, h2, h3 { color: var(--th-cream); }
+[class*="text-stone"] { color: rgba(242, 237, 228, 0.55) !important; }
+[class*="text-chene"], [class*="text-or"] { color: var(--th-gold) !important; }
+
+/* Bordures et séparateurs */
+[class*="border-ink"], [class*="border-cream"], [class*="divide-ink"] > * , [class*="divide-ink"] { border-color: var(--th-line) !important; }
+[class*="border-chene"], [class*="border-or"] { border-color: rgba(201, 165, 92, 0.35) !important; }
+[class*="bg-or"] { background-color: var(--th-gold) !important; }
+
+/* Titres : même écriture que l'accueil */
+.font-serif { font-family: 'Cormorant Garamond', Georgia, serif !important; font-weight: 400; letter-spacing: -0.01em; }
+.font-serif .italic, .font-serif em, .font-serif.italic { color: var(--th-gold); }
+
+/* Étiquettes et liens */
+.eyebrow, .eyebrow-cream { color: var(--th-gold) !important; }
+.link-underline::after { background: var(--th-gold) !important; }
+
+/* Champs de formulaire */
+input, select, textarea { color: var(--th-cream); }
+input::placeholder, textarea::placeholder { color: rgba(242, 237, 228, 0.4) !important; }
+select option { background: var(--th-card); color: var(--th-cream); }
+
+/* En-tête sur les pages intérieures */
+header:not(.nav-hero) { background: rgba(10, 13, 20, 0.86) !important; border-bottom-color: var(--th-line) !important; color: var(--th-cream) !important; }
+footer { background: var(--th-bg) !important; border-top: 1px solid var(--th-line); }
+header.nav-hero.is-solid { background: rgba(10, 13, 20, 0.86) !important; border-bottom-color: var(--th-line) !important; color: var(--th-cream) !important; }
+header .nav-faitage { color: var(--th-cream) !important; }
+/* Outils : carte de calcul dans la teinte de l'accueil, plus de marine bleuté */
+.tool-card {
+  background:
+    radial-gradient(130% 100% at 8% -10%, rgba(201,165,92,.08) 0%, transparent 58%),
+    linear-gradient(176deg, #131824 0%, #11151F 58%, #0E121B 100%) !important;
+  border-color: rgba(201,165,92,.18) !important;
+}
+.tool-seg { background: rgba(10, 13, 20, 0.7) !important; }
+/* WhatsApp dans l'en-tête, à côté de « Prendre rendez-vous » */
+.nav-wa {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 44px; padding: 0 12px; border-radius: 999px;
+  color: #F2EDE4; font-size: 14px; font-weight: 500;
+  border: 1px solid rgba(201,165,92,.55);
+  background: rgba(10,13,20,.55);
+  transition: border-color .3s, transform .35s cubic-bezier(.16,1,.3,1);
+}
+@media (min-width: 1024px) { .nav-wa { padding: 0 18px 0 14px; } }
+.nav-wa svg { color: #C9A55C; }
+.nav-wa:hover { border-color: #C9A55C; transform: translateY(-1px); }
+.nav-wa::after {
+  content: ''; position: absolute; inset: -1px; border-radius: 999px;
+  border: 2px solid rgba(201,165,92,.85); pointer-events: none;
+  animation: nav-wa-pulse 2.2s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes nav-wa-pulse { 0% { transform: scale(1); opacity: .8; } 70%, 100% { transform: scale(1.18, 1.35); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .nav-wa::after { animation: none; opacity: 0; } }

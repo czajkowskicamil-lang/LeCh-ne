@@ -229,9 +229,9 @@ function niveauFor(score: number): { niveau: Niveau; label: string } {
 function computeRepartition(a: Answers, d: Derived): Repartition[] {
   const buckets = [
     { label: 'Main residence', montant: n(a.valeurRP), color: '#0A1F4F' },
-    { label: 'Rental property', montant: n(a.immoLocatif), color: '#2D4A33' },
+    { label: 'Rental property', montant: n(a.immoLocatif), color: '#C9A55C' },
     { label: 'Available savings', montant: n(a.epargneDispo), color: '#A8A395' },
-    { label: 'Life insurance & PER', montant: n(a.assuranceVie) + n(a.per), color: '#D4A82D' },
+    { label: 'Life insurance & PER', montant: n(a.assuranceVie) + n(a.per), color: '#C9A55C' },
     { label: 'Other investments', montant: n(a.autresPlacements) + n(a.bourse), color: '#3E6247' },
   ].filter((b) => b.montant > 0);
   const total = buckets.reduce((s, b) => s + b.montant, 0) || 1;

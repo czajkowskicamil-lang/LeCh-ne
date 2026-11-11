@@ -108,9 +108,9 @@ const description = "Estimez vos frais de notaire 2026 au taux réel de votre d�
         <g id="fn-labels"></g>
       </svg>
       <div class="tool-legend">
-        <span><i style="background:#4a73a0"></i> État et collectivités</span>
-        <span><i style="background:#D4A82D"></i> Le notaire</span>
-        <span><i style="background:#8a9bb4"></i> Formalités et débours</span>
+        <span><i style="background:#A8A39A"></i> État et collectivités</span>
+        <span><i style="background:#C9A55C"></i> Le notaire</span>
+        <span><i style="background:#8C877D"></i> Formalités et débours</span>
       </div>
       <p class="fn-hint fn-hint-chart">La TVA sur les émoluments part à l'État, elle n'est pas comptée dans la part du notaire. Sur un achat courant dans l'ancien, le notaire conserve moins de 12 % de ce que vous appelez « les frais de notaire ».</p>
     </div>
@@ -140,8 +140,8 @@ const description = "Estimez vos frais de notaire 2026 au taux réel de votre d�
 
 <style is:global>
   /* Propre à cet outil : la barre empilée « qui encaisse quoi ». */
-  #fn-svg text{font:600 12px 'Inter Variable',Inter,system-ui,sans-serif;fill:#F5F1E8;}
-  #fn-svg text.pct{font:700 13px 'Inter Variable',Inter,system-ui,sans-serif;fill:#03102E;}
+  #fn-svg text{font:600 12px 'Inter Variable',Inter,system-ui,sans-serif;fill:#F2EDE4;}
+  #fn-svg text.pct{font:700 13px 'Inter Variable',Inter,system-ui,sans-serif;fill:#0A0D14;}
   .tool-hint-chart{max-width:64ch;margin-top:14px;}
 </style>
 
@@ -207,9 +207,9 @@ const description = "Estimez vos frais de notaire 2026 au taux réel de votre d�
 
       var W = 640, H = 44, Y = 26;
       var parts = [
-        { v: r.etat, c: '#4a73a0' },
-        { v: r.notaire, c: '#D4A82D' },
-        { v: r.tiers, c: '#8a9bb4' }
+        { v: r.etat, c: '#A8A39A' },
+        { v: r.notaire, c: '#C9A55C' },
+        { v: r.tiers, c: '#8C877D' }
       ];
       var x = 0;
       var NS = 'http://www.w3.org/2000/svg';

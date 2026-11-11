@@ -366,8 +366,8 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
 </Base>
 
 <style is:global>
-  .ep-step{display:flex;align-items:center;gap:12px;font:600 .78rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#E6C259;margin:0 0 18px;}
-  .ep-step span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid rgba(212,168,45,.5);border-radius:50%;font-size:.72rem;color:#E6C259;}
+  .ep-step{display:flex;align-items:center;gap:12px;font:600 .78rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#D8B872;margin:0 0 18px;}
+  .ep-step span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid rgba(201, 165, 92,.5);border-radius:50%;font-size:.72rem;color:#D8B872;}
   .ep-step-mt{margin-top:34px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08);}
   .ep-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
   @media(max-width:820px){.ep-row{grid-template-columns:1fr;gap:0;}}
@@ -375,44 +375,44 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
   select.tool-input{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23D4A82D' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer;}
   .ep-check-wrap{display:flex;align-items:flex-end;}
   .ep-check-wrap[hidden]{display:none;}
-  .ep-check{display:flex;align-items:center;gap:10px;color:#cbd3e0;font-size:.9rem;cursor:pointer;padding-bottom:12px;}
-  .ep-check input{width:17px;height:17px;accent-color:#D4A82D;}
+  .ep-check{display:flex;align-items:center;gap:10px;color:#D9D3C7;font-size:.9rem;cursor:pointer;padding-bottom:12px;}
+  .ep-check input{width:17px;height:17px;accent-color:#C9A55C;}
   .ep-obj{display:flex;flex-wrap:wrap;gap:10px;}
-  .ep-obj button{background:transparent;border:1px solid rgba(212,168,45,.4);color:#cbd3e0;font:600 .85rem system-ui,sans-serif;padding:10px 16px;border-radius:999px;cursor:pointer;transition:.2s;}
-  .ep-obj button.on{background:#D4A82D;color:#0c1f3c;border-color:#D4A82D;}
+  .ep-obj button{background:transparent;border:1px solid rgba(201, 165, 92,.4);color:#D9D3C7;font:600 .85rem system-ui,sans-serif;padding:10px 16px;border-radius:999px;cursor:pointer;transition:.2s;}
+  .ep-obj button.on{background:#C9A55C;color:#161B26;border-color:#C9A55C;}
 
   /* ---- Avis / résultat ---- */
-  .ep-avis{margin-top:22px;background:#FAF7EF;border:1px solid #EDE6D3;border-radius:20px;padding:clamp(22px,4vw,38px);box-shadow:0 24px 60px -40px rgba(3,16,46,.4);}
-  .ep-avis-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:2px solid #03102E;padding-bottom:16px;margin-bottom:24px;}
-  .ep-avis-kicker{font:700 .72rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#A7801F;margin:0 0 4px;}
-  .ep-avis-title{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.5rem;color:#03102E;font-weight:600;margin:0;}
-  .ep-avis-brand{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1rem;color:#2D4A33;font-weight:600;white-space:nowrap;}
-  .ep-avis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#EDE6D3;border:1px solid #EDE6D3;border-radius:14px;overflow:hidden;}
+  .ep-avis{margin-top:22px;background:#11151F;border:1px solid rgba(242,237,228,.12);border-radius:20px;padding:clamp(22px,4vw,38px);box-shadow:0 24px 60px -40px rgba(242, 237, 228,.4);}
+  .ep-avis-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:2px solid #0A0D14;padding-bottom:16px;margin-bottom:24px;}
+  .ep-avis-kicker{font:700 .72rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#B08A4A;margin:0 0 4px;}
+  .ep-avis-title{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.5rem;color:#0A0D14;font-weight:600;margin:0;}
+  .ep-avis-brand{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1rem;color:#C9A55C;font-weight:600;white-space:nowrap;}
+  .ep-avis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#11151F;border:1px solid rgba(242,237,228,.12);border-radius:14px;overflow:hidden;}
   @media(max-width:820px){.ep-avis-grid{grid-template-columns:repeat(2,1fr);}}
   .ep-avis-cell{background:#fff;padding:18px;display:flex;flex-direction:column;gap:6px;}
   .ep-avis-cell .k{font-size:.75rem;color:#7A7566;line-height:1.3;}
-  .ep-avis-cell .v{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.5rem;font-weight:600;color:#03102E;}
-  .ep-avis-cell .s{font-size:.72rem;color:#A7801F;}
-  .ep-avis-hero{grid-column:span 2;background:#03102E;}
+  .ep-avis-cell .v{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.5rem;font-weight:600;color:#0A0D14;}
+  .ep-avis-cell .s{font-size:.72rem;color:#B08A4A;}
+  .ep-avis-hero{grid-column:span 2;background:#0A0D14;}
   @media(max-width:820px){.ep-avis-hero{grid-column:span 2;}}
-  .ep-avis-hero .k{color:#9fb0c8;}
-  .ep-avis-hero .v{color:#E6C259;font-size:2.2rem;}
-  .ep-avis-hero .s{color:#9fb0c8;}
+  .ep-avis-hero .k{color:#A8A39A;}
+  .ep-avis-hero .v{color:#D8B872;font-size:2.2rem;}
+  .ep-avis-hero .s{color:#A8A39A;}
 
   /* ---- Lecture de la situation ---- */
-  .ep-lecture{margin-top:24px;background:#F5F1E8;border:1px solid #EDE6D3;border-radius:14px;padding:22px 24px;}
-  .ep-lecture-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#A7801F;font-weight:700;margin:0 0 12px;}
+  .ep-lecture{margin-top:24px;background:#11151F;border:1px solid rgba(242,237,228,.12);border-radius:14px;padding:22px 24px;}
+  .ep-lecture-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#B08A4A;font-weight:700;margin:0 0 12px;}
   .ep-lecture ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;}
   .ep-lecture li{position:relative;padding-left:22px;font-size:.94rem;color:#3d3a30;line-height:1.55;}
-  .ep-lecture li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:2px;background:#2D4A33;transform:rotate(45deg);}
-  .ep-lecture li b{color:#03102E;}
+  .ep-lecture li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:2px;background:#C9A55C;transform:rotate(45deg);}
+  .ep-lecture li b{color:#0A0D14;}
 
-  .ep-optim-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#A7801F;font-weight:700;margin:28px 0 4px;}
+  .ep-optim-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#B08A4A;font-weight:700;margin:28px 0 4px;}
 
   /* ---- Répartition ---- */
   .ep-reparti{margin-top:24px;}
   .ep-reparti-lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#7A7566;font-weight:700;margin:0 0 12px;}
-  .ep-bar{display:flex;height:22px;border-radius:8px;overflow:hidden;background:#EDE6D3;}
+  .ep-bar{display:flex;height:22px;border-radius:8px;overflow:hidden;background:#11151F;}
   .ep-bar span{display:block;height:100%;}
   .ep-bar-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;}
   .ep-bar-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:middle;}
@@ -422,51 +422,51 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
   .ep-optim{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px;}
   @media(max-width:820px){.ep-optim{grid-template-columns:1fr;}}
   .ep-optim:empty{display:none;}
-  .ep-opt{border:1px solid #EDE6D3;border-left:3px solid #D4A82D;border-radius:12px;padding:18px 20px;background:#fff;}
-  .ep-opt h4{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.12rem;color:#03102E;margin:0 0 6px;font-weight:600;}
+  .ep-opt{border:1px solid rgba(242,237,228,.12);border-left:3px solid #C9A55C;border-radius:12px;padding:18px 20px;background:#fff;}
+  .ep-opt h4{font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-size:1.12rem;color:#0A0D14;margin:0 0 6px;font-weight:600;}
   .ep-opt p{font-size:.9rem;color:#504B3F;line-height:1.5;margin:0;}
-  .ep-opt .num{color:#2D4A33;font-weight:700;}
-  .ep-opt-cta{margin-top:14px;background:#2D4A33;color:#F5F1E8;border:none;border-radius:10px;padding:11px 18px;font:600 .88rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
-  .ep-opt-cta:hover{background:#3E6247;}
-  .ep-opt-emprunteur{border-left-color:#2D4A33;}
+  .ep-opt .num{color:#C9A55C;font-weight:700;}
+  .ep-opt-cta{margin-top:14px;background:#C9A55C;color:#F2EDE4;border:none;border-radius:10px;padding:11px 18px;font:600 .88rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
+  .ep-opt-cta:hover{background:#D8B872;}
+  .ep-opt-emprunteur{border-left-color:#C9A55C;}
 
   /* ---- CTA étude complète ---- */
-  .ep-cta{margin-top:28px;background:linear-gradient(160deg,#03102E,#061238);border:1px solid rgba(212,168,45,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
+  .ep-cta{margin-top:28px;background:linear-gradient(160deg,#0A0D14,#11151F);border:1px solid rgba(201, 165, 92,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
   .ep-cta-inner{max-width:620px;margin:auto;}
   .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 22px;}
   .ep-inclus{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:11px;}
   .ep-inclus li{position:relative;padding-left:24px;color:#c9d3e2;font-size:.94rem;line-height:1.55;}
-  .ep-inclus li::before{content:"";position:absolute;left:0;top:.58em;width:9px;height:9px;border:1px solid rgba(212,168,45,.75);transform:rotate(45deg);}
-  .ep-inclus strong{color:#F5F1E8;font-weight:600;}
-  .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,45,.2);border-radius:12px;}
-  .ep-lead-recap b{color:#E6C259;}
+  .ep-inclus li::before{content:"";position:absolute;left:0;top:.58em;width:9px;height:9px;border:1px solid rgba(201, 165, 92,.75);transform:rotate(45deg);}
+  .ep-inclus strong{color:#F2EDE4;font-weight:600;}
+  .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(201, 165, 92,.2);border-radius:12px;}
+  .ep-lead-recap b{color:#D8B872;}
   .ep-upload{margin:0 0 14px;}
   .ep-upload input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;}
-  .ep-upload-btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:1px dashed rgba(212,168,45,.5);color:#E6C259;border-radius:12px;padding:12px 18px;font:600 .9rem system-ui,sans-serif;transition:.2s;}
-  .ep-upload-btn:hover{background:rgba(212,168,45,.08);border-color:#D4A82D;}
-  .ep-upload-btn.has-file{border-style:solid;border-color:#3E6247;color:#d6e6d9;background:rgba(45,74,51,.25);}
+  .ep-upload-btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:1px dashed rgba(201, 165, 92,.5);color:#D8B872;border-radius:12px;padding:12px 18px;font:600 .9rem system-ui,sans-serif;transition:.2s;}
+  .ep-upload-btn:hover{background:rgba(201, 165, 92,.08);border-color:#C9A55C;}
+  .ep-upload-btn.has-file{border-style:solid;border-color:#D8B872;color:#d6e6d9;background:rgba(45,74,51,.25);}
   .ep-upload-hint{display:block;color:#7f8da3;font-size:.76rem;margin-top:8px;line-height:1.5;}
   .ep-upload-hint.err{color:#f0b4b4;}
   .ep-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
   @media(max-width:640px){.ep-lead-row{grid-template-columns:1fr;}}
   .ep-consent{display:flex;gap:11px;align-items:flex-start;color:#aebacb;font-size:.82rem;line-height:1.45;margin:6px 0;cursor:pointer;}
-  .ep-consent input{margin-top:2px;width:16px;height:16px;accent-color:#D4A82D;flex-shrink:0;}
-  .ep-consent a{color:#E6C259;text-decoration:underline;}
+  .ep-consent input{margin-top:2px;width:16px;height:16px;accent-color:#C9A55C;flex-shrink:0;}
+  .ep-consent a{color:#D8B872;text-decoration:underline;}
   .ep-consent-soft{color:#8b98ab;}
-  .ep-submit{width:100%;margin-top:16px;background:#D4A82D;color:#0c1f3c;border:none;border-radius:14px;padding:16px;font:700 1rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
-  .ep-submit:hover{background:#E6C259;}
+  .ep-submit{width:100%;margin-top:16px;background:#C9A55C;color:#161B26;border:none;border-radius:14px;padding:16px;font:700 1rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
+  .ep-submit:hover{background:#D8B872;}
   .ep-submit:disabled{opacity:.55;cursor:default;}
   .ep-lead-msg{margin:14px 0 0;padding:13px 16px;border-radius:12px;font-size:.9rem;line-height:1.4;}
-  .ep-lead-msg.ok{background:rgba(45,74,51,.35);border:1px solid #3E6247;color:#d6e6d9;}
+  .ep-lead-msg.ok{background:rgba(45,74,51,.35);border:1px solid #D8B872;color:#d6e6d9;}
   .ep-lead-msg.err{background:rgba(120,40,40,.3);border:1px solid #8a4a4a;color:#f0d4d4;}
   .ep-lead-fine{color:#7f8da3;font-size:.76rem;margin:14px 0 0;line-height:1.5;}
-  .ep-or{display:flex;align-items:center;gap:16px;color:#6f7f98;font-size:.82rem;margin:24px 0;}
+  .ep-or{display:flex;align-items:center;gap:16px;color:#7D786F;font-size:.82rem;margin:24px 0;}
   .ep-or::before,.ep-or::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.12);}
-  .ep-rdv{display:block;text-align:center;border:1px solid rgba(212,168,45,.5);color:#E6C259;border-radius:14px;padding:15px;font:600 .95rem system-ui,sans-serif;text-decoration:none;transition:.2s;}
-  .ep-rdv:hover{background:rgba(212,168,45,.1);}
+  .ep-rdv{display:block;text-align:center;border:1px solid rgba(201, 165, 92,.5);color:#D8B872;border-radius:14px;padding:15px;font:600 .95rem system-ui,sans-serif;text-decoration:none;transition:.2s;}
+  .ep-rdv:hover{background:rgba(201, 165, 92,.1);}
 
   /* ---- Legal ---- */
-  .ep-legal{margin-top:24px;padding:20px 22px;background:#F5F1E8;border:1px solid #EDE6D3;border-radius:14px;}
+  .ep-legal{margin-top:24px;padding:20px 22px;background:#11151F;border:1px solid rgba(242,237,228,.12);border-radius:14px;}
   .ep-legal p{font-size:.8rem;color:#6b6656;line-height:1.6;margin:0;}
   .ep-legal strong{color:#504B3F;}
 </style>
@@ -797,9 +797,9 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
       wrap.hidden = false;
       var segs = [
         { l: 'Épargne sécurisée', v: secur, c: '#7A9CC6' },
-        { l: 'Assurance-vie / PER', v: retraite, c: '#2D4A33' },
-        { l: 'Valeurs mobilières', v: valeurs, c: '#D4A82D' },
-        { l: 'Immobilier locatif', v: immo, c: '#A7801F' },
+        { l: 'Assurance-vie / PER', v: retraite, c: '#C9A55C' },
+        { l: 'Valeurs mobilières', v: valeurs, c: '#C9A55C' },
+        { l: 'Immobilier locatif', v: immo, c: '#B08A4A' },
       ];
       var bar = '', leg = '';
       segs.forEach(function (g) {

@@ -105,13 +105,13 @@ const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
   /* Voile ambré chaud posé sur l'image (heure dorée) */
   .hero-warm {
     background:
-      linear-gradient(180deg, rgba(212,168,45,0.10) 0%, rgba(167,128,31,0.06) 45%, transparent 75%);
+      linear-gradient(180deg, rgba(201, 165, 92,0.10) 0%, rgba(167,128,31,0.06) 45%, transparent 75%);
     mix-blend-mode: soft-light;
     opacity: 0.9;
   }
   /* Soleil qui perce, en haut à droite */
   .hero-sun {
-    background: radial-gradient(120% 90% at 78% 8%, rgba(255,224,150,0.30) 0%, rgba(212,168,45,0.10) 28%, transparent 55%);
+    background: radial-gradient(120% 90% at 78% 8%, rgba(255,224,150,0.30) 0%, rgba(201, 165, 92,0.10) 28%, transparent 55%);
     mix-blend-mode: screen;
     opacity: 0.9;
   }
@@ -127,12 +127,12 @@ const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
   /* Voile navy léger : haut lisible + fondu vers la section suivante */
   .hero-shade {
     background:
-      linear-gradient(180deg, rgba(3,9,28,0.40) 0%, rgba(3,9,28,0.06) 20%, transparent 40%, rgba(3,9,28,0.22) 70%, rgba(3,16,46,0.90) 100%);
+      linear-gradient(180deg, rgba(3,9,28,0.40) 0%, rgba(3,9,28,0.06) 20%, transparent 40%, rgba(3,9,28,0.22) 70%, rgba(242, 237, 228,0.90) 100%);
   }
 
   /* ---------- Structure éditoriale (signature, pas un template) ---------- */
   .hero-copy {
-    border-left: 1px solid rgba(212, 168, 45, 0.45);
+    border-left: 1px solid rgba(201, 165, 92, 0.45);
     padding-left: clamp(1.25rem, 3vw, 2.75rem);
   }
   .hero-index {
@@ -144,7 +144,7 @@ const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
   .hero-meta-rule {
     height: 1px;
     width: 100%;
-    background: linear-gradient(90deg, rgba(212,168,45,0.55), rgba(245,241,232,0.12) 60%, transparent);
+    background: linear-gradient(90deg, rgba(201, 165, 92,0.55), rgba(245,241,232,0.12) 60%, transparent);
   }
   .hero-meta-label {
     font-size: 0.66rem;

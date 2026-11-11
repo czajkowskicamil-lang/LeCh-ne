@@ -105,19 +105,19 @@ const description = "Should you buy your home or stay a tenant and invest instea
 
 <style is:global>
   .la-chart-card{margin-top:22px;}
-  .la-chart-title{color:#9fb0c8;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
+  .la-chart-title{color:#A8A39A;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:14px;}
   #la-svg{width:100%;height:auto;display:block;overflow:visible;}
   .la-axis{stroke:rgba(255,255,255,.12);stroke-width:1;}
-  .la-line-a{stroke:#E6C259;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
-  .la-line-l{stroke:#5a82ad;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .la-line-a{stroke:#D8B872;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .la-line-l{stroke:#A8A39A;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
   .la-cross-dot{fill:#fff;stroke:#7bbd90;stroke-width:2;}
   .la-cross-lab{fill:#a9e0bd;font-size:12px;font-weight:600;font-family:system-ui,sans-serif;}
-  .la-tick{fill:#7f8ea6;font-size:12px;font-family:system-ui,sans-serif;}
-  .la-leg{display:flex;gap:20px;font-size:.8rem;color:#9fb0c8;margin-top:14px;flex-wrap:wrap;}
+  .la-tick{fill:#8C877D;font-size:12px;font-family:system-ui,sans-serif;}
+  .la-leg{display:flex;gap:20px;font-size:.8rem;color:#A8A39A;margin-top:14px;flex-wrap:wrap;}
   .la-leg span{display:inline-flex;align-items:center;gap:7px;}
   .la-leg i{width:16px;height:0;border-top-width:2.5px;border-top-style:solid;display:block;}
-  .la-leg-a{border-top-color:#E6C259;}
-  .la-leg-l{border-top-color:#5a82ad;}
+  .la-leg-a{border-top-color:#D8B872;}
+  .la-leg-l{border-top-color:#A8A39A;}
 </style>
 
 <script is:inline>
@@ -151,7 +151,7 @@ const description = "Should you buy your home or stay a tenant and invest instea
       const delta = patA - patL;
       const vEl=document.getElementById('la-verdict');
       if (delta>=0){ vEl.textContent='Buy'; vEl.style.color='#7bbd90'; }
-      else { vEl.textContent='Rent and invest'; vEl.style.color='#E6C259'; }
+      else { vEl.textContent='Rent and invest'; vEl.style.color='#D8B872'; }
       document.getElementById('la-pat-a').textContent=eur(patA);
       document.getElementById('la-pat-l').textContent=eur(patL);
       document.getElementById('la-ecart').textContent='+ '+eur(Math.abs(delta));
