@@ -6,6 +6,7 @@
 //   4. email au visiteur avec son résultat en PDF (document transactionnel demandé).
 // RGPD : consentement obligatoire ; opt-in newsletter séparé et facultatif ; aucune fuite.
 import { buildToolPdf } from './_lib/tool-pdf.js';
+import { handleContact } from './_lib/contact.js';
 
 const DEST = 'camil.cz@lechenepatrimonial.com';
 const SENDER = { name: 'Site Le Chêne', email: 'etudes@lechenepatrimonial.com' };
@@ -24,6 +25,9 @@ export default async function handler(req, res) {
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
   body = body || {};
+
+  // Formulaire de la page contact (mutualisé ici, plafond de 12 fonctions).
+  if (body.action === 'contact') return handleContact(body, res);
 
   // Téléchargement direct du PDF (sans capture) : action explicite, court-circuit.
   if (body.action === 'pdf') {

@@ -1,4 +1,6 @@
-// Fonction serverless Vercel : formulaire « Écrivez-moi » de la page contact.
+// Formulaire « Écrivez-moi » de la page contact. Appelé par api/tool-lead.js
+// (action: 'contact') : le plan Vercel Hobby plafonne à 12 fonctions serveur,
+// le dossier _lib n'en compte pas.
 // Remplace l'ancien envoi Formspree jamais configuré (REPLACE_ME), qui perdait
 // tous les messages. Le message part par email transactionnel Brevo vers Camil,
 // avec le visiteur en reply-to : un clic sur « Répondre » suffit.
@@ -11,14 +13,7 @@ const escapeHtml = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const clean = (s = '') => String(s).trim().replace(/\s+/g, ' ');
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ ok: false, error: 'method_not_allowed' });
-  }
-  let body = req.body;
-  if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
-  body = body || {};
+export async function handleContact(body, res) {
 
   if (body.website) return res.status(200).json({ ok: true }); // honeypot anti-robot
 
