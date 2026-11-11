@@ -228,7 +228,7 @@ function niveauFor(score: number): { niveau: Niveau; label: string } {
 // ---------------------------------------------------------------------------
 function computeRepartition(a: Answers, d: Derived): Repartition[] {
   const buckets = [
-    { label: 'Main residence', montant: n(a.valeurRP), color: '#0A1F4F' },
+    { label: 'Main residence', montant: n(a.valeurRP), color: '#11151F' },
     { label: 'Rental property', montant: n(a.immoLocatif), color: '#C9A55C' },
     { label: 'Available savings', montant: n(a.epargneDispo), color: '#A8A395' },
     { label: 'Life insurance & PER', montant: n(a.assuranceVie) + n(a.per), color: '#C9A55C' },

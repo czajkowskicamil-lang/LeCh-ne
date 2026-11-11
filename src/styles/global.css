@@ -351,7 +351,7 @@
 .tool-field > label{
   display:flex;justify-content:space-between;align-items:baseline;gap:16px;
   font:600 .71rem/1.35 'Inter Variable',Inter,system-ui,sans-serif;
-  letter-spacing:.115em;text-transform:uppercase;color:#8FA0BC;
+  letter-spacing:.115em;text-transform:uppercase;color:#A8A39A;
   margin-bottom:13px;
 }
 .tool-field > label b{
@@ -408,7 +408,7 @@
 .tool-seg button{
   position:relative;z-index:1;flex:1;
   background:transparent;border:none;border-radius:10px;
-  color:#8FA0BC;
+  color:#A8A39A;
   font:600 .83rem/1 'Inter Variable',Inter,system-ui,sans-serif;
   padding:12px 10px;cursor:pointer;
   transition:color .24s var(--ease-apple);
@@ -427,7 +427,7 @@
   padding:clamp(22px,3vw,30px);
 }
 .tool-result .lbl{
-  color:#8FA0BC;
+  color:#A8A39A;
   font:700 .69rem/1 'Inter Variable',Inter,system-ui,sans-serif;
   text-transform:uppercase;letter-spacing:.145em;
 }
@@ -445,12 +445,12 @@
   font-size:.89rem;
 }
 .tool-brk:last-child{border-bottom:none;padding-bottom:0;}
-.tool-brk .k{color:#8FA0BC;line-height:1.45;}
+.tool-brk .k{color:#A8A39A;line-height:1.45;}
 .tool-brk .v{
   font-family:'Chiffres Serif', 'Fraunces Variable', Fraunces,serif;font-weight:600;font-size:1.02rem;
   color:#F2EDE4;font-variant-numeric:tabular-nums;white-space:nowrap;
 }
-.tool-note{color:#64748f;font-size:.735rem;margin-top:20px;line-height:1.6;}
+.tool-note{color:#7D786F;font-size:.735rem;margin-top:20px;line-height:1.6;}
 
 /* --- Options avancées repliées : l'outil reste simple au premier regard --- */
 .tool-more{
@@ -496,7 +496,7 @@
   padding:13px 15px;border-radius:12px;outline:none;
   transition:border-color .2s var(--ease-apple),box-shadow .2s var(--ease-apple);
 }
-.tool-input::placeholder{color:#64748f;}
+.tool-input::placeholder{color:#7D786F;}
 .tool-input:focus{border-color:#C9A55C;box-shadow:0 0 0 3px rgba(201, 165, 92,.16);}
 
 @media(prefers-reduced-motion:reduce){
@@ -538,7 +538,7 @@
 /* Graphiques : même en-tête, même légende partout. */
 .tool-chart{margin-top:22px;}
 .tool-chart-title{
-  color:#8FA0BC;font:700 .7rem/1 'Inter Variable',Inter,system-ui,sans-serif;
+  color:#A8A39A;font:700 .7rem/1 'Inter Variable',Inter,system-ui,sans-serif;
   text-transform:uppercase;letter-spacing:.145em;
 }
 .tool-chart-read{
@@ -550,7 +550,7 @@
 }
 .tool-chart svg{width:100%;height:auto;display:block;}
 .tool-legend{
-  display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;color:#8FA0BC;font-size:.78rem;
+  display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;color:#A8A39A;font-size:.78rem;
 }
 .tool-legend span{display:inline-flex;align-items:center;gap:7px;}
 .tool-legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
@@ -579,7 +579,7 @@
   }
   .tool-bar.on{transform:translateY(0);}
   .tool-bar .k{
-    color:#8FA0BC;font:700 .68rem/1.3 'Inter Variable',Inter,system-ui,sans-serif;
+    color:#A8A39A;font:700 .68rem/1.3 'Inter Variable',Inter,system-ui,sans-serif;
     text-transform:uppercase;letter-spacing:.12em;
   }
   .tool-bar .v{

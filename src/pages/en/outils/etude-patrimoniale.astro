@@ -433,33 +433,33 @@ const description = "Answer the questions of a real wealth assessment: household
   /* ---- CTA étude complète ---- */
   .ep-cta{margin-top:28px;background:linear-gradient(160deg,#0A0D14,#11151F);border:1px solid rgba(201, 165, 92,.25);border-radius:22px;padding:clamp(26px,5vw,48px);}
   .ep-cta-inner{max-width:620px;margin:auto;}
-  .ep-cta-lead{color:#c9d3e2;font-size:1.02rem;line-height:1.6;margin:0 0 22px;}
+  .ep-cta-lead{color:#D9D3C7;font-size:1.02rem;line-height:1.6;margin:0 0 22px;}
   .ep-inclus{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:11px;}
-  .ep-inclus li{position:relative;padding-left:24px;color:#c9d3e2;font-size:.94rem;line-height:1.55;}
+  .ep-inclus li{position:relative;padding-left:24px;color:#D9D3C7;font-size:.94rem;line-height:1.55;}
   .ep-inclus li::before{content:"";position:absolute;left:0;top:.58em;width:9px;height:9px;border:1px solid rgba(201, 165, 92,.75);transform:rotate(45deg);}
   .ep-inclus strong{color:#F2EDE4;font-weight:600;}
-  .ep-lead-recap{color:#aebacb;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(201, 165, 92,.2);border-radius:12px;}
+  .ep-lead-recap{color:#BEB8AC;font-size:.88rem;margin:0 0 14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(201, 165, 92,.2);border-radius:12px;}
   .ep-lead-recap b{color:#D8B872;}
   .ep-upload{margin:0 0 14px;}
   .ep-upload input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;}
   .ep-upload-btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:1px dashed rgba(201, 165, 92,.5);color:#D8B872;border-radius:12px;padding:12px 18px;font:600 .9rem system-ui,sans-serif;transition:.2s;}
   .ep-upload-btn:hover{background:rgba(201, 165, 92,.08);border-color:#C9A55C;}
-  .ep-upload-btn.has-file{border-style:solid;border-color:#D8B872;color:#d6e6d9;background:rgba(45,74,51,.25);}
-  .ep-upload-hint{display:block;color:#7f8da3;font-size:.76rem;margin-top:8px;line-height:1.5;}
+  .ep-upload-btn.has-file{border-style:solid;border-color:#D8B872;color:#d6e6d9;background:rgba(201, 165, 92,.25);}
+  .ep-upload-hint{display:block;color:#8C877D;font-size:.76rem;margin-top:8px;line-height:1.5;}
   .ep-upload-hint.err{color:#f0b4b4;}
   .ep-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
   @media(max-width:640px){.ep-lead-row{grid-template-columns:1fr;}}
-  .ep-consent{display:flex;gap:11px;align-items:flex-start;color:#aebacb;font-size:.82rem;line-height:1.45;margin:6px 0;cursor:pointer;}
+  .ep-consent{display:flex;gap:11px;align-items:flex-start;color:#BEB8AC;font-size:.82rem;line-height:1.45;margin:6px 0;cursor:pointer;}
   .ep-consent input{margin-top:2px;width:16px;height:16px;accent-color:#C9A55C;flex-shrink:0;}
   .ep-consent a{color:#D8B872;text-decoration:underline;}
-  .ep-consent-soft{color:#8b98ab;}
+  .ep-consent-soft{color:#9A958B;}
   .ep-submit{width:100%;margin-top:16px;background:#C9A55C;color:#161B26;border:none;border-radius:14px;padding:16px;font:700 1rem system-ui,sans-serif;cursor:pointer;transition:.2s;}
   .ep-submit:hover{background:#D8B872;}
   .ep-submit:disabled{opacity:.55;cursor:default;}
   .ep-lead-msg{margin:14px 0 0;padding:13px 16px;border-radius:12px;font-size:.9rem;line-height:1.4;}
-  .ep-lead-msg.ok{background:rgba(45,74,51,.35);border:1px solid #D8B872;color:#d6e6d9;}
+  .ep-lead-msg.ok{background:rgba(201, 165, 92,.35);border:1px solid #D8B872;color:#d6e6d9;}
   .ep-lead-msg.err{background:rgba(120,40,40,.3);border:1px solid #8a4a4a;color:#f0d4d4;}
-  .ep-lead-fine{color:#7f8da3;font-size:.76rem;margin:14px 0 0;line-height:1.5;}
+  .ep-lead-fine{color:#8C877D;font-size:.76rem;margin:14px 0 0;line-height:1.5;}
   .ep-or{display:flex;align-items:center;gap:16px;color:#7D786F;font-size:.82rem;margin:24px 0;}
   .ep-or::before,.ep-or::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.12);}
   .ep-rdv{display:block;text-align:center;border:1px solid rgba(201, 165, 92,.5);color:#D8B872;border-radius:14px;padding:15px;font:600 .95rem system-ui,sans-serif;text-decoration:none;transition:.2s;}
@@ -796,7 +796,7 @@ const description = "Answer the questions of a real wealth assessment: household
       if (total <= 0) { wrap.hidden = true; return; }
       wrap.hidden = false;
       var segs = [
-        { l: 'Secure savings', v: secur, c: '#7A9CC6' },
+        { l: 'Secure savings', v: secur, c: '#B8B1A4' },
         { l: 'Life insurance (assurance-vie) / PER', v: retraite, c: '#C9A55C' },
         { l: 'Securities', v: valeurs, c: '#C9A55C' },
         { l: 'Rental property', v: immo, c: '#B08A4A' },

@@ -301,7 +301,7 @@ const description = "Simulez la rentabilité d'un investissement locatif en dire
         const cfBox = document.querySelector('[data-cf-box]') as HTMLElement | null;
         const cfNote = readVal('res', 'cfnote');
         if (cfEl) cfEl.textContent = (cashflow >= 0 ? '+' : '') + euro(cashflow).replace('€', '€/mois');
-        if (cfBox) cfBox.style.background = cashflow >= 0 ? 'rgba(62, 98, 71, 0.35)' : 'rgba(167, 128, 31, 0.18)';
+        if (cfBox) cfBox.style.background = cashflow >= 0 ? 'rgba(216, 184, 114, 0.35)' : 'rgba(167, 128, 31, 0.18)';
         if (cfEl) cfEl.className = 'font-serif text-3xl leading-none ' + (cashflow >= 0 ? 'text-or-light' : 'text-cream');
         if (cfNote) {
           cfNote.textContent = cashflow >= 0
