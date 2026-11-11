@@ -29,6 +29,11 @@ const parcoursHref = localizePath('/parcours', lang);
         <a href={parcoursHref} class="link-underline text-chene font-medium">
           {t('story.link')}
         </a>
+        {lang === 'fr' && (
+          <a href="/sportifs-haut-niveau" class="link-underline text-chene font-medium ml-8">
+            Sportifs de haut niveau →
+          </a>
+        )}
       </div>
     </div>
 

@@ -77,6 +77,7 @@ export const ui = {
   fr: {
     // Navigation
     'nav.parcours': 'Parcours',
+    'nav.sportifs': 'Sportifs de haut niveau',
     'nav.expertise': 'Expertise',
     'nav.opportunites': 'Opportunités',
     'nav.faitage': 'Le Faitage',
@@ -98,11 +99,11 @@ export const ui = {
     'nav.ariaAvis': 'Avis clients',
 
     // Hero
-    'hero.eyebrow': 'Conseil en gestion de patrimoine · Indépendant',
+    'hero.eyebrow': 'Conseiller en gestion de patrimoine à Montpellier · Sportifs de haut niveau',
     'hero.title1': 'Faire fructifier',
     'hero.title2': 'ce qui compte.',
     'hero.subLead': "J'accompagne",
-    'hero.subBold': 'dirigeants, professions libérales, cadres et sportifs',
+    'hero.subBold': 'sportifs de haut niveau, dirigeants, entrepreneurs et particuliers',
     'hero.subTail': "dans les décisions qui engagent leur patrimoine, avec pour seul horizon le temps long.",
     'hero.cta1': 'Faire mon diagnostic gratuit',
     'hero.cta2': 'Planifier un rendez-vous découverte',
@@ -283,6 +284,7 @@ export const ui = {
   en: {
     // Navigation
     'nav.parcours': 'About',
+    'nav.sportifs': 'Elite athletes',
     'nav.expertise': 'Expertise',
     'nav.opportunites': 'Opportunities',
     'nav.faitage': 'Le Faitage',
@@ -304,11 +306,11 @@ export const ui = {
     'nav.ariaAvis': 'Client reviews',
 
     // Hero
-    'hero.eyebrow': 'Wealth Management Advice · Independent',
+    'hero.eyebrow': 'Wealth advisor in Montpellier · Elite athletes',
     'hero.title1': 'Growing',
     'hero.title2': 'what truly matters.',
     'hero.subLead': 'I guide',
-    'hero.subBold': 'company directors, professionals, executives and athletes',
+    'hero.subBold': 'elite athletes, company directors, entrepreneurs and individuals',
     'hero.subTail': 'through the decisions that shape their wealth, with one sole horizon: the long term.',
     'hero.cta1': 'Take my free assessment',
     'hero.cta2': 'Book an introductory call',

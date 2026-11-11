@@ -4,6 +4,7 @@ import LogoFaitage from './LogoFaitage.astro';
 import LanguageToggle from './LanguageToggle.astro';
 import { nav, site } from '../data/site';
 import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { translatedRoutes } from '../i18n/ui';
 
 interface Props {
   heroDark?: boolean;
@@ -20,7 +21,8 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
 // Menu localisé : libellé traduit + href préfixé selon la langue.
 const menu = nav.map((item) => ({
   ...item,
-  href: localizePath(item.href, lang),
+  // Une page sans version anglaise garde son URL française (pas de lien vers une 404).
+  href: translatedRoutes.has(item.href) ? localizePath(item.href, lang) : item.href,
   label: t(item.key),
 }));
 const avisHref = localizePath('/avis', lang);

@@ -18,10 +18,11 @@ export const site = {
   coverage: 'France entière · en présentiel ou à distance',
 };
 
-// Menu principal — resserré à 7 entrées qui suivent le parcours du visiteur :
+// Menu principal, resserré à 8 entrées qui suivent le parcours du visiteur :
 // qui je suis, ce que je fais, mes preuves, mon expertise data, mes contenus, agir.
 export const nav = [
   { key: 'nav.parcours', label: 'Parcours', href: '/parcours' },
+  { key: 'nav.sportifs', label: 'Sportifs de haut niveau', href: '/sportifs-haut-niveau' },
   { key: 'nav.expertise', label: 'Expertise', href: '/expertise' },
   { key: 'nav.opportunites', label: 'Opportunités', href: '/opportunites' },
   { key: 'nav.observatoire', label: 'Observatoire', href: '/observatoire' },

@@ -1,32 +1,26 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
-import PartnersMarquee from '../../components/PartnersMarquee.astro';
-import OakBand from '../../components/OakBand.astro';
 import StoryTeaser from '../../components/StoryTeaser.astro';
-import DiagnosticTeaser from '../../components/DiagnosticTeaser.astro';
-import MethodStrip from '../../components/MethodStrip.astro';
-import CheneEnChiffres from '../../components/CheneEnChiffres.astro';
 import ProfilEntries from '../../components/ProfilEntries.astro';
-import NewsletterTeaser from '../../components/NewsletterTeaser.astro';
-import EditorialTicker from '../../components/EditorialTicker.astro';
+import MethodStrip from '../../components/MethodStrip.astro';
+import Testimonials from '../../components/Testimonials.astro';
 import CTA from '../../components/CTA.astro';
+
+// Accueil épuré à 6 blocs : qui, pour qui, comment, preuves, rendez-vous.
+// Rien n'est perdu : outils dans /outils, diagnostic dans le hero, newsletter
+// dans le pied de page, chiffres, partenaires et philosophie dans /parcours.
 ---
 
 <Base
   heroDark
-  title="Le Chêne Patrimonial, independent wealth management firm"
-  description="Independent wealth management advice, throughout France: tax, life insurance, real estate, retirement, estate transfer. First 30-minute conversation offered."
+  title="Wealth advisor in Montpellier for elite athletes | Le Chêne Patrimonial"
+  description="Independent wealth management firm in Montpellier, founded by a former athlete: elite athletes, company directors and individuals. First call offered."
 >
   <Hero />
-  <PartnersMarquee />
-  <EditorialTicker />
   <StoryTeaser />
-  <DiagnosticTeaser />
-  <MethodStrip />
-  <CheneEnChiffres />
   <ProfilEntries />
-  <NewsletterTeaser />
-  <OakBand />
+  <MethodStrip />
+  <Testimonials />
   <CTA />
 </Base>

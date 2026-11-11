@@ -1,0 +1,226 @@
+---
+// Page pilier « Sportifs de haut niveau » : point d'entrée du menu pour la niche,
+// elle regroupe et relie toutes les pages sport du site.
+// Règle tenue : on décrit des mécanismes et on pose des constats. Aucun support,
+// aucun contrat, aucun rendement (statut COA + carte T, pas CIF).
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+
+const SITE = 'https://www.lechenepatrimonial.com';
+const title = 'Gestion de patrimoine des sportifs de haut niveau | Le Chêne Patrimonial';
+const description =
+  "Carrière courte, revenus concentrés, après-carrière à préparer : un cabinet fondé par un ancien athlète, à Montpellier, pour les sportifs de haut niveau.";
+
+const constats = [
+  {
+    t: 'Une carrière courte',
+    d: "Huit à quinze ans de revenus pour financer soixante ans de vie. Le temps qui compte, ce sont les années de carrière, pas celles qui suivent.",
+  },
+  {
+    t: 'Des revenus concentrés et irréguliers',
+    d: "Primes, contrats, sponsors : des années très hautes, d'autres beaucoup moins. L'impôt suit les pics, et la trésorerie doit encaisser les creux.",
+  },
+  {
+    t: 'Des aléas que personne d’autre n’a',
+    d: "Une blessure, un transfert, un changement de club ou de pays. Votre organisation doit tenir même quand la saison ne se passe pas comme prévu.",
+  },
+  {
+    t: 'Une reconversion à financer',
+    d: "La fin de carrière arrive tôt, souvent avant un nouveau métier stable. Ce passage se prépare pendant que les revenus sont là, pas après.",
+  },
+];
+
+const pistes = [
+  {
+    t: 'Que faire de ses revenus de sportif ?',
+    d: "Les grands leviers patrimoniaux expliqués, et comment les articuler avec une carrière sportive.",
+    href: '/expertise/placement-sportif-haut-niveau',
+    cta: 'Lire la page placement',
+  },
+  {
+    t: "L'immobilier locatif meublé (LMNP)",
+    d: "Le mécanisme de l'amortissement, et pourquoi il intéresse les sportifs qui pensent déjà à l'après.",
+    href: '/expertise/lmnp-sportif-haut-niveau',
+    cta: 'Lire la page LMNP',
+  },
+  {
+    t: 'Le compte à rebours après-carrière',
+    d: "Un simulateur pour visualiser ce que vos années de carrière doivent préparer pour la suite.",
+    href: '/outils/apres-carriere',
+    cta: 'Faire la simulation',
+  },
+  {
+    t: 'Cinq erreurs fiscales fréquentes',
+    d: "Ce que j'aurais aimé savoir plus tôt, quand j'étais moi-même en compétition.",
+    href: '/magazine/sportif-gestion-carriere',
+    cta: "Lire l'article",
+  },
+];
+
+const etapes = [
+  { t: 'Un premier échange', d: '30 minutes offertes, en visio ou au cabinet de Montpellier. On parle de votre carrière avant de parler de chiffres.' },
+  { t: 'Une lecture de votre situation', d: 'Revenus, fiscalité, contrats existants, projets : une vision claire de là où vous en êtes.' },
+  { t: 'Un plan pour la carrière et après', d: "Des priorités hiérarchisées, ajustées à chaque saison, avec la reconversion en ligne de mire." },
+];
+
+const faq = [
+  {
+    q: 'Pourquoi un conseiller spécialisé dans les sportifs de haut niveau ?',
+    a: "Parce qu'une carrière sportive ne ressemble à aucune autre : courte, intense, irrégulière, souvent internationale. Les réflexes qui conviennent à un salarié ne conviennent pas forcément à un athlète. J'ai été sportif de haut niveau, je connais cette réalité de l'intérieur.",
+  },
+  {
+    q: 'À quel âge faut-il commencer ?',
+    a: "Dès les premiers revenus significatifs. Plus l'organisation commence tôt dans la carrière, plus elle a de temps pour produire ses effets avant la fin de la compétition.",
+  },
+  {
+    q: "Vous accompagnez des sportifs en dehors de Montpellier ?",
+    a: "Oui. Le cabinet est basé à Montpellier, et j'accompagne des sportifs partout en France, en visio comme en rendez-vous, au rythme de leurs saisons et de leurs déplacements.",
+  },
+  {
+    q: 'Combien coûte le premier rendez-vous ?',
+    a: "Rien. Le premier échange de 30 minutes est offert et sans engagement. Je vous dis à cette occasion comment je suis rémunéré, avant toute opération.",
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Sportifs de haut niveau', item: `${SITE}/sportifs-haut-niveau/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Gestion de patrimoine des sportifs de haut niveau',
+    serviceType: 'Conseil en gestion de patrimoine',
+    provider: { '@id': `${SITE}/#organization` },
+    areaServed: [{ '@type': 'City', name: 'Montpellier' }, { '@type': 'Country', name: 'France' }],
+    audience: { '@type': 'Audience', audienceType: 'Sportifs de haut niveau' },
+  },
+];
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <!-- En-tête -->
+  <section class="pt-16 pb-16 md:pt-24 md:pb-20 relative overflow-hidden">
+    <div class="shell">
+      <nav class="text-xs uppercase tracking-micro text-stone mb-10 flex gap-3 reveal" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-chene">Accueil</a>
+        <span>/</span>
+        <span class="text-ink">Sportifs de haut niveau</span>
+      </nav>
+
+      <div class="max-w-prose-wide">
+        <p class="eyebrow mb-5 flex items-center gap-3 reveal">
+          <span class="inline-block h-px w-8 bg-chene"></span>
+          Sportifs de haut niveau
+        </p>
+        <h1 class="font-serif text-display text-ink mb-6 reveal" style="animation-delay:80ms">
+          La gestion de patrimoine des sportifs de haut niveau.
+        </h1>
+        <p class="text-xl md:text-2xl text-chene font-serif italic mb-8 reveal" style="animation-delay:160ms">
+          Par un ancien athlète, pour ceux qui le sont encore.
+        </p>
+        <p class="text-lg text-ink/80 leading-relaxed reveal" style="animation-delay:240ms">
+          J'ai été sportif de haut niveau avant d'être conseiller. Je sais ce que représentent une carrière courte, des revenus qui montent vite et une fin de carrière qui arrive tôt. Depuis Montpellier, j'aide les sportifs à organiser ces années pour qu'elles comptent longtemps.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4 reveal" style="animation-delay:320ms">
+          <a href="/contact" class="btn-primary">Premier échange offert</a>
+          <a href="/parcours" class="link-underline text-chene font-medium self-center">Mon parcours d'athlète →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Constats -->
+  <section class="py-16 md:py-24 bg-cream-soft border-y border-ink/10">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Votre situation</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Ce qui rend un patrimoine de sportif à part.</h2>
+      <div class="grid md:grid-cols-2 gap-x-12 gap-y-10">
+        {constats.map((c, i) => (
+          <div class="border-t border-or/40 pt-5 reveal" style={`transition-delay:${i * 80}ms`}>
+            <h3 class="font-serif text-2xl text-ink mb-3">{c.t}</h3>
+            <p class="text-ink/75 leading-relaxed">{c.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pistes -->
+  <section class="py-16 md:py-24">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Pour aller plus loin</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Les sujets qu'on travaille ensemble.</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {pistes.map((p, i) => (
+          <a href={p.href} class="group block bg-cream p-8 md:p-10 border border-ink/10 hover:border-chene transition reveal" style={`transition-delay:${i * 80}ms`}>
+            <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-chene transition">{p.t}</h3>
+            <p class="text-ink/75 leading-relaxed mb-6">{p.d}</p>
+            <span class="text-chene font-medium inline-flex items-center gap-2">
+              {p.cta}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Étapes -->
+  <section class="py-16 md:py-24 bg-cream-soft border-y border-ink/10">
+    <div class="shell">
+      <p class="eyebrow mb-4 reveal">Comment ça se passe</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-12 reveal">Trois temps, à votre rythme de saison.</h2>
+      <ol class="grid md:grid-cols-3 gap-10">
+        {etapes.map((e, i) => (
+          <li class="reveal" style={`transition-delay:${i * 80}ms`}>
+            <p class="font-serif text-or text-3xl mb-3">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="font-serif text-xl text-ink mb-2">{e.t}</h3>
+            <p class="text-ink/75 leading-relaxed">{e.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 md:py-28">
+    <div class="shell max-w-prose-wide">
+      <p class="eyebrow mb-4 reveal">Questions fréquentes</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-ink mb-10 reveal">Ce que les sportifs me demandent.</h2>
+      <div class="divide-y divide-ink/10 border-t border-ink/10">
+        {faq.map((f) => (
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+              <span class="font-serif text-xl text-ink group-open:text-chene transition">{f.q}</span>
+              <span class="flex-shrink-0 w-8 h-8 border border-ink/20 rounded-full flex items-center justify-center transition-transform duration-500 group-open:rotate-45 group-open:border-chene group-open:bg-chene group-open:text-cream">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-ink/75 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <p class="text-sm text-stone mt-10">
+        Le Chêne Patrimonial intervient sur l'assurance et l'immobilier, dans le cadre de ses statuts de courtier en assurance (COA) et de sa carte T. Cette page est informative et ne constitue pas un conseil en investissement personnalisé.
+      </p>
+    </div>
+  </section>
+
+  <CTA
+    title="Votre carrière est courte. Votre patrimoine, lui, doit durer."
+    body="Premier échange offert, sans engagement, en visio ou à Montpellier. On part de votre carrière et de vos objectifs, pas d'un produit."
+  />
+</Base>

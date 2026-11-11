@@ -1,34 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import PartnersMarquee from '../components/PartnersMarquee.astro';
-import OakBand from '../components/OakBand.astro';
 import StoryTeaser from '../components/StoryTeaser.astro';
-import DiagnosticTeaser from '../components/DiagnosticTeaser.astro';
-import ToolsShowcase from '../components/ToolsShowcase.astro';
-import MethodStrip from '../components/MethodStrip.astro';
-import CheneEnChiffres from '../components/CheneEnChiffres.astro';
 import ProfilEntries from '../components/ProfilEntries.astro';
-import NewsletterTeaser from '../components/NewsletterTeaser.astro';
-import EditorialTicker from '../components/EditorialTicker.astro';
+import MethodStrip from '../components/MethodStrip.astro';
+import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
+
+// Accueil épuré à 6 blocs : qui, pour qui, comment, preuves, rendez-vous.
+// Rien n'est perdu : outils dans /outils, diagnostic dans le hero, newsletter
+// dans le pied de page, chiffres, partenaires et philosophie dans /parcours.
 ---
 
 <Base
   heroDark
-  title="Le Chêne Patrimonial, cabinet de gestion de patrimoine indépendant"
-  description="Cabinet indépendant de gestion de patrimoine, partout en France : fiscalité, assurance-vie, immobilier, retraite, transmission. Premier échange offert."
+  title="Gestion de patrimoine à Montpellier, sportifs de haut niveau | Le Chêne"
+  description="Cabinet indépendant à Montpellier, fondé par un ancien athlète : patrimoine des sportifs de haut niveau, dirigeants et particuliers. Premier échange offert."
 >
   <Hero />
-  <PartnersMarquee />
-  <EditorialTicker />
   <StoryTeaser />
-  <DiagnosticTeaser />
-  <MethodStrip />
-  <ToolsShowcase />
-  <CheneEnChiffres />
   <ProfilEntries />
-  <NewsletterTeaser />
-  <OakBand />
+  <MethodStrip />
+  <Testimonials />
   <CTA />
 </Base>

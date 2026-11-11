@@ -33,16 +33,17 @@ const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
   <!-- Contenu -->
   <div class="shell relative z-10 flex flex-1 flex-col justify-center pt-32 pb-28 md:pb-32">
     <div class="hero-copy max-w-3xl">
-      <p class="hero-eyebrow mb-7 flex items-center gap-4 text-or-light">
-        <span class="hero-index font-serif">01</span>
-        <span class="inline-block h-px w-10 bg-or/70"></span>
-        {t('hero.eyebrow')}
-      </p>
+      <!-- Le H1 porte les mots-clés (métier + ville + niche), la devise reste en grand juste dessous. -->
+      <div class="hero-eyebrow mb-7 flex items-center gap-4 text-or-light">
+        <span class="hero-index font-serif" aria-hidden="true">01</span>
+        <span class="inline-block h-px w-10 shrink-0 bg-or/70" aria-hidden="true"></span>
+        <h1 class="font-[inherit] text-[length:inherit] tracking-[inherit]">{t('hero.eyebrow')}</h1>
+      </div>
 
-      <h1 class="hero-title mb-7 font-serif text-cream">
+      <p class="hero-title mb-7 font-serif text-cream">
         <span class="hero-line block"><span>{t('hero.title1')}</span></span>
         <span class="hero-line block" style="transition-delay:120ms"><span class="italic text-or-light">{t('hero.title2')}</span></span>
-      </h1>
+      </p>
 
       <p class="hero-sub mb-10 max-w-xl text-lg leading-relaxed text-cream md:text-xl">
         {t('hero.subLead')} <span class="font-medium text-cream">{t('hero.subBold')}</span> {t('hero.subTail')}

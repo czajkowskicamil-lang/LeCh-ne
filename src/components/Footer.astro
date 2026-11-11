@@ -1,5 +1,6 @@
 ---
 import { site, nav, navSecondary } from '../data/site';
+import { translatedRoutes } from '../i18n/ui';
 import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 const year = new Date().getFullYear();
 
@@ -7,7 +8,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 // Menus localisés (libellé traduit + href préfixé selon la langue).
-const menu = nav.map((i) => ({ href: localizePath(i.href, lang), label: t(i.key) }));
+const menu = nav.map((i) => ({ href: translatedRoutes.has(i.href) ? localizePath(i.href, lang) : i.href, label: t(i.key) }));
 const resources = navSecondary.map((i) => ({ href: localizePath(i.href, lang), label: t(i.key) }));
 
 // Pages de destination ciblées (niche sportifs + local), reliées ici pour

@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CTA from '../../components/CTA.astro';
+import CheneEnChiffres from '../../components/CheneEnChiffres.astro';
+import PartnersMarquee from '../../components/PartnersMarquee.astro';
+import OakBand from '../../components/OakBand.astro';
 
 const chapters = [
   {
@@ -172,6 +175,11 @@ const chapters = [
       </div>
     </div>
   </section>
+
+  <!-- Repris de l'ancien accueil : chiffres, partenaires, philosophie -->
+  <CheneEnChiffres />
+  <PartnersMarquee />
+  <OakBand />
 
   <CTA title="Ready to build a serious wealth-management season?" />
 </Base>

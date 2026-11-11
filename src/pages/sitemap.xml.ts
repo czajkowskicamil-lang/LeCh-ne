@@ -10,6 +10,7 @@ const staticPages = [
   { path: '/',                 priority: 1.0, changefreq: 'weekly' },
   { path: '/parcours',         priority: 0.9, changefreq: 'monthly' },
   { path: '/expertise',        priority: 0.9, changefreq: 'monthly' },
+  { path: '/sportifs-haut-niveau', priority: 0.9, changefreq: 'monthly' },
   { path: '/expertise/lmnp-sportif-haut-niveau', priority: 0.8, changefreq: 'monthly' },
   { path: '/expertise/placement-sportif-haut-niveau', priority: 0.8, changefreq: 'monthly' },
   { path: '/conseiller-gestion-patrimoine-montpellier', priority: 0.8, changefreq: 'monthly' },
