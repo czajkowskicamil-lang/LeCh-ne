@@ -1,29 +1,101 @@
 ---
-// Accueil « épuré » (test) : une seule teinte sombre, peu de mots, cartes
-// arrondies, une ligne de temps. Codes du Chêne : logo, or, crème, marine
-// poussé presque au noir. Titres en Cormorant Garamond, texte en Inter.
+// Accueil épuré (FR + EN) : une seule teinte sombre, peu de mots, cartes
+// arrondies, une ligne de temps. Codes du Chêne : logo, forêt, or, crème,
+// marine poussé presque au noir. Titres Cormorant Garamond, texte Inter.
 import '@fontsource/cormorant-garamond/300.css';
 import '@fontsource/cormorant-garamond/400.css';
 import '@fontsource/cormorant-garamond/400-italic.css';
 import { temoignages } from '../data/temoignages';
+import { getLangFromUrl, localizePath } from '../i18n/utils';
+import { translatedRoutes } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+// Lien localisé seulement si la page existe en anglais (jamais de 404).
+const L = (path: string) => (translatedRoutes.has(path) ? localizePath(path, lang) : path);
 
 const avis = ['Temenuzhka Nikolova', 'Véronique P.', 'Lucia M']
   .map((a) => temoignages.find((x) => x.author === a))
   .filter((x): x is NonNullable<typeof x> => Boolean(x));
 
-const profils = [
-  { t: 'Sportifs de haut niveau', d: 'Une carrière courte, des revenus concentrés, un après à préparer pendant.', href: '/sportifs-haut-niveau' },
-  { t: 'Dirigeants et cadres', d: 'Des enveloppes accumulées, enfin mises en cohérence.', href: '/expertise' },
-  { t: 'Entrepreneurs', d: 'Cession, holding, transmission : préparés deux ans avant.', href: '/expertise' },
-  { t: 'Particuliers', d: 'Une méthode claire pour savoir où vous en êtes.', href: '/outils/diagnostic-patrimonial' },
-];
-
-const etapes = [
-  { t: 'Échange', d: '30 minutes offertes, en visio ou à Montpellier.' },
-  { t: 'Diagnostic', d: 'Une lecture chiffrée de votre patrimoine et de votre fiscalité.' },
-  { t: 'Stratégie', d: 'Une feuille de route hiérarchisée, indépendante.' },
-  { t: 'Suivi', d: 'Ajusté à chaque saison de votre vie.' },
-];
+const T = lang === 'en'
+  ? {
+      pill: 'Elite athletes',
+      title1: 'Grow what',
+      title2: 'truly matters.',
+      h1: 'Independent wealth advisor in Montpellier, France',
+      cta1: 'Book a call',
+      cta2: 'Free wealth check-up',
+      stat1: 'complimentary',
+      stat2: 'independent',
+      storyLabel: 'From athlete to advisor',
+      storyTitle: 'Everything that lasts is prepared well in advance.',
+      storyBody: 'I competed as an elite athlete before becoming an advisor. I bring the same discipline to every client’s wealth.',
+      storyLink: 'My story →',
+      whoLabel: 'Who I work with',
+      whoTitle: 'Four profiles, one standard.',
+      profils: [
+        { t: 'Elite athletes', d: 'A short career, concentrated income, and a life after sport to prepare while it lasts.', href: '/sportifs-haut-niveau' },
+        { t: 'Executives', d: 'Savings built up over the years, finally brought into one coherent plan.', href: '/expertise' },
+        { t: 'Entrepreneurs', d: 'Business sale, holding structure, succession: prepared two years ahead.', href: '/expertise' },
+        { t: 'Individuals', d: 'A clear method to know exactly where you stand.', href: '/outils/diagnostic-patrimonial' },
+      ],
+      methodLabel: 'The method',
+      methodTitle: 'Four steps, at your own pace.',
+      step: 'Step',
+      etapes: [
+        { t: 'Conversation', d: 'A complimentary 30-minute call, by video or in Montpellier.' },
+        { t: 'Assessment', d: 'A clear, quantified review of your wealth and your taxes.' },
+        { t: 'Strategy', d: 'An independent roadmap, with clear priorities.' },
+        { t: 'Follow-up', d: 'Adjusted to every season of your life.' },
+      ],
+      reviewsLabel: 'Client reviews',
+      reviewsTitle: 'They say it better than I do.',
+      reviewsNote: 'Reviews quoted in their original French.',
+      reviewsLink: 'Read all reviews →',
+      finalTitle1: 'Book your',
+      finalTitle2: 'first conversation.',
+      finalBody: '30 minutes, complimentary, no commitment.',
+      finalCta: 'Choose a time',
+    }
+  : {
+      pill: 'Sportifs de haut niveau',
+      title1: 'Faire fructifier',
+      title2: 'ce qui compte.',
+      h1: 'Conseiller en gestion de patrimoine indépendant à Montpellier',
+      cta1: 'Prendre rendez-vous',
+      cta2: 'Mon diagnostic gratuit',
+      stat1: 'offertes',
+      stat2: 'indépendant',
+      storyLabel: "L'athlète devenu conseiller",
+      storyTitle: "Tout ce qui dure se prépare longtemps à l'avance.",
+      storyBody: "J'ai été sportif de haut niveau avant d'être conseiller. J'applique la même exigence à chaque patrimoine.",
+      storyLink: 'Mon parcours →',
+      whoLabel: 'Pour qui',
+      whoTitle: 'Quatre profils, une même exigence.',
+      profils: [
+        { t: 'Sportifs de haut niveau', d: 'Une carrière courte, des revenus concentrés, un après à préparer pendant.', href: '/sportifs-haut-niveau' },
+        { t: 'Dirigeants et cadres', d: 'Des enveloppes accumulées, enfin mises en cohérence.', href: '/expertise' },
+        { t: 'Entrepreneurs', d: 'Cession, holding, transmission : préparés deux ans avant.', href: '/expertise' },
+        { t: 'Particuliers', d: 'Une méthode claire pour savoir où vous en êtes.', href: '/outils/diagnostic-patrimonial' },
+      ],
+      methodLabel: 'La méthode',
+      methodTitle: 'Quatre temps, à votre rythme.',
+      step: 'Étape',
+      etapes: [
+        { t: 'Échange', d: '30 minutes offertes, en visio ou à Montpellier.' },
+        { t: 'Diagnostic', d: 'Une lecture chiffrée de votre patrimoine et de votre fiscalité.' },
+        { t: 'Stratégie', d: 'Une feuille de route hiérarchisée, indépendante.' },
+        { t: 'Suivi', d: 'Ajusté à chaque saison de votre vie.' },
+      ],
+      reviewsLabel: 'Avis clients',
+      reviewsTitle: 'Ils en parlent mieux que moi.',
+      reviewsNote: '',
+      reviewsLink: 'Lire tous les avis →',
+      finalTitle1: 'Réservez votre',
+      finalTitle2: 'premier échange.',
+      finalBody: '30 minutes offertes, sans engagement.',
+      finalCta: 'Choisir un créneau',
+    };
 ---
 
 <div class="ep">
@@ -35,22 +107,20 @@ const etapes = [
     <div class="relative z-10 flex flex-col items-center">
       <p class="ep-pill ep-in mb-12 inline-flex items-center gap-3 rounded-full px-6 py-3 text-[15px]">
         <span class="h-1.5 w-1.5 rounded-full bg-or" aria-hidden="true"></span>
-        Sportifs de haut niveau
+        {T.pill}
       </p>
       <p class="ep-title ep-in" style="animation-delay:.08s">
-        Faire fructifier<br /><em>ce qui compte.</em>
+        {T.title1}<br /><em>{T.title2}</em>
       </p>
-      <h1 class="ep-sub ep-in mt-8" style="animation-delay:.16s">
-        Conseiller en gestion de patrimoine indépendant à Montpellier
-      </h1>
+      <h1 class="ep-sub ep-in mt-8" style="animation-delay:.16s">{T.h1}</h1>
       <div class="ep-in mt-12 flex flex-wrap justify-center gap-3" style="animation-delay:.24s">
-        <a href="/rendez-vous" class="ep-btn ep-btn-or">Prendre rendez-vous</a>
-        <a href="/outils/diagnostic-patrimonial" class="ep-btn ep-btn-ghost">Mon diagnostic gratuit</a>
+        <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.cta1}</a>
+        <a href={L('/outils/diagnostic-patrimonial')} class="ep-btn ep-btn-ghost">{T.cta2}</a>
       </div>
       <dl class="ep-in mt-20 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3" style="animation-delay:.32s">
-        <div class="flex items-baseline gap-2"><dd class="ep-num"><span data-count="30">30</span> min</dd><dt class="ep-muted">offertes</dt></div>
+        <div class="flex items-baseline gap-2"><dd class="ep-num"><span data-count="30">30</span> min</dd><dt class="ep-muted">{T.stat1}</dt></div>
         <span class="ep-dot" aria-hidden="true">·</span>
-        <div class="flex items-baseline gap-2"><dd class="ep-num"><span data-count="100">100</span> %</dd><dt class="ep-muted">indépendant</dt></div>
+        <div class="flex items-baseline gap-2"><dd class="ep-num"><span data-count="100">100</span> %</dd><dt class="ep-muted">{T.stat2}</dt></div>
       </dl>
     </div>
     <p class="ep-label absolute bottom-8 left-0 right-0 z-10 text-center">Le Chêne Patrimonial</p>
@@ -67,10 +137,10 @@ const etapes = [
     <div class="ep-athlete-fade pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="ep-wrap-lg relative z-10 -mt-6 flex px-5 pb-20 lg:mt-0 lg:min-h-[86vh] lg:items-center lg:py-28">
       <div class="max-w-md">
-        <p class="ep-label mb-4 text-left">L'athlète devenu conseiller</p>
-        <h2 class="ep-h2 mb-5">Tout ce qui dure se prépare longtemps à l'avance.</h2>
-        <p class="ep-muted mb-8">J'ai été sportif de haut niveau avant d'être conseiller. J'applique la même exigence à chaque patrimoine.</p>
-        <a href="/parcours" class="ep-link">Mon parcours →</a>
+        <p class="ep-label mb-4 text-left">{T.storyLabel}</p>
+        <h2 class="ep-h2 mb-5">{T.storyTitle}</h2>
+        <p class="ep-muted mb-8">{T.storyBody}</p>
+        <a href={L('/parcours')} class="ep-link">{T.storyLink}</a>
       </div>
     </div>
   </section>
@@ -78,11 +148,11 @@ const etapes = [
   <!-- POUR QUI -->
   <section class="ep-sec">
     <div class="ep-wrap">
-      <p class="ep-label mb-4">Pour qui</p>
-      <h2 class="ep-h2 mb-12 text-center">Quatre profils, une même exigence.</h2>
+      <p class="ep-label mb-4">{T.whoLabel}</p>
+      <h2 class="ep-h2 mb-12 text-center">{T.whoTitle}</h2>
       <div class="grid gap-4 sm:grid-cols-2">
-        {profils.map((p) => (
-          <a href={p.href} class="ep-card ep-hover block p-8">
+        {T.profils.map((p) => (
+          <a href={L(p.href)} class="ep-card ep-hover block p-8">
             <h3 class="ep-h3 mb-3">{p.t}</h3>
             <p class="ep-muted">{p.d}</p>
           </a>
@@ -94,13 +164,13 @@ const etapes = [
   <!-- MÉTHODE -->
   <section class="ep-sec">
     <div class="ep-wrap">
-      <p class="ep-label mb-4">La méthode</p>
-      <h2 class="ep-h2 mb-14 text-center">Quatre temps, à votre rythme.</h2>
+      <p class="ep-label mb-4">{T.methodLabel}</p>
+      <h2 class="ep-h2 mb-14 text-center">{T.methodTitle}</h2>
       <ol class="ep-line relative ml-3 space-y-12 pl-10" data-progress>
-        {etapes.map((e, i) => (
+        {T.etapes.map((e, i) => (
           <li class="relative">
             <span class="ep-node" aria-hidden="true"></span>
-            <p class="ep-step mb-2">Étape {String(i + 1).padStart(2, '0')}</p>
+            <p class="ep-step mb-2">{T.step} {String(i + 1).padStart(2, '0')}</p>
             <h3 class="ep-h3 mb-2">{e.t}</h3>
             <p class="ep-muted">{e.d}</p>
           </li>
@@ -112,30 +182,30 @@ const etapes = [
   <!-- AVIS -->
   <section class="ep-sec">
     <div class="ep-wrap-lg">
-      <p class="ep-label mb-4">Avis clients</p>
-      <h2 class="ep-h2 mb-12 text-center">Ils en parlent mieux que moi.</h2>
+      <p class="ep-label mb-4">{T.reviewsLabel}</p>
+      <h2 class="ep-h2 mb-12 text-center">{T.reviewsTitle}</h2>
       <div class="grid gap-4 md:grid-cols-3">
         {avis.map((a) => (
-          <figure class="ep-card flex flex-col p-8">
+          <figure class="ep-card flex flex-col p-8" lang="fr">
             <blockquote class="ep-quote flex-1">« {a.quote} »</blockquote>
             <figcaption class="ep-muted mt-6 text-sm">{a.author}{a.role ? `, ${a.role}` : ''}</figcaption>
           </figure>
         ))}
       </div>
-      <p class="mt-10 text-center"><a href="/avis" class="ep-link">Lire tous les avis →</a></p>
+      {T.reviewsNote && <p class="ep-muted mt-6 text-center text-sm">{T.reviewsNote}</p>}
+      <p class="mt-10 text-center"><a href={L('/avis')} class="ep-link">{T.reviewsLink}</a></p>
     </div>
   </section>
 
   <!-- RDV -->
   <section class="ep-sec pb-40 text-center">
     <div class="ep-wrap">
-      <h2 class="ep-title-sm mb-6">Réservez votre<br /><em>premier échange.</em></h2>
-      <p class="ep-muted mb-10">30 minutes offertes, sans engagement.</p>
-      <a href="/rendez-vous" class="ep-btn ep-btn-or">Choisir un créneau</a>
+      <h2 class="ep-title-sm mb-6">{T.finalTitle1}<br /><em>{T.finalTitle2}</em></h2>
+      <p class="ep-muted mb-10">{T.finalBody}</p>
+      <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.finalCta}</a>
     </div>
   </section>
 </div>
-
 
 <script>
   // Chiffres qui défilent comme un chrono, et ligne de méthode qui se remplit
