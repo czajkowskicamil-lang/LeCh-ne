@@ -213,7 +213,7 @@ const T = lang === 'en'
       <ul class="ep-track">
         {[...partners, ...partners].map((p, i) => (
           <li aria-hidden={i >= partners.length ? 'true' : undefined}>
-            <img src={p.src} alt={i < partners.length ? p.name : ''} loading="lazy" decoding="async" class:list={['ep-logo', { 'ep-logo-photo': p.photo }]} />
+            <img src={p.src} alt={i < partners.length ? p.name : ''} width="150" height="30" loading="eager" decoding="async" class:list={['ep-logo', { 'ep-logo-photo': p.photo }]} />
           </li>
         ))}
       </ul>
