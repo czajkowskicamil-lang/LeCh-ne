@@ -21,10 +21,13 @@ const extraits: Record<string, string> = {
   'Slobodan Ocokoljic':
     "[…] Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel : j'aurais certainement pu mieux faire fructifier mon épargne ! Je recommande vivement Camil et Le Chêne Patrimonial pour la qualité de l'accompagnement et la confiance qu'ils inspirent.",
 };
-const avis = ['Slobodan Ocokoljic', 'Kévin Monier', 'Temenuzhka Nikolova']
+const rolesEn: Record<string, string> = { 'Athlète professionnel': 'Professional athlete', Entrepreneure: 'Entrepreneur' };
+// Troisième avis : le plus « pro » dans la langue de la page.
+const avis = ['Slobodan Ocokoljic', 'Kévin Monier', lang === 'en' ? 'Aleksandra Ocokoljic' : 'Véronique P.']
   .map((a) => temoignages.find((x) => x.author === a))
   .filter((x): x is NonNullable<typeof x> => Boolean(x))
-  .map((x) => ({ ...x, quote: extraits[x.author] ?? x.quote }));
+  .map((x) => ({ ...x, quote: extraits[x.author] ?? x.quote }))
+  .map((x) => ({ ...x, role: lang === 'en' && x.role ? (rolesEn[x.role] ?? x.role) : x.role }));
 
 const T = lang === 'en'
   ? {
@@ -59,7 +62,7 @@ const T = lang === 'en'
       ],
       reviewsLabel: 'Client reviews',
       reviewsTitle: 'They say it better than I do.',
-      reviewsNote: 'Reviews quoted in their original French.',
+      reviewsNote: 'Some reviews are quoted in their original French.',
       reviewsLink: 'Read all reviews →',
       finalTitle1: 'Book your',
       finalTitle2: 'first conversation.',
@@ -195,7 +198,7 @@ const T = lang === 'en'
       <h2 class="ep-h2 mb-12 text-center">{T.reviewsTitle}</h2>
       <div class="grid gap-4 md:grid-cols-3">
         {avis.map((a) => (
-          <figure class="ep-card flex flex-col p-8" lang="fr">
+          <figure class="ep-card flex flex-col p-8" lang={a.author === 'Aleksandra Ocokoljic' ? 'en' : 'fr'}>
             <blockquote class="ep-quote flex-1">« {a.quote} »</blockquote>
             <figcaption class="ep-muted mt-6 text-sm">{a.author}{a.role ? `, ${a.role}` : ''}</figcaption>
           </figure>
