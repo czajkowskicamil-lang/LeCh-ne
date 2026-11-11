@@ -1,0 +1,149 @@
+---
+// Page de prise de rendez-vous : la dernière marche de l'entonnoir.
+// Tous les boutons « Prendre rendez-vous » du site mènent ici, au lieu de
+// renvoyer le visiteur vers Calendly dans un nouvel onglet. On rassure, puis
+// l'agenda est intégré directement dans la page.
+// La page d'origine est transmise à Calendly (utm_content) : Camil voit dans
+// chaque réservation d'où vient le visiteur.
+import { site } from '../data/site';
+import { temoignages } from '../data/temoignages';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const avis = temoignages.find((x) => x.author === 'Véronique P.') ?? temoignages[0];
+
+const tx = lang === 'en'
+  ? {
+      eyebrow: 'Book a call',
+      h1: 'A first 30-minute conversation, on me.',
+      lead: 'By video or at the Montpellier office. No commitment, no signature: just a clear conversation about your situation.',
+      stepsTitle: 'What happens during those 30 minutes',
+      steps: [
+        'You tell me about your situation, your projects and what keeps you up at night.',
+        'I ask the questions that matter: income, taxes, existing contracts, timeline.',
+        'You leave with the two or three priorities that matter for you, and you decide what comes next.',
+      ],
+      fee: 'I tell you how I am paid before any operation.',
+      fallback: 'Prefer the phone?',
+      calTitle: 'Choose your slot',
+      done: 'It is booked. You will receive the confirmation by email, with the meeting link.',
+      noscript: 'Open the calendar',
+      see: 'See available slots ↓',
+    }
+  : {
+      eyebrow: 'Prendre rendez-vous',
+      h1: 'Un premier échange de 30 minutes, offert.',
+      lead: "En visio ou au cabinet de Montpellier. Sans engagement, sans signature : une conversation claire sur votre situation.",
+      stepsTitle: 'Ce qui se passe pendant ces 30 minutes',
+      steps: [
+        'Vous me racontez votre situation, vos projets et ce qui vous préoccupe.',
+        'Je pose les questions qui comptent : revenus, fiscalité, contrats existants, calendrier.',
+        'Vous repartez avec les deux ou trois priorités qui vous concernent, et vous décidez de la suite.',
+      ],
+      fee: 'Je vous dis comment je suis rémunéré avant toute opération.',
+      fallback: 'Vous préférez le téléphone ?',
+      calTitle: 'Choisissez votre créneau',
+      done: "C'est réservé. Vous recevez la confirmation par email, avec le lien de la visio.",
+      noscript: "Ouvrir l'agenda",
+      see: 'Voir les créneaux ↓',
+    };
+---
+
+<section class="pt-16 pb-20 md:pt-24 md:pb-28">
+  <div class="shell grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+    <!-- Réassurance -->
+    <div class="lg:col-span-5 reveal">
+      <p class="eyebrow mb-5 flex items-center gap-3">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        {tx.eyebrow}
+      </p>
+      <h1 class="font-serif text-display text-ink mb-6">{tx.h1}</h1>
+      <p class="text-lg text-ink/80 leading-relaxed mb-10">{tx.lead}</p>
+      <a href="#creneaux" class="btn-primary mb-12 lg:hidden">{tx.see}</a>
+
+      <h2 class="font-serif text-2xl text-ink mb-5">{tx.stepsTitle}</h2>
+      <ol class="space-y-5 mb-8">
+        {tx.steps.map((s, i) => (
+          <li class="flex gap-4">
+            <span class="font-serif text-or text-xl leading-none pt-1">{String(i + 1).padStart(2, '0')}</span>
+            <span class="text-ink/80 leading-relaxed">{s}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="text-sm text-ink/70 border-l-2 border-or/60 pl-4 mb-10">{tx.fee}</p>
+
+      {avis && (
+        <figure class="bg-cream-soft border border-ink/10 p-6 mb-10">
+          <blockquote class="font-serif text-lg leading-snug text-ink">« {avis.quote} »</blockquote>
+          <figcaption class="mt-4 text-sm text-stone">{avis.author}{avis.role ? `, ${avis.role}` : ''}</figcaption>
+        </figure>
+      )}
+
+      <p class="text-sm text-ink/70">
+        {tx.fallback} <a href={`tel:${site.phone.tel}`} class="link-underline text-chene font-medium">{site.phone.display}</a>
+      </p>
+      <p class="text-xs text-stone mt-6">ORIAS 25 00 00 16 · {site.city}</p>
+    </div>
+
+    <!-- Agenda intégré -->
+    <div id="creneaux" class="lg:col-span-7 scroll-mt-24 reveal" style="animation-delay:120ms">
+      <div class="bg-cream-soft border border-ink/10 p-4 md:p-6">
+        <div class="flex items-center justify-between mb-4 px-2">
+          <h2 class="font-serif text-2xl text-ink">{tx.calTitle}</h2>
+          <span class="inline-flex items-center gap-2 text-xs uppercase tracking-micro bg-ink text-cream px-3 py-1">
+            <span class="w-2 h-2 rounded-full bg-or-light"></span>
+            30 min
+          </span>
+        </div>
+        <div id="rdv-calendly" data-url={site.calendly} style="min-width:300px;height:700px;"></div>
+        <p id="rdv-done" role="status" class="hidden bg-ink text-cream p-6 font-serif text-xl">{tx.done}</p>
+        <noscript>
+          <a href={site.calendly} target="_blank" rel="noopener" class="btn-primary mt-6">{tx.noscript}</a>
+        </noscript>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Charge l'agenda Calendly dans la page, avec la page d'origine en utm_content.
+  function initRdv() {
+    const box = document.getElementById('rdv-calendly') as HTMLElement | null;
+    if (!box || box.dataset.ready) return;
+    box.dataset.ready = '1';
+
+    let from = '';
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      if (ref && ref.host === location.host) from = ref.pathname;
+    } catch {}
+    const params = new URLSearchParams({
+      hide_gdpr_banner: '1',
+      primary_color: '2d4a33',
+      utm_source: 'site',
+      utm_medium: 'page-rendez-vous',
+      utm_content: (from || 'direct').slice(0, 100),
+    });
+    const url = `${box.dataset.url}?${params}`;
+
+    const start = () => (window as any).Calendly?.initInlineWidget({ url, parentElement: box });
+    if ((window as any).Calendly) return start();
+    const s = document.createElement('script');
+    s.src = 'https://assets.calendly.com/assets/external/widget.js';
+    s.async = true;
+    s.onload = start;
+    document.head.appendChild(s);
+  }
+
+  // Réservation confirmée : message clair dans la page.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://calendly.com') return;
+    if (e.data?.event === 'calendly.event_scheduled') {
+      document.getElementById('rdv-done')?.classList.remove('hidden');
+      document.getElementById('rdv-done')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  initRdv();
+  document.addEventListener('astro:page-load', initRdv);
+</script>

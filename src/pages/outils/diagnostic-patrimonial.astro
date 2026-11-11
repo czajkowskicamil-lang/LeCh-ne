@@ -43,7 +43,7 @@ const description =
       <div
         id="diag-app"
         class="reveal"
-        data-calendly={site.calendly}
+        data-calendly="/rendez-vous"
         data-contact="/contact"
       >
         <!-- Barre de progression -->
@@ -64,7 +64,7 @@ const description =
       <noscript>
         <div class="bg-cream-soft border border-ink/10 rounded-none p-8 text-center">
           <p class="text-ink/80">Ce diagnostic interactif nécessite JavaScript. Vous pouvez aussi
-            <a href={site.calendly} class="text-chene underline" target="_blank" rel="noopener">prendre rendez-vous directement</a>.</p>
+            <a href="/rendez-vous" class="text-chene underline">prendre rendez-vous directement</a>.</p>
         </div>
       </noscript>
     </div>
@@ -748,7 +748,7 @@ const description =
           <h3 class="font-serif text-2xl md:text-3xl text-cream mb-4 max-w-xl mx-auto">Prenez rendez-vous avec un conseiller du Chêne Patrimonial pour obtenir une étude patrimoniale complète.</h3>
           <p class="text-cream/70 max-w-lg mx-auto mb-8 leading-relaxed">Ce diagnostic pose la photographie. Ensemble, nous la transformons en stratégie sur mesure, chiffrée et actionnable.</p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-or text-base px-8 py-3.5">
+            <a href="${CALENDLY}" class="btn-or text-base px-8 py-3.5">
               Prendre rendez-vous
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -913,7 +913,7 @@ const description =
               <p class="font-serif text-xl text-ink mb-1">Votre rapport vous a été envoyé par email</p>
               <p class="text-sm text-ink/60 mb-4">Il vient de partir vers <strong class="text-ink">${email}</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite pour en parler.</p>
               <button id="diag-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button>
-              <div class="mt-5"><a href="${CALENDLY}" target="_blank" rel="noopener" class="btn-primary">Choisir un créneau avec Camil</a></div>
+              <div class="mt-5"><a href="${CALENDLY}" class="btn-primary">Choisir un créneau avec Camil</a></div>
             </div>`;
             const again = form.querySelector('#diag-pdf-again') as HTMLButtonElement | null;
             if (again) again.onclick = () => downloadPdf();

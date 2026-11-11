@@ -223,7 +223,7 @@ const description = "Calculate your freedom number and the age at which your sav
   (function () {
     const eur = n => '€' + Math.round(n).toLocaleString('en-GB');
     const TAUX_RETRAIT = 0.035;
-    const CALENDLY = 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+    const CALENDLY = '/en/rendez-vous';
     let state = {};
 
     function calc(){
@@ -349,7 +349,7 @@ const description = "Calculate your freedom number and the age at which your sav
             if(res.ok&&data.ok){
               downloadPdf();
               const em=String(fd.get('email')||'');
-              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Your plan has been sent to you by email</p><p class="text-sm text-ink/60 mb-4">It\'s on its way to <strong class="text-ink">'+em+'</strong> (check your spam folder just in case). Camil will get back to you very soon.</p><button id="lf-pdf-again" class="btn-ghost text-sm">Also download it now</button><div class="mt-5"><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="btn-primary">Choose a time with Camil</a></div></div>';
+              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Your plan has been sent to you by email</p><p class="text-sm text-ink/60 mb-4">It\'s on its way to <strong class="text-ink">'+em+'</strong> (check your spam folder just in case). Camil will get back to you very soon.</p><button id="lf-pdf-again" class="btn-ghost text-sm">Also download it now</button><div class="mt-5"><a href="'+CALENDLY+'" class="btn-primary">Choose a time with Camil</a></div></div>';
               const again=form.querySelector('#lf-pdf-again'); if(again) again.onclick=downloadPdf;
             } else { showMsg('Something went wrong. Please try again or contact us directly.',false); btnLabel.textContent='Get my plan (PDF)'; }
           }catch(err){ showMsg('Connection failed. Please try again in a moment.',false); btnLabel.textContent='Get my plan (PDF)'; }

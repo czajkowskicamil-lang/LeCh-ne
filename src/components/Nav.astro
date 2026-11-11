@@ -29,6 +29,7 @@ const avisHref = localizePath('/avis', lang);
 // Le Faitage a son propre site : le lien sort, il ne reste pas dans le site
 // du cabinet, pour que le visiteur sache toujours chez qui il est.
 const faitageHref = 'https://www.lefaitage.fr';
+const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
 ---
 
 <header
@@ -66,7 +67,7 @@ const faitageHref = 'https://www.lefaitage.fr';
         <span>{t('nav.avisShort')}</span>
       </a>
       <LanguageToggle />
-      <a href={site.calendly} target="_blank" rel="noopener" class="nav-cta hidden sm:inline-flex btn-primary text-sm">
+      <a href={rdvHref} class="nav-cta hidden sm:inline-flex btn-primary text-sm">
         {t('nav.rdv')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
       </a>
@@ -135,7 +136,7 @@ const faitageHref = 'https://www.lefaitage.fr';
         <a href={`mailto:${site.email}`} class="text-cream/70 hover:text-or-light transition-colors">{site.email}</a>
         <a href={site.linkedin} target="_blank" rel="noopener" class="text-cream/70 hover:text-or-light transition-colors">LinkedIn</a>
       </div>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-or self-start md:self-auto">
+      <a href={rdvHref} class="btn-or self-start md:self-auto">
         {t('nav.rdv')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>

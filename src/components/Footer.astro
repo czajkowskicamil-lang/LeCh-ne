@@ -22,6 +22,7 @@ const specialites = [
 const mentionsHref = localizePath('/mentions-legales', lang);
 const privacyHref = localizePath('/confidentialite', lang);
 const newsletterHref = localizePath('/newsletter', lang);
+const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
 ---
 
 <footer class="relative bg-ink text-cream/85 mt-40 overflow-hidden">
@@ -37,7 +38,7 @@ const newsletterHref = localizePath('/newsletter', lang);
         {t('footer.title1')}<br/>
         <span class="italic text-or-light">{t('footer.title2')}</span>
       </h2>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-or inline-flex">
+      <a href={rdvHref} class="btn-or inline-flex">
         {t('footer.cta')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>

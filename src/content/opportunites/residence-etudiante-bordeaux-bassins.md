@@ -83,4 +83,4 @@ En face, deux points à regarder lucidement : le rendement dépend de la solidit
 
 Je vous transmets la fiche complète du lot, et nous regardons ce que ça donne dans votre situation : votre tranche d'imposition, votre capacité d'emprunt, et l'intérêt réel de l'opération pour vous. Si le calcul ne tient pas, je vous le dis.
 
-[Prenons rendez-vous](https://calendly.com/camil-cz-lechenepatrimonial/30min) ou [écrivez-moi directement](/contact).
+[Prenons rendez-vous](/rendez-vous) ou [écrivez-moi directement](/contact).

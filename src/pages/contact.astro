@@ -54,10 +54,10 @@ import { site } from '../data/site';
           <p class="text-sm text-cream/70 mb-8 leading-relaxed">
             Un contexte particulier ? Un dossier complexe ? Quelques mots ici et je reviens vers vous sous 24h.
           </p>
-
-          <!-- Formspree-compatible form. Remplacer l'action par votre endpoint. -->
+          <!-- Envoi via /api/contact (Brevo transactionnel vers Camil) -->
           <form
-            action="https://formspree.io/f/REPLACE_ME"
+            id="contact-form"
+            action="/api/contact"
             method="POST"
             class="space-y-5 flex-1 flex flex-col"
           >
@@ -83,6 +83,8 @@ import { site } from '../data/site';
               <label for="message" class="block text-xs uppercase tracking-micro text-or-light mb-2">Votre message</label>
               <textarea id="message" name="message" rows="5" required class="w-full bg-transparent border-b border-cream/20 py-2 text-cream placeholder:text-cream/40 focus:border-or focus:outline-none resize-none" placeholder="Décrivez en quelques mots votre situation ou votre question…"></textarea>
             </div>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+            <p id="contact-status" role="status" class="text-sm text-or-light hidden"></p>
             <button type="submit" class="btn-or w-full justify-center mt-auto">
               Envoyer le message
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -117,4 +119,34 @@ import { site } from '../data/site';
       </div>
     </div>
   </section>
+
+<script>
+  // Envoi du formulaire sans quitter la page, retour visible pour le visiteur.
+  function bindContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = '1';
+    const status = document.getElementById('contact-status');
+    const btn = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.page = location.pathname;
+      btn.disabled = true;
+      status.classList.remove('hidden');
+      status.textContent = 'Envoi en cours…';
+      try {
+        const r = await fetch('/api/contact', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+        if (!r.ok) throw new Error(String(r.status));
+        form.reset();
+        status.textContent = 'Merci, votre message est bien parti. Je reviens vers vous sous 24h.';
+      } catch {
+        status.textContent = "L'envoi n'a pas abouti. Écrivez-moi directement à camil.cz@lechenepatrimonial.com ou appelez le 06 12 82 91 90.";
+        btn.disabled = false;
+      }
+    });
+  }
+  bindContactForm();
+  document.addEventListener('astro:page-load', bindContactForm);
+</script>
 </Base>

@@ -15,6 +15,7 @@ export type Lang = keyof typeof languages;
 export const translatedRoutes = new Set<string>([
   '/',
   '/contact',
+  '/rendez-vous',
   '/manifeste',
   '/parcours',
   '/avis',

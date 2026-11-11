@@ -223,7 +223,7 @@ const description = "Calculez votre capital liberté et l'âge auquel votre épa
   (function () {
     const eur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
     const TAUX_RETRAIT = 0.035;
-    const CALENDLY = 'https://calendly.com/camil-cz-lechenepatrimonial/30min';
+    const CALENDLY = '/rendez-vous';
     let state = {};
 
     function calc(){
@@ -349,7 +349,7 @@ const description = "Calculez votre capital liberté et l'âge auquel votre épa
             if(res.ok&&data.ok){
               downloadPdf();
               const em=String(fd.get('email')||'');
-              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Votre plan vous a été envoyé par email</p><p class="text-sm text-ink/60 mb-4">Il part vers <strong class="text-ink">'+em+'</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite.</p><button id="lf-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button><div class="mt-5"><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="btn-primary">Choisir un créneau avec Camil</a></div></div>';
+              form.innerHTML='<div class="text-center py-4"><div class="mx-auto mb-3 w-12 h-12 rounded-full bg-chene/10 grid place-items-center text-chene"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg></div><p class="font-serif text-xl text-ink mb-1">Votre plan vous a été envoyé par email</p><p class="text-sm text-ink/60 mb-4">Il part vers <strong class="text-ink">'+em+'</strong> (pensez à vérifier vos spams). Camil vous recontacte très vite.</p><button id="lf-pdf-again" class="btn-ghost text-sm">Télécharger aussi maintenant</button><div class="mt-5"><a href="'+CALENDLY+'" class="btn-primary">Choisir un créneau avec Camil</a></div></div>';
               const again=form.querySelector('#lf-pdf-again'); if(again) again.onclick=downloadPdf;
             } else { showMsg('Un souci est survenu. Réessayez ou écrivez-nous directement.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }
           }catch(err){ showMsg('Connexion impossible. Réessayez dans un instant.',false); btnLabel.textContent='Recevoir mon plan (PDF)'; }

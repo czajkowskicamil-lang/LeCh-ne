@@ -6,6 +6,7 @@ import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
+const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
 ---
 
 <!-- Hero cinématique plein écran — forêt à l'aube, étalonnée navy/or -->
@@ -57,7 +58,7 @@ const diagnosticHref = localizePath('/outils/diagnostic-patrimonial', lang);
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </Magnetic>
-      <a href={site.calendly} target="_blank" rel="noopener" class="btn-ghost-cream">{t('hero.cta2')}</a>
+      <a href={rdvHref} class="btn-ghost-cream">{t('hero.cta2')}</a>
     </div>
 
     <!-- Références : grille libellée, sobre -->
