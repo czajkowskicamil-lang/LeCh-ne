@@ -36,7 +36,7 @@ const partners = [
 const rolesEn: Record<string, string> = { 'Athlète professionnel': 'Professional athlete', Entrepreneure: 'Entrepreneur' };
 // Troisième avis : Véronique P., ton le plus « pro ». Pas Aleksandra Ocokoljic :
 // deux avis du même nom de famille côte à côte feraient arrangé.
-const avis = ['Slobodan Ocokoljic', 'Kévin Monier', 'Véronique P.']
+const avis = ['Kévin Monier', 'Véronique P.']
   .map((a) => temoignages.find((x) => x.author === a))
   .filter((x): x is NonNullable<typeof x> => Boolean(x))
   .map((x) => ({ ...x, quote: extraits[x.author] ?? x.quote }))
@@ -44,7 +44,7 @@ const avis = ['Slobodan Ocokoljic', 'Kévin Monier', 'Véronique P.']
 
 const T = lang === 'en'
   ? {
-      pill: 'Elite athletes',
+      pill: 'Your career lasts 10 years. Your money has to last 60.',
       title1: 'Grow what',
       title2: 'truly matters.',
       h1: 'Independent wealth advisor in Montpellier, France',
@@ -52,6 +52,9 @@ const T = lang === 'en'
       cta2: 'Free wealth check-up',
       stat1: 'complimentary',
       stat2: 'independent',
+      proofLabel: 'A professional athlete',
+      proofQuote: 'I just wish I had met Camil sooner, during my career as a professional athlete.',
+      proofNote: 'Translated from French.',
       storyLabel: 'From athlete to advisor',
       storyTitle: 'Everything that lasts is prepared well in advance.',
       storyBody: 'I competed as an elite athlete before becoming an advisor. I bring the same discipline to every client’s wealth.',
@@ -84,7 +87,7 @@ const T = lang === 'en'
       finalCta: 'Choose a time',
     }
   : {
-      pill: 'Sportifs de haut niveau',
+      pill: 'Ta carrière dure 10 ans. Ton argent doit en tenir 60.',
       title1: 'Faire fructifier',
       title2: 'ce qui compte.',
       h1: 'Conseiller en gestion de patrimoine indépendant à Montpellier',
@@ -92,6 +95,9 @@ const T = lang === 'en'
       cta2: 'Mon diagnostic gratuit',
       stat1: 'offertes',
       stat2: 'indépendant',
+      proofLabel: 'Un athlète professionnel en parle',
+      proofQuote: "Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel.",
+      proofNote: '',
       storyLabel: "L'athlète devenu conseiller",
       storyTitle: "Tout ce qui dure se prépare longtemps à l'avance.",
       storyBody: "J'ai été sportif de haut niveau avant d'être conseiller. J'applique la même exigence à chaque patrimoine.",
@@ -151,6 +157,15 @@ const T = lang === 'en'
       </dl>
     </div>
     <p class="ep-label absolute bottom-8 left-0 right-0 z-10 text-center">Le Chêne Patrimonial</p>
+  </section>
+
+  <!-- PREUVE : un athlète professionnel parle, juste après le haut de page -->
+  <section class="ep-proof px-5 py-24 text-center">
+    <figure class="mx-auto max-w-4xl">
+      <p class="ep-label mb-8">{T.proofLabel}</p>
+      <blockquote class="ep-proof-quote">« {T.proofQuote} »</blockquote>
+      <figcaption class="ep-muted mt-8 text-sm tracking-wide">Slobodan Ocokoljic · {lang === 'en' ? 'Professional athlete' : 'Athlète professionnel'}{T.proofNote && <span class="block mt-1 text-xs opacity-70">{T.proofNote}</span>}</figcaption>
+    </figure>
   </section>
 
   <!-- HISTOIRE : photo de course en grand, fondue dans le fond -->
@@ -225,7 +240,7 @@ const T = lang === 'en'
     <div class="ep-wrap-lg">
       <p class="ep-label mb-4">{T.reviewsLabel}</p>
       <h2 class="ep-h2 mb-12 text-center">{T.reviewsTitle}</h2>
-      <div class="grid gap-4 md:grid-cols-3">
+      <div class="grid gap-4 md:grid-cols-2">
         {avis.map((a) => (
           <figure class="ep-card flex flex-col p-8" lang="fr">
             <blockquote class="ep-quote flex-1">« {a.quote} »</blockquote>
@@ -370,6 +385,9 @@ const T = lang === 'en'
   .ep-logo-photo { filter: grayscale(1) invert(1) contrast(1.4); mix-blend-mode: screen; }
   .ep-track li:hover .ep-logo { opacity: .95; }
   @keyframes ep-scroll { to { transform: translateX(-50%); } }
+  .ep-proof { border-bottom: 1px solid var(--line); }
+  .ep-proof-quote { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.9rem, 4vw, 3.2rem); line-height: 1.15; color: var(--cream); }
+  .ep-pill { font-size: 15px; }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
   @keyframes ep-up { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } .ep-track { animation: none; } }
