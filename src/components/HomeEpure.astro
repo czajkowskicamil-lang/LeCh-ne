@@ -29,6 +29,8 @@ const etapes = [
 <div class="ep">
   <!-- HERO -->
   <section class="ep-hero relative -mt-20 flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 pt-32 pb-20 text-center">
+    <img src="/hero-forest.jpg" alt="" aria-hidden="true" fetchpriority="high" decoding="async" class="ep-forest absolute inset-0 h-full w-full object-cover" />
+    <div aria-hidden="true" class="ep-veil absolute inset-0"></div>
     <div aria-hidden="true" class="ep-glow absolute inset-0"></div>
     <div class="relative z-10 flex flex-col items-center">
       <p class="ep-pill ep-in mb-12 inline-flex items-center gap-3 rounded-full px-6 py-3 text-[15px]">
@@ -139,6 +141,9 @@ const etapes = [
 <style>
   .ep { --bg: #0A0D14; --card: #121722; --line: rgba(242,237,228,0.09); --cream: #F2EDE4; --gold: #C9A55C;
         background: var(--bg); color: var(--cream); }
+  .ep-forest { filter: saturate(0.85) brightness(0.8) sepia(0.12); transform: scale(1.06); animation: ep-drift 30s ease-in-out infinite alternate; }
+  @keyframes ep-drift { to { transform: scale(1.12) translate3d(-1%, -1%, 0); } }
+  .ep-veil { background: linear-gradient(180deg, rgba(10,13,20,0.55) 0%, rgba(10,13,20,0.62) 55%, #0A0D14 100%); }
   .ep-glow { background: radial-gradient(55% 45% at 50% 48%, rgba(201,165,92,0.10), transparent 70%); }
   .ep-pill { border: 1px solid var(--line); background: rgba(242,237,228,0.02); color: rgba(242,237,228,0.9); }
   .ep-title, .ep-title-sm, .ep-h2, .ep-h3, .ep-quote {
