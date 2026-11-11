@@ -700,10 +700,12 @@
 html, body { background: var(--th-bg) !important; color: var(--th-cream); }
 
 /* Fonds */
-[class*="bg-cream"], [class*="bg-white"], [class*="bg-navy"], [class*="bg-ink"],
-[class*="from-cream"], [class*="from-navy"], [class*="from-ink"] {
+[class*="bg-cream"], [class*="bg-white"], [class*="bg-navy"], [class*="bg-ink"] {
   background-color: var(--th-bg) !important;
 }
+/* Les dégradés qui fondent une photo vers le texte restent transparents :
+   sans ça, ils deviennent un aplat opaque qui cache l'image. */
+[class*="bg-gradient-to"] { background-color: transparent !important; }
 /* Cartes et encadrés (fonds « doux » et vert chêne) : un cran plus clair */
 [class*="bg-cream-soft"], [class*="bg-cream-deep"], [class*="bg-white"], [class*="bg-chene"] {
   background-color: var(--th-card) !important;

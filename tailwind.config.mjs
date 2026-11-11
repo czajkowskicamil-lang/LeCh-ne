@@ -6,14 +6,14 @@ export default {
       colors: {
         // Primary dark — deep navy, matches the logo (assombri 2026-04-29)
         ink: {
-          DEFAULT: '#03102E',
-          soft: '#0A1F4F',
+          DEFAULT: '#0A0D14',
+          soft: '#11151F',
         },
         navy: {
-          DEFAULT: '#03102E',
-          deep: '#061238',
-          darker: '#03091C',
-          light: '#1B3470',
+          DEFAULT: '#0A0D14',
+          deep: '#11151F',
+          darker: '#0A0D14',
+          light: '#1A1F2B',
         },
         cream: {
           DEFAULT: '#F5F1E8',
