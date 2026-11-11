@@ -168,15 +168,6 @@ const T = lang === 'en'
     </figure>
   </section>
 
-  <!-- ATHLÈTE EN COMPÉTITION : bandeau pleine largeur, maillot Le Chêne -->
-  <section class="ep-band relative overflow-hidden" aria-label={lang === 'en' ? 'Athlete in competition' : 'Athlète en compétition'}>
-    <picture>
-      <source type="image/webp" srcset="/athlete-competition.webp" />
-      <img src="/athlete-competition.jpg" alt={lang === 'en' ? 'Athlete in competition wearing the Le Chêne Patrimonial jersey' : 'Athlète en compétition avec le maillot Le Chêne Patrimonial'} width="2048" height="1365" loading="lazy" decoding="async" class="ep-band-img h-full w-full object-cover" />
-    </picture>
-    <div class="ep-band-fade absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-  </section>
-
   <!-- HISTOIRE : photo de course en grand, fondue dans le fond -->
   <section class="ep-athlete relative overflow-hidden">
     <div class="ep-athlete-media relative w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-[58%]" aria-hidden="true">
@@ -397,11 +388,6 @@ const T = lang === 'en'
   .ep-proof { border-bottom: 1px solid var(--line); }
   .ep-proof-quote { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.9rem, 4vw, 3.2rem); line-height: 1.15; color: var(--cream); }
   .ep-pill { font-size: 15px; }
-  .ep-band { height: clamp(420px, 78vh, 820px); }
-  .ep-band-img { object-position: 55% 35%; filter: saturate(.85) contrast(1.05) brightness(.9); }
-  .ep-band-fade { background:
-      linear-gradient(180deg, #0A0D14 0%, rgba(10,13,20,0) 18%, rgba(10,13,20,0) 78%, #0A0D14 100%),
-      radial-gradient(120% 90% at 55% 45%, transparent 55%, rgba(10,13,20,.55) 100%); }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
   @keyframes ep-up { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } .ep-track { animation: none; } }

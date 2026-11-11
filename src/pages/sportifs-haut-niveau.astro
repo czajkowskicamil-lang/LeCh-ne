@@ -148,6 +148,15 @@ const schema = [
     </div>
   </section>
 
+  <!-- Athlète en compétition, maillot Le Chêne -->
+  <section class="sport-band relative overflow-hidden" aria-label="Athlète en compétition">
+    <picture>
+      <source type="image/webp" srcset="/athlete-competition.webp" />
+      <img src="/athlete-competition.jpg" alt="Athlète en compétition avec le maillot Le Chêne Patrimonial" width="1700" height="890" loading="lazy" decoding="async" class="sport-band-img h-full w-full object-cover" />
+    </picture>
+    <div class="sport-band-fade pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  </section>
+
   <!-- Constats -->
   <section class="py-16 md:py-24 bg-cream-soft border-y border-ink/10">
     <div class="shell">
@@ -232,6 +241,9 @@ const schema = [
 </Base>
 
 <style>
+  .sport-band { height: clamp(380px, 70vh, 760px); }
+  .sport-band-img { object-position: 55% 30%; filter: saturate(.88) contrast(1.04) brightness(.92); }
+  .sport-band-fade { background: linear-gradient(180deg, #0A0D14 0%, rgba(10,13,20,0) 15%, rgba(10,13,20,0) 82%, #0A0D14 100%); }
   .sport-hero-img { object-position: 62% 60%; animation: sport-drift 30s ease-in-out infinite alternate; transform: scale(1.04); }
   @keyframes sport-drift { to { transform: scale(1.1) translate3d(-1%, -1%, 0); } }
   .sport-hero-veil {
