@@ -117,7 +117,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 text-sm font-medium tracking-wide transition-all duration-300 ease-out-expo rounded-none;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-medium tracking-wide transition-all duration-300 ease-out-expo rounded-full;
   }
 
   .btn-primary {
@@ -586,3 +586,50 @@
   }
 }
 @media(prefers-reduced-motion:reduce){.tool-bar{transition:none;}}
+
+
+/* ----------------------------------------------------------------------------
+   Boutons : une seule signature sur tout le site.
+   Forme arrondie, léger soulèvement et flèche qui glisse au survol, reflet de
+   lumière qui traverse le bouton. Les boutons dorés (action principale) ont en
+   plus un reflet discret toutes les 6 secondes, pour attirer l'œil sans crier.
+   -------------------------------------------------------------------------- */
+.btn, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, .btn-round {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 999px !important;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, background-color .3s, color .3s, border-color .3s;
+}
+.btn::before, .ep-btn::before, .mobile-cta-btn::before, .lc-cta-rdv::before, .ep-rdv::before, .btn-round::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 55%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,.38) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+  transform: translateX(-180%) skewX(-18deg);
+}
+.btn:hover::before, .ep-btn:hover::before, .mobile-cta-btn:hover::before, .lc-cta-rdv:hover::before, .ep-rdv:hover::before, .btn-round:hover::before {
+  animation: btn-sweep .9s cubic-bezier(.16,1,.3,1);
+}
+.btn-or::before, .ep-btn-or::before, .mobile-cta-btn::before, .nav-cta::before {
+  animation: btn-idle 6s cubic-bezier(.45,0,.2,1) 1.5s infinite;
+}
+.btn:hover, .ep-btn:hover, .mobile-cta-btn:hover, .lc-cta-rdv:hover, .ep-rdv:hover, .btn-round:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -14px rgba(3, 9, 28, .55);
+}
+.btn:active, .ep-btn:active, .mobile-cta-btn:active, .btn-round:active { transform: translateY(0) scale(.98); }
+.btn svg, .ep-btn svg, .mobile-cta-btn svg, .btn-round svg { position: relative; z-index: 2; transition: transform .35s cubic-bezier(.16,1,.3,1); }
+.btn:hover svg, .ep-btn:hover svg, .mobile-cta-btn:hover svg, .btn-round:hover svg { transform: translateX(4px); }
+@keyframes btn-sweep { from { transform: translateX(-180%) skewX(-18deg); } to { transform: translateX(260%) skewX(-18deg); } }
+@keyframes btn-idle {
+  0%, 72% { transform: translateX(-180%) skewX(-18deg); }
+  88%, 100% { transform: translateX(260%) skewX(-18deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn::before, .ep-btn::before, .mobile-cta-btn::before, .lc-cta-rdv::before, .ep-rdv::before, .btn-round::before, .nav-cta::before { animation: none !important; }
+  .btn:hover, .ep-btn:hover, .mobile-cta-btn:hover, .lc-cta-rdv:hover, .ep-rdv:hover, .btn-round:hover { transform: none; }
+}

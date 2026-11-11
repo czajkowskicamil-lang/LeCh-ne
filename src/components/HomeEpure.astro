@@ -127,7 +127,7 @@ const T = lang === 'en'
       </p>
       <h1 class="ep-sub ep-in mt-8" style="animation-delay:.16s">{T.h1}</h1>
       <div class="ep-in mt-12 flex flex-wrap justify-center gap-3" style="animation-delay:.24s">
-        <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.cta1}</a>
+        <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.cta1} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         <a href={L('/outils/diagnostic-patrimonial')} class="ep-btn ep-btn-ghost">{T.cta2}</a>
       </div>
       <dl class="ep-in mt-20 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3" style="animation-delay:.32s">
@@ -215,7 +215,7 @@ const T = lang === 'en'
     <div class="ep-wrap">
       <h2 class="ep-title-sm mb-6">{T.finalTitle1}<br /><em>{T.finalTitle2}</em></h2>
       <p class="ep-muted mb-10">{T.finalBody}</p>
-      <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.finalCta}</a>
+      <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.finalCta} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
   </section>
 </div>
@@ -316,7 +316,7 @@ const T = lang === 'en'
   .ep-hover:hover { border-color: rgba(201,165,92,0.45); transform: translateY(-2px); }
   .ep-line::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: linear-gradient(var(--gold), rgba(201,165,92,0.08)); }
   .ep-node { position: absolute; left: -2.5rem; top: 0.35rem; width: 11px; height: 11px; margin-left: -5px; border-radius: 999px; border: 1px solid var(--gold); background: var(--bg); box-shadow: 0 0 0 4px rgba(201,165,92,0.08); }
-  .ep-btn { display: inline-flex; align-items: center; border-radius: 999px; padding: 0.95rem 1.8rem; font-size: 0.92rem; font-weight: 500; transition: all .3s; }
+  .ep-btn { display: inline-flex; align-items: center; gap: .55rem; border-radius: 999px; padding: 0.95rem 1.8rem; font-size: 0.92rem; font-weight: 500; transition: all .3s; }
   .ep-btn-or { background: var(--gold); color: #0A0D14; }
   .ep-btn-or:hover { background: #D8B872; }
   .ep-btn-ghost { border: 1px solid rgba(242,237,228,0.2); color: var(--cream); }
