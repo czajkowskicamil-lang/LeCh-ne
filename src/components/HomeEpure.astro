@@ -8,6 +8,7 @@ import '@fontsource/cormorant-garamond/400-italic.css';
 import { temoignages } from '../data/temoignages';
 import { getLangFromUrl, localizePath } from '../i18n/utils';
 import { translatedRoutes } from '../i18n/ui';
+import WhatsAppButton from './WhatsAppButton.astro';
 
 const lang = getLangFromUrl(Astro.url);
 // Lien localisé seulement si la page existe en anglais (jamais de 404).
@@ -56,6 +57,9 @@ const T = lang === 'en'
       storyTitle: 'Everything that lasts is prepared well in advance.',
       storyBody: 'I competed as an elite athlete before becoming an advisor. I bring the same discipline to every client’s wealth.',
       storyLink: 'My story →',
+      toolEyebrow: 'For athletes',
+      toolTitle: 'Your post-career countdown, in 2 minutes.',
+      toolCta: 'Calculate',
       whoLabel: 'Who I work with',
       whoTitle: 'Four profiles, one standard.',
       profils: [
@@ -96,6 +100,9 @@ const T = lang === 'en'
       storyTitle: "Tout ce qui dure se prépare longtemps à l'avance.",
       storyBody: "J'ai été sportif de haut niveau avant d'être conseiller. J'applique la même exigence à chaque patrimoine.",
       storyLink: 'Mon parcours →',
+      toolEyebrow: 'Pour les sportifs',
+      toolTitle: 'Votre compte à rebours après-carrière, en 2 minutes.',
+      toolCta: 'Calculer',
       whoLabel: 'Pour qui',
       whoTitle: 'Quatre profils, une même exigence.',
       profils: [
@@ -142,6 +149,7 @@ const T = lang === 'en'
       <h1 class="ep-sub ep-in mt-8" style="animation-delay:.16s">{T.h1}</h1>
       <div class="ep-in mt-12 flex flex-wrap justify-center gap-3" style="animation-delay:.24s">
         <a href={L('/rendez-vous')} class="ep-btn ep-btn-or">{T.cta1} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        <WhatsAppButton tone="dark" />
         <a href={L('/outils/diagnostic-patrimonial')} class="ep-btn ep-btn-ghost">{T.cta2}</a>
       </div>
       <dl class="ep-in mt-20 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3" style="animation-delay:.32s">
@@ -168,6 +176,19 @@ const T = lang === 'en'
         <h2 class="ep-h2 mb-5">{T.storyTitle}</h2>
         <p class="ep-muted mb-8">{T.storyBody}</p>
         <a href={L('/parcours')} class="ep-link">{T.storyLink}</a>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <WhatsAppButton tone="dark" context="sport" />
+        </div>
+        <a href={L('/outils/apres-carriere')} class="ep-card ep-hover ep-tool mt-8 flex items-center justify-between gap-6 p-6">
+          <span>
+            <span class="ep-step block mb-2">{T.toolEyebrow}</span>
+            <span class="ep-h3 block !text-[1.45rem]">{T.toolTitle}</span>
+          </span>
+          <span class="ep-tool-go" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+          <span class="sr-only">{T.toolCta}</span>
+        </a>
       </div>
     </div>
   </section>
@@ -370,6 +391,9 @@ const T = lang === 'en'
   .ep-logo-photo { filter: grayscale(1) invert(1) contrast(1.4); mix-blend-mode: screen; }
   .ep-track li:hover .ep-logo { opacity: .95; }
   @keyframes ep-scroll { to { transform: translateX(-50%); } }
+  .ep-tool { background: rgba(17,21,31,.82); backdrop-filter: blur(8px); }
+  .ep-tool-go { flex: none; width: 46px; height: 46px; border-radius: 999px; display: grid; place-items: center; background: var(--gold); color: #0A0D14; transition: transform .45s cubic-bezier(.16,1,.3,1); }
+  .ep-tool:hover .ep-tool-go { transform: translateX(3px) rotate(-45deg); }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
   @keyframes ep-up { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } .ep-track { animation: none; } }
