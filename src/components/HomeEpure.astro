@@ -179,6 +179,8 @@ const T = lang === 'en'
     <div class="ep-athlete-fade pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="ep-wrap-lg relative z-10 -mt-6 flex px-5 pb-20 lg:mt-0 lg:min-h-[86vh] lg:items-center lg:py-28">
       <div class="max-w-md">
+        <p class="ep-name">Camil Czajkowski</p>
+        <p class="ep-role mb-6">{lang === 'en' ? 'Founder of Le Chêne Patrimonial' : 'Fondateur du Chêne Patrimonial'}</p>
         <p class="ep-label mb-4 text-left">{T.storyLabel}</p>
         <h2 class="ep-h2 mb-5">{T.storyTitle}</h2>
         <p class="ep-muted mb-8">{T.storyBody}</p>
@@ -388,6 +390,8 @@ const T = lang === 'en'
   .ep-proof { border-bottom: 1px solid var(--line); }
   .ep-proof-quote { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.9rem, 4vw, 3.2rem); line-height: 1.15; color: var(--cream); }
   .ep-pill { font-size: 15px; }
+  .ep-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7rem; font-weight: 400; color: var(--cream); letter-spacing: -0.005em; }
+  .ep-role { font-size: .9rem; color: rgba(242,237,228,.6); margin-top: .15rem; }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
   @keyframes ep-up { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } .ep-track { animation: none; } }
