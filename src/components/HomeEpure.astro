@@ -21,6 +21,18 @@ const extraits: Record<string, string> = {
   'Slobodan Ocokoljic':
     "[…] Je regrette simplement de ne pas avoir connu Camil plus tôt, notamment pendant ma carrière d'athlète professionnel : j'aurais certainement pu mieux faire fructifier mon épargne ! Je recommande vivement Camil et Le Chêne Patrimonial pour la qualité de l'accompagnement et la confiance qu'ils inspirent.",
 };
+// Banderole des partenaires (mêmes logos que l'ancien accueil).
+const partners = [
+  { name: 'Oddo BHF', src: '/partners/oddo-bhf.svg' },
+  { name: 'Nexity', src: '/partners/nexity.svg' },
+  { name: "Corum L'Épargne", src: '/partners/corum.svg' },
+  { name: 'MMA', src: '/partners/mma.jpg', photo: true },
+  { name: 'Nortia', src: '/partners/nortia.svg' },
+  { name: 'Cogedim', src: '/partners/cogedim.svg' },
+  { name: 'Icade', src: '/partners/icade.svg' },
+  { name: 'MJ Développement', src: '/partners/mj-developpement.svg' },
+  { name: 'April', src: '/partners/april.svg' },
+];
 const rolesEn: Record<string, string> = { 'Athlète professionnel': 'Professional athlete', Entrepreneure: 'Entrepreneur' };
 // Troisième avis : Véronique P., ton le plus « pro ». Pas Aleksandra Ocokoljic :
 // deux avis du même nom de famille côte à côte feraient arrangé.
@@ -61,6 +73,7 @@ const T = lang === 'en'
         { t: 'Strategy', d: 'An independent roadmap, with clear priorities.' },
         { t: 'Follow-up', d: 'Adjusted to every season of your life.' },
       ],
+      partnersLabel: 'They work with us',
       reviewsLabel: 'Client reviews',
       reviewsTitle: 'They say it better than I do.',
       reviewsNote: 'Reviews quoted in their original French.',
@@ -100,6 +113,7 @@ const T = lang === 'en'
         { t: 'Stratégie', d: 'Une feuille de route hiérarchisée, indépendante.' },
         { t: 'Suivi', d: 'Ajusté à chaque saison de votre vie.' },
       ],
+      partnersLabel: 'Nos partenaires',
       reviewsLabel: 'Avis clients',
       reviewsTitle: 'Ils en parlent mieux que moi.',
       reviewsNote: '',
@@ -192,6 +206,20 @@ const T = lang === 'en'
     </div>
   </section>
 
+  <!-- PARTENAIRES : banderole qui défile, logos crème, bords fondus -->
+  <section class="ep-partners py-16" aria-label={T.partnersLabel}>
+    <p class="ep-label mb-10">{T.partnersLabel}</p>
+    <div class="ep-marquee">
+      <ul class="ep-track">
+        {[...partners, ...partners].map((p, i) => (
+          <li aria-hidden={i >= partners.length ? 'true' : undefined}>
+            <img src={p.src} alt={i < partners.length ? p.name : ''} loading="lazy" decoding="async" class:list={['ep-logo', { 'ep-logo-photo': p.photo }]} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <!-- AVIS -->
   <section class="ep-sec">
     <div class="ep-wrap-lg">
@@ -273,16 +301,14 @@ const T = lang === 'en'
   }
   body:has(.ep) header.nav-hero .nav-faitage { color: #F2EDE4; }
   body:has(.ep) header.nav-hero img { filter: none; }
-  body:has(.ep) header.nav-hero .nav-cta {
-    background-color: #C9A55C;
-    color: #0A0D14;
-    border-radius: 999px;
-  }
-  body:has(.ep) header.nav-hero .nav-cta:hover { background-color: #D8B872; }
   body:has(.ep) #menu-backdrop { background: #0A0D14; }
   body:has(.ep) footer { background: #0A0D14; margin-top: 0; border-top: 1px solid rgba(242, 237, 228, 0.08); }
   body:has(.ep) .mobile-cta { background: rgba(10, 13, 20, 0.88); border-top: 1px solid rgba(242, 237, 228, 0.08); }
-  body:has(.ep) .mobile-cta-btn { background: #C9A55C; color: #0A0D14; border-radius: 999px; }
+  /* Bas de page : même écriture élégante et même or que le haut de l'accueil */
+  body:has(.ep) footer .font-serif { font-family: 'Cormorant Garamond', Georgia, serif !important; font-weight: 300; letter-spacing: -0.01em !important; }
+  body:has(.ep) footer .font-serif .italic { font-weight: 400; }
+  body:has(.ep) footer .text-or-light, body:has(.ep) footer .eyebrow-cream { color: #C9A55C !important; }
+  body:has(.ep) footer .bg-or { background-color: #C9A55C !important; }
   body:has(.ep) .lc-launcher { background: #121722; border-color: rgba(201, 165, 92, 0.55); }
 </style>
 
@@ -317,8 +343,6 @@ const T = lang === 'en'
   .ep-line::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: linear-gradient(var(--gold), rgba(201,165,92,0.08)); }
   .ep-node { position: absolute; left: -2.5rem; top: 0.35rem; width: 11px; height: 11px; margin-left: -5px; border-radius: 999px; border: 1px solid var(--gold); background: var(--bg); box-shadow: 0 0 0 4px rgba(201,165,92,0.08); }
   .ep-btn { display: inline-flex; align-items: center; gap: .55rem; border-radius: 999px; padding: 0.95rem 1.8rem; font-size: 0.92rem; font-weight: 500; transition: all .3s; }
-  .ep-btn-or { background: var(--gold); color: #0A0D14; }
-  .ep-btn-or:hover { background: #D8B872; }
   .ep-btn-ghost { border: 1px solid rgba(242,237,228,0.2); color: var(--cream); }
   .ep-btn-ghost:hover { border-color: var(--cream); }
   .ep-link { color: var(--gold); border-bottom: 1px solid rgba(201,165,92,0.35); padding-bottom: 2px; }
@@ -337,7 +361,16 @@ const T = lang === 'en'
   .ep-line::after { content: ''; position: absolute; left: 0; top: 6px; width: 1px; height: calc((100% - 12px) * var(--p, 0)); background: var(--gold); box-shadow: 0 0 10px rgba(201,165,92,0.7); }
   .ep-node { transition: background .5s, box-shadow .5s; }
   .ep-node.is-on { background: var(--gold); box-shadow: 0 0 0 5px rgba(201,165,92,0.18); }
+  .ep-partners { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .ep-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+  .ep-track { display: flex; width: max-content; animation: ep-scroll 42s linear infinite; }
+  .ep-marquee:hover .ep-track { animation-play-state: paused; }
+  .ep-track li { flex: none; padding: 0 3.2rem; display: flex; align-items: center; }
+  .ep-logo { height: 30px; width: auto; max-width: 150px; object-fit: contain; filter: brightness(0) invert(1); opacity: .5; transition: opacity .4s; }
+  .ep-logo-photo { filter: grayscale(1) invert(1) contrast(1.4); mix-blend-mode: screen; }
+  .ep-track li:hover .ep-logo { opacity: .95; }
+  @keyframes ep-scroll { to { transform: translateX(-50%); } }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
   @keyframes ep-up { to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } .ep-track { animation: none; } }
 </style>

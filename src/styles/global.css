@@ -590,46 +590,91 @@
 
 /* ----------------------------------------------------------------------------
    Boutons : une seule signature sur tout le site.
-   Forme arrondie, léger soulèvement et flèche qui glisse au survol, reflet de
-   lumière qui traverse le bouton. Les boutons dorés (action principale) ont en
-   plus un reflet discret toutes les 6 secondes, pour attirer l'œil sans crier.
+   Action principale = pilule sombre, fin contour doré qui tourne lentement,
+   pastille ronde dorée avec la flèche (elle glisse au survol). Même couleur
+   partout : fond #0A0D14, or #C9A55C, texte crème #F2EDE4.
+   Actions secondaires (ghost) = même pilule, contour fin, sans pastille.
    -------------------------------------------------------------------------- */
-.btn, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, .btn-round {
+@property --btn-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+.btn, .btn-round, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv {
   position: relative;
-  overflow: hidden;
   isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
   border-radius: 999px !important;
-  transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, background-color .3s, color .3s, border-color .3s;
+  transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s, background-color .3s, color .3s, border-color .3s;
 }
-.btn::before, .ep-btn::before, .mobile-cta-btn::before, .lc-cta-rdv::before, .ep-rdv::before, .btn-round::before {
+
+/* Action principale */
+.btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, a.btn-round.bg-ink, button.btn-round.bg-ink {
+  color: #F2EDE4 !important;
+  border: 1px solid transparent !important;
+  background:
+    linear-gradient(#0A0D14, #0A0D14) padding-box,
+    conic-gradient(from var(--btn-a), rgba(201,165,92,.95), rgba(201,165,92,.12) 25%, rgba(242,237,228,.55) 50%, rgba(201,165,92,.12) 75%, rgba(201,165,92,.95)) border-box !important;
+  padding: .55rem .6rem .55rem 1.6rem !important;
+  min-height: 3.1rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  animation: btn-ring 6s linear infinite;
+  box-shadow: 0 10px 30px -18px rgba(201,165,92,.55);
+}
+.btn-or:hover, .btn-primary:hover, .ep-btn-or:hover, .mobile-cta-btn:hover, .lc-cta-rdv:hover, .ep-rdv:hover, a.btn-round.bg-ink:hover, button.btn-round.bg-ink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -18px rgba(201,165,92,.75);
+}
+@keyframes btn-ring { to { --btn-a: 360deg; } }
+
+/* La pastille ronde dorée : la flèche existante devient une pastille */
+:is(.btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, a.btn-round.bg-ink, button.btn-round.bg-ink) svg {
+  box-sizing: content-box;
+  width: 14px; height: 14px;
+  padding: 9px;
+  border-radius: 999px;
+  background: #C9A55C;
+  color: #0A0D14;
+  flex-shrink: 0;
+  transition: transform .45s cubic-bezier(.16,1,.3,1), background-color .3s;
+}
+/* Boutons sans flèche : on ajoute la pastille */
+:is(.btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, a.btn-round.bg-ink, button.btn-round.bg-ink):not(:has(svg))::after {
+  content: '';
+  width: 32px; height: 32px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #C9A55C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230A0D14' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") center / 14px no-repeat;
+  transition: transform .45s cubic-bezier(.16,1,.3,1);
+}
+:is(.btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, a.btn-round.bg-ink, button.btn-round.bg-ink):hover svg,
+:is(.btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, a.btn-round.bg-ink, button.btn-round.bg-ink):not(:has(svg)):hover::after {
+  transform: translateX(3px) rotate(-45deg);
+  background-color: #D8B872;
+}
+
+/* Reflet de lumière au survol */
+.btn::before, .btn-round::before, .ep-btn::before, .mobile-cta-btn::before, .lc-cta-rdv::before, .ep-rdv::before {
   content: '';
   position: absolute;
-  top: 0; bottom: 0; left: 0;
+  inset: 0 auto 0 0;
   width: 55%;
-  z-index: 1;
+  z-index: -1;
   pointer-events: none;
-  background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,.38) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+  background: linear-gradient(105deg, transparent 20%, rgba(242,237,228,.10) 50%, transparent 80%);
   transform: translateX(-180%) skewX(-18deg);
 }
-.btn:hover::before, .ep-btn:hover::before, .mobile-cta-btn:hover::before, .lc-cta-rdv:hover::before, .ep-rdv:hover::before, .btn-round:hover::before {
-  animation: btn-sweep .9s cubic-bezier(.16,1,.3,1);
-}
-.btn-or::before, .ep-btn-or::before, .mobile-cta-btn::before, .nav-cta::before {
-  animation: btn-idle 6s cubic-bezier(.45,0,.2,1) 1.5s infinite;
-}
-.btn:hover, .ep-btn:hover, .mobile-cta-btn:hover, .lc-cta-rdv:hover, .ep-rdv:hover, .btn-round:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -14px rgba(3, 9, 28, .55);
-}
-.btn:active, .ep-btn:active, .mobile-cta-btn:active, .btn-round:active { transform: translateY(0) scale(.98); }
-.btn svg, .ep-btn svg, .mobile-cta-btn svg, .btn-round svg { position: relative; z-index: 2; transition: transform .35s cubic-bezier(.16,1,.3,1); }
-.btn:hover svg, .ep-btn:hover svg, .mobile-cta-btn:hover svg, .btn-round:hover svg { transform: translateX(4px); }
-@keyframes btn-sweep { from { transform: translateX(-180%) skewX(-18deg); } to { transform: translateX(260%) skewX(-18deg); } }
-@keyframes btn-idle {
-  0%, 72% { transform: translateX(-180%) skewX(-18deg); }
-  88%, 100% { transform: translateX(260%) skewX(-18deg); }
-}
+:is(.btn, .btn-round, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv):hover::before { animation: btn-sweep 1s cubic-bezier(.16,1,.3,1); }
+@keyframes btn-sweep { to { transform: translateX(260%) skewX(-18deg); } }
+
+/* Actions secondaires : même pilule, contour fin */
+.btn-ghost, .ep-btn-ghost, a.btn-round:not(.bg-ink), button.btn-round:not(.bg-ink) { padding: .9rem 1.6rem !important; min-height: 3.1rem; }
+.btn:active, .btn-round:active, .ep-btn:active, .mobile-cta-btn:active { transform: translateY(0) scale(.98); }
+
 @media (prefers-reduced-motion: reduce) {
-  .btn::before, .ep-btn::before, .mobile-cta-btn::before, .lc-cta-rdv::before, .ep-rdv::before, .btn-round::before, .nav-cta::before { animation: none !important; }
-  .btn:hover, .ep-btn:hover, .mobile-cta-btn:hover, .lc-cta-rdv:hover, .ep-rdv:hover, .btn-round:hover { transform: none; }
+  .btn-or, .btn-primary, .ep-btn-or, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv, .btn-round { animation: none !important; }
+  :is(.btn, .btn-round, .ep-btn, .mobile-cta-btn, .lc-cta-rdv, .ep-rdv):hover::before { animation: none; }
+  :is(.btn, .btn-round, .ep-btn, .mobile-cta-btn):hover { transform: none; }
 }
