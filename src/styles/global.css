@@ -749,3 +749,17 @@ header .nav-faitage { color: var(--th-cream) !important; }
   border-color: rgba(201,165,92,.18) !important;
 }
 .tool-seg { background: rgba(10, 13, 20, 0.7) !important; }
+/* En-tête homogène : tous les liens dans la même écriture, taille et couleur
+   (crème), l'or seulement au survol. Plus de drapeau, d'étoile ni d'étiquette. */
+header .nav-item {
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.82) !important;
+  transition: color .3s;
+  line-height: 1;
+}
+header a:hover .nav-item, header a.nav-item:hover, header button:hover .nav-item { color: #C9A55C !important; }
+header .nav-faitage { border: 0 !important; padding: 0 !important; }
