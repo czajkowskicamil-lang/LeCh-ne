@@ -1,0 +1,175 @@
+---
+// Accueil « épuré » (test) : une seule teinte sombre, peu de mots, cartes
+// arrondies, une ligne de temps. Codes du Chêne : logo, or, crème, marine
+// poussé presque au noir. Titres en Cormorant Garamond, texte en Inter.
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
+import { temoignages } from '../data/temoignages';
+
+const avis = ['Temenuzhka Nikolova', 'Véronique P.', 'Lucia M']
+  .map((a) => temoignages.find((x) => x.author === a))
+  .filter((x): x is NonNullable<typeof x> => Boolean(x));
+
+const profils = [
+  { t: 'Sportifs de haut niveau', d: 'Une carrière courte, des revenus concentrés, un après à préparer pendant.', href: '/sportifs-haut-niveau' },
+  { t: 'Dirigeants et cadres', d: 'Des enveloppes accumulées, enfin mises en cohérence.', href: '/expertise' },
+  { t: 'Entrepreneurs', d: 'Cession, holding, transmission : préparés deux ans avant.', href: '/expertise' },
+  { t: 'Particuliers', d: 'Une méthode claire pour savoir où vous en êtes.', href: '/outils/diagnostic-patrimonial' },
+];
+
+const etapes = [
+  { t: 'Échange', d: '30 minutes offertes, en visio ou à Montpellier.' },
+  { t: 'Diagnostic', d: 'Une lecture chiffrée de votre patrimoine et de votre fiscalité.' },
+  { t: 'Stratégie', d: 'Une feuille de route hiérarchisée, indépendante.' },
+  { t: 'Suivi', d: 'Ajusté à chaque saison de votre vie.' },
+];
+---
+
+<div class="ep">
+  <!-- HERO -->
+  <section class="ep-hero relative -mt-20 flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 pt-32 pb-20 text-center">
+    <div aria-hidden="true" class="ep-glow absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col items-center">
+      <p class="ep-pill ep-in mb-12 inline-flex items-center gap-3 rounded-full px-6 py-3 text-[15px]">
+        <span class="h-1.5 w-1.5 rounded-full bg-or" aria-hidden="true"></span>
+        Sportifs de haut niveau
+      </p>
+      <p class="ep-title ep-in" style="animation-delay:.08s">
+        Faire fructifier<br /><em>ce qui compte.</em>
+      </p>
+      <h1 class="ep-sub ep-in mt-8" style="animation-delay:.16s">
+        Conseiller en gestion de patrimoine indépendant à Montpellier
+      </h1>
+      <div class="ep-in mt-12 flex flex-wrap justify-center gap-3" style="animation-delay:.24s">
+        <a href="/rendez-vous" class="ep-btn ep-btn-or">Prendre rendez-vous</a>
+        <a href="/outils/diagnostic-patrimonial" class="ep-btn ep-btn-ghost">Mon diagnostic gratuit</a>
+      </div>
+      <dl class="ep-in mt-20 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3" style="animation-delay:.32s">
+        <div class="flex items-baseline gap-2"><dd class="ep-num">30 min</dd><dt class="ep-muted">offertes</dt></div>
+        <span class="ep-dot" aria-hidden="true">·</span>
+        <div class="flex items-baseline gap-2"><dd class="ep-num">100 %</dd><dt class="ep-muted">indépendant</dt></div>
+        <span class="ep-dot" aria-hidden="true">·</span>
+        <div class="flex items-baseline gap-2"><dd class="ep-num">{temoignages.length}</dd><dt class="ep-muted">avis clients</dt></div>
+      </dl>
+    </div>
+    <p class="ep-label absolute bottom-8 left-0 right-0 z-10 text-center">Le Chêne Patrimonial</p>
+  </section>
+
+  <!-- HISTOIRE -->
+  <section class="ep-sec">
+    <div class="ep-wrap">
+      <div class="ep-card grid items-center gap-10 p-6 md:grid-cols-[280px_1fr] md:p-10">
+        <img src="/camil-800.webp" alt="Camil Czajkowski, fondateur du Chêne Patrimonial" width="800" height="1101" loading="lazy" class="aspect-[4/5] w-full rounded-2xl object-cover" />
+        <div>
+          <p class="ep-label mb-4 text-left">L'athlète devenu conseiller</p>
+          <h2 class="ep-h2 mb-5">Tout ce qui dure se prépare longtemps à l'avance.</h2>
+          <p class="ep-muted mb-8 max-w-md">J'ai été sportif de haut niveau avant d'être conseiller. J'applique la même exigence à chaque patrimoine.</p>
+          <a href="/parcours" class="ep-link">Mon parcours →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR QUI -->
+  <section class="ep-sec">
+    <div class="ep-wrap">
+      <p class="ep-label mb-4">Pour qui</p>
+      <h2 class="ep-h2 mb-12 text-center">Quatre profils, une même exigence.</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {profils.map((p) => (
+          <a href={p.href} class="ep-card ep-hover block p-8">
+            <h3 class="ep-h3 mb-3">{p.t}</h3>
+            <p class="ep-muted">{p.d}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTHODE -->
+  <section class="ep-sec">
+    <div class="ep-wrap">
+      <p class="ep-label mb-4">La méthode</p>
+      <h2 class="ep-h2 mb-14 text-center">Quatre temps, à votre rythme.</h2>
+      <ol class="ep-line relative ml-3 space-y-12 pl-10">
+        {etapes.map((e, i) => (
+          <li class="relative">
+            <span class="ep-node" aria-hidden="true"></span>
+            <p class="ep-step mb-2">Étape {String(i + 1).padStart(2, '0')}</p>
+            <h3 class="ep-h3 mb-2">{e.t}</h3>
+            <p class="ep-muted">{e.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section class="ep-sec">
+    <div class="ep-wrap-lg">
+      <p class="ep-label mb-4">Avis clients</p>
+      <h2 class="ep-h2 mb-12 text-center">Ils en parlent mieux que moi.</h2>
+      <div class="grid gap-4 md:grid-cols-3">
+        {avis.map((a) => (
+          <figure class="ep-card flex flex-col p-8">
+            <blockquote class="ep-quote flex-1">« {a.quote} »</blockquote>
+            <figcaption class="ep-muted mt-6 text-sm">{a.author}{a.role ? `, ${a.role}` : ''}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="mt-10 text-center"><a href="/avis" class="ep-link">Lire les {temoignages.length} avis →</a></p>
+    </div>
+  </section>
+
+  <!-- RDV -->
+  <section class="ep-sec pb-40 text-center">
+    <div class="ep-wrap">
+      <h2 class="ep-title-sm mb-6">Réservez votre<br /><em>premier échange.</em></h2>
+      <p class="ep-muted mb-10">30 minutes offertes, sans engagement.</p>
+      <a href="/rendez-vous" class="ep-btn ep-btn-or">Choisir un créneau</a>
+    </div>
+  </section>
+</div>
+
+<style is:global>
+  body:has(.ep) { background: #0A0D14; }
+</style>
+
+<style>
+  .ep { --bg: #0A0D14; --card: #121722; --line: rgba(242,237,228,0.09); --cream: #F2EDE4; --gold: #C9A55C;
+        background: var(--bg); color: var(--cream); }
+  .ep-glow { background: radial-gradient(55% 45% at 50% 48%, rgba(201,165,92,0.10), transparent 70%); }
+  .ep-pill { border: 1px solid var(--line); background: rgba(242,237,228,0.02); color: rgba(242,237,228,0.9); }
+  .ep-title, .ep-title-sm, .ep-h2, .ep-h3, .ep-quote {
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; letter-spacing: -0.01em; }
+  .ep-title { font-size: clamp(3.2rem, 8.4vw, 7.5rem); line-height: 0.98; }
+  .ep-title-sm { font-size: clamp(2.6rem, 5.5vw, 4.6rem); line-height: 1; }
+  .ep-title em, .ep-title-sm em { font-style: italic; font-weight: 400; color: var(--gold); }
+  .ep-sub { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(242,237,228,0.55); max-width: 40rem; line-height: 1.9; }
+  .ep-h2 { font-size: clamp(2rem, 3.6vw, 3rem); line-height: 1.08; font-weight: 400; }
+  .ep-h3 { font-size: 1.7rem; line-height: 1.15; font-weight: 400; }
+  .ep-quote { font-size: 1.3rem; line-height: 1.4; font-weight: 400; color: rgba(242,237,228,0.92); }
+  .ep-num { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 400; color: var(--cream); }
+  .ep-muted { color: rgba(242,237,228,0.58); line-height: 1.7; }
+  .ep-dot { color: rgba(242,237,228,0.25); }
+  .ep-label { font-size: 0.7rem; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold); text-align: center; }
+  .ep-step { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+  .ep-sec { padding: 6rem 1.25rem; }
+  .ep-wrap { max-width: 56rem; margin: 0 auto; }
+  .ep-wrap-lg { max-width: 72rem; margin: 0 auto; }
+  .ep-card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; }
+  .ep-hover { transition: border-color .4s, transform .4s; }
+  .ep-hover:hover { border-color: rgba(201,165,92,0.45); transform: translateY(-2px); }
+  .ep-line::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: linear-gradient(var(--gold), rgba(201,165,92,0.08)); }
+  .ep-node { position: absolute; left: -2.5rem; top: 0.35rem; width: 11px; height: 11px; margin-left: -5px; border-radius: 999px; border: 1px solid var(--gold); background: var(--bg); box-shadow: 0 0 0 4px rgba(201,165,92,0.08); }
+  .ep-btn { display: inline-flex; align-items: center; border-radius: 999px; padding: 0.95rem 1.8rem; font-size: 0.92rem; font-weight: 500; transition: all .3s; }
+  .ep-btn-or { background: var(--gold); color: #0A0D14; }
+  .ep-btn-or:hover { background: #D8B872; }
+  .ep-btn-ghost { border: 1px solid rgba(242,237,228,0.2); color: var(--cream); }
+  .ep-btn-ghost:hover { border-color: var(--cream); }
+  .ep-link { color: var(--gold); border-bottom: 1px solid rgba(201,165,92,0.35); padding-bottom: 2px; }
+  .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
+  @keyframes ep-up { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .ep-in { animation: none; opacity: 1; transform: none; } }
+</style>
