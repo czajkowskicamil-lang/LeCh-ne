@@ -59,10 +59,10 @@ const espaceProHref = '/espace-pro';
       >Le Faitage</a>
 
       <a href={avisHref} class="nav-avis nav-item" aria-label={t('nav.ariaAvis')}>{t('nav.avisShort')}</a>
-      <!-- Bouton Espace client : visible partout, cadenas seul sur petit écran. -->
+      <!-- Bouton Espace client : visible partout, « Espace » sur petit écran. -->
       <a href={espaceClientHref} class="nav-espace" aria-label="Espace client, accès sécurisé à votre dossier">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <span class="hidden lg:inline">Espace client</span>
+        <span>Espace<span class="hidden lg:inline"> client</span></span>
       </a>
       <LanguageToggle />
       <a href={rdvHref} class="nav-cta hidden sm:inline-flex btn-primary text-sm">
