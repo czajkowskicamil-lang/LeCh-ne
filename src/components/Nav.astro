@@ -59,7 +59,11 @@ const espaceProHref = '/espace-pro';
       >Le Faitage</a>
 
       <a href={avisHref} class="nav-avis nav-item" aria-label={t('nav.ariaAvis')}>{t('nav.avisShort')}</a>
-      <a href={espaceClientHref} class="nav-item hidden md:inline-flex" aria-label="Espace client, accès sécurisé à votre dossier">Espace client</a>
+      <!-- Bouton Espace client : visible partout, cadenas seul sur petit écran. -->
+      <a href={espaceClientHref} class="nav-espace" aria-label="Espace client, accès sécurisé à votre dossier">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="hidden lg:inline">Espace client</span>
+      </a>
       <LanguageToggle />
       <a href={rdvHref} class="nav-cta hidden sm:inline-flex btn-primary text-sm">
         {t('nav.rdv')}
@@ -175,6 +179,35 @@ const espaceProHref = '/espace-pro';
   }
   header.nav-hero:not(.is-solid) .nav-faitage:hover {
     color: #D8B872;
+  }
+  /* Bouton Espace client : contour doré, cadenas, discret mais repérable. */
+  .nav-espace {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 165, 92, 0.6);
+    color: #A8843D;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .nav-espace:hover {
+    background-color: #C9A55C;
+    border-color: #C9A55C;
+    color: #0A0D14;
+  }
+  header.nav-hero:not(.is-solid) .nav-espace {
+    color: #D8B872;
+  }
+  header.nav-hero:not(.is-solid) .nav-espace:hover {
+    color: #0A0D14;
   }
   /* Bouton CTA doré tant qu'on survole le hero */
   header.nav-hero:not(.is-solid) .nav-cta {
