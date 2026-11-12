@@ -44,7 +44,6 @@ const avis = ['Kévin Monier', 'Véronique P.']
 
 const T = lang === 'en'
   ? {
-      pill: 'Your career lasts 10 years. Your money has to last 60.',
       title1: 'Grow what',
       title2: 'truly matters.',
       h1: 'Independent wealth advisor in Montpellier, France',
@@ -87,7 +86,6 @@ const T = lang === 'en'
       finalCta: 'Choose a time',
     }
   : {
-      pill: 'Ta carrière dure 10 ans. Ton argent doit en tenir 60.',
       title1: 'Faire fructifier',
       title2: 'ce qui compte.',
       h1: 'Conseiller en gestion de patrimoine indépendant à Montpellier',
@@ -138,10 +136,6 @@ const T = lang === 'en'
     <div aria-hidden="true" class="ep-veil absolute inset-0"></div>
     <div aria-hidden="true" class="ep-glow absolute inset-0"></div>
     <div class="relative z-10 flex flex-col items-center">
-      <p class="ep-pill ep-in mb-12 inline-flex items-center gap-3 rounded-full px-6 py-3 text-[15px]">
-        <span class="h-1.5 w-1.5 rounded-full bg-or" aria-hidden="true"></span>
-        {T.pill}
-      </p>
       <p class="ep-title ep-in" style="animation-delay:.08s">
         {T.title1}<br /><em>{T.title2}</em>
       </p>
@@ -336,7 +330,6 @@ const T = lang === 'en'
   @keyframes ep-drift { to { transform: scale(1.12) translate3d(-1%, -1%, 0); } }
   .ep-veil { background: linear-gradient(180deg, rgba(10,13,20,0.55) 0%, rgba(10,13,20,0.62) 55%, #0A0D14 100%); }
   .ep-glow { background: radial-gradient(55% 45% at 50% 48%, rgba(201,165,92,0.10), transparent 70%); }
-  .ep-pill { border: 1px solid var(--line); background: rgba(242,237,228,0.02); color: rgba(242,237,228,0.9); }
   .ep-title, .ep-title-sm, .ep-h2, .ep-h3, .ep-quote {
     font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; letter-spacing: -0.01em; }
   .ep-title { font-size: clamp(3.2rem, 8.4vw, 7.5rem); line-height: 0.98; }
@@ -390,7 +383,6 @@ const T = lang === 'en'
   @keyframes ep-scroll { to { transform: translateX(-50%); } }
   .ep-proof { border-bottom: 1px solid var(--line); }
   .ep-proof-quote { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.9rem, 4vw, 3.2rem); line-height: 1.15; color: var(--cream); }
-  .ep-pill { font-size: 15px; }
   .ep-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7rem; font-weight: 400; color: var(--cream); letter-spacing: -0.005em; }
   .ep-role { font-size: .9rem; color: rgba(242,237,228,.6); margin-top: .15rem; }
   .ep-in { opacity: 0; transform: translateY(12px); animation: ep-up 1.1s cubic-bezier(.16,1,.3,1) forwards; }
