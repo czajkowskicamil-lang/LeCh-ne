@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+// Page d'attente : l'espace client (logiciel du cabinet) sera hébergé à part,
+// sur espace.lechenepatrimonial.com. Remplacer cette page par une redirection
+// le jour de la mise en ligne.
+---
+
+<Base
+  noIndex
+  title="Espace client · Le Chêne Patrimonial"
+  description="L'espace client du Chêne Patrimonial est en construction. Votre conseiller reste joignable par téléphone et par mail."
+>
+  <section class="pt-24 pb-24 md:pt-32">
+    <div class="shell max-w-2xl">
+      <p class="eyebrow mb-6 flex items-center gap-3 reveal">
+        <span class="inline-block h-px w-8 bg-chene"></span>
+        Espace client
+      </p>
+      <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
+        En<br/>
+        <span class="italic text-chene">construction.</span>
+      </h1>
+      <p class="text-xl text-ink/75 leading-relaxed reveal" style="animation-delay:160ms">
+        Bientôt, vous retrouverez ici votre dossier, vos documents et vos signatures, dans un espace sécurisé. Nous l'ouvrirons à nos clients un par un, sur invitation.
+      </p>
+      <p class="text-lg text-ink/65 leading-relaxed mt-6 reveal" style="animation-delay:200ms">
+        D'ici là, votre conseiller reste joignable directement.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4 reveal" style="animation-delay:240ms">
+        <a href="/contact" class="btn-primary inline-flex">
+          Contacter le cabinet
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="/" class="btn-ghost inline-flex">Retour à l'accueil</a>
+      </div>
+    </div>
+  </section>
+</Base>
