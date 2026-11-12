@@ -3,36 +3,150 @@ import Base from '../layouts/Base.astro';
 // Page d'attente : l'espace client (logiciel du cabinet) sera hébergé à part,
 // sur espace.lechenepatrimonial.com. Remplacer cette page par une redirection
 // le jour de la mise en ligne.
+
+const atouts = [
+  {
+    n: '01',
+    titre: 'Votre dossier, à jour',
+    texte: 'Tout ce qui vous concerne, rangé, clair, sous vos yeux. Fini de chercher.',
+  },
+  {
+    n: '02',
+    titre: 'Vos documents, en un geste',
+    texte: 'Vous déposez, vous retrouvez, vous téléchargez. Depuis votre canapé.',
+  },
+  {
+    n: '03',
+    titre: 'Signer, où vous voulez',
+    texte: 'Plus de rendez-vous juste pour une signature. Votre téléphone suffit.',
+  },
+  {
+    n: '04',
+    titre: 'Votre conseiller, en direct',
+    texte: 'Un lien humain, toujours. On vous répond, vraiment.',
+  },
+];
 ---
 
 <Base
   noIndex
   title="Espace client · Le Chêne Patrimonial"
-  description="L'espace client du Chêne Patrimonial est en construction. Votre conseiller reste joignable par téléphone et par mail."
+  description="Un espace personnalisé pour chaque client du Chêne Patrimonial : dossier, documents et signatures réunis. Ouverture très bientôt."
 >
-  <section class="pt-24 pb-24 md:pt-32">
-    <div class="shell max-w-2xl">
-      <p class="eyebrow mb-6 flex items-center gap-3 reveal">
-        <span class="inline-block h-px w-8 bg-chene"></span>
-        Espace client
+  <section class="relative overflow-hidden pt-24 pb-20 md:pt-32 md:pb-28">
+    <!-- Halo doré animé, discret, pour donner du mouvement sans bruit -->
+    <div class="halo" aria-hidden="true"></div>
+
+    <div class="shell relative max-w-5xl">
+      <p class="badge reveal">
+        <span class="pulse" aria-hidden="true"></span>
+        Ouverture très bientôt
       </p>
-      <h1 class="font-serif text-display-xl text-ink mb-8 reveal" style="animation-delay:80ms">
-        En<br/>
-        <span class="italic text-chene">construction.</span>
+
+      <h1 class="font-serif text-display-xl text-ink mt-8 mb-8 reveal" style="animation-delay:80ms">
+        Votre espace.<br/>
+        <span class="italic text-chene">Rien que pour vous.</span>
       </h1>
-      <p class="text-xl text-ink/75 leading-relaxed reveal" style="animation-delay:160ms">
-        Bientôt, vous retrouverez ici votre dossier, vos documents et vos signatures, dans un espace sécurisé. Nous l'ouvrirons à nos clients un par un, sur invitation.
+
+      <p class="text-xl md:text-2xl text-ink/80 leading-relaxed max-w-2xl reveal" style="animation-delay:160ms">
+        Chaque client aura son propre espace, personnalisé, pensé autour de sa vie et de ses projets. On y travaille en ce moment, avec un seul objectif : <strong class="font-medium text-ink">votre confort.</strong>
       </p>
-      <p class="text-lg text-ink/65 leading-relaxed mt-6 reveal" style="animation-delay:200ms">
-        D'ici là, votre conseiller reste joignable directement.
-      </p>
-      <div class="mt-10 flex flex-wrap gap-4 reveal" style="animation-delay:240ms">
-        <a href="/contact" class="btn-primary inline-flex">
-          Contacter le cabinet
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-        <a href="/" class="btn-ghost inline-flex">Retour à l'accueil</a>
+
+      <div class="grid sm:grid-cols-2 gap-4 md:gap-5 mt-14 md:mt-16">
+        {atouts.map((a, i) => (
+          <article class="carte reveal" style={`animation-delay:${220 + i * 70}ms`}>
+            <span class="text-xs tabular-nums tracking-micro text-or">{a.n}</span>
+            <h2 class="font-serif text-2xl md:text-[1.7rem] text-ink mt-3 mb-2 leading-tight">{a.titre}</h2>
+            <p class="text-ink/70 leading-relaxed">{a.texte}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-14 md:mt-16 max-w-2xl reveal" style="animation-delay:520ms">
+        <p class="font-serif italic text-2xl md:text-3xl text-ink leading-snug">
+          On pense à vous, à chaque détail.
+        </p>
+        <p class="text-lg text-ink/70 leading-relaxed mt-4">
+          En attendant l'ouverture, rien ne change : votre conseiller reste à vos côtés, pour chaque question, petite ou grande. Merci pour votre confiance.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="/contact" class="btn-primary inline-flex">
+            Écrire à votre conseiller
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="/" class="btn-ghost inline-flex">Retour à l'accueil</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 165, 92, 0.45);
+    color: #C9A55C;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .pulse {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #C9A55C;
+  }
+  .pulse::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #C9A55C;
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(3); opacity: 0; }
+  }
+
+  .carte {
+    position: relative;
+    padding: 1.6rem 1.6rem 1.7rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(201, 165, 92, 0.18);
+    background: linear-gradient(160deg, rgba(201, 165, 92, 0.07), rgba(201, 165, 92, 0) 60%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s;
+  }
+  .carte:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201, 165, 92, 0.5);
+  }
+
+  .halo {
+    position: absolute;
+    top: -12rem;
+    right: -10rem;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(201, 165, 92, 0.16), transparent 65%);
+    filter: blur(10px);
+    animation: flotte 14s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes flotte {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-6rem, 5rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse::after, .halo { animation: none; }
+    .carte { transition: none; }
+  }
+</style>
