@@ -29,7 +29,6 @@ const avisHref = localizePath('/avis', lang);
 // du cabinet, pour que le visiteur sache toujours chez qui il est.
 const faitageHref = 'https://www.lefaitage.fr';
 const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
-const espaceClientHref = 'https://espace.lechenepatrimonial.com/client';
 ---
 
 <header
@@ -56,8 +55,6 @@ const espaceClientHref = 'https://espace.lechenepatrimonial.com/client';
       >Le Faitage</a>
 
       <a href={avisHref} class="nav-avis nav-item" aria-label={t('nav.ariaAvis')}>{t('nav.avisShort')}</a>
-      <!-- Accès sécurisé des clients à leur dossier (logiciel du cabinet, hébergé à part). -->
-      <a href={espaceClientHref} class="nav-item hidden md:inline-flex" aria-label="Espace client, accès sécurisé à votre dossier">Espace client</a>
       <LanguageToggle />
       <a href={rdvHref} class="nav-cta hidden sm:inline-flex btn-primary text-sm">
         {t('nav.rdv')}
@@ -127,7 +124,6 @@ const espaceClientHref = 'https://espace.lechenepatrimonial.com/client';
         <a href={`tel:${site.phone.tel}`} class="text-cream/70 hover:text-or-light transition-colors">{site.phone.display}</a>
         <a href={`mailto:${site.email}`} class="text-cream/70 hover:text-or-light transition-colors">{site.email}</a>
         <a href={site.linkedin} target="_blank" rel="noopener" class="text-cream/70 hover:text-or-light transition-colors">LinkedIn</a>
-        <a href={espaceClientHref} class="text-cream/70 hover:text-or-light transition-colors">Espace client</a>
       </div>
       <a href={rdvHref} class="btn-or self-start md:self-auto">
         {t('nav.rdv')}
