@@ -346,9 +346,9 @@ const description = "Answer the questions of a real wealth assessment: household
           <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>I agree that Le Chêne Patrimonial may process the information provided to prepare my assessment and contact me. <a href="/en/confidentialite">Privacy policy</a>.</span></label>
           <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>I would also like to receive The Oak Letter (optional, unsubscribe at any time).</span></label>
 
-          <button type="submit" class="ep-submit" id="l-submit">Get my complete assessment</button>
+          <button type="submit" class="ep-submit" id="l-submit">Get my free assessment</button>
           <p class="ep-lead-msg" id="l-msg" hidden></p>
-          <p class="ep-lead-fine" id="l-fine">Your request is sent directly to Camil, who will send you your personalised assessment.</p>
+          <p class="ep-lead-fine" id="l-fine">Free and with no commitment. Your request is sent directly to Camil, who will send you your personalised assessment.</p>
         </form>
 
         <div class="ep-or"><span>or</span></div>
@@ -883,7 +883,7 @@ const description = "Answer the questions of a real wealth assessment: household
         if (!b) return;
         if (b.getAttribute('data-action') === 'devis-emprunteur') {
           window.__epInteret = 'Loan insurance quote (Lemoine law)';
-          document.getElementById('l-submit').textContent = 'Get my assessment + my quote' + (window.__epSuffixe || '');
+          document.getElementById('l-submit').textContent = 'Get my free assessment + my quote' + (window.__epSuffixe || '');
           calc();
           document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
         }
@@ -912,16 +912,7 @@ const description = "Answer the questions of a real wealth assessment: household
       appliquerTarif();
       // One request per visit: bindLead runs again on internal navigation, but
       // the price is already known.
-      if (!window.__epTarifCharge) {
-        window.__epTarifCharge = true;
-        fetch('/api/etude-config').then(function (r) { return r.json(); }).then(function (c) {
-          if (!c || !c.ok || !c.actif) return;
-          var label = c.prixLabelEn || c.prixLabel;
-          if (!label) return;
-          window.__epSuffixe = ' (' + label + ')';
-          appliquerTarif();
-        }).catch(function () {});
-      }
+      // Free assessment: no price is loaded or displayed.
 
       // ----- Optional attachment (tax notice) -----
       var attachment = null;
@@ -976,7 +967,7 @@ const description = "Answer the questions of a real wealth assessment: household
         }
 
         btn.disabled = true; btn.textContent = 'One moment…';
-        var defaultBtn = 'Get my complete assessment' + (window.__epSuffixe || '');
+        var defaultBtn = 'Get my free assessment' + (window.__epSuffixe || '');
 
         var payloadBase = {
           prenom: prenom, nom: nom, email: email,
@@ -995,10 +986,7 @@ const description = "Answer the questions of a real wealth assessment: household
 
         // 2) Launch Stripe payment; fall back if Stripe is not yet active.
         leadDone.then(function () {
-          return fetch('/api/etude-checkout', {
-            method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(payloadBase),
-          }).then(function (r) { return r.json().catch(function () { return {}; }); });
+          return {}; // Free assessment: no payment, the request goes straight to the firm.
         }).then(function (cj) {
           if (cj && cj.ok && cj.url) {
             try {

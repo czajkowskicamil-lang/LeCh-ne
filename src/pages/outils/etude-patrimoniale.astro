@@ -346,9 +346,9 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
           <label class="ep-consent"><input type="checkbox" id="l-consent" /> <span>J'accepte que Le Chêne Patrimonial traite les informations saisies pour préparer mon étude et me recontacter. <a href="/confidentialite">Politique de confidentialité</a>.</span></label>
           <label class="ep-consent ep-consent-soft"><input type="checkbox" id="l-optin" /> <span>Je souhaite aussi recevoir La Lettre du Chêne (facultatif, désabonnement à tout moment).</span></label>
 
-          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude complète</button>
+          <button type="submit" class="ep-submit" id="l-submit">Recevoir mon étude offerte</button>
           <p class="ep-lead-msg" id="l-msg" hidden></p>
-          <p class="ep-lead-fine" id="l-fine">Votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
+          <p class="ep-lead-fine" id="l-fine">Étude offerte et sans engagement. Votre demande est transmise directement à Camil, qui vous adresse votre étude personnalisée.</p>
         </form>
 
         <div class="ep-or"><span>ou</span></div>
@@ -883,7 +883,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         if (!b) return;
         if (b.getAttribute('data-action') === 'devis-emprunteur') {
           window.__epInteret = 'Devis assurance emprunteur (loi Lemoine)';
-          document.getElementById('l-submit').textContent = 'Recevoir mon étude + mon devis' + (window.__epSuffixe || '');
+          document.getElementById('l-submit').textContent = 'Recevoir mon étude offerte + mon devis' + (window.__epSuffixe || '');
           calc();
           document.getElementById('ep-lead').scrollIntoView({ block: 'start', behavior: 'smooth' });
         }
@@ -912,14 +912,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
       appliquerTarif();
       // Une seule requête par visite : bindLead est rejoué à chaque navigation
       // interne, le tarif lui reste connu.
-      if (!window.__epTarifCharge) {
-        window.__epTarifCharge = true;
-        fetch('/api/etude-config').then(function (r) { return r.json(); }).then(function (c) {
-          if (!c || !c.ok || !c.actif || !c.prixLabel) return;
-          window.__epSuffixe = ' (' + c.prixLabel + ')';
-          appliquerTarif();
-        }).catch(function () {});
-      }
+      // Étude offerte : aucun tarif n'est chargé ni affiché.
 
       // ----- Pièce jointe facultative (avis d'impôt) -----
       var attachment = null;
@@ -974,7 +967,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
         }
 
         btn.disabled = true; btn.textContent = 'Un instant…';
-        var defaultBtn = 'Recevoir mon étude complète' + (window.__epSuffixe || '');
+        var defaultBtn = 'Recevoir mon étude offerte' + (window.__epSuffixe || '');
 
         var payloadBase = {
           prenom: prenom, nom: nom, email: email,
@@ -993,10 +986,7 @@ const description = "Répondez aux questions d'un vrai bilan patrimonial : foyer
 
         // 2) Lancer le paiement Stripe ; repli si Stripe n'est pas encore actif.
         leadDone.then(function () {
-          return fetch('/api/etude-checkout', {
-            method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(payloadBase),
-          }).then(function (r) { return r.json().catch(function () { return {}; }); });
+          return {}; // Étude offerte : pas de paiement, la demande part directement au cabinet.
         }).then(function (cj) {
           if (cj && cj.ok && cj.url) {
             try {
