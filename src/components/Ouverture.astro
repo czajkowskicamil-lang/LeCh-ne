@@ -1,9 +1,8 @@
 ---
 /* Générique du site : seul ajout au site, qui reste tel quel. Fondu depuis le noir sur la forêt, logo, puis
    « Faire fructifier ce qui compte. » en Cormorant Garamond léger, mot par mot sortant d'un flou, filet doré tracé
-   depuis le centre. La musique (composant Musique) ne vit que pendant ce générique : elle part au premier toucher
-   (les navigateurs interdisent tout son avant), le générique repart alors calé sur elle, et elle s'arrête quand le
-   site apparaît. Une seule fois par visite (30 minutes, tous onglets). Caché par défaut : aucun flash pour qui l'a
+   depuis le centre. Il reste à l'écran jusqu'au premier toucher (les navigateurs interdisent tout son avant) : la
+   musique (composant Musique) part alors, le générique repart calé sur elle, et elle s'arrête quand le site apparaît. Une seule fois par visite (30 minutes, tous onglets). Caché par défaut : aucun flash pour qui l'a
    déjà vu. Jamais montré aux robots (Google, Lighthouse). */
 ---
 <div id="lc-intro" class="lc-intro" hidden>
@@ -17,7 +16,7 @@
     </p>
     <div class="lc-intro-filet"></div>
   </div>
-  <span class="lc-intro-son">Touchez l'écran pour le son</span>
+  <span class="lc-intro-son"><span class="lc-intro-tactile">Touchez l'écran</span><span class="lc-intro-souris">Cliquez</span> pour entrer</span>
 </div>
 <script is:inline>
   (function () {
@@ -45,12 +44,13 @@
     function jouer(duree) {
       clearTimeout(t1);
       el.classList.remove('lc-intro-joue'); void el.offsetWidth; el.classList.add('lc-intro-joue');
-      t1 = setTimeout(fermer, duree);
+      if (duree) t1 = setTimeout(fermer, duree);
     }
     // Instagram et Facebook chargent souvent la page en arrière-plan : le générique ne démarre qu'à l'écran.
+    // Le générique se joue puis reste à l'écran jusqu'au premier toucher (seul moyen d'avoir le son pour tous).
     function lancer() {
       if (lance || document.visibilityState !== 'visible') return;
-      lance = true; jouer(5200);
+      lance = true; jouer(0);
     }
     // Premier toucher : la musique part et le générique repart calé sur elle ; le site apparaît quand elle s'éteint.
     // Un second toucher passe directement au site.
@@ -64,6 +64,9 @@
     document.addEventListener('visibilitychange', lancer);
     window.addEventListener('pageshow', lancer);
     el.addEventListener('click', toucher);
+    document.addEventListener('keydown', function (e) { if (!fini && /^(Enter| |Escape)$/.test(e.key)) { e.preventDefault(); e.key === 'Escape' ? fermer() : toucher(); } });
+    // Filet de sécurité : sans aucun toucher au bout de 25 s, le site s'affiche (sans musique).
+    setTimeout(function () { if (!musique) fermer(); }, 25000);
   })();
 </script>
 
@@ -116,6 +119,8 @@
   }
   .lc-intro-joue .lc-intro-son { animation: lc-intro-flou 1.4s 1.6s ease both, lc-intro-souffle 3s 3s ease-in-out infinite; }
   .lc-intro-musique .lc-intro-son { display: none; }
+  .lc-intro-souris { display: none; }
+  @media (hover: hover) and (pointer: fine) { .lc-intro-tactile { display: none; } .lc-intro-souris { display: inline; } }
 
   @keyframes lc-intro-fond { 0% { opacity: 0; transform: scale(1.08); } 25% { opacity: 1; } 100% { opacity: 1; transform: scale(1); } }
   @keyframes lc-intro-flou { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
