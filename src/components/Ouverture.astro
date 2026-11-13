@@ -62,7 +62,7 @@
       if (musique) return fermer();
       // Musique déjà partie toute seule (navigateur qui l'autorise) : le générique continue tel quel.
       var a = document.getElementById('lc-musique-son');
-      if (a && !a.paused) { musique = true; el.classList.add('lc-intro-musique'); return; }
+      if (a && !a.paused && a.currentTime > 0) { musique = true; el.classList.add('lc-intro-musique'); return; }
       musique = true; lance = true; el.classList.add('lc-intro-musique');
       jouer(5900);
     }

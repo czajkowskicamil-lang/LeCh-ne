@@ -34,8 +34,12 @@
     a?.addEventListener('pause', () => journal('son arrêté'));
   }
 
+  // « Joue vraiment » = le navigateur a émis « playing ». On ne se fie pas à « paused » : Safari sur Mac laisse une
+  // tentative de lecture automatique en suspens (paused = faux) sans jamais jouer, ce qui faisait ignorer les clics.
+  let joueVraiment = false;
+  { const a = son(); a?.addEventListener('playing', () => { joueVraiment = true; }); a?.addEventListener('pause', () => { joueVraiment = false; }); a?.addEventListener('ended', () => { joueVraiment = false; }); }
   function jouer(origine = '') {
-    const a = son(); if (!a || (!a.paused && !a.ended)) return;
+    const a = son(); if (!a || joueVraiment) return;
     // Revenir au début seulement si le son a déjà joué : sur iPhone, repositionner un son non chargé bloque tout.
     try { if (a.currentTime > 0) a.currentTime = 0; } catch { /* */ }
     journal(`${origine} : lecture demandée (fichier prêt : ${a.readyState}/4, générique : ${ouvertureEnCours() ? 'oui' : 'non'})`);
