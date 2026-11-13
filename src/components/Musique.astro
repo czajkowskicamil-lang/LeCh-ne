@@ -18,29 +18,47 @@
   const marquerJouee = () => { jouee = true; };
   const ouvertureEnCours = () => document.documentElement.classList.contains('lc-intro-ouverte');
 
-  function jouer() {
+  // Diagnostic réservé au cabinet : https://www.lechenepatrimonial.com/?musique=test affiche ce que répond l'appareil.
+  const test = new URLSearchParams(location.search).get('musique') === 'test';
+  function journal(t: string) {
+    if (!test) return;
+    let box = document.getElementById('lc-musique-test');
+    if (!box) { box = document.createElement('pre'); box.id = 'lc-musique-test'; box.style.cssText = 'position:fixed;top:12px;left:12px;right:12px;z-index:10000;max-height:30vh;overflow:auto;background:#000d;color:#E0C68F;font:12px/1.5 monospace;padding:10px;border-radius:8px;white-space:pre-wrap;pointer-events:none'; document.body.appendChild(box); }
+    box.textContent = new Date().toLocaleTimeString('fr-FR') + '  ' + t + '\n' + box.textContent;
+  }
+  if (test) {
+    const a = son();
+    journal(`appareil : ${navigator.userAgent.replace(/^Mozilla\/5.0 /, '').slice(0, 90)}`);
+    a?.addEventListener('error', () => journal(`ERREUR FICHIER : code ${a.error?.code}`));
+    a?.addEventListener('playing', () => journal(`SON EN COURS (volume ${a.volume}, muet ${a.muted})`));
+    a?.addEventListener('pause', () => journal('son arrêté'));
+  }
+
+  function jouer(origine = '') {
     const a = son(); if (!a || (!a.paused && !a.ended)) return;
     // Revenir au début seulement si le son a déjà joué : sur iPhone, repositionner un son non chargé bloque tout.
     try { if (a.currentTime > 0) a.currentTime = 0; } catch { /* */ }
-    a.play().then(() => { marquerJouee(); retirer(); }).catch(() => { /* bloqué : le geste suivant réessaie */ });
+    journal(`${origine} : lecture demandée (fichier prêt : ${a.readyState}/4, générique : ${ouvertureEnCours() ? 'oui' : 'non'})`);
+    a.play().then(() => { marquerJouee(); retirer(); }).catch((e: Error) => journal(`${origine} : REFUSÉ par le navigateur (${e.name})`));
   }
 
   // La musique n'existe que pendant le générique : un toucher une fois le site affiché ne lance rien.
   const GESTES = ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'];
   const retirer = () => GESTES.forEach((g) => window.removeEventListener(g, geste, true));
-  function geste() {
-    if (dejaJouee() || !ouvertureEnCours()) return retirer();
-    jouer();
+  function geste(ev: Event) {
+    if (dejaJouee() || !ouvertureEnCours()) { journal(`${ev.type} ignoré (générique terminé ou déjà joué)`); return retirer(); }
+    jouer(ev.type);
   }
   if (!dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, geste, true));
   // Début du générique : on tente la musique sans attendre de toucher. Certains navigateurs l'acceptent (Chrome sur un
   // site déjà fréquenté, Safari réglé sur « lecture automatique ») ; ailleurs le refus est silencieux et le premier
   // toucher prend le relais.
-  document.addEventListener('chene:intro-debut', () => { if (!dejaJouee()) jouer(); });
-  if (document.querySelector('.lc-intro-joue') && !dejaJouee()) jouer(); // générique déjà parti avant ce script
+  document.addEventListener('chene:intro-debut', () => { journal('générique démarré'); if (!dejaJouee()) jouer('lecture automatique'); });
+  if (document.querySelector('.lc-intro-joue') && !dejaJouee()) jouer('lecture automatique'); // générique déjà parti avant ce script
 
   // Le site apparaît : la musique s'arrête (fondu là où le navigateur le permet).
   document.addEventListener('chene:intro-fin', () => {
+    journal('fin du générique');
     retirer();
     const a = son(); if (!a || a.paused) return;
     const v0 = a.volume; let i = 0;
