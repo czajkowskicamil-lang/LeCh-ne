@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import MobileCTA from '../components/MobileCTA.astro';
 import Assistant from '../components/Assistant.astro';
 import Musique from '../components/Musique.astro';
+import Ouverture from '../components/Ouverture.astro';
 import SmoothScroll from '../components/SmoothScroll.astro';
 import ReadingProgress from '../components/ReadingProgress.astro';
 import { ViewTransitions } from 'astro:transitions';
@@ -139,6 +140,7 @@ const ogLocale = lang === 'en' ? 'en_GB' : 'fr_FR';
     <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body class="min-h-screen flex flex-col">
+    <Ouverture />
     <ReadingProgress />
     <SmoothScroll />
     <Nav heroDark={heroDark} />

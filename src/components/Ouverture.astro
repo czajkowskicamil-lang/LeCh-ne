@@ -1,0 +1,77 @@
+---
+/* Ouverture du site, la même que l'espace client : forêt plein écran, logo, « Faire fructifier ce qui compte. » mot
+   par mot sur le rythme de la musique, trait doré. Une seule fois par visite (30 minutes, tous onglets confondus).
+   Elle se referme seule en 4,6 s ; un toucher l'ouvre plus vite et lance la musique (composant Musique).
+   Placée tout en haut du <body> et cachée par défaut : un visiteur qui l'a déjà vue n'a aucun flash.
+   Jamais montrée aux robots (Google, Lighthouse) : le contenu de la page reste lu normalement. */
+---
+<div id="lc-intro" class="lc-intro" hidden aria-hidden="true">
+  <div class="lc-intro-fond"></div>
+  <div class="lc-intro-halo"></div>
+  <div class="lc-intro-centre">
+    <img src="/logo.png" width="170" height="149" alt="" class="lc-intro-pop" decoding="async" />
+    <p class="lc-intro-titre">
+      <span class="lc-intro-mot" style="--d:1.5">Faire</span> <span class="lc-intro-mot" style="--d:2.5">fructifier</span><br />
+      <em class="lc-intro-mot" style="--d:3.5">ce qui compte.</em>
+    </p>
+    <div class="lc-intro-trait"></div>
+  </div>
+  <span class="lc-intro-passer">Toucher pour entrer</span>
+</div>
+<script is:inline>
+  (function () {
+    if (window.__cheneIntro) return; // une seule fois par document (les transitions de page relancent ce script)
+    window.__cheneIntro = 1;
+    var el = document.getElementById('lc-intro'); if (!el) return;
+    var VISITE = 30 * 60 * 1000, vu = false;
+    try {
+      if (/[?&]musique=test/.test(location.search)) localStorage.removeItem('chene_intro_vue');
+      vu = Date.now() - Number(localStorage.getItem('chene_intro_vue') || 0) < VISITE;
+    } catch (e) { /* stockage indisponible : on montre l'ouverture */ }
+    if (vu || /bot|crawl|spider|slurp|lighthouse|pagespeed/i.test(navigator.userAgent)) return;
+    el.hidden = false;
+    document.documentElement.classList.add('lc-intro-ouverte');
+    try { localStorage.setItem('chene_intro_vue', String(Date.now())); } catch (e) { /* */ }
+    var fini = false, t1, t2;
+    function fermer() {
+      if (fini) return; fini = true; clearTimeout(t1);
+      el.classList.add('lc-intro-sort');
+      document.documentElement.classList.remove('lc-intro-ouverte');
+      t2 = setTimeout(function () { el.hidden = true; }, 950);
+    }
+    t1 = setTimeout(fermer, 3900); // 7,5 temps à 116 BPM, comme l'espace client
+    el.addEventListener('click', fermer);
+  })();
+</script>
+
+<style is:global>
+  html.lc-intro-ouverte, html.lc-intro-ouverte body { overflow: hidden; }
+  .lc-intro {
+    --t: 0.517s; /* un temps à 116 BPM */
+    position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden;
+    background: #0A0D14; cursor: pointer; color: #F2EDE4;
+    transition: opacity .95s cubic-bezier(.6,0,.2,1), transform .95s cubic-bezier(.6,0,.2,1), visibility .95s;
+  }
+  .lc-intro[hidden] { display: none; }
+  .lc-intro.lc-intro-sort { opacity: 0; transform: translateY(-6%); visibility: hidden; }
+  .lc-intro-fond {
+    position: absolute; inset: 0; background-size: cover; background-position: center 70%;
+    background-image: linear-gradient(180deg, rgba(10,13,20,.45), rgba(10,13,20,.85)), url(/hero-forest.jpg);
+    animation: lc-intro-zoom 6s ease-out both;
+  }
+  .lc-intro-halo { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,165,92,.18), transparent 60%); }
+  .lc-intro-centre { position: relative; padding: 0 24px; text-align: center; }
+  .lc-intro-pop { display: block; margin: 0 auto; width: 170px; height: auto; opacity: 0; animation: lc-intro-pop .9s cubic-bezier(.2,.8,.2,1) both; }
+  .lc-intro-titre { margin-top: 40px; font-family: "Chiffres Serif", "Fraunces Variable", Fraunces, Georgia, serif; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.02em; }
+  .lc-intro-titre em { color: #D8B871; font-style: italic; }
+  .lc-intro-mot { display: inline-block; opacity: 0; animation: lc-intro-mot .8s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d) * var(--t)); }
+  .lc-intro-trait { width: 224px; height: 1px; margin: 32px auto 0; background: #C9A55C; transform: scaleX(0); animation: lc-intro-trait .9s cubic-bezier(.6,0,.2,1) both; animation-delay: calc(5 * var(--t)); }
+  .lc-intro-passer { position: absolute; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom)); font: 500 12px/1 "Inter Variable", Inter, system-ui, sans-serif; letter-spacing: .04em; color: rgba(242,237,228,.55); }
+  @keyframes lc-intro-pop { 0% { opacity: 0; transform: scale(.6); filter: blur(8px); } 60% { opacity: 1; transform: scale(1.06); filter: blur(0); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes lc-intro-mot { 0% { opacity: 0; transform: translateY(28px); letter-spacing: .2em; } 100% { opacity: 1; transform: none; letter-spacing: normal; } }
+  @keyframes lc-intro-trait { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+  @keyframes lc-intro-zoom { 0% { transform: scale(1); } 100% { transform: scale(1.12); } }
+  @media (prefers-reduced-motion: reduce) {
+    .lc-intro-fond, .lc-intro-pop, .lc-intro-mot, .lc-intro-trait { animation-duration: .01s !important; animation-delay: 0s !important; }
+  }
+</style>
