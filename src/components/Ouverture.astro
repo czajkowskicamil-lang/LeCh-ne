@@ -35,8 +35,12 @@
     function fermer() {
       if (fini) return; fini = true; clearTimeout(t1);
       document.dispatchEvent(new Event('chene:intro-fin')); // le site apparaît : la musique s'arrête
+      // Les blocs déjà « révélés » derrière le générique refont leur apparition sous les yeux du visiteur.
+      var deja = document.querySelectorAll('.reveal.is-visible, .reveal-left.is-visible, .reveal-right.is-visible, .reveal-scale.is-visible, .reveal-clip.is-visible');
+      deja.forEach(function (b) { b.classList.remove('is-visible'); });
       el.classList.add('lc-intro-sort');
       document.documentElement.classList.remove('lc-intro-ouverte');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { deja.forEach(function (b) { b.classList.add('is-visible'); }); }); });
       setTimeout(function () { el.hidden = true; }, 1200);
     }
     function jouer(duree) {
@@ -72,6 +76,11 @@
 
 <style is:global>
   html.lc-intro-ouverte, html.lc-intro-ouverte body { overflow: hidden; }
+  /* La page attend la fin du générique pour faire sa propre entrée : ses animations (titre, boutons, chiffres)
+     restent en pause derrière le générique et se jouent quand la forêt s'efface, comme avant le générique. */
+  html.lc-intro-ouverte .ep-in { animation-play-state: paused; }
+  html.lc-intro-ouverte .reveal, html.lc-intro-ouverte .reveal-left, html.lc-intro-ouverte .reveal-right,
+  html.lc-intro-ouverte .reveal-scale, html.lc-intro-ouverte .reveal-clip { transition: none !important; }
   .lc-intro {
     position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden;
     background: #05070B; cursor: pointer; color: #F2EDE4;
