@@ -31,29 +31,43 @@
     b.classList.toggle('actif', joue);
     b.querySelector('.lc-musique-txt')!.textContent = joue ? 'Couper la musique' : 'Musique';
   }
-  function jouer() {
+  // Diagnostic pour le cabinet : https://www.lechenepatrimonial.com/?musique=test affiche ce que répond le téléphone.
+  const test = new URLSearchParams(location.search).get('musique') === 'test';
+  if (test) { try { localStorage.removeItem('chene_musique_jouee'); sessionStorage.removeItem('chene_musique'); } catch { /* */ } }
+  function journal(t: string) {
+    if (!test) return;
+    let box = document.getElementById('lc-musique-test');
+    if (!box) { box = document.createElement('pre'); box.id = 'lc-musique-test'; box.style.cssText = 'position:fixed;top:70px;left:10px;right:10px;z-index:99;max-height:40vh;overflow:auto;background:#000c;color:#E0C68F;font:11px/1.4 monospace;padding:10px;border-radius:8px;white-space:pre-wrap'; document.body.appendChild(box); }
+    box.textContent = new Date().toLocaleTimeString('fr-FR') + ' ' + t + '\n' + box.textContent;
+  }
+  function jouer(origine = '') {
     const a = son(); if (!a || (!a.paused && !a.ended)) return;
-    a.currentTime = 0;
-    a.play().then(() => { marquerJouee(); retirer(); }).catch(() => { /* bloqué : le prochain geste réessaie */ });
+    // Revenir au début seulement si le son a déjà joué : sur iPhone, le fichier n'est pas encore chargé au premier
+    // toucher, et repositionner un son non chargé y déclenche une erreur qui bloquait tout.
+    try { if (a.currentTime > 0) a.currentTime = 0; } catch { /* */ }
+    journal(`${origine} : lecture demandée (état ${a.readyState})`);
+    a.play().then(() => { journal('SON EN COURS'); marquerJouee(); retirer(); })
+      .catch((e: Error) => journal(`bloqué : ${e.name} ${e.message}`));
   }
   function couper() { const a = son(); if (!a) return; a.pause(); ecrire('chene_musique', '0'); }
 
-  const GESTES = ['pointerdown', 'touchend', 'click', 'keydown'];
+  const GESTES = ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'];
   const retirer = () => GESTES.forEach((g) => window.removeEventListener(g, geste, true));
   function geste(ev: Event) {
     if ((ev.target as Element | null)?.closest?.('#lc-musique')) return; // le bouton gère lui-même
     if (refusee() || dejaJouee()) return retirer();
-    jouer();
+    jouer(ev.type);
   }
   if (!refusee() && !dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, geste, true));
 
   document.getElementById('lc-musique')?.addEventListener('click', () => {
     const a = son(); if (!a) return;
-    if (!a.paused && !a.ended) couper(); else { ecrire('chene_musique', '1'); jouer(); }
+    if (!a.paused && !a.ended) couper(); else { ecrire('chene_musique', '1'); jouer('bouton'); }
   });
   const a0 = son();
   ['play', 'pause', 'ended'].forEach((e) => a0?.addEventListener(e, afficher));
   document.addEventListener('astro:page-load', afficher);
+  if (test) { journal(`mode test, verrou levé. Touchez la page.`); a0?.addEventListener('error', () => journal(`erreur du fichier : ${a0.error?.code}`)); }
   afficher();
 </script>
 
