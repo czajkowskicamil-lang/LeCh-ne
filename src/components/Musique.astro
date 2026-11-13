@@ -3,8 +3,7 @@
    un article ou le menu du site). Joué depuis un vrai fichier audio : il passe dans tous les navigateurs, y compris
    ceux de LinkedIn et Instagram, et sur iPhone même en mode silencieux. Les navigateurs interdisent tout son avant un
    geste du visiteur : il part au premier toucher sur la page, ou directement au clic sur un lien du site. Il ne
-   redémarre jamais par-dessus lui-même. Le visiteur le coupe d'un clic, et son choix est retenu (préférence locale,
-   aucun traceur). */
+   redémarre jamais par-dessus lui-même. Le visiteur le coupe d'un clic, et son choix vaut pour la visite (aucun traceur). */
 ---
 <div class="lc-musique-zone" transition:persist="lc-musique">
   <audio id="lc-musique-son" src="/sons/chene-ouverture.m4a" preload="auto" playsinline></audio>
@@ -15,9 +14,11 @@
 
 <script>
   const son = () => document.getElementById('lc-musique-son') as HTMLAudioElement | null;
-  const lire = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
-  const ecrire = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* */ } };
+  // Le choix « couper » vaut pour la visite en cours seulement : au retour, le générique revient.
+  const lire = (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } };
+  const ecrire = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* */ } };
   const refusee = () => lire('chene_musique') === '0';
+  try { localStorage.removeItem('chene_musique'); } catch { /* ancien réglage permanent, abandonné */ }
   let attente = true; // la page affichée attend son générique
 
   function afficher() {
