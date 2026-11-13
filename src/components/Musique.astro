@@ -19,7 +19,10 @@
   const refusee = () => lire('chene_musique') === '0';
   try { localStorage.removeItem('chene_musique'); } catch { /* ancien réglage permanent, abandonné */ }
   // Une seule fois par visite : au premier geste sur la page d'arrivée, puis plus jamais pendant la navigation.
-  const dejaJouee = () => lire('chene_musique_jouee') === '1';
+  // « Visite » = 30 minutes, tous onglets confondus : un lien ouvert dans un nouvel onglet ne relance rien.
+  const VISITE = 30 * 60 * 1000;
+  const dejaJouee = () => { try { return Date.now() - Number(localStorage.getItem('chene_musique_jouee') ?? 0) < VISITE; } catch { return lire('chene_musique_jouee') === '1'; } };
+  const marquerJouee = () => { try { localStorage.setItem('chene_musique_jouee', String(Date.now())); } catch { ecrire('chene_musique_jouee', '1'); } };
 
   function afficher() {
     const b = document.getElementById('lc-musique'), a = son(); if (!b || !a) return;
@@ -31,7 +34,7 @@
   function jouer() {
     const a = son(); if (!a || (!a.paused && !a.ended)) return;
     a.currentTime = 0;
-    a.play().then(() => { ecrire('chene_musique_jouee', '1'); retirer(); }).catch(() => { /* bloqué : le prochain geste réessaie */ });
+    a.play().then(() => { marquerJouee(); retirer(); }).catch(() => { /* bloqué : le prochain geste réessaie */ });
   }
   function couper() { const a = son(); if (!a) return; a.pause(); ecrire('chene_musique', '0'); }
 
