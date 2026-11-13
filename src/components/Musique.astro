@@ -3,7 +3,7 @@
    y compris dans les navigateurs de LinkedIn et Instagram, et sur iPhone en silencieux, sauf depuis les applis de Meta).
    Elle ne vit que pendant le générique (composant Ouverture) : premier toucher pendant le générique, elle part ; le
    site apparaît, elle s'arrête. Aucun bouton, aucun affichage : le site reste tel qu'il est.
-   Une seule fois par visite (30 minutes, tous onglets). « ?musique=test » lève ce verrou pour tester. */
+   À chaque chargement de page, jamais pendant la navigation dans le site. */
 ---
 <div class="lc-musique-zone" transition:persist="lc-musique" hidden>
   <audio id="lc-musique-son" src="/sons/chene-ouverture-7s.m4a" preload="auto" playsinline></audio>
@@ -11,13 +11,11 @@
 
 <script>
   const son = () => document.getElementById('lc-musique-son') as HTMLAudioElement | null;
-  const VISITE = 30 * 60 * 1000;
-  try {
-    localStorage.removeItem('chene_musique'); // ancien réglage, abandonné
-    if (new URLSearchParams(location.search).get('musique') === 'test') localStorage.removeItem('chene_musique_jouee');
-  } catch { /* */ }
-  const dejaJouee = () => { try { return Date.now() - Number(localStorage.getItem('chene_musique_jouee') ?? 0) < VISITE; } catch { return false; } };
-  const marquerJouee = () => { try { localStorage.setItem('chene_musique_jouee', String(Date.now())); } catch { /* */ } };
+  // Même règle que le générique : à chaque chargement de page, jamais pendant la navigation dans le site.
+  try { localStorage.removeItem('chene_musique'); localStorage.removeItem('chene_musique_jouee'); sessionStorage.removeItem('chene_musique_jouee'); } catch { /* anciens verrous */ }
+  let jouee = false;
+  const dejaJouee = () => jouee;
+  const marquerJouee = () => { jouee = true; };
   const ouvertureEnCours = () => document.documentElement.classList.contains('lc-intro-ouverte');
 
   function jouer() {

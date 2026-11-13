@@ -2,7 +2,7 @@
 /* Générique du site : seul ajout au site, qui reste tel quel. Fondu depuis le noir sur la forêt, logo, puis
    « Faire fructifier ce qui compte. » en Cormorant Garamond léger, mot par mot sortant d'un flou, filet doré tracé
    depuis le centre. Il reste à l'écran jusqu'au premier toucher (les navigateurs interdisent tout son avant) : la
-   musique (composant Musique) part alors, le générique repart calé sur elle, et elle s'arrête quand le site apparaît. Une seule fois par visite (30 minutes, tous onglets). Caché par défaut : aucun flash pour qui l'a
+   musique (composant Musique) part alors, le générique repart calé sur elle, et elle s'arrête quand le site apparaît. À chaque chargement de page (lien, rafraîchissement) ; pas pendant la navigation dans le site. Caché par défaut : aucun flash pour qui l'a
    déjà vu. Jamais montré aux robots (Google, Lighthouse). */
 ---
 <div id="lc-intro" class="lc-intro" hidden>
@@ -23,11 +23,10 @@
     if (window.__cheneIntro) return; // une seule fois par document (les transitions de page relancent ce script)
     window.__cheneIntro = 1;
     var el = document.getElementById('lc-intro'); if (!el) return;
-    var VISITE = 30 * 60 * 1000, vu = false;
-    try {
-      if (/[?&]musique=test/.test(location.search)) localStorage.removeItem('chene_intro_vue');
-      vu = Date.now() - Number(localStorage.getItem('chene_intro_vue') || 0) < VISITE;
-    } catch (e) { /* stockage indisponible : on montre le générique */ }
+    // À chaque chargement de page (lien Instagram, Facebook, Google, SMS, rafraîchissement) : le générique.
+    // La navigation dans le site (transitions, même page chargée) ne le rejoue pas.
+    var vu = false;
+    try { localStorage.removeItem('chene_intro_vue'); sessionStorage.removeItem('chene_intro_vue'); } catch (e) { /* anciens verrous */ }
     if (vu || /bot|crawl|spider|slurp|lighthouse|pagespeed/i.test(navigator.userAgent)) return;
     el.hidden = false;
     document.documentElement.classList.add('lc-intro-ouverte');
@@ -36,7 +35,6 @@
     function fermer() {
       if (fini) return; fini = true; clearTimeout(t1);
       document.dispatchEvent(new Event('chene:intro-fin')); // le site apparaît : la musique s'arrête
-      try { localStorage.setItem('chene_intro_vue', String(Date.now())); } catch (e) { /* */ }
       el.classList.add('lc-intro-sort');
       document.documentElement.classList.remove('lc-intro-ouverte');
       setTimeout(function () { el.hidden = true; }, 1200);
