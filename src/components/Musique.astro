@@ -33,6 +33,11 @@
     jouer();
   }
   if (!dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, geste, true));
+  // Début du générique : on tente la musique sans attendre de toucher. Certains navigateurs l'acceptent (Chrome sur un
+  // site déjà fréquenté, Safari réglé sur « lecture automatique ») ; ailleurs le refus est silencieux et le premier
+  // toucher prend le relais.
+  document.addEventListener('chene:intro-debut', () => { if (!dejaJouee()) jouer(); });
+  if (document.querySelector('.lc-intro-joue') && !dejaJouee()) jouer(); // générique déjà parti avant ce script
 
   // Le site apparaît : la musique s'arrête (fondu là où le navigateur le permet).
   document.addEventListener('chene:intro-fin', () => {

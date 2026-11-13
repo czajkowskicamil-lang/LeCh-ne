@@ -49,12 +49,16 @@
     function lancer() {
       if (lance || document.visibilityState !== 'visible') return;
       lance = true; jouer(7000); // 7 secondes, puis le site, sans rien toucher
+      document.dispatchEvent(new Event('chene:intro-debut')); // la musique tente de partir d'elle-même
     }
     // Premier toucher : la musique part et le générique repart calé sur elle ; le site apparaît quand elle s'éteint.
     // Un second toucher passe directement au site.
     function toucher() {
       if (fini) return;
       if (musique) return fermer();
+      // Musique déjà partie toute seule (navigateur qui l'autorise) : le générique continue tel quel.
+      var a = document.getElementById('lc-musique-son');
+      if (a && !a.paused) { musique = true; el.classList.add('lc-intro-musique'); return; }
       musique = true; lance = true; el.classList.add('lc-intro-musique');
       jouer(5900);
     }
@@ -79,9 +83,9 @@
   /* Forêt : fondu depuis le noir, très lente avancée de caméra. */
   .lc-intro-fond {
     position: absolute; inset: -2%; background: url(/hero-forest.jpg) center 70% / cover no-repeat;
-    opacity: 0; transform: scale(1.08);
+    opacity: 0; will-change: transform;
   }
-  .lc-intro-joue .lc-intro-fond { animation: lc-intro-fond 7s cubic-bezier(.2,.6,.2,1) both; }
+  .lc-intro-joue .lc-intro-fond { animation: lc-intro-fond 8s cubic-bezier(.25,.1,.25,1) both; }
   .lc-intro-voile {
     position: absolute; inset: 0;
     background:
@@ -118,7 +122,7 @@
   .lc-intro-souris { display: none; }
   @media (hover: hover) and (pointer: fine) { .lc-intro-tactile { display: none; } .lc-intro-souris { display: inline; } }
 
-  @keyframes lc-intro-fond { 0% { opacity: 0; transform: scale(1.08); } 25% { opacity: 1; } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes lc-intro-fond { 0% { opacity: 0; transform: scale(1) translate3d(0,0,0); } 12% { opacity: 1; } 100% { opacity: 1; transform: scale(1.16) translate3d(-1.5%,-1.2%,0); } }
   @keyframes lc-intro-flou { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
   @keyframes lc-intro-mot { from { opacity: 0; filter: blur(12px); transform: translateY(12px); } to { opacity: 1; filter: blur(0); transform: none; } }
   @keyframes lc-intro-filet { from { transform: scaleX(0); } to { transform: scaleX(1); } }
