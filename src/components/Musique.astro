@@ -32,7 +32,10 @@
   }
   function lancer() {
     if (etat) return;
+    // iPhone : joue même si le bouton silencieux est activé (Safari 17 et plus).
+    try { const n = navigator as Navigator & { audioSession?: { type: string } }; if (n.audioSession) n.audioSession.type = 'playback'; } catch { /* */ }
     const ctx = new AudioContext();
+    if (ctx.state !== 'running') ctx.resume().catch(() => {});
     const chaine = construire(ctx, ctx.destination, 0);
     jouerOuverture(chaine, ctx.currentTime + 0.1, VOLUME, DUREE, 8);
     const e: Etat = { ctx, chaine, fin: 0 };
@@ -49,17 +52,17 @@
     ecrire('chene_musique', '0', localStorage);
   }
 
-  // Premier geste du visiteur sur le site : l'ouverture, une fois par visite.
-  const premierGeste = (ev: Event) => {
-    retirer();
+  // Premier geste du visiteur sur le site : l'ouverture, une fois par visite. Safari (iPhone, Mac) ne débloque le son
+  // qu'à la fin d'un toucher ou sur un clic : on écoute tous ces gestes et on relance tant que le son est bloqué.
+  const GESTES = ['pointerdown', 'touchend', 'click', 'keydown'];
+  const retirer = () => GESTES.forEach((g) => window.removeEventListener(g, premierGeste, true));
+  function premierGeste(ev: Event) {
     if ((ev.target as Element | null)?.closest?.('#lc-musique')) return; // le bouton gère lui-même
-    if (!refusee() && !dejaJouee()) lancer();
-  };
-  const retirer = () => { window.removeEventListener('pointerdown', premierGeste); window.removeEventListener('keydown', premierGeste); };
-  if (!refusee() && !dejaJouee()) {
-    window.addEventListener('pointerdown', premierGeste);
-    window.addEventListener('keydown', premierGeste);
+    if (!etat) { if (refusee() || dejaJouee()) return retirer(); lancer(); }
+    else if (etat.ctx.state !== 'running') etat.ctx.resume().catch(() => {});
+    if (etat?.ctx.state === 'running') retirer();
   }
+  if (!refusee() && !dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, premierGeste, true));
 
   document.getElementById('lc-musique')?.addEventListener('click', () => (etat ? couper() : lancer()));
   afficher();
