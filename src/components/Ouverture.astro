@@ -27,6 +27,8 @@
     // La navigation dans le site (transitions, même page chargée) ne le rejoue pas.
     var vu = false;
     try { localStorage.removeItem('chene_intro_vue'); sessionStorage.removeItem('chene_intro_vue'); } catch (e) { /* anciens verrous */ }
+    // Outil ouvert depuis l'espace client : le client a déjà vu le générique, on va droit à l'outil.
+    if (/[?&]depuis=espace/.test(location.search)) vu = true;
     if (vu || /bot|crawl|spider|slurp|lighthouse|pagespeed/i.test(navigator.userAgent)) return;
     el.hidden = false;
     document.documentElement.classList.add('lc-intro-ouverte');
