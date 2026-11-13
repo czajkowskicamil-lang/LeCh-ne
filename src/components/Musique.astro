@@ -1,72 +1,58 @@
 ---
-/* Musique d'ouverture du site : le lounge feutré du Chêne, 10 secondes au premier clic (pas plus : le visiteur ne doit jamais s'en lasser) du visiteur, puis le silence.
-   Une fois par visite (elle continue d'une page à l'autre grâce aux transitions). Les navigateurs interdisent tout
-   son avant un geste du visiteur. Le visiteur la coupe d'un clic, et son choix est retenu (préférence locale,
+/* Générique du Chêne : le lounge feutré, 10 secondes, à chaque page où arrive le visiteur (depuis Instagram, LinkedIn,
+   un article ou le menu du site). Joué depuis un vrai fichier audio : il passe dans tous les navigateurs, y compris
+   ceux de LinkedIn et Instagram, et sur iPhone même en mode silencieux. Les navigateurs interdisent tout son avant un
+   geste du visiteur : il part au premier toucher sur la page, ou directement au clic sur un lien du site. Il ne
+   redémarre jamais par-dessus lui-même. Le visiteur le coupe d'un clic, et son choix est retenu (préférence locale,
    aucun traceur). */
 ---
-<button id="lc-musique" class="lc-musique" type="button" aria-pressed="false" title="Musique" transition:persist>
-  <span class="lc-musique-note" aria-hidden="true">♪</span><span class="lc-musique-txt">Musique</span>
-</button>
+<div class="lc-musique-zone" transition:persist="lc-musique">
+  <audio id="lc-musique-son" src="/sons/chene-ouverture.m4a" preload="auto" playsinline></audio>
+  <button id="lc-musique" class="lc-musique" type="button" aria-pressed="false" title="Musique">
+    <span class="lc-musique-note" aria-hidden="true">♪</span><span class="lc-musique-txt">Musique</span>
+  </button>
+</div>
 
 <script>
-  import { construire, jouerOuverture, type Chaine } from '../scripts/musique';
-
-  type Etat = { ctx: AudioContext; chaine: Chaine; fin: number };
-  const VOLUME = 0.26;
-  const DUREE = 10; // secondes, son compris : au-delà, ça lasse
-  let etat: Etat | null = null;
-  const lire = (k: string, s: Storage | undefined) => { try { return s?.getItem(k); } catch { return null; } };
-  const ecrire = (k: string, v: string, s: Storage | undefined) => { try { s?.setItem(k, v); } catch { /* */ } };
-  const refusee = () => lire('chene_musique', localStorage) === '0';
-  const dejaJouee = () => lire('chene_musique_jouee', sessionStorage) === '1';
+  const son = () => document.getElementById('lc-musique-son') as HTMLAudioElement | null;
+  const lire = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
+  const ecrire = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* */ } };
+  const refusee = () => lire('chene_musique') === '0';
+  let attente = true; // la page affichée attend son générique
 
   function afficher() {
-    const b = document.getElementById('lc-musique'); if (!b) return;
-    b.setAttribute('aria-pressed', String(!!etat));
-    b.classList.toggle('actif', !!etat);
-    b.querySelector('.lc-musique-txt')!.textContent = etat ? 'Couper la musique' : dejaJouee() ? 'Réécouter' : 'Musique';
+    const b = document.getElementById('lc-musique'), a = son(); if (!b || !a) return;
+    const joue = !a.paused && !a.ended;
+    b.setAttribute('aria-pressed', String(joue));
+    b.classList.toggle('actif', joue);
+    b.querySelector('.lc-musique-txt')!.textContent = joue ? 'Couper la musique' : 'Musique';
   }
-  function eteindre(e: Etat) {
-    clearTimeout(e.fin); setTimeout(() => e.ctx.close().catch(() => {}), 1500);
-    if (etat === e) { etat = null; afficher(); }
+  function jouer() {
+    const a = son(); if (!a || (!a.paused && !a.ended)) return;
+    a.currentTime = 0;
+    a.play().then(() => { attente = false; }).catch(() => { /* bloqué : le prochain geste réessaie */ });
   }
-  function lancer() {
-    if (etat) return;
-    // iPhone : joue même si le bouton silencieux est activé (Safari 17 et plus).
-    try { const n = navigator as Navigator & { audioSession?: { type: string } }; if (n.audioSession) n.audioSession.type = 'playback'; } catch { /* */ }
-    const ctx = new AudioContext();
-    if (ctx.state !== 'running') ctx.resume().catch(() => {});
-    const chaine = construire(ctx, ctx.destination, 0);
-    jouerOuverture(chaine, ctx.currentTime + 0.1, VOLUME, DUREE, 8);
-    const e: Etat = { ctx, chaine, fin: 0 };
-    e.fin = window.setTimeout(() => eteindre(e), (DUREE + 2) * 1000);
-    etat = e;
-    ecrire('chene_musique', '1', localStorage); ecrire('chene_musique_jouee', '1', sessionStorage);
-    afficher();
-  }
-  function couper() {
-    const e = etat; if (!e) return;
-    const g = e.chaine.maitre.gain, t = e.ctx.currentTime;
-    g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1);
-    eteindre(e);
-    ecrire('chene_musique', '0', localStorage);
-  }
+  function couper() { const a = son(); if (!a) return; a.pause(); ecrire('chene_musique', '0'); }
 
-  // Premier geste du visiteur sur le site : l'ouverture, une fois par visite. Safari (iPhone, Mac) ne débloque le son
-  // qu'à la fin d'un toucher ou sur un clic : on écoute tous ces gestes et on relance tant que le son est bloqué.
-  const GESTES = ['pointerdown', 'touchend', 'click', 'keydown'];
-  const retirer = () => GESTES.forEach((g) => window.removeEventListener(g, premierGeste, true));
-  function premierGeste(ev: Event) {
-    if ((ev.target as Element | null)?.closest?.('#lc-musique')) return; // le bouton gère lui-même
-    if (!etat) { if (refusee() || dejaJouee()) return retirer(); lancer(); }
-    else if (etat.ctx.state !== 'running') etat.ctx.resume().catch(() => {});
-    if (etat?.ctx.state === 'running') retirer();
+  // Chaque geste : si la page attend son générique, ou si le visiteur clique un lien du site, il joue.
+  function geste(ev: Event) {
+    const cible = ev.target as Element | null;
+    if (cible?.closest?.('#lc-musique') || refusee()) return;
+    const lien = cible?.closest?.('a[href]') as HTMLAnchorElement | null;
+    const interne = !!lien && lien.origin === location.origin && !lien.target;
+    if (attente || interne) jouer();
   }
-  if (!refusee() && !dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, premierGeste, true));
+  ['pointerdown', 'touchend', 'click', 'keydown'].forEach((g) => window.addEventListener(g, geste, true));
 
-  document.getElementById('lc-musique')?.addEventListener('click', () => (etat ? couper() : lancer()));
+  document.getElementById('lc-musique')?.addEventListener('click', () => {
+    const a = son(); if (!a) return;
+    if (!a.paused && !a.ended) couper(); else { ecrire('chene_musique', '1'); jouer(); }
+  });
+  const a0 = son();
+  ['play', 'pause', 'ended'].forEach((e) => a0?.addEventListener(e, afficher));
+  // Nouvelle page : elle attend son générique, sauf s'il joue déjà (lancé par le clic sur le lien).
+  document.addEventListener('astro:page-load', () => { const a = son(); attente = !a || a.paused || a.ended; afficher(); });
   afficher();
-  document.addEventListener('astro:page-load', afficher);
 </script>
 
 <style>
