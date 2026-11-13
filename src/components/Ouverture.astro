@@ -1,8 +1,9 @@
 ---
 /* Générique du site : seul ajout au site, qui reste tel quel. Fondu depuis le noir sur la forêt, logo, puis
    « Faire fructifier ce qui compte. » en Cormorant Garamond léger, mot par mot sortant d'un flou, filet doré tracé
-   depuis le centre. Il reste à l'écran jusqu'au premier toucher (les navigateurs interdisent tout son avant) : la
-   musique (composant Musique) part alors, le générique repart calé sur elle, et elle s'arrête quand le site apparaît. À chaque chargement de page (lien, rafraîchissement) ; pas pendant la navigation dans le site. Caché par défaut : aucun flash pour qui l'a
+   depuis le centre. Il dure 7 secondes puis le site apparaît, sans rien toucher. Si le visiteur touche l'écran pendant
+   le générique, la musique (composant Musique) part, le générique repart calé sur elle, et elle s'arrête quand le
+   site apparaît (les navigateurs interdisent tout son avant un geste). À chaque chargement de page (lien, rafraîchissement) ; pas pendant la navigation dans le site. Caché par défaut : aucun flash pour qui l'a
    déjà vu. Jamais montré aux robots (Google, Lighthouse). */
 ---
 <div id="lc-intro" class="lc-intro" hidden>
@@ -16,7 +17,6 @@
     </p>
     <div class="lc-intro-filet"></div>
   </div>
-  <span class="lc-intro-son"><span class="lc-intro-tactile">Touchez l'écran</span><span class="lc-intro-souris">Cliquez</span> pour entrer</span>
 </div>
 <script is:inline>
   (function () {
@@ -45,10 +45,10 @@
       if (duree) t1 = setTimeout(fermer, duree);
     }
     // Instagram et Facebook chargent souvent la page en arrière-plan : le générique ne démarre qu'à l'écran.
-    // Le générique se joue puis reste à l'écran jusqu'au premier toucher (seul moyen d'avoir le son pour tous).
+    // Le générique se joue 7 secondes puis le site apparaît tout seul.
     function lancer() {
       if (lance || document.visibilityState !== 'visible') return;
-      lance = true; jouer(0);
+      lance = true; jouer(7000); // 7 secondes, puis le site, sans rien toucher
     }
     // Premier toucher : la musique part et le générique repart calé sur elle ; le site apparaît quand elle s'éteint.
     // Un second toucher passe directement au site.
@@ -63,8 +63,6 @@
     window.addEventListener('pageshow', lancer);
     el.addEventListener('click', toucher);
     document.addEventListener('keydown', function (e) { if (!fini && /^(Enter| |Escape)$/.test(e.key)) { e.preventDefault(); e.key === 'Escape' ? fermer() : toucher(); } });
-    // Filet de sécurité : sans aucun toucher au bout de 25 s, le site s'affiche (sans musique).
-    setTimeout(function () { if (!musique) fermer(); }, 25000);
   })();
 </script>
 
