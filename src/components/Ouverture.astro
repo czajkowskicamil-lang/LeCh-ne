@@ -1,22 +1,23 @@
 ---
-/* Ouverture du site, la même que l'espace client : forêt plein écran, logo, « Faire fructifier ce qui compte. » mot
-   par mot sur le rythme de la musique, trait doré. Une seule fois par visite (30 minutes, tous onglets confondus).
-   Elle se referme seule en 4,6 s ; un toucher l'ouvre plus vite et lance la musique (composant Musique).
-   Placée tout en haut du <body> et cachée par défaut : un visiteur qui l'a déjà vue n'a aucun flash.
-   Jamais montrée aux robots (Google, Lighthouse) : le contenu de la page reste lu normalement. */
+/* Générique du site : seul ajout au site, qui reste tel quel. Fondu depuis le noir sur la forêt, logo, puis
+   « Faire fructifier ce qui compte. » en Cormorant Garamond léger, mot par mot sortant d'un flou, filet doré tracé
+   depuis le centre. La musique (composant Musique) ne vit que pendant ce générique : elle part au premier toucher
+   (les navigateurs interdisent tout son avant), le générique repart alors calé sur elle, et elle s'arrête quand le
+   site apparaît. Une seule fois par visite (30 minutes, tous onglets). Caché par défaut : aucun flash pour qui l'a
+   déjà vu. Jamais montré aux robots (Google, Lighthouse). */
 ---
-<div id="lc-intro" class="lc-intro" hidden aria-hidden="true">
+<div id="lc-intro" class="lc-intro" hidden>
   <div class="lc-intro-fond"></div>
-  <div class="lc-intro-halo"></div>
+  <div class="lc-intro-voile"></div>
   <div class="lc-intro-centre">
-    <img src="/logo.png" width="170" height="149" alt="" class="lc-intro-pop" decoding="async" />
-    <p class="lc-intro-titre">
-      <span class="lc-intro-mot" style="--d:1.5">Faire</span> <span class="lc-intro-mot" style="--d:2.5">fructifier</span><br />
-      <em class="lc-intro-mot" style="--d:3.5">ce qui compte.</em>
+    <img src="/logo.png" width="170" height="149" alt="Le Chêne Patrimonial" class="lc-intro-logo" decoding="async" />
+    <p class="lc-intro-titre" aria-hidden="true">
+      <span class="lc-intro-mot" style="--i:0">Faire</span> <span class="lc-intro-mot" style="--i:1">fructifier</span><br />
+      <em class="lc-intro-mot" style="--i:2">ce qui compte.</em>
     </p>
-    <div class="lc-intro-trait"></div>
+    <div class="lc-intro-filet"></div>
   </div>
-  <span class="lc-intro-passer">Toucher pour entrer</span>
+  <span class="lc-intro-son">Touchez l'écran pour le son</span>
 </div>
 <script is:inline>
   (function () {
@@ -27,66 +28,101 @@
     try {
       if (/[?&]musique=test/.test(location.search)) localStorage.removeItem('chene_intro_vue');
       vu = Date.now() - Number(localStorage.getItem('chene_intro_vue') || 0) < VISITE;
-    } catch (e) { /* stockage indisponible : on montre l'ouverture */ }
+    } catch (e) { /* stockage indisponible : on montre le générique */ }
     if (vu || /bot|crawl|spider|slurp|lighthouse|pagespeed/i.test(navigator.userAgent)) return;
     el.hidden = false;
     document.documentElement.classList.add('lc-intro-ouverte');
-    // Instagram et Facebook chargent souvent la page en arrière-plan avant de la montrer : l'ouverture ne démarre
-    // qu'une fois la page réellement à l'écran, et ne compte comme vue qu'après avoir été vue.
-    var fini = false, lance = false, t1;
+
+    var lance = false, musique = false, fini = false, t1;
     function fermer() {
       if (fini) return; fini = true; clearTimeout(t1);
+      document.dispatchEvent(new Event('chene:intro-fin')); // le site apparaît : la musique s'arrête
       try { localStorage.setItem('chene_intro_vue', String(Date.now())); } catch (e) { /* */ }
       el.classList.add('lc-intro-sort');
       document.documentElement.classList.remove('lc-intro-ouverte');
-      setTimeout(function () { el.hidden = true; }, 950);
+      setTimeout(function () { el.hidden = true; }, 1200);
     }
+    function jouer(duree) {
+      clearTimeout(t1);
+      el.classList.remove('lc-intro-joue'); void el.offsetWidth; el.classList.add('lc-intro-joue');
+      t1 = setTimeout(fermer, duree);
+    }
+    // Instagram et Facebook chargent souvent la page en arrière-plan : le générique ne démarre qu'à l'écran.
     function lancer() {
       if (lance || document.visibilityState !== 'visible') return;
-      lance = true;
-      el.classList.add('lc-intro-joue'); // déclenche les animations
-      t1 = setTimeout(fermer, 3900); // 7,5 temps à 116 BPM, comme l'espace client
+      lance = true; jouer(5200);
     }
-    // Deux images d'affichage pour être sûr que la page est peinte avant de démarrer.
+    // Premier toucher : la musique part et le générique repart calé sur elle ; le site apparaît quand elle s'éteint.
+    // Un second toucher passe directement au site.
+    function toucher() {
+      if (fini) return;
+      if (musique) return fermer();
+      musique = true; lance = true; el.classList.add('lc-intro-musique');
+      jouer(5900);
+    }
     requestAnimationFrame(function () { requestAnimationFrame(lancer); });
     document.addEventListener('visibilitychange', lancer);
     window.addEventListener('pageshow', lancer);
-    el.addEventListener('click', fermer);
-    el.addEventListener('touchend', fermer);
+    el.addEventListener('click', toucher);
   })();
 </script>
 
 <style is:global>
   html.lc-intro-ouverte, html.lc-intro-ouverte body { overflow: hidden; }
   .lc-intro {
-    --t: 0.517s; /* un temps à 116 BPM */
     position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden;
-    background: #0A0D14; cursor: pointer; color: #F2EDE4;
-    transition: opacity .95s cubic-bezier(.6,0,.2,1), transform .95s cubic-bezier(.6,0,.2,1), visibility .95s;
+    background: #05070B; cursor: pointer; color: #F2EDE4;
+    transition: opacity 1.1s cubic-bezier(.4,0,.2,1), visibility 1.1s;
   }
   .lc-intro[hidden] { display: none; }
-  .lc-intro.lc-intro-sort { opacity: 0; transform: translateY(-6%); visibility: hidden; }
+  .lc-intro.lc-intro-sort { opacity: 0; visibility: hidden; }
+
+  /* Forêt : fondu depuis le noir, très lente avancée de caméra. */
   .lc-intro-fond {
-    position: absolute; inset: 0; background-size: cover; background-position: center 70%;
-    background-image: linear-gradient(180deg, rgba(10,13,20,.45), rgba(10,13,20,.85)), url(/hero-forest.jpg);
+    position: absolute; inset: -2%; background: url(/hero-forest.jpg) center 70% / cover no-repeat;
+    opacity: 0; transform: scale(1.08);
   }
-  .lc-intro-joue .lc-intro-fond { animation: lc-intro-zoom 6s ease-out both; }
-  .lc-intro-halo { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,165,92,.18), transparent 60%); }
-  .lc-intro-centre { position: relative; padding: 0 24px; text-align: center; }
-  .lc-intro-pop { display: block; margin: 0 auto; width: 170px; height: auto; opacity: 0; }
-  .lc-intro-joue .lc-intro-pop { animation: lc-intro-pop .9s cubic-bezier(.2,.8,.2,1) both; }
-  .lc-intro-titre { margin-top: 40px; font-family: "Chiffres Serif", "Fraunces Variable", Fraunces, Georgia, serif; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.02em; }
-  .lc-intro-titre em { color: #D8B871; font-style: italic; }
+  .lc-intro-joue .lc-intro-fond { animation: lc-intro-fond 7s cubic-bezier(.2,.6,.2,1) both; }
+  .lc-intro-voile {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 48%, rgba(201,165,92,.10), transparent 70%),
+      linear-gradient(180deg, rgba(5,7,11,.55) 0%, rgba(5,7,11,.72) 55%, rgba(5,7,11,.92) 100%);
+  }
+  .lc-intro-centre { position: relative; padding: 0 28px; text-align: center; }
+
+  .lc-intro-logo { display: block; margin: 0 auto; width: 112px; height: auto; opacity: 0; }
+  .lc-intro-joue .lc-intro-logo { animation: lc-intro-flou 1.8s .35s cubic-bezier(.16,1,.3,1) both; }
+
+  .lc-intro-titre {
+    margin-top: 44px;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300;
+    font-size: clamp(2.5rem, 6.6vw, 4.6rem); line-height: 1.06; letter-spacing: .005em;
+  }
+  .lc-intro-titre em { font-style: italic; font-weight: 400; color: #D9BE86; }
   .lc-intro-mot { display: inline-block; opacity: 0; }
-  .lc-intro-joue .lc-intro-mot { animation: lc-intro-mot .8s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d) * var(--t)); }
-  .lc-intro-trait { width: 224px; height: 1px; margin: 32px auto 0; background: #C9A55C; transform: scaleX(0); }
-  .lc-intro-joue .lc-intro-trait { animation: lc-intro-trait .9s cubic-bezier(.6,0,.2,1) both; animation-delay: calc(5 * var(--t)); }
-  .lc-intro-passer { position: absolute; left: 0; right: 0; text-align: center; bottom: calc(28px + env(safe-area-inset-bottom)); font: 500 12px/1 "Inter Variable", Inter, system-ui, sans-serif; letter-spacing: .04em; color: rgba(242,237,228,.55); }
-  @keyframes lc-intro-pop { 0% { opacity: 0; transform: scale(.6); filter: blur(8px); } 60% { opacity: 1; transform: scale(1.06); filter: blur(0); } 100% { opacity: 1; transform: scale(1); } }
-  @keyframes lc-intro-mot { 0% { opacity: 0; transform: translateY(28px); letter-spacing: .2em; } 100% { opacity: 1; transform: none; letter-spacing: normal; } }
-  @keyframes lc-intro-trait { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-  @keyframes lc-intro-zoom { 0% { transform: scale(1); } 100% { transform: scale(1.12); } }
+  .lc-intro-joue .lc-intro-mot { animation: lc-intro-mot 1.7s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(1.1s + var(--i) * .5s); }
+
+  .lc-intro-filet {
+    width: 180px; height: 1px; margin: 34px auto 0; transform: scaleX(0);
+    background: linear-gradient(90deg, transparent, #C9A55C 30%, #E6D3A3 50%, #C9A55C 70%, transparent);
+  }
+  .lc-intro-joue .lc-intro-filet { animation: lc-intro-filet 1.6s 2.7s cubic-bezier(.65,0,.35,1) both; }
+
+  .lc-intro-son {
+    position: absolute; left: 0; right: 0; bottom: calc(34px + env(safe-area-inset-bottom)); text-align: center;
+    font: 400 10.5px/1 'Inter Variable', Inter, system-ui, sans-serif; letter-spacing: .34em; text-transform: uppercase;
+    color: rgba(242,237,228,.5); opacity: 0;
+  }
+  .lc-intro-joue .lc-intro-son { animation: lc-intro-flou 1.4s 1.6s ease both, lc-intro-souffle 3s 3s ease-in-out infinite; }
+  .lc-intro-musique .lc-intro-son { display: none; }
+
+  @keyframes lc-intro-fond { 0% { opacity: 0; transform: scale(1.08); } 25% { opacity: 1; } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes lc-intro-flou { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
+  @keyframes lc-intro-mot { from { opacity: 0; filter: blur(12px); transform: translateY(12px); } to { opacity: 1; filter: blur(0); transform: none; } }
+  @keyframes lc-intro-filet { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes lc-intro-souffle { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
   @media (prefers-reduced-motion: reduce) {
-    .lc-intro-joue .lc-intro-fond, .lc-intro-joue .lc-intro-pop, .lc-intro-joue .lc-intro-mot, .lc-intro-joue .lc-intro-trait { animation-duration: .01s !important; animation-delay: 0s !important; }
+    .lc-intro-joue .lc-intro-fond, .lc-intro-joue .lc-intro-logo, .lc-intro-joue .lc-intro-mot, .lc-intro-joue .lc-intro-filet, .lc-intro-joue .lc-intro-son { animation-duration: .01s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
   }
 </style>

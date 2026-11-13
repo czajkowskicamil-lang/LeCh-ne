@@ -1,95 +1,49 @@
 ---
-/* Générique du Chêne : le lounge feutré, 7 secondes, une seule fois par visite, au premier geste du visiteur sur la
-   page où il arrive (accueil, lien LinkedIn ou Instagram, article), puis plus rien pendant sa navigation. Joué depuis un vrai fichier audio : il passe dans tous les navigateurs, y compris
-   ceux de LinkedIn et Instagram, et sur iPhone même en mode silencieux. Les navigateurs interdisent tout son avant un
-   geste du visiteur : il part donc au premier toucher. Le visiteur le coupe d'un clic, et son choix vaut pour la visite (aucun traceur). */
+/* Musique du générique : le lounge feutré du Chêne, 7 secondes, joué depuis un vrai fichier audio (passe partout,
+   y compris dans les navigateurs de LinkedIn et Instagram, et sur iPhone en silencieux, sauf depuis les applis de Meta).
+   Elle ne vit que pendant le générique (composant Ouverture) : premier toucher pendant le générique, elle part ; le
+   site apparaît, elle s'arrête. Aucun bouton, aucun affichage : le site reste tel qu'il est.
+   Une seule fois par visite (30 minutes, tous onglets). « ?musique=test » lève ce verrou pour tester. */
 ---
-<div class="lc-musique-zone" transition:persist="lc-musique">
+<div class="lc-musique-zone" transition:persist="lc-musique" hidden>
   <audio id="lc-musique-son" src="/sons/chene-ouverture-7s.m4a" preload="auto" playsinline></audio>
-  <button id="lc-musique" class="lc-musique" type="button" aria-pressed="false" title="Musique">
-    <span class="lc-musique-note" aria-hidden="true">♪</span><span class="lc-musique-txt">Musique</span>
-  </button>
 </div>
 
 <script>
   const son = () => document.getElementById('lc-musique-son') as HTMLAudioElement | null;
-  // Le choix « couper » vaut pour la visite en cours seulement : au retour, le générique revient.
-  const lire = (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } };
-  const ecrire = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* */ } };
-  const refusee = () => lire('chene_musique') === '0';
-  try { localStorage.removeItem('chene_musique'); } catch { /* ancien réglage permanent, abandonné */ }
-  // Une seule fois par visite : au premier geste sur la page d'arrivée, puis plus jamais pendant la navigation.
-  // « Visite » = 30 minutes, tous onglets confondus : un lien ouvert dans un nouvel onglet ne relance rien.
   const VISITE = 30 * 60 * 1000;
-  const dejaJouee = () => { try { return Date.now() - Number(localStorage.getItem('chene_musique_jouee') ?? 0) < VISITE; } catch { return lire('chene_musique_jouee') === '1'; } };
-  const marquerJouee = () => { try { localStorage.setItem('chene_musique_jouee', String(Date.now())); } catch { ecrire('chene_musique_jouee', '1'); } };
+  try {
+    localStorage.removeItem('chene_musique'); // ancien réglage, abandonné
+    if (new URLSearchParams(location.search).get('musique') === 'test') localStorage.removeItem('chene_musique_jouee');
+  } catch { /* */ }
+  const dejaJouee = () => { try { return Date.now() - Number(localStorage.getItem('chene_musique_jouee') ?? 0) < VISITE; } catch { return false; } };
+  const marquerJouee = () => { try { localStorage.setItem('chene_musique_jouee', String(Date.now())); } catch { /* */ } };
+  const ouvertureEnCours = () => document.documentElement.classList.contains('lc-intro-ouverte');
 
-  function afficher() {
-    const b = document.getElementById('lc-musique'), a = son(); if (!b || !a) return;
-    const joue = !a.paused && !a.ended;
-    b.setAttribute('aria-pressed', String(joue));
-    b.classList.toggle('actif', joue);
-    b.querySelector('.lc-musique-txt')!.textContent = joue ? 'Couper la musique' : 'Musique';
-  }
-  // Diagnostic pour le cabinet : https://www.lechenepatrimonial.com/?musique=test affiche ce que répond le téléphone.
-  const test = new URLSearchParams(location.search).get('musique') === 'test';
-  if (test) { try { localStorage.removeItem('chene_musique_jouee'); sessionStorage.removeItem('chene_musique'); } catch { /* */ } }
-  function journal(t: string) {
-    if (!test) return;
-    let box = document.getElementById('lc-musique-test');
-    if (!box) { box = document.createElement('pre'); box.id = 'lc-musique-test'; box.style.cssText = 'position:fixed;top:70px;left:10px;right:10px;z-index:99;max-height:40vh;overflow:auto;background:#000c;color:#E0C68F;font:11px/1.4 monospace;padding:10px;border-radius:8px;white-space:pre-wrap'; document.body.appendChild(box); }
-    box.textContent = new Date().toLocaleTimeString('fr-FR') + ' ' + t + '\n' + box.textContent;
-  }
-  function jouer(origine = '') {
+  function jouer() {
     const a = son(); if (!a || (!a.paused && !a.ended)) return;
-    // Revenir au début seulement si le son a déjà joué : sur iPhone, le fichier n'est pas encore chargé au premier
-    // toucher, et repositionner un son non chargé y déclenche une erreur qui bloquait tout.
+    // Revenir au début seulement si le son a déjà joué : sur iPhone, repositionner un son non chargé bloque tout.
     try { if (a.currentTime > 0) a.currentTime = 0; } catch { /* */ }
-    journal(`${origine} : lecture demandée (état ${a.readyState})`);
-    a.play().then(() => { journal('SON EN COURS'); marquerJouee(); retirer(); })
-      .catch((e: Error) => journal(`bloqué : ${e.name} ${e.message}`));
+    a.play().then(() => { marquerJouee(); retirer(); }).catch(() => { /* bloqué : le geste suivant réessaie */ });
   }
-  function couper() { const a = son(); if (!a) return; a.pause(); ecrire('chene_musique', '0'); }
 
+  // La musique n'existe que pendant le générique : un toucher une fois le site affiché ne lance rien.
   const GESTES = ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'];
   const retirer = () => GESTES.forEach((g) => window.removeEventListener(g, geste, true));
-  function geste(ev: Event) {
-    if ((ev.target as Element | null)?.closest?.('#lc-musique')) return; // le bouton gère lui-même
-    if (refusee() || dejaJouee()) return retirer();
-    jouer(ev.type);
+  function geste() {
+    if (dejaJouee() || !ouvertureEnCours()) return retirer();
+    jouer();
   }
-  if (!refusee() && !dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, geste, true));
+  if (!dejaJouee()) GESTES.forEach((g) => window.addEventListener(g, geste, true));
 
-  document.getElementById('lc-musique')?.addEventListener('click', () => {
-    const a = son(); if (!a) return;
-    if (!a.paused && !a.ended) couper(); else { ecrire('chene_musique', '1'); jouer('bouton'); }
+  // Le site apparaît : la musique s'arrête (fondu là où le navigateur le permet).
+  document.addEventListener('chene:intro-fin', () => {
+    retirer();
+    const a = son(); if (!a || a.paused) return;
+    const v0 = a.volume; let i = 0;
+    const f = setInterval(() => {
+      i++; try { a.volume = Math.max(0, v0 * (1 - i / 10)); } catch { /* iPhone : volume fixe */ }
+      if (i >= 10) { clearInterval(f); a.pause(); try { a.volume = v0; } catch { /* */ } }
+    }, 100);
   });
-  const a0 = son();
-  ['play', 'pause', 'ended'].forEach((e) => a0?.addEventListener(e, afficher));
-  document.addEventListener('astro:page-load', afficher);
-  if (test) { journal(`mode test, verrou levé. Touchez la page.`); a0?.addEventListener('error', () => journal(`erreur du fichier : ${a0.error?.code}`)); }
-  afficher();
 </script>
-
-<style>
-  .lc-musique {
-    position: fixed; left: 22px; bottom: 22px; z-index: 55;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 14px; border-radius: 999px;
-    font: 500 12px/1 'Inter Variable', Inter, system-ui, sans-serif; letter-spacing: .02em;
-    color: rgba(242, 237, 228, .72);
-    background: color-mix(in srgb, #11151F 78%, transparent);
-    border: 1px solid rgba(242, 237, 228, .14);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    transition: color .3s, border-color .3s, background .3s;
-    cursor: pointer;
-  }
-  .lc-musique:hover { color: #F2EDE4; border-color: rgba(201, 165, 92, .5); }
-  .lc-musique.actif { color: #E0C68F; border-color: rgba(201, 165, 92, .7); background: color-mix(in srgb, #C9A55C 14%, #11151F); }
-  .lc-musique.actif .lc-musique-note { animation: lc-pulse 1.03s ease-in-out infinite; }
-  @keyframes lc-pulse { 50% { opacity: .35; } }
-  @media (max-width: 767px) {
-    .lc-musique { left: 14px; bottom: calc(78px + env(safe-area-inset-bottom)); padding: 7px 12px; }
-  }
-  @media (prefers-reduced-motion: reduce) { .lc-musique.actif .lc-musique-note { animation: none; } }
-</style>
