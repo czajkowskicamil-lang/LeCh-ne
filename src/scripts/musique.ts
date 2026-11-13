@@ -119,7 +119,7 @@ export async function rendreExtrait(secondes: number): Promise<Blob> {
 export const DUREE_OUVERTURE = 12;
 const FONDU = 3.5;
 
-/* Programme toute la version courte d'un coup, fondu de sortie compris. Le site joue 5 s en partant de l'entrée
+/* Programme toute la version courte d'un coup, fondu de sortie compris. Le site joue 10 s en partant de l'entrée
    du rythme (premierPas = 8) ; l'espace client joue 12 s depuis le début. */
 export function jouerOuverture(c: Chaine, t0: number, volume: number, duree = DUREE_OUVERTURE, premierPas = 0, alea: () => number = Math.random) {
   for (let pas = premierPas, t = t0; t < t0 + duree - 0.3; pas++, t += CROCHE) jouerPas(c, pas, t, alea);

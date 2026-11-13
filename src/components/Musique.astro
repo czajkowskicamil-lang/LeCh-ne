@@ -1,5 +1,5 @@
 ---
-/* Musique d'ouverture du site : le lounge feutré du Chêne, 5 secondes au premier clic (pas plus : le visiteur ne doit jamais s'en lasser) du visiteur, puis le silence.
+/* Musique d'ouverture du site : le lounge feutré du Chêne, 10 secondes au premier clic (pas plus : le visiteur ne doit jamais s'en lasser) du visiteur, puis le silence.
    Une fois par visite (elle continue d'une page à l'autre grâce aux transitions). Les navigateurs interdisent tout
    son avant un geste du visiteur. Le visiteur la coupe d'un clic, et son choix est retenu (préférence locale,
    aucun traceur). */
@@ -13,7 +13,7 @@
 
   type Etat = { ctx: AudioContext; chaine: Chaine; fin: number };
   const VOLUME = 0.26;
-  const DUREE = 5; // secondes, son compris : au-delà, ça lasse
+  const DUREE = 10; // secondes, son compris : au-delà, ça lasse
   let etat: Etat | null = null;
   const lire = (k: string, s: Storage | undefined) => { try { return s?.getItem(k); } catch { return null; } };
   const ecrire = (k: string, v: string, s: Storage | undefined) => { try { s?.setItem(k, v); } catch { /* */ } };
