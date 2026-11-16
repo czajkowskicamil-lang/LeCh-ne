@@ -30,9 +30,7 @@ const avisHref = localizePath('/avis', lang);
 const faitageHref = 'https://www.lefaitage.fr';
 const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
 // Espace client : en ligne sur le serveur du cabinet (CHÊNE GROUP).
-// Espace pro : page d'attente « en construction » sur le site pour l'instant.
 const espaceClientHref = 'https://espace.lechenepatrimonial.com/mon-espace';
-const espaceProHref = 'https://espace.lechenepatrimonial.com/connexion';
 ---
 
 <header
@@ -62,12 +60,7 @@ const espaceProHref = 'https://espace.lechenepatrimonial.com/connexion';
       <!-- Bouton Espace client : visible partout, « Espace » sur petit écran. -->
       <a href={espaceClientHref} class="nav-espace" aria-label="Espace client, accès sécurisé à votre dossier">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <span class="lg:hidden">Client</span><span class="hidden lg:inline">Espace client</span>
-      </a>
-      <!-- Bouton Espace pro : connexion du cabinet, à côté de l'espace client. -->
-      <a href={espaceProHref} class="nav-espace" aria-label="Espace professionnel, connexion du cabinet">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
-        <span class="lg:hidden">Pro</span><span class="hidden lg:inline">Espace pro</span>
+        <span>Espace<span class="hidden lg:inline"> client</span></span>
       </a>
       <LanguageToggle />
       <a href={rdvHref} class="nav-cta hidden sm:inline-flex btn-primary text-sm">
@@ -139,7 +132,6 @@ const espaceProHref = 'https://espace.lechenepatrimonial.com/connexion';
         <a href={`mailto:${site.email}`} class="text-cream/70 hover:text-or-light transition-colors">{site.email}</a>
         <a href={site.linkedin} target="_blank" rel="noopener" class="text-cream/70 hover:text-or-light transition-colors">LinkedIn</a>
         <a href={espaceClientHref} class="text-cream/70 hover:text-or-light transition-colors">Espace client</a>
-        <a href={espaceProHref} class="text-cream/70 hover:text-or-light transition-colors">Espace professionnel</a>
       </div>
       <a href={rdvHref} class="btn-or self-start md:self-auto">
         {t('nav.rdv')}
