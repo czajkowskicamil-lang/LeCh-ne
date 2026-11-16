@@ -29,9 +29,9 @@ const avisHref = localizePath('/avis', lang);
 // du cabinet, pour que le visiteur sache toujours chez qui il est.
 const faitageHref = 'https://www.lefaitage.fr';
 const rdvHref = localizePath('/rendez-vous', getLangFromUrl(Astro.url));
-// Espaces sécurisés : pages d'attente « en construction » sur le site, à
-// rediriger vers espace.lechenepatrimonial.com le jour de la mise en ligne.
-const espaceClientHref = '/espace-client';
+// Espace client : en ligne sur le serveur du cabinet (CHÊNE GROUP).
+// Espace pro : page d'attente « en construction » sur le site pour l'instant.
+const espaceClientHref = 'https://espace.lechenepatrimonial.com/mon-espace';
 const espaceProHref = '/espace-pro';
 ---
 

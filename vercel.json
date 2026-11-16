@@ -3,6 +3,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/espace-client",
+      "destination": "https://espace.lechenepatrimonial.com/mon-espace",
+      "permanent": false
+    },
+    {
+      "source": "/en/espace-client",
+      "destination": "https://espace.lechenepatrimonial.com/mon-espace",
+      "permanent": false
+    },
+    {
       "source": "/lucarne",
       "destination": "https://www.lefaitage.fr",
       "permanent": true
