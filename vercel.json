@@ -3,6 +3,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/espace-pro",
+      "destination": "https://espace.lechenepatrimonial.com/connexion",
+      "permanent": false
+    },
+    {
+      "source": "/en/espace-pro",
+      "destination": "https://espace.lechenepatrimonial.com/connexion",
+      "permanent": false
+    },
+    {
       "source": "/espace-client",
       "destination": "https://espace.lechenepatrimonial.com/mon-espace",
       "permanent": false
